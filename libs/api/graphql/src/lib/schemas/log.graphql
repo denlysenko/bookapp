@@ -1,0 +1,25 @@
+type Query {
+  logs(skip: Int, first: Int, orderBy: LogOrderByInput): LogsResponse!
+}
+
+type Subscription {
+  logCreated(userId: ID!): Log!
+}
+
+type LogsResponse {
+  count: Int
+  rows: [Log]!
+}
+
+type Log {
+  id: ID
+  userId: ID
+  action: String
+  createdAt: String
+  book: Book
+}
+
+enum LogOrderByInput {
+  createdAt_asc
+  createdAt_desc
+}

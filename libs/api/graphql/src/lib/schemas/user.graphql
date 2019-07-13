@@ -1,0 +1,73 @@
+type Query {
+  me: User!
+  users(
+    filter: FilterInput
+    skip: Int
+    first: Int
+    orderBy: UserOrderByInput
+  ): UserResponse!
+  user(id: ID!): User
+}
+
+type Mutation {
+  updateUser(id: ID!, user: UserInput!): User!
+  deleteUser(id: ID!): User!
+  changePassword(newPassword: String!, oldPassword: String!): Boolean
+  requestResetPassword(email: String!): String!
+  resetPassword(token: String!, newPassword: String!): Boolean
+}
+
+type User {
+  id: ID
+  email: String!
+  firstName: String!
+  lastName: String!
+  displayName: String
+  avatar: String
+  roles: [String!]
+  createdAt: String
+  updatedAt: String
+  reading: Reading
+}
+
+type Reading {
+  epubUrl: String!
+  bookmark: String
+}
+
+type UserResponse {
+  count: Int
+  rows: [User]!
+}
+
+input UserInput {
+  email: String
+  firstName: String
+  lastName: String
+  password: String
+  avatar: String
+  reading: UserReadingInput
+}
+
+input UserReadingInput {
+  epubUrl: String!
+  bookmark: String
+}
+
+input FilterInput {
+  field: String
+  search: String
+}
+
+enum UserOrderByInput {
+  id_asc
+  id_desc
+  email_asc
+  email_desc
+  firstName_asc
+  firstName_desc
+  lastName_asc
+  lastName_desc
+  createdAt_asc
+  createdAt_desc
+}

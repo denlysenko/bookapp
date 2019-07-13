@@ -1,0 +1,71 @@
+type Query {
+  books(
+    paid: Boolean!
+    filter: FilterInput
+    skip: Int
+    first: Int
+    orderBy: BookOrderByInput
+  ): BooksResponse!
+  book(slug: String!): Book!
+  bestBooks(skip: Int, first: Int): BooksResponse!
+}
+
+type Mutation {
+  createBook(book: BookInput!): Book!
+  updateBook(id: ID!, book: BookInput!): Book!
+  rateBook(id: ID!, rate: Int!): Book!
+}
+
+type Subscription {
+  bookRated: Int!
+}
+
+type Book {
+  id: ID
+  title: String
+  author: String
+  coverUrl: String
+  epubUrl: String
+  description: String
+  slug: String
+  url: String
+  total_rating: Float
+  total_rates: Int
+  rating: Float
+  views: Int
+  paid: Boolean
+  price: Float
+  comments: [Comment]
+  createdAt: String
+  updatedAt: String
+}
+
+type BooksResponse {
+  count: Int
+  rows: [Book]!
+}
+
+input BookInput {
+  title: String
+  author: String
+  description: String
+  coverUrl: String
+  epubUrl: String
+  paid: Boolean
+  price: Int
+}
+
+enum BookOrderByInput {
+  id_asc
+  id_desc
+  title_asc
+  title_desc
+  author_asc
+  author_desc
+  rating_asc
+  rating_desc
+  views_asc
+  views_desc
+  createdAt_asc
+  createdAt_desc
+}

@@ -1,0 +1,15 @@
+type Mutation {
+  addComment(bookId: ID!, text: String!): Comment!
+}
+
+type Subscription {
+  commentAdded: Comment!
+}
+
+type Comment {
+  id: ID
+  bookId: ID
+  author: User
+  text: String
+  createdAt: String
+}

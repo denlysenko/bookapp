@@ -1,0 +1,25 @@
+type Query {
+  bookmarks(type: BookmarkType!, skip: Int, first: Int): BookmarksResponse!
+  userBookmarksByBook(bookId: ID!): [Bookmark]!
+}
+
+type Mutation {
+  addToBookmarks(type: BookmarkType!, bookId: ID!): Bookmark!
+  removeFromBookmarks(type: BookmarkType!, bookId: ID!): Bookmark!
+}
+
+type BookmarksResponse {
+  count: Int
+  rows: [Bookmark]!
+}
+
+type Bookmark {
+  type: String!
+  book: Book!
+}
+
+enum BookmarkType {
+  MUSTREAD
+  WISHLIST
+  FAVOURITE
+}
