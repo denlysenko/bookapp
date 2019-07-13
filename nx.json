@@ -7,5 +7,21 @@
     "tslint.json": "*",
     "nx.json": "*"
   },
-  "projects": {}
+  "projects": {
+    "api": {
+      "tags": []
+    },
+    "react-desktop": {
+      "tags": []
+    },
+    "react-desktop-e2e": {
+      "tags": []
+    },
+    "angular-desktop-e2e": {
+      "tags": []
+    },
+    "angular-desktop": {
+      "tags": []
+    }
+  }
 }
