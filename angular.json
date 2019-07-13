@@ -276,6 +276,31 @@
           }
         }
       }
+    },
+    "api-graphql": {
+      "root": "libs/api/graphql",
+      "sourceRoot": "libs/api/graphql/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/api/graphql/tsconfig.lib.json",
+              "libs/api/graphql/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/api/graphql/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/api/graphql/jest.config.js",
+            "tsConfig": "libs/api/graphql/tsconfig.spec.json"
+          }
+        }
+      }
     }
   },
   "cli": {

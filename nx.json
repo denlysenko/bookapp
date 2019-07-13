@@ -9,7 +9,7 @@
   },
   "projects": {
     "api": {
-      "tags": []
+      "tags": ["type:app", "scope:api", "platform:server"]
     },
     "react-desktop": {
       "tags": []
@@ -22,6 +22,9 @@
     },
     "angular-desktop": {
       "tags": []
+    },
+    "api-graphql": {
+      "tags": ["scope:api", "type:feature", "platform:server"]
     }
   }
 }
