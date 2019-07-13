@@ -16,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@bookapp/api/graphql": ["libs/api/graphql/src/index.ts"]
+      "@bookapp/api/graphql": ["libs/api/graphql/src/index.ts"],
+      "@bookapp/shared/models": ["libs/shared/models/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -301,6 +301,21 @@
           }
         }
       }
+    },
+    "shared-models": {
+      "root": "libs/shared/models",
+      "sourceRoot": "libs/shared/models/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/shared/models/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/shared/models/**"]
+          }
+        }
+      }
     }
   },
   "cli": {

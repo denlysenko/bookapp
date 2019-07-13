@@ -36,6 +36,7 @@
     ],
     "no-submodule-imports": false,
     "no-implicit-dependencies": false,
+    "interface-name": false,
     "no-arg": true,
     "no-bitwise": true,
     "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],

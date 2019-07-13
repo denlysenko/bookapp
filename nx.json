@@ -25,6 +25,9 @@
     },
     "api-graphql": {
       "tags": ["scope:api", "type:feature", "platform:server"]
+    },
+    "shared-models": {
+      "tags": ["scope:shared", "type:data-access"]
     }
   }
 }
