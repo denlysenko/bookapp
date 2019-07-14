@@ -28,6 +28,21 @@
     },
     "shared-models": {
       "tags": ["scope:shared", "type:data-access"]
+    },
+    "api-auth": {
+      "tags": ["scope:api", "type:feature"]
+    },
+    "api-config": {
+      "tags": ["scope:api", "type:feature"]
+    },
+    "api-users": {
+      "tags": ["scope:api", "type:feature"]
+    },
+    "api-shared": {
+      "tags": ["scope:api", "type:shared"]
+    },
+    "api-database": {
+      "tags": ["scope:api", "type:feature"]
     }
   }
 }
