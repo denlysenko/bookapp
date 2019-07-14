@@ -1,5 +1,5 @@
 import { ConfigService } from '@bookapp/api/config';
-import { UserDto, UserService } from '@bookapp/api/users';
+import { UserDto, UsersService } from '@bookapp/api/users';
 import { AuthPayload, User } from '@bookapp/shared/models';
 
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -12,11 +12,11 @@ import { AUTH_ERRORS } from './constants';
 export class AuthService {
   constructor(
     private readonly configService: ConfigService,
-    private readonly userService: UserService
+    private readonly usersService: UsersService
   ) {}
 
   async login(email: string, password: string): Promise<AuthPayload> {
-    const user = await this.userService.findByEmail(email);
+    const user = await this.usersService.findByEmail(email);
 
     if (!user) {
       throw new BadRequestException(AUTH_ERRORS.INCORRECT_EMAIL_ERR);
@@ -30,12 +30,12 @@ export class AuthService {
   }
 
   async signup(user: UserDto): Promise<AuthPayload> {
-    const newUser = await this.userService.create(user);
+    const newUser = await this.usersService.create(user);
     return { token: this.createToken(newUser._id) };
   }
 
   validate({ id }): Promise<User> {
-    return this.userService.findById(id);
+    return this.usersService.findById(id);
   }
 
   private createToken(id: string): string {
