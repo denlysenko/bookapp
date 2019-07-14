@@ -43,6 +43,9 @@
     },
     "api-database": {
       "tags": ["scope:api", "type:feature"]
+    },
+    "api-utils": {
+      "tags": ["scope:api", "type:utils"]
     }
   }
 }
