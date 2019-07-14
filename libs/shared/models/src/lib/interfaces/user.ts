@@ -1,5 +1,5 @@
 export interface User {
-  _id: string;
+  _id: any;
   firstName: string;
   lastName: string;
   email: string;
@@ -10,6 +10,6 @@ export interface User {
   updatedAt: Date;
   reading: {
     epubUrl: string;
-    bookmark: string;
+    bookmark?: string;
   };
 }
