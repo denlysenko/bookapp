@@ -1,3 +1,5 @@
+import { formatError } from '@bookapp/api/utils';
+
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 
@@ -6,7 +8,9 @@ import { GraphQLModule } from '@nestjs/graphql';
     GraphQLModule.forRoot({
       debug: process.env.NODE_ENV !== 'production',
       playground: process.env.NODE_ENV !== 'production',
-      typePaths: ['./**/*.graphql']
+      typePaths: ['./**/*.graphql'],
+      context: ({ req }) => ({ req }),
+      formatError
     })
   ]
 })
