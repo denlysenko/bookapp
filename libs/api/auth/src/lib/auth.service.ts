@@ -38,9 +38,9 @@ export class AuthService {
     return this.usersService.findById(id);
   }
 
-  private createToken(id: string): string {
+  createToken(id: string): string {
     return jwt.sign({ id }, this.configService.get('JWT_SECRET'), {
-      expiresIn: Number(this.configService.get('TOKEN_EXPIRATION_TIME'))
+      expiresIn: parseInt(this.configService.get('TOKEN_EXPIRATION_TIME'), 10)
     });
   }
 }
