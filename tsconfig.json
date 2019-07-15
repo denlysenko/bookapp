@@ -23,7 +23,8 @@
       "@bookapp/api/users": ["libs/api/users/src/index.ts"],
       "@bookapp/api/shared": ["libs/api/shared/src/index.ts"],
       "@bookapp/api/database": ["libs/api/database/src/index.ts"],
-      "@bookapp/api/utils": ["libs/api/utils/src/index.ts"]
+      "@bookapp/api/utils": ["libs/api/utils/src/index.ts"],
+      "@bookapp/testing": ["libs/testing/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

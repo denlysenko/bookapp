@@ -456,6 +456,21 @@
           }
         }
       }
+    },
+    "testing": {
+      "root": "libs/testing",
+      "sourceRoot": "libs/testing/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/testing/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/testing/**"]
+          }
+        }
+      }
     }
   },
   "cli": {

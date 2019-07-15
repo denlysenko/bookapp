@@ -46,6 +46,9 @@
     },
     "api-utils": {
       "tags": ["scope:api", "type:utils"]
+    },
+    "testing": {
+      "tags": []
     }
   }
 }
