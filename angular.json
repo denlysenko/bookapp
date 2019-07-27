@@ -292,13 +292,6 @@
             ],
             "exclude": ["**/node_modules/**", "!libs/api/graphql/**"]
           }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/api/graphql/jest.config.js",
-            "tsConfig": "libs/api/graphql/tsconfig.spec.json"
-          }
         }
       }
     },
