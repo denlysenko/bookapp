@@ -307,6 +307,10 @@ describe('UsersService', () => {
   });
 
   describe('resetPassword()', () => {
+    beforeEach(() => {
+      jest.spyOn(Date, 'now').mockReturnValue(1564393782396);
+    });
+
     it('should find user by token', async () => {
       await usersService.resetPassword('token', 'password');
       expect(userModel.findOne).toHaveBeenCalledWith({
