@@ -12,19 +12,17 @@ import { InjectModel } from '@nestjs/mongoose';
 import { randomBytes } from 'crypto';
 import { extend } from 'lodash';
 import { Model } from 'mongoose';
-import { promisify } from 'util';
 
-import { USER_VALIDATION_ERRORS } from './constants';
+import { USER_MODEL_NAME, USER_VALIDATION_ERRORS } from './constants';
 import { UserDto } from './dto/user';
 import { UserModel } from './interfaces/user';
 
-const randomBytesAsync = promisify(randomBytes);
-const EXCLUDED_FIELDS = '-salt -password';
+export const EXCLUDED_FIELDS = '-salt -password';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel('User') private readonly userModel: Model<UserModel>,
+    @InjectModel(USER_MODEL_NAME) private readonly userModel: Model<UserModel>,
     private readonly configService: ConfigService
   ) {}
 
@@ -66,20 +64,25 @@ export class UsersService {
   async update(id: string, updatedUser: UserDto): Promise<UserModel> {
     const user = await this.userModel.findById(id, EXCLUDED_FIELDS).exec();
 
-    // remove old avatar from bucket first if new one is adding
-    if (
-      updatedUser.avatar &&
-      user.avatar &&
-      user.avatar !== updatedUser.avatar
-    ) {
-      try {
-        const splitted = user.avatar.split('/'); // take last part of uri as a key
-        // tslint:disable-next-line: no-commented-code
-        // await this.fileService.deleteFromBucket(splitted[splitted.length - 1]);
-      } catch (err) {
-        throw new BadRequestException(err);
-      }
+    if (!user) {
+      throw new NotFoundException(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
     }
+
+    // TODO: uncomment when files service will be ready
+    // remove old avatar from bucket first if new one is adding
+    // if (
+    //   updatedUser.avatar &&
+    //   user.avatar &&
+    //   user.avatar !== updatedUser.avatar
+    // ) {
+    //   try {
+    //     const splitted = user.avatar.split('/'); // take last part of uri as a key
+    //     // tslint:disable-next-line: no-commented-code
+    //     // await this.fileService.deleteFromBucket(splitted[splitted.length - 1]);
+    //   } catch (err) {
+    //     throw new BadRequestException(err);
+    //   }
+    // }
 
     extend(user, updatedUser);
     user.displayName = `${user.firstName} ${user.lastName}`;
@@ -93,14 +96,14 @@ export class UsersService {
   ): Promise<UserModel> {
     const user = await this.userModel.findById(id).exec();
 
-    if (user.authenticate(oldPassword)) {
-      user.password = newPassword;
-      return user.save();
-    } else {
+    if (!user.authenticate(oldPassword)) {
       throw new BadRequestException(
         USER_VALIDATION_ERRORS.OLD_PASSWORD_MATCH_ERR
       );
     }
+
+    user.password = newPassword;
+    return user.save();
   }
 
   async requestResetPassword(email: string): Promise<string> {
@@ -114,7 +117,7 @@ export class UsersService {
       throw new NotFoundException(USER_VALIDATION_ERRORS.EMAIL_NOT_FOUND_ERR);
     }
 
-    const buffer = await randomBytesAsync(20);
+    const buffer = randomBytes(20);
 
     token = buffer.toString('hex');
     user.resetPasswordToken = token;
@@ -150,6 +153,11 @@ export class UsersService {
 
   async remove(id: string): Promise<UserModel> {
     const user = await this.userModel.findById(id, EXCLUDED_FIELDS).exec();
+
+    if (!user) {
+      throw new NotFoundException(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
+    }
+
     await user.remove();
     return user;
   }
