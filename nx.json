@@ -11,6 +11,9 @@
     "api": {
       "tags": ["type:app", "scope:api", "platform:server"]
     },
+    "api-e2e": {
+      "tags": []
+    },
     "react-desktop": {
       "tags": []
     },
