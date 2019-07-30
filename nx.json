@@ -33,25 +33,28 @@
       "tags": ["scope:shared", "type:data-access"]
     },
     "api-auth": {
-      "tags": ["scope:api", "type:feature"]
+      "tags": ["scope:api", "type:feature", "platform:server"]
     },
     "api-config": {
-      "tags": ["scope:api", "type:feature"]
+      "tags": ["scope:api", "type:feature", "platform:server"]
     },
     "api-users": {
-      "tags": ["scope:api", "type:feature"]
+      "tags": ["scope:api", "type:feature", "platform:server"]
     },
     "api-shared": {
-      "tags": ["scope:api", "type:shared"]
+      "tags": ["scope:api", "type:shared", "platform:server"]
     },
     "api-database": {
-      "tags": ["scope:api", "type:feature"]
+      "tags": ["scope:api", "type:feature", "platform:server"]
     },
     "api-utils": {
-      "tags": ["scope:api", "type:utils"]
+      "tags": ["scope:api", "type:utils", "platform:server"]
     },
     "testing": {
       "tags": []
+    },
+    "api-files": {
+      "tags": ["scope:api", "type:feature", "platform:server"]
     }
   }
 }
