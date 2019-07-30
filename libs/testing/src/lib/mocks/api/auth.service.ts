@@ -1,8 +1,6 @@
 import { authPayload } from '../../test-data/auth-payload';
 
-export const MockAuthService = jest.fn().mockImplementation(() => {
-  return {
-    login: () => Promise.resolve(authPayload),
-    signup: () => Promise.resolve(authPayload)
-  };
-});
+export const MockAuthService = {
+  login: jest.fn().mockImplementation(() => Promise.resolve(authPayload)),
+  signup: jest.fn().mockImplementation(() => Promise.resolve(authPayload))
+};

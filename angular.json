@@ -44,13 +44,6 @@
             "tsConfig": ["apps/api/tsconfig.app.json"],
             "exclude": ["**/node_modules/**", "!apps/api/**"]
           }
-        },
-        "e2e": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "apps/api-e2e/jest.config.js",
-            "tsConfig": "apps/api-e2e/tsconfig.spec.json"
-          }
         }
       }
     },
@@ -465,6 +458,13 @@
             "linter": "tslint",
             "tsConfig": ["apps/api-e2e/tsconfig.spec.json"],
             "exclude": ["**/node_modules/**", "!apps/api-e2e/**"]
+          }
+        },
+        "e2e": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/api-e2e/jest.config.js",
+            "tsConfig": "apps/api-e2e/tsconfig.spec.json"
           }
         }
       }

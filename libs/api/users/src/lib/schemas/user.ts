@@ -6,13 +6,6 @@ import { ROLES, USER_VALIDATION_ERRORS } from '../constants';
 import { UserModel } from '../interfaces/user';
 
 /**
- * A Validation function for properties
- */
-const validateProperty = function(property) {
-  return !this.updated || property.length;
-};
-
-/**
  * A Validation function for password
  */
 const validatePassword = function(password) {
@@ -25,14 +18,12 @@ export const UserSchema = new Schema({
   firstName: {
     type: String,
     trim: true,
-    default: '',
-    validate: [validateProperty, USER_VALIDATION_ERRORS.FIRST_NAME_REQUIRED_ERR]
+    required: [true, USER_VALIDATION_ERRORS.FIRST_NAME_REQUIRED_ERR]
   },
   lastName: {
     type: String,
     trim: true,
-    default: '',
-    validate: [validateProperty, USER_VALIDATION_ERRORS.LAST_NAME_REQUIRED_ERR]
+    required: [true, USER_VALIDATION_ERRORS.LAST_NAME_REQUIRED_ERR]
   },
   displayName: {
     type: String,
@@ -41,7 +32,7 @@ export const UserSchema = new Schema({
   email: {
     type: String,
     trim: true,
-    validate: [validateProperty, USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR],
+    required: [true, USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR],
     match: [/.+\@.+\..+/, USER_VALIDATION_ERRORS.EMAIL_INVALID_ERR]
   },
   password: {
