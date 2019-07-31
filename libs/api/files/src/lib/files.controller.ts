@@ -39,6 +39,7 @@ export class FilesController {
   @Post()
   @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(FileInterceptor('file', options))
+  @HttpCode(HttpStatus.OK)
   async uploadFile(@UploadedFile() file: any) {
     if (!file) {
       throw new BadRequestException(FILE_ERRORS.INVALID_MIMETYPE_ERR);
