@@ -1,4 +1,5 @@
 import { ConfigService } from '@bookapp/api/config';
+import { FilesService } from '@bookapp/api/files';
 import { ApiQuery } from '@bookapp/api/shared';
 import { ApiResponse } from '@bookapp/shared/models';
 
@@ -23,7 +24,8 @@ export const EXCLUDED_FIELDS = '-salt -password';
 export class UsersService {
   constructor(
     @InjectModel(USER_MODEL_NAME) private readonly userModel: Model<UserModel>,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly filesService: FilesService
   ) {}
 
   async findAll(query?: ApiQuery): Promise<ApiResponse<UserModel>> {
@@ -68,21 +70,19 @@ export class UsersService {
       throw new NotFoundException(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
     }
 
-    // TODO: uncomment when files service will be ready
     // remove old avatar from bucket first if new one is adding
-    // if (
-    //   updatedUser.avatar &&
-    //   user.avatar &&
-    //   user.avatar !== updatedUser.avatar
-    // ) {
-    //   try {
-    //     const splitted = user.avatar.split('/'); // take last part of uri as a key
-    //     // tslint:disable-next-line: no-commented-code
-    //     // await this.fileService.deleteFromBucket(splitted[splitted.length - 1]);
-    //   } catch (err) {
-    //     throw new BadRequestException(err);
-    //   }
-    // }
+    if (
+      updatedUser.avatar &&
+      user.avatar &&
+      user.avatar !== updatedUser.avatar
+    ) {
+      try {
+        const splitted = user.avatar.split('/'); // take last part of uri as a key
+        await this.filesService.deleteFromBucket(splitted[splitted.length - 1]);
+      } catch (err) {
+        throw new BadRequestException(err);
+      }
+    }
 
     extend(user, updatedUser);
     user.displayName = `${user.firstName} ${user.lastName}`;

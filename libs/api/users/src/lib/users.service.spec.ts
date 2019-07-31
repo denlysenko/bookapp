@@ -1,8 +1,8 @@
 // tslint:disable: no-big-function
 // tslint:disable: no-duplicate-string
 // tslint:disable: no-identical-functions
-
 import { ConfigService } from '@bookapp/api/config';
+import { FilesService } from '@bookapp/api/files';
 import { ApiQuery } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
 import {
@@ -23,6 +23,7 @@ import { EXCLUDED_FIELDS } from './users.service';
 describe('UsersService', () => {
   let usersService: UsersService;
   let configService: ConfigService;
+  let filesService: FilesService;
   let userModel: any;
 
   beforeEach(async () => {
@@ -36,19 +37,29 @@ describe('UsersService', () => {
         {
           provide: getModelToken(USER_MODEL_NAME),
           useValue: MockModel
+        },
+        {
+          provide: FilesService,
+          useValue: {
+            deleteFromBucket: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve())
+          }
         }
       ]
     }).compile();
 
     usersService = module.get<UsersService>(UsersService);
     configService = module.get<ConfigService>(ConfigService);
+    filesService = module.get<FilesService>(FilesService);
     userModel = module.get(getModelToken(USER_MODEL_NAME));
+
     jest
       .spyOn(userModel, 'exec')
       .mockImplementation(() => Promise.resolve(MockMongooseModel));
     jest
       .spyOn(userModel, 'save')
-      .mockImplementationOnce(() => Promise.resolve(user));
+      .mockImplementation(() => Promise.resolve(user));
   });
 
   afterEach(() => {
@@ -164,7 +175,7 @@ describe('UsersService', () => {
 
   describe('update()', () => {
     it('should find user by id', async () => {
-      await usersService.update(user.id, user);
+      await usersService.update(user.id, { ...user });
       expect(userModel.findById).toHaveBeenCalledWith(user.id, EXCLUDED_FIELDS);
     });
 
@@ -174,7 +185,7 @@ describe('UsersService', () => {
         .mockImplementationOnce(() => Promise.resolve(null));
 
       try {
-        await usersService.update(user.id, user);
+        await usersService.update(user.id, { ...user });
       } catch (err) {
         expect(err.message.message).toEqual(
           USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR
@@ -182,8 +193,35 @@ describe('UsersService', () => {
       }
     });
 
+    it('should not remove old avatar if it was not changed', async () => {
+      const avatar = 'storage/avatarUrl';
+
+      jest
+        .spyOn(userModel, 'exec')
+        .mockImplementationOnce(() =>
+          Promise.resolve({ ...MockMongooseModel, avatar })
+        );
+
+      await usersService.update(user.id, { ...user, avatar });
+      expect(filesService.deleteFromBucket).not.toHaveBeenCalled();
+    });
+
+    it('should remove old avatar if it was changed', async () => {
+      jest
+        .spyOn(userModel, 'exec')
+        .mockImplementationOnce(() =>
+          Promise.resolve({ ...MockMongooseModel, avatar: 'storage/avatarUrl' })
+        );
+
+      await usersService.update(user.id, {
+        ...user,
+        avatar: 'storage/newAvatarUrl'
+      });
+      expect(filesService.deleteFromBucket).toHaveBeenCalledWith('avatarUrl');
+    });
+
     it('should update user', async () => {
-      expect(await usersService.update(user.id, user)).toEqual(user);
+      expect(await usersService.update(user.id, { ...user })).toEqual(user);
     });
 
     it('should reject user update', async () => {
@@ -194,7 +232,7 @@ describe('UsersService', () => {
         .mockImplementationOnce(() => Promise.reject(error));
 
       try {
-        await usersService.update(user.id, user);
+        await usersService.update(user.id, { ...user });
       } catch (err) {
         expect(err).toEqual(error);
       }
