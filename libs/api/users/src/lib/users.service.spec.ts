@@ -253,6 +253,24 @@ describe('UsersService', () => {
       expect(userModel.findById).toHaveBeenCalledWith(user.id);
     });
 
+    it('should throw error if user is not found', async () => {
+      jest
+        .spyOn(userModel, 'exec')
+        .mockImplementationOnce(() => Promise.resolve(null));
+
+      try {
+        await usersService.changePassword(
+          user.id,
+          'oldPassword',
+          'newPassword'
+        );
+      } catch (err) {
+        expect(err.message.message).toEqual(
+          USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR
+        );
+      }
+    });
+
     it('should throw error if password is incorrect', async () => {
       jest
         .spyOn(userModel, 'exec')
@@ -276,7 +294,7 @@ describe('UsersService', () => {
     it('should update password', async () => {
       expect(
         await usersService.changePassword(user.id, 'oldPassword', 'newPassword')
-      ).toEqual(user);
+      ).toEqual(true);
     });
 
     it('should reject password update', async () => {
@@ -373,9 +391,9 @@ describe('UsersService', () => {
       }
     });
 
-    it('should return user with new password', async () => {
+    it('should return true when success', async () => {
       expect(await usersService.resetPassword('token', 'password')).toEqual(
-        user
+        true
       );
     });
 

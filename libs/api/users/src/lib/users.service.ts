@@ -93,8 +93,12 @@ export class UsersService {
     id: string,
     oldPassword: string,
     newPassword: string
-  ): Promise<UserModel> {
+  ): Promise<boolean> {
     const user = await this.userModel.findById(id).exec();
+
+    if (!user) {
+      throw new NotFoundException(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
+    }
 
     if (!user.authenticate(oldPassword)) {
       throw new BadRequestException(
@@ -103,7 +107,9 @@ export class UsersService {
     }
 
     user.password = newPassword;
-    return user.save();
+
+    await user.save();
+    return true;
   }
 
   async requestResetPassword(email: string): Promise<string> {
@@ -130,7 +136,7 @@ export class UsersService {
     return token;
   }
 
-  async resetPassword(token: string, password: string): Promise<UserModel> {
+  async resetPassword(token: string, password: string): Promise<boolean> {
     const user = await this.userModel
       .findOne({
         resetPasswordToken: token,
@@ -148,7 +154,8 @@ export class UsersService {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
 
-    return user.save();
+    await user.save();
+    return true;
   }
 
   async remove(id: string): Promise<UserModel> {

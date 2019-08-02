@@ -61,7 +61,7 @@ export class UsersResolver {
   changePassword(
     @Args('oldPassword') oldPassword: string,
     @Args('newPassword') newPassword: string,
-    @Context('req') req
+    @Context('req') req: RequestWithUser
   ) {
     const id = req.user._id;
     return this.usersService.changePassword(id, oldPassword, newPassword);
