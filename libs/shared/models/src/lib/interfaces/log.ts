@@ -1,5 +1,5 @@
 export interface Log {
-  _id: string;
+  _id: any;
   action: string;
   userId: string;
   createdAt: Date;
