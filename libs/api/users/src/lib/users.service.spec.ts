@@ -175,8 +175,11 @@ describe('UsersService', () => {
 
   describe('update()', () => {
     it('should find user by id', async () => {
-      await usersService.update(user.id, { ...user });
-      expect(userModel.findById).toHaveBeenCalledWith(user.id, EXCLUDED_FIELDS);
+      await usersService.update(user._id, { ...user });
+      expect(userModel.findById).toHaveBeenCalledWith(
+        user._id,
+        EXCLUDED_FIELDS
+      );
     });
 
     it('should throw error if user is not found', async () => {
@@ -185,7 +188,7 @@ describe('UsersService', () => {
         .mockImplementationOnce(() => Promise.resolve(null));
 
       try {
-        await usersService.update(user.id, { ...user });
+        await usersService.update(user._id, { ...user });
       } catch (err) {
         expect(err.message.message).toEqual(
           USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR
@@ -202,7 +205,7 @@ describe('UsersService', () => {
           Promise.resolve({ ...MockMongooseModel, avatar })
         );
 
-      await usersService.update(user.id, { ...user, avatar });
+      await usersService.update(user._id, { ...user, avatar });
       expect(filesService.deleteFromBucket).not.toHaveBeenCalled();
     });
 
@@ -213,7 +216,7 @@ describe('UsersService', () => {
           Promise.resolve({ ...MockMongooseModel, avatar: 'storage/avatarUrl' })
         );
 
-      await usersService.update(user.id, {
+      await usersService.update(user._id, {
         ...user,
         avatar: 'storage/newAvatarUrl'
       });
@@ -221,7 +224,7 @@ describe('UsersService', () => {
     });
 
     it('should update user', async () => {
-      expect(await usersService.update(user.id, { ...user })).toEqual(user);
+      expect(await usersService.update(user._id, { ...user })).toEqual(user);
     });
 
     it('should reject user update', async () => {
@@ -232,7 +235,7 @@ describe('UsersService', () => {
         .mockImplementationOnce(() => Promise.reject(error));
 
       try {
-        await usersService.update(user.id, { ...user });
+        await usersService.update(user._id, { ...user });
       } catch (err) {
         expect(err).toEqual(error);
       }
@@ -249,8 +252,8 @@ describe('UsersService', () => {
     });
 
     it('should find user by id', async () => {
-      await usersService.changePassword(user.id, 'oldPassword', 'newPassword');
-      expect(userModel.findById).toHaveBeenCalledWith(user.id);
+      await usersService.changePassword(user._id, 'oldPassword', 'newPassword');
+      expect(userModel.findById).toHaveBeenCalledWith(user._id);
     });
 
     it('should throw error if user is not found', async () => {
@@ -260,7 +263,7 @@ describe('UsersService', () => {
 
       try {
         await usersService.changePassword(
-          user.id,
+          user._id,
           'oldPassword',
           'newPassword'
         );
@@ -280,7 +283,7 @@ describe('UsersService', () => {
 
       try {
         await usersService.changePassword(
-          user.id,
+          user._id,
           'oldPassword',
           'newPassword'
         );
@@ -293,7 +296,11 @@ describe('UsersService', () => {
 
     it('should update password', async () => {
       expect(
-        await usersService.changePassword(user.id, 'oldPassword', 'newPassword')
+        await usersService.changePassword(
+          user._id,
+          'oldPassword',
+          'newPassword'
+        )
       ).toEqual(true);
     });
 
@@ -306,7 +313,7 @@ describe('UsersService', () => {
 
       try {
         await usersService.changePassword(
-          user.id,
+          user._id,
           'oldPassword',
           'newPassword'
         );
@@ -414,8 +421,11 @@ describe('UsersService', () => {
 
   describe('remove()', () => {
     it('should find user by id', async () => {
-      await usersService.remove(user.id);
-      expect(userModel.findById).toHaveBeenCalledWith(user.id, EXCLUDED_FIELDS);
+      await usersService.remove(user._id);
+      expect(userModel.findById).toHaveBeenCalledWith(
+        user._id,
+        EXCLUDED_FIELDS
+      );
     });
 
     it('should throw error if user is not found', async () => {
@@ -424,7 +434,7 @@ describe('UsersService', () => {
         .mockImplementationOnce(() => Promise.resolve(null));
 
       try {
-        await usersService.remove(user.id);
+        await usersService.remove(user._id);
       } catch (err) {
         expect(err.message.message).toEqual(
           USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR
@@ -433,7 +443,7 @@ describe('UsersService', () => {
     });
 
     it('should remove user', async () => {
-      await usersService.remove(user.id);
+      await usersService.remove(user._id);
       expect(userModel.remove).toHaveBeenCalled();
     });
 
@@ -445,7 +455,7 @@ describe('UsersService', () => {
         .mockImplementationOnce(() => Promise.reject(error));
 
       try {
-        await usersService.update(user.id, user);
+        await usersService.update(user._id, user);
       } catch (err) {
         expect(err).toEqual(error);
       }

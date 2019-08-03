@@ -30,7 +30,7 @@ import * as jwt from 'jsonwebtoken';
 import { ValidationError } from 'mongoose/lib/error';
 import * as request from 'supertest';
 
-const authToken = jwt.sign({ id: user.id }, 'JWT_SECRET');
+const authToken = jwt.sign({ id: user._id }, 'JWT_SECRET');
 
 const validationError = new ValidationError();
 validationError.errors = {
@@ -61,8 +61,7 @@ describe('UsersModule', () => {
 
     jest.spyOn(authService, 'validate').mockResolvedValue({
       ...user,
-      roles: [ROLES.ADMIN],
-      _id: user.id
+      roles: [ROLES.ADMIN]
     } as any);
 
     app = module.createNestApplication();
@@ -78,7 +77,7 @@ describe('UsersModule', () => {
           query: `query {
             users {
               rows {
-                id
+                _id
               }
             }
           }`
@@ -88,7 +87,7 @@ describe('UsersModule', () => {
             users: {
               rows: [
                 {
-                  id: user.id
+                  _id: user._id
                 }
               ]
             }
@@ -104,7 +103,7 @@ describe('UsersModule', () => {
           query: `query {
             users(filter: { field: "test", search: "query" }) {
               rows {
-                id
+                _id
               }
             }
           }`
@@ -126,7 +125,7 @@ describe('UsersModule', () => {
           query: `query {
             users(skip: 10) {
               rows {
-                id
+                _id
               }
             }
           }`
@@ -148,7 +147,7 @@ describe('UsersModule', () => {
           query: `query {
             users(first: 10) {
               rows {
-                id
+                _id
               }
             }
           }`
@@ -168,9 +167,9 @@ describe('UsersModule', () => {
         .set('Authorization', `Bearer ${authToken}`)
         .send({
           query: `query {
-            users(orderBy: id_asc) {
+            users(orderBy: email_asc) {
               rows {
-                id
+                _id
               }
             }
           }`
@@ -179,7 +178,7 @@ describe('UsersModule', () => {
       expect(usersService.findAll).toHaveBeenCalledWith({
         filter: null,
         first: null,
-        order: { id: 1 },
+        order: { email: 1 },
         skip: null
       });
     });
@@ -191,7 +190,7 @@ describe('UsersModule', () => {
           query: `query {
             users {
               rows {
-                id
+                _id
               }
             }
           }`
@@ -217,7 +216,7 @@ describe('UsersModule', () => {
           query: `query {
             users {
               rows {
-                id
+                _id
               }
             }
           }`
@@ -427,7 +426,7 @@ describe('UsersModule', () => {
         });
 
       expect(usersService.changePassword).toHaveBeenCalledWith(
-        user.id,
+        user._id,
         'oldPassword',
         'newPassword'
       );
@@ -583,14 +582,14 @@ describe('UsersModule', () => {
         .send({
           query: `mutation {
             deleteUser(id: "user_1") {
-              id
+              _id
             }
           }`
         })
         .expect({
           data: {
             deleteUser: {
-              id: user.id
+              _id: user._id
             }
           }
         });
@@ -613,7 +612,7 @@ describe('UsersModule', () => {
         .send({
           query: `mutation {
             deleteUser(id: "user_1") {
-              id
+              _id
             }
           }`
         });
@@ -633,7 +632,7 @@ describe('UsersModule', () => {
         .send({
           query: `mutation {
             deleteUser(id: "user_1") {
-              id
+              _id
             }
           }`
         });
@@ -657,7 +656,7 @@ describe('UsersModule', () => {
         .send({
           query: `mutation {
             deleteUser(id: "user_1") {
-              id
+              _id
             }
           }`
         });

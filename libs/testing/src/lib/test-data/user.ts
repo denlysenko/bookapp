@@ -2,7 +2,7 @@ export const user = {
   firstName: '',
   lastName: '',
   email: 'test@test.com',
-  id: 'id',
+  _id: 'id',
   roles: ['user'],
   displayName: '',
   avatar: null,
