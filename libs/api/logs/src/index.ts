@@ -1,1 +1,2 @@
-export * from './lib/api-logs';
+export * from './lib/logs.module';
+export * from './lib/logs.service';
