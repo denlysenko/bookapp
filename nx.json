@@ -55,6 +55,9 @@
     },
     "api-files": {
       "tags": ["scope:api", "type:feature", "platform:server"]
+    },
+    "api-logs": {
+      "tags": ["scope:api", "type:feature", "platform:server"]
     }
   }
 }
