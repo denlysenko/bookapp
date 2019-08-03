@@ -5,3 +5,5 @@ export * from './lib/interfaces/bookmark';
 export * from './lib/interfaces/comment';
 export * from './lib/interfaces/log';
 export * from './lib/interfaces/user';
+
+export * from './lib/enums/user-actions';

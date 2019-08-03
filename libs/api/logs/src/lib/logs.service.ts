@@ -9,13 +9,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { PubSub } from 'graphql-subscriptions';
 import { Model } from 'mongoose';
 
+import { LOG_MODEL_NAME } from './constants';
 import { LogDto } from './dto/log';
 import { LogModel } from './interfaces/log';
 
 @Injectable()
 export class LogsService {
   constructor(
-    @InjectModel('Log') private readonly logModel: Model<LogModel>,
+    @InjectModel(LOG_MODEL_NAME) private readonly logModel: Model<LogModel>,
     private readonly configService: ConfigService,
     @Inject(PUB_SUB) private readonly pubSub: PubSub
   ) {}
