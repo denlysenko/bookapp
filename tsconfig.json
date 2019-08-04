@@ -26,7 +26,8 @@
       "@bookapp/api/utils": ["libs/api/utils/src/index.ts"],
       "@bookapp/testing": ["libs/testing/src/index.ts"],
       "@bookapp/api/files": ["libs/api/files/src/index.ts"],
-      "@bookapp/api/logs": ["libs/api/logs/src/index.ts"]
+      "@bookapp/api/logs": ["libs/api/logs/src/index.ts"],
+      "@bookapp/api/bookmarks": ["libs/api/bookmarks/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

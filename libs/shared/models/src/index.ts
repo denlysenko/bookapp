@@ -7,3 +7,4 @@ export * from './lib/interfaces/log';
 export * from './lib/interfaces/user';
 
 export * from './lib/enums/user-actions';
+export * from './lib/enums/bookmarks';

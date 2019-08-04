@@ -58,6 +58,9 @@
     },
     "api-logs": {
       "tags": ["scope:api", "type:feature", "platform:server"]
+    },
+    "api-bookmarks": {
+      "tags": ["scope:api", "type:feature", "platform:server"]
     }
   }
 }
