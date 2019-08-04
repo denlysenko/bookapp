@@ -14,7 +14,8 @@ import { PUB_SUB } from './constants';
       debug: process.env.NODE_ENV !== 'production',
       playground: process.env.NODE_ENV !== 'production',
       typePaths: ['./**/*.graphql'],
-      context: ({ req }) => ({ req }),
+      context: ({ req, connection }) =>
+        connection ? { req: { headers: connection.context } } : { req },
       formatError,
       installSubscriptionHandlers: true
     })

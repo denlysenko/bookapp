@@ -1,8 +1,8 @@
 import { ConfigService } from '@bookapp/api/config';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { ApiQuery } from '@bookapp/api/shared';
-import { Log, UserActions } from '@bookapp/shared/models';
 import {
+  log,
   MockConfigService,
   MockModel,
   MockMongooseModel
@@ -15,14 +15,6 @@ import { PubSub } from 'graphql-subscriptions';
 
 import { LOG_MODEL_NAME } from './constants';
 import { LogsService } from './logs.service';
-
-const log: Log = {
-  _id: 'id',
-  action: UserActions.BOOK_ADDED_TO_FAVORITES,
-  userId: 'user_id',
-  createdAt: 1563132857195,
-  bookId: 'book_id'
-};
 
 describe('LogsService', () => {
   let logsService: LogsService;
