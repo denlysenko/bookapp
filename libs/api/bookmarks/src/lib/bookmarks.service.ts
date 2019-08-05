@@ -3,7 +3,11 @@ import { LogDto, LogsService } from '@bookapp/api/logs';
 import { ApiQuery } from '@bookapp/api/shared';
 import { ApiResponse, BOOKMARKS, UserActions } from '@bookapp/shared/models';
 
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
@@ -74,7 +78,7 @@ export class BookmarksService {
       .exec();
 
     if (!bookmark) {
-      throw new BadRequestException(BOOKMARK_ERRORS.BOOKMARK_NOT_FOUND_ERR);
+      throw new NotFoundException(BOOKMARK_ERRORS.BOOKMARK_NOT_FOUND_ERR);
     }
 
     // BOOK_REMOVED_FROM_MUSTREAD
