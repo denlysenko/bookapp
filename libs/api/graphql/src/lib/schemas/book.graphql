@@ -21,7 +21,7 @@ type Subscription {
 }
 
 type Book {
-  id: ID
+  _id: ID
   title: String
   author: String
   coverUrl: String
@@ -56,8 +56,6 @@ input BookInput {
 }
 
 enum BookOrderByInput {
-  id_asc
-  id_desc
   title_asc
   title_desc
   author_asc

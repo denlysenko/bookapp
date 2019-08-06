@@ -1,5 +1,6 @@
 import { AuthModule } from '@bookapp/api/auth';
 import { BookmarksModule } from '@bookapp/api/bookmarks';
+import { BooksModule } from '@bookapp/api/books';
 import { ConfigModule } from '@bookapp/api/config';
 import { DatabaseModule } from '@bookapp/api/database';
 import { GraphqlModule } from '@bookapp/api/graphql';
@@ -16,7 +17,8 @@ import { Module } from '@nestjs/common';
     AuthModule,
     UsersModule,
     LogsModule,
-    BookmarksModule
+    BookmarksModule,
+    BooksModule
   ]
 })
 export class AppModule {}

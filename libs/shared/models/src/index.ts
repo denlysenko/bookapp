@@ -8,3 +8,4 @@ export * from './lib/interfaces/user';
 
 export * from './lib/enums/user-actions';
 export * from './lib/enums/bookmarks';
+export * from './lib/enums/roles';

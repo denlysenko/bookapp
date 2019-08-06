@@ -14,8 +14,3 @@ export const USER_VALIDATION_ERRORS = {
   TOKEN_NOT_FOUND_ERR: 'TOKEN_NOT_FOUND_ERR',
   OLD_PASSWORD_MATCH_ERR: 'OLD_PASSWORD_MATCH_ERR'
 };
-
-export const ROLES = {
-  ADMIN: 'admin',
-  USER: 'user'
-};

@@ -1,8 +1,10 @@
 // tslint:disable:only-arrow-functions
+import { ROLES } from '@bookapp/shared/models';
+
 import { pbkdf2, pbkdf2Sync, randomBytes } from 'crypto';
 import { Schema } from 'mongoose';
 
-import { ROLES, USER_VALIDATION_ERRORS } from '../constants';
+import { USER_VALIDATION_ERRORS } from '../constants';
 import { UserModel } from '../interfaces/user';
 
 /**
