@@ -64,6 +64,9 @@
     },
     "api-books": {
       "tags": ["scope:api", "type:feature", "platform:server"]
+    },
+    "api-comments": {
+      "tags": ["scope:api", "type:feature", "platform:server"]
     }
   }
 }

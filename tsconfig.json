@@ -28,7 +28,8 @@
       "@bookapp/api/files": ["libs/api/files/src/index.ts"],
       "@bookapp/api/logs": ["libs/api/logs/src/index.ts"],
       "@bookapp/api/bookmarks": ["libs/api/bookmarks/src/index.ts"],
-      "@bookapp/api/books": ["libs/api/books/src/index.ts"]
+      "@bookapp/api/books": ["libs/api/books/src/index.ts"],
+      "@bookapp/api/comments": ["libs/api/comments/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

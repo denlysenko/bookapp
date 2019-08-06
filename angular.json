@@ -565,6 +565,32 @@
           }
         }
       }
+    },
+    "api-comments": {
+      "root": "libs/api/comments",
+      "sourceRoot": "libs/api/comments/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "tslint",
+            "tsConfig": [
+              "libs/api/comments/tsconfig.lib.json",
+              "libs/api/comments/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/api/comments/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/api/comments/jest.config.js",
+            "tsConfig": "libs/api/comments/tsconfig.spec.json"
+          }
+        }
+      }
     }
   },
   "cli": {

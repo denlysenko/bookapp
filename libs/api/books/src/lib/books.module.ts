@@ -1,3 +1,4 @@
+import { CommentsModule } from '@bookapp/api/comments';
 import { FilesModule } from '@bookapp/api/files';
 import { LogsModule } from '@bookapp/api/logs';
 
@@ -13,7 +14,7 @@ import { BookSchema } from './schemas/book';
   imports: [
     MongooseModule.forFeature([{ name: BOOK_MODEL_NAME, schema: BookSchema }]),
     FilesModule,
-    // CommentsModule,
+    CommentsModule,
     LogsModule
   ],
   providers: [BooksService, BooksResolvers],

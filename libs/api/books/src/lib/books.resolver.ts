@@ -1,3 +1,4 @@
+import { CommentsService } from '@bookapp/api/comments';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import {
   ApiQuery,
@@ -27,11 +28,11 @@ import { BooksService } from './books.service';
 import { BookDto } from './dto/book';
 import { BookFilterInput } from './interfaces/book-filter-input';
 
-@Resolver('Book')
+@Resolver()
 export class BooksResolvers {
   constructor(
     private readonly booksService: BooksService,
-    // private readonly commentService: CommentsService,
+    private readonly commentsService: CommentsService,
     @Inject(PUB_SUB) private readonly pubSub: PubSub
   ) {}
 
@@ -67,9 +68,7 @@ export class BooksResolvers {
   @ResolveProperty('comments')
   async getComments(@Parent() book: Book) {
     const { _id } = book;
-    // TODO: add when commentsService will be ready
-    // return this.commentService.getAllForBook(_id);
-    return _id;
+    return this.commentsService.getAllForBook(_id);
   }
 
   @Mutation()
