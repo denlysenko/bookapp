@@ -39,13 +39,7 @@ export class CommentsResolver {
     @Context('req') req: RequestWithUser
   ) {
     const authorId = req.user._id;
-    const comment = await this.commentsService.saveForBook(
-      bookId,
-      authorId,
-      text
-    );
-    this.pubSub.publish('commentAdded', { commentAdded: comment });
-    return comment;
+    return this.commentsService.saveForBook(bookId, authorId, text);
   }
 
   @Subscription()

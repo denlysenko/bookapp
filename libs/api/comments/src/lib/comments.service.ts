@@ -1,9 +1,11 @@
+import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogDto, LogsService } from '@bookapp/api/logs';
 import { UserActions } from '@bookapp/shared/models';
 
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
+import { PubSub } from 'graphql-subscriptions';
 import { Model } from 'mongoose';
 
 import { COMMENT_MODEL_NAME } from './constants';
@@ -14,7 +16,8 @@ export class CommentsService {
   constructor(
     @InjectModel(COMMENT_MODEL_NAME)
     private readonly commentModel: Model<CommentModel>,
-    private readonly logsService: LogsService
+    private readonly logsService: LogsService,
+    @Inject(PUB_SUB) private readonly pubSub: PubSub
   ) {}
 
   getAllForBook(bookId: string) {
@@ -32,6 +35,7 @@ export class CommentsService {
     await this.logsService.create(
       new LogDto(authorId, UserActions.COMMENT_ADDED, bookId)
     );
+    this.pubSub.publish('commentAdded', { commentAdded: newComment });
 
     return newComment;
   }
