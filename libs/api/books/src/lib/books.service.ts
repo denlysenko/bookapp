@@ -1,16 +1,23 @@
 import { ConfigService } from '@bookapp/api/config';
 import { FilesService } from '@bookapp/api/files';
+import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogDto, LogsService } from '@bookapp/api/logs';
 import { ApiQuery } from '@bookapp/api/shared';
 import { ApiResponse, UserActions } from '@bookapp/shared/models';
 
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
+import { PubSub } from 'graphql-subscriptions';
 import { extend } from 'lodash';
 import { Model } from 'mongoose';
 
-import { BOOK_MODEL_NAME } from './constants';
+import { BOOK_MODEL_NAME, BOOK_VALIDATION_ERRORS } from './constants';
 import { BookDto } from './dto/book';
 import { BookModel } from './interfaces/book';
 
@@ -20,7 +27,8 @@ export class BooksService {
     @InjectModel(BOOK_MODEL_NAME) private readonly bookModel: Model<BookModel>,
     private readonly configService: ConfigService,
     private readonly filesService: FilesService,
-    private readonly logsService: LogsService
+    private readonly logsService: LogsService,
+    @Inject(PUB_SUB) private readonly pubSub: PubSub
   ) {}
 
   async findAll(query?: ApiQuery): Promise<ApiResponse<BookModel>> {
@@ -87,6 +95,11 @@ export class BooksService {
     userId: string
   ): Promise<BookModel> {
     const book = await this.bookModel.findById(id).exec();
+
+    if (!book) {
+      throw new NotFoundException(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR);
+    }
+
     const filePromises = [];
     // remove old files from bucket first if new ones are adding
     if (
@@ -135,6 +148,11 @@ export class BooksService {
     userId: string
   ): Promise<BookModel> {
     const book = await this.bookModel.findById(id).exec();
+
+    if (!book) {
+      throw new NotFoundException(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR);
+    }
+
     const total_rates = book.total_rates + 1;
     const total_rating = book.total_rating + newRate;
     const rating = Math.ceil(total_rating / total_rates);
@@ -147,6 +165,7 @@ export class BooksService {
     await this.logsService.create(
       new LogDto(userId, UserActions.BOOK_RATED, book._id)
     );
+    this.pubSub.publish('bookRated', { bookRated: book });
 
     return book;
   }

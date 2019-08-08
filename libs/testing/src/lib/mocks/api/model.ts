@@ -3,6 +3,7 @@ export const MockMongooseModel = {
   find: jest.fn(() => MockMongooseModel),
   findById: jest.fn(() => MockMongooseModel),
   findOne: jest.fn(() => MockMongooseModel),
+  findOneAndUpdate: jest.fn(() => MockMongooseModel),
   skip: jest.fn(() => MockMongooseModel),
   limit: jest.fn(() => MockMongooseModel),
   sort: jest.fn(() => MockMongooseModel),

@@ -96,15 +96,13 @@ export class BooksResolvers {
 
   @Mutation()
   @UseGuards(GqlAuthGuard)
-  async rateBook(
+  rateBook(
     @Args('id') id: string,
     @Args('rate') rate: number,
     @Context('req') req: RequestWithUser
   ) {
     const userId = req.user._id;
-    const bookRate = await this.booksService.rateBook(id, rate, userId);
-    this.pubSub.publish('bookRated', { bookRated: bookRate });
-    return bookRate;
+    return this.booksService.rateBook(id, rate, userId);
   }
 
   @Subscription()
