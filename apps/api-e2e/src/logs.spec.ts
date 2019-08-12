@@ -2,7 +2,8 @@ import { AuthModule, AuthService } from '@bookapp/api/auth';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { LOG_MODEL_NAME, LogsModule, LogsService } from '@bookapp/api/logs';
-import { ROLES, USER_MODEL_NAME } from '@bookapp/api/users';
+import { USER_MODEL_NAME } from '@bookapp/api/users';
+import { ROLES } from '@bookapp/shared/models';
 import {
   log,
   MockConfigService,

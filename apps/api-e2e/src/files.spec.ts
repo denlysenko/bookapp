@@ -12,7 +12,7 @@ import * as jwt from 'jsonwebtoken';
 import { resolve } from 'path';
 import * as request from 'supertest';
 
-const authToken = jwt.sign({ id: user.id }, 'JWT_SECRET');
+const authToken = jwt.sign({ id: user._id }, 'JWT_SECRET');
 const publicUrl = 'public_url';
 const filesPath = resolve(`${__dirname}`, '../test-files');
 

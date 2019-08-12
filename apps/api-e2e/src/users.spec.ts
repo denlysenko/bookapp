@@ -4,12 +4,12 @@ import { AuthModule, AuthService } from '@bookapp/api/auth';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import {
-  ROLES,
   USER_MODEL_NAME,
   USER_VALIDATION_ERRORS,
   UsersModule,
   UsersService
 } from '@bookapp/api/users';
+import { ROLES } from '@bookapp/shared/models';
 import {
   MockConfigService,
   MockModel,

@@ -10,8 +10,8 @@ import {
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { LOG_MODEL_NAME } from '@bookapp/api/logs';
-import { ROLES, USER_MODEL_NAME } from '@bookapp/api/users';
-import { BOOKMARKS } from '@bookapp/shared/models';
+import { USER_MODEL_NAME } from '@bookapp/api/users';
+import { BOOKMARKS, ROLES } from '@bookapp/shared/models';
 import { bookmark, MockConfigService, MockModel, user } from '@bookapp/testing';
 
 import {
