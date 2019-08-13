@@ -10,3 +10,4 @@ export * from './lib/mocks/api/auth.service';
 export * from './lib/mocks/api/users.service';
 export * from './lib/mocks/api/model';
 export * from './lib/mocks/api/logs.service';
+export * from './lib/mocks/api/books.service';
