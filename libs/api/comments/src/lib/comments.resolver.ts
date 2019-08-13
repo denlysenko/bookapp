@@ -17,7 +17,7 @@ import { PubSub } from 'graphql-subscriptions';
 
 import { CommentsService } from './comments.service';
 
-@Resolver()
+@Resolver('Comment')
 export class CommentsResolver {
   constructor(
     private readonly commentsService: CommentsService,

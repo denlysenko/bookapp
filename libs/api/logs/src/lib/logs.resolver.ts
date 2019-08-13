@@ -23,7 +23,7 @@ import { PubSub } from 'graphql-subscriptions';
 
 import { LogsService } from './logs.service';
 
-@Resolver()
+@Resolver('Log')
 export class LogsResolver {
   constructor(
     private readonly logsService: LogsService,

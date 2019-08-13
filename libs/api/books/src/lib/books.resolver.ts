@@ -28,7 +28,7 @@ import { BooksService } from './books.service';
 import { BookDto } from './dto/book';
 import { BookFilterInput } from './interfaces/book-filter-input';
 
-@Resolver()
+@Resolver('Book')
 export class BooksResolvers {
   constructor(
     private readonly booksService: BooksService,
