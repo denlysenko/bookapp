@@ -1,8 +1,8 @@
 import { AuthModule, AuthService } from '@bookapp/api/auth';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
-import { LOG_MODEL_NAME, LogsModule, LogsService } from '@bookapp/api/logs';
-import { USER_MODEL_NAME } from '@bookapp/api/users';
+import { LogsModule, LogsService } from '@bookapp/api/logs';
+import { ModelNames } from '@bookapp/api/shared';
 import { ROLES } from '@bookapp/shared/models';
 import {
   log,
@@ -32,9 +32,9 @@ describe('LogsModule', () => {
     })
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
-      .overrideProvider(getModelToken(LOG_MODEL_NAME))
+      .overrideProvider(getModelToken(ModelNames.LOG))
       .useValue(MockModel)
-      .overrideProvider(getModelToken(USER_MODEL_NAME))
+      .overrideProvider(getModelToken(ModelNames.USER))
       .useValue(MockModel)
       .overrideProvider(LogsService)
       .useValue(MockLogsService)

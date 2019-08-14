@@ -1,6 +1,6 @@
 import { ConfigService } from '@bookapp/api/config';
 import { PUB_SUB } from '@bookapp/api/graphql';
-import { ApiQuery } from '@bookapp/api/shared';
+import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import {
   log,
   MockConfigService,
@@ -13,7 +13,6 @@ import { Test } from '@nestjs/testing';
 
 import { PubSub } from 'graphql-subscriptions';
 
-import { LOG_MODEL_NAME } from './constants';
 import { LogsService } from './logs.service';
 
 describe('LogsService', () => {
@@ -31,7 +30,7 @@ describe('LogsService', () => {
           useValue: MockConfigService
         },
         {
-          provide: getModelToken(LOG_MODEL_NAME),
+          provide: getModelToken(ModelNames.LOG),
           useValue: MockModel
         },
         {
@@ -45,7 +44,7 @@ describe('LogsService', () => {
 
     logsService = module.get<LogsService>(LogsService);
     configService = module.get<ConfigService>(ConfigService);
-    logModel = module.get(getModelToken(LOG_MODEL_NAME));
+    logModel = module.get(getModelToken(ModelNames.LOG));
     pubSub = module.get<PubSub>(PUB_SUB);
 
     jest

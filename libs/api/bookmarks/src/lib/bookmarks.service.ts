@@ -1,6 +1,6 @@
 import { ConfigService } from '@bookapp/api/config';
 import { LogDto, LogsService } from '@bookapp/api/logs';
-import { ApiQuery } from '@bookapp/api/shared';
+import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { ApiResponse, BOOKMARKS, UserActions } from '@bookapp/shared/models';
 
 import {
@@ -12,13 +12,13 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
 
-import { BOOKMARK_ERRORS, BOOKMARK_MODEL_NAME } from './constants';
+import { BOOKMARK_ERRORS } from './constants';
 import { BookmarkModel } from './interfaces/bookmark';
 
 @Injectable()
 export class BookmarksService {
   constructor(
-    @InjectModel(BOOKMARK_MODEL_NAME)
+    @InjectModel(ModelNames.BOOKMARK)
     private readonly bookmarkModel: Model<BookmarkModel>,
     private readonly configService: ConfigService,
     private readonly logsService: LogsService

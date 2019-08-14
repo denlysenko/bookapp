@@ -3,14 +3,12 @@
 import { AuthModule, AuthService } from '@bookapp/api/auth';
 import {
   BOOKMARK_ERRORS,
-  BOOKMARK_MODEL_NAME,
   BookmarksModule,
   BookmarksService
 } from '@bookapp/api/bookmarks';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
-import { LOG_MODEL_NAME } from '@bookapp/api/logs';
-import { USER_MODEL_NAME } from '@bookapp/api/users';
+import { ModelNames } from '@bookapp/api/shared';
 import { BOOKMARKS, ROLES } from '@bookapp/shared/models';
 import { bookmark, MockConfigService, MockModel, user } from '@bookapp/testing';
 
@@ -46,11 +44,11 @@ describe('BookmarksModule', () => {
     })
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
-      .overrideProvider(getModelToken(BOOKMARK_MODEL_NAME))
+      .overrideProvider(getModelToken(ModelNames.BOOKMARK))
       .useValue(MockModel)
-      .overrideProvider(getModelToken(USER_MODEL_NAME))
+      .overrideProvider(getModelToken(ModelNames.USER))
       .useValue(MockModel)
-      .overrideProvider(getModelToken(LOG_MODEL_NAME))
+      .overrideProvider(getModelToken(ModelNames.LOG))
       .useValue(MockModel)
       .overrideProvider(BookmarksService)
       .useValue(MockBookmarksService)

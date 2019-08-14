@@ -1,6 +1,7 @@
 import { ConfigService } from '@bookapp/api/config';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogsService } from '@bookapp/api/logs';
+import { ModelNames } from '@bookapp/api/shared';
 import { UserActions } from '@bookapp/shared/models';
 import {
   MockConfigService,
@@ -15,7 +16,6 @@ import { Test } from '@nestjs/testing';
 import { PubSub } from 'graphql-subscriptions';
 
 import { CommentsService } from './comments.service';
-import { COMMENT_MODEL_NAME } from './constants';
 
 const bookId = 'book_id';
 const userId = 'user_id';
@@ -37,7 +37,7 @@ describe('CommentsService', () => {
           useValue: MockConfigService
         },
         {
-          provide: getModelToken(COMMENT_MODEL_NAME),
+          provide: getModelToken(ModelNames.COMMENT),
           useValue: MockModel
         },
         {
@@ -56,7 +56,7 @@ describe('CommentsService', () => {
     commentsService = module.get<CommentsService>(CommentsService);
     logsService = module.get<LogsService>(LogsService);
     configService = module.get<ConfigService>(ConfigService);
-    commentModel = module.get(getModelToken(COMMENT_MODEL_NAME));
+    commentModel = module.get(getModelToken(ModelNames.COMMENT));
     pubSub = module.get<PubSub>(PUB_SUB);
 
     jest

@@ -3,8 +3,8 @@
 import { AuthModule, AuthService } from '@bookapp/api/auth';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
+import { ModelNames } from '@bookapp/api/shared';
 import {
-  USER_MODEL_NAME,
   USER_VALIDATION_ERRORS,
   UsersModule,
   UsersService
@@ -50,7 +50,7 @@ describe('UsersModule', () => {
     })
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
-      .overrideProvider(getModelToken(USER_MODEL_NAME))
+      .overrideProvider(getModelToken(ModelNames.USER))
       .useValue(MockModel)
       .overrideProvider(UsersService)
       .useValue(MockUsersService)

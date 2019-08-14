@@ -2,7 +2,7 @@ import { ConfigService } from '@bookapp/api/config';
 import { FilesService } from '@bookapp/api/files';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogDto, LogsService } from '@bookapp/api/logs';
-import { ApiQuery } from '@bookapp/api/shared';
+import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { ApiResponse, UserActions } from '@bookapp/shared/models';
 
 import {
@@ -17,14 +17,14 @@ import { PubSub } from 'graphql-subscriptions';
 import { extend } from 'lodash';
 import { Model } from 'mongoose';
 
-import { BOOK_MODEL_NAME, BOOK_VALIDATION_ERRORS } from './constants';
+import { BOOK_VALIDATION_ERRORS } from './constants';
 import { BookDto } from './dto/book';
 import { BookModel } from './interfaces/book';
 
 @Injectable()
 export class BooksService {
   constructor(
-    @InjectModel(BOOK_MODEL_NAME) private readonly bookModel: Model<BookModel>,
+    @InjectModel(ModelNames.BOOK) private readonly bookModel: Model<BookModel>,
     private readonly configService: ConfigService,
     private readonly filesService: FilesService,
     private readonly logsService: LogsService,
@@ -56,10 +56,6 @@ export class BooksService {
 
   findById(id: string): Promise<BookModel> {
     return this.bookModel.findById(id).exec();
-  }
-
-  findByIds(ids: string[]): Promise<BookModel[]> {
-    return this.bookModel.find({ _id: { $in: ids } }).exec();
   }
 
   async findBestBooks(query?: ApiQuery): Promise<ApiResponse<BookModel>> {

@@ -1,6 +1,6 @@
 import { ConfigService } from '@bookapp/api/config';
 import { FilesService } from '@bookapp/api/files';
-import { ApiQuery } from '@bookapp/api/shared';
+import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { ApiResponse } from '@bookapp/shared/models';
 
 import {
@@ -14,7 +14,7 @@ import { randomBytes } from 'crypto';
 import { extend } from 'lodash';
 import { Model } from 'mongoose';
 
-import { USER_MODEL_NAME, USER_VALIDATION_ERRORS } from './constants';
+import { USER_VALIDATION_ERRORS } from './constants';
 import { UserDto } from './dto/user';
 import { UserModel } from './interfaces/user';
 
@@ -23,7 +23,7 @@ export const EXCLUDED_FIELDS = '-salt -password';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(USER_MODEL_NAME) private readonly userModel: Model<UserModel>,
+    @InjectModel(ModelNames.USER) private readonly userModel: Model<UserModel>,
     private readonly configService: ConfigService,
     private readonly filesService: FilesService
   ) {}
@@ -47,10 +47,6 @@ export class UsersService {
 
   findById(id: string): Promise<UserModel> {
     return this.userModel.findById(id, EXCLUDED_FIELDS).exec();
-  }
-
-  findByIds(ids: string[]): Promise<UserModel[]> {
-    return this.userModel.find({ _id: { $in: ids } }, EXCLUDED_FIELDS).exec();
   }
 
   findByEmail(email: string): Promise<UserModel> {

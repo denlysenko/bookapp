@@ -1,3 +1,4 @@
+import { ModelNames } from '@bookapp/api/shared';
 import { Book } from '@bookapp/shared/models';
 
 import * as DataLoader from 'dataloader';
@@ -9,8 +10,7 @@ export class BooksDataLoader implements IDataLoader<string, Book> {
   constructor(private readonly dataLoader: DataLoader<string, Book>) {}
 
   static async create(connection: Connection) {
-    // TODO: move all model names to shared
-    const bookModel = connection.model('Book');
+    const bookModel = connection.model(ModelNames.USER);
 
     const dataloader = new DataLoader(
       async (bookIds: string[]) => {

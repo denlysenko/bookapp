@@ -1,18 +1,18 @@
 import { DataLoadersModule } from '@bookapp/api/dataloaders';
 import { LogsModule } from '@bookapp/api/logs';
+import { ModelNames } from '@bookapp/api/shared';
 
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { CommentsResolver } from './comments.resolver';
 import { CommentsService } from './comments.service';
-import { COMMENT_MODEL_NAME } from './constants';
 import { CommentSchema } from './schemas/comment';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: COMMENT_MODEL_NAME, schema: CommentSchema }
+      { name: ModelNames.COMMENT, schema: CommentSchema }
     ]),
     LogsModule,
     DataLoadersModule

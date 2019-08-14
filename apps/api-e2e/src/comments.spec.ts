@@ -1,13 +1,8 @@
 import { AuthModule, AuthService } from '@bookapp/api/auth';
-import {
-  COMMENT_MODEL_NAME,
-  CommentsModule,
-  CommentsService
-} from '@bookapp/api/comments';
+import { CommentsModule, CommentsService } from '@bookapp/api/comments';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
-import { LOG_MODEL_NAME } from '@bookapp/api/logs';
-import { USER_MODEL_NAME } from '@bookapp/api/users';
+import { ModelNames } from '@bookapp/api/shared';
 import { ROLES } from '@bookapp/shared/models';
 import { comment, MockConfigService, MockModel, user } from '@bookapp/testing';
 
@@ -33,11 +28,11 @@ describe('CommentsModule', () => {
     const module = await Test.createTestingModule({
       imports: [ConfigModule, AuthModule, GraphqlModule, CommentsModule]
     })
-      .overrideProvider(getModelToken(COMMENT_MODEL_NAME))
+      .overrideProvider(getModelToken(ModelNames.COMMENT))
       .useValue(MockModel)
-      .overrideProvider(getModelToken(USER_MODEL_NAME))
+      .overrideProvider(getModelToken(ModelNames.USER))
       .useValue(MockModel)
-      .overrideProvider(getModelToken(LOG_MODEL_NAME))
+      .overrideProvider(getModelToken(ModelNames.LOG))
       .useValue(MockModel)
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)

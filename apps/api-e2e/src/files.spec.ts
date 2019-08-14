@@ -1,7 +1,7 @@
 import { AuthModule, AuthService } from '@bookapp/api/auth';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { FILE_ERRORS, FilesModule, FilesService } from '@bookapp/api/files';
-import { USER_MODEL_NAME } from '@bookapp/api/users';
+import { ModelNames } from '@bookapp/api/shared';
 import { MockConfigService, MockModel, user } from '@bookapp/testing';
 
 import { HttpStatus, INestApplication } from '@nestjs/common';
@@ -34,7 +34,7 @@ describe('FilesModule', () => {
     })
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
-      .overrideProvider(getModelToken(USER_MODEL_NAME))
+      .overrideProvider(getModelToken(ModelNames.USER))
       .useValue(MockModel)
       .overrideProvider(FilesService)
       .useValue(MockFilesService)

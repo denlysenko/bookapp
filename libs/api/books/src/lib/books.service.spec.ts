@@ -5,7 +5,7 @@ import { ConfigService } from '@bookapp/api/config';
 import { FilesService } from '@bookapp/api/files';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogsService } from '@bookapp/api/logs';
-import { ApiQuery } from '@bookapp/api/shared';
+import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import {
   book,
   MockConfigService,
@@ -20,7 +20,7 @@ import { Test } from '@nestjs/testing';
 import { PubSub } from 'graphql-subscriptions';
 
 import { BooksService } from './books.service';
-import { BOOK_MODEL_NAME, BOOK_VALIDATION_ERRORS } from './constants';
+import { BOOK_VALIDATION_ERRORS } from './constants';
 
 const userId = 'user_id';
 
@@ -41,7 +41,7 @@ describe('BooksService', () => {
           useValue: MockConfigService
         },
         {
-          provide: getModelToken(BOOK_MODEL_NAME),
+          provide: getModelToken(ModelNames.BOOK),
           useValue: MockModel
         },
         {
@@ -65,7 +65,7 @@ describe('BooksService', () => {
 
     booksService = module.get<BooksService>(BooksService);
     configService = module.get<ConfigService>(ConfigService);
-    bookModel = module.get(getModelToken(BOOK_MODEL_NAME));
+    bookModel = module.get(getModelToken(ModelNames.BOOK));
     logsService = module.get<LogsService>(LogsService);
     filesService = module.get<FilesService>(FilesService);
     pubSub = module.get<PubSub>(PUB_SUB);
@@ -152,14 +152,6 @@ describe('BooksService', () => {
       const id = 'book_id';
       await booksService.findById(id);
       expect(bookModel.findById).toHaveBeenCalledWith(id);
-    });
-  });
-
-  describe('findByIds()', () => {
-    it('should find books by ids', async () => {
-      const ids = ['book_1', 'book_2'];
-      await booksService.findByIds(ids);
-      expect(bookModel.find).toHaveBeenCalledWith({ _id: { $in: ids } });
     });
   });
 

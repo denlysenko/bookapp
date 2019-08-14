@@ -1,8 +1,7 @@
 // tslint:disable: no-big-function
-
 import { ConfigService } from '@bookapp/api/config';
 import { LogsService } from '@bookapp/api/logs';
-import { ApiQuery } from '@bookapp/api/shared';
+import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { BOOKMARKS, UserActions } from '@bookapp/shared/models';
 import {
   MockConfigService,
@@ -17,7 +16,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
 import { BookmarksService } from './bookmarks.service';
-import { BOOKMARK_ERRORS, BOOKMARK_MODEL_NAME } from './constants';
+import { BOOKMARK_ERRORS } from './constants';
 
 const bookId = 'book_id';
 
@@ -36,7 +35,7 @@ describe('BookmarksService', () => {
           useValue: MockConfigService
         },
         {
-          provide: getModelToken(BOOKMARK_MODEL_NAME),
+          provide: getModelToken(ModelNames.BOOKMARK),
           useValue: MockModel
         },
         {
@@ -48,7 +47,7 @@ describe('BookmarksService', () => {
 
     bookmarksService = module.get<BookmarksService>(BookmarksService);
     configService = module.get<ConfigService>(ConfigService);
-    bookmarkModel = module.get(getModelToken(BOOKMARK_MODEL_NAME));
+    bookmarkModel = module.get(getModelToken(ModelNames.BOOKMARK));
     logsService = module.get<LogsService>(LogsService);
 
     jest

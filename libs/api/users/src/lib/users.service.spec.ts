@@ -3,7 +3,7 @@
 // tslint:disable: no-identical-functions
 import { ConfigService } from '@bookapp/api/config';
 import { FilesService } from '@bookapp/api/files';
-import { ApiQuery } from '@bookapp/api/shared';
+import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
 import {
   MockConfigService,
@@ -17,7 +17,7 @@ import { Test } from '@nestjs/testing';
 
 import * as crypto from 'crypto';
 
-import { USER_MODEL_NAME, USER_VALIDATION_ERRORS } from './constants';
+import { USER_VALIDATION_ERRORS } from './constants';
 import { EXCLUDED_FIELDS } from './users.service';
 
 describe('UsersService', () => {
@@ -35,7 +35,7 @@ describe('UsersService', () => {
           useValue: MockConfigService
         },
         {
-          provide: getModelToken(USER_MODEL_NAME),
+          provide: getModelToken(ModelNames.USER),
           useValue: MockModel
         },
         {
@@ -52,7 +52,7 @@ describe('UsersService', () => {
     usersService = module.get<UsersService>(UsersService);
     configService = module.get<ConfigService>(ConfigService);
     filesService = module.get<FilesService>(FilesService);
-    userModel = module.get(getModelToken(USER_MODEL_NAME));
+    userModel = module.get(getModelToken(ModelNames.USER));
 
     jest
       .spyOn(userModel, 'exec')
@@ -131,17 +131,6 @@ describe('UsersService', () => {
       const id = 'userId';
       await usersService.findById(id);
       expect(userModel.findById).toHaveBeenCalledWith(id, EXCLUDED_FIELDS);
-    });
-  });
-
-  describe('findByIds()', () => {
-    it('should find users by ids', async () => {
-      const ids = ['user1', 'user2', 'user3'];
-      await usersService.findByIds(ids);
-      expect(userModel.find).toHaveBeenCalledWith(
-        { _id: { $in: ids } },
-        EXCLUDED_FIELDS
-      );
     });
   });
 
