@@ -1,3 +1,4 @@
+import { DataLoadersModule } from '@bookapp/api/dataloaders';
 import { LogsModule } from '@bookapp/api/logs';
 
 import { Module } from '@nestjs/common';
@@ -13,7 +14,8 @@ import { BookmarkSchema } from './schemas/bookmark';
     MongooseModule.forFeature([
       { name: BOOKMARK_MODEL_NAME, schema: BookmarkSchema }
     ]),
-    LogsModule
+    LogsModule,
+    DataLoadersModule
   ],
   providers: [BookmarksService, BookmarksResolver]
 })

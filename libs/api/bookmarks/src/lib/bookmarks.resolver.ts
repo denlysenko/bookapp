@@ -1,3 +1,4 @@
+import { BooksDataLoader } from '@bookapp/api/dataloaders';
 import { ApiQuery, GqlAuthGuard, RequestWithUser } from '@bookapp/api/shared';
 import { Bookmark } from '@bookapp/shared/models';
 
@@ -16,13 +17,15 @@ import { BookmarksService } from './bookmarks.service';
 
 @Resolver()
 export class BookmarksResolver {
-  constructor(private readonly bookmarksService: BookmarksService) {}
+  constructor(
+    private readonly bookmarksService: BookmarksService,
+    private readonly booksDataLoader: BooksDataLoader
+  ) {}
 
-  // TODO: use DataLoader later
   @ResolveProperty('book')
   async getBook(@Parent() bookmark: Bookmark) {
     const { bookId } = bookmark;
-    return bookId;
+    return this.booksDataLoader.load(bookId);
   }
 
   @Query('bookmarks')

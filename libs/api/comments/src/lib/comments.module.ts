@@ -1,3 +1,4 @@
+import { DataLoadersModule } from '@bookapp/api/dataloaders';
 import { LogsModule } from '@bookapp/api/logs';
 
 import { Module } from '@nestjs/common';
@@ -13,7 +14,8 @@ import { CommentSchema } from './schemas/comment';
     MongooseModule.forFeature([
       { name: COMMENT_MODEL_NAME, schema: CommentSchema }
     ]),
-    LogsModule
+    LogsModule,
+    DataLoadersModule
   ],
   providers: [CommentsService, CommentsResolver],
   exports: [CommentsService]

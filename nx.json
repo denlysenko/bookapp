@@ -67,6 +67,9 @@
     },
     "api-comments": {
       "tags": ["scope:api", "type:feature", "platform:server"]
+    },
+    "api-dataloaders": {
+      "tags": ["scope:api.type:feature", "platform:server"]
     }
   }
 }

@@ -1,3 +1,5 @@
+import { DataLoadersModule } from '@bookapp/api/dataloaders';
+
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -8,7 +10,8 @@ import { LogSchema } from './schemas/log';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: LOG_MODEL_NAME, schema: LogSchema }])
+    MongooseModule.forFeature([{ name: LOG_MODEL_NAME, schema: LogSchema }]),
+    DataLoadersModule
   ],
   providers: [LogsService, LogsResolver],
   exports: [LogsService]

@@ -1,3 +1,4 @@
+import { BooksDataLoader } from '@bookapp/api/dataloaders';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import {
   ApiQuery,
@@ -27,6 +28,7 @@ import { LogsService } from './logs.service';
 export class LogsResolver {
   constructor(
     private readonly logsService: LogsService,
+    private readonly booksDataLoader: BooksDataLoader,
     @Inject(PUB_SUB) private readonly pubSub: PubSub
   ) {}
 
@@ -51,10 +53,9 @@ export class LogsResolver {
     return this.pubSub.asyncIterator('logCreated');
   }
 
-  // TODO: use DataLoader later
   @ResolveProperty('book')
   getBook(@Parent() log: Log) {
     const { bookId } = log;
-    return bookId;
+    return this.booksDataLoader.load(bookId);
   }
 }

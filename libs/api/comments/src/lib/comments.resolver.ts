@@ -1,3 +1,4 @@
+import { UsersDataLoader } from '@bookapp/api/dataloaders';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { GqlAuthGuard, RequestWithUser } from '@bookapp/api/shared';
 import { Comment } from '@bookapp/shared/models';
@@ -21,14 +22,14 @@ import { CommentsService } from './comments.service';
 export class CommentsResolver {
   constructor(
     private readonly commentsService: CommentsService,
+    private readonly usersDataLoader: UsersDataLoader,
     @Inject(PUB_SUB) private readonly pubSub: PubSub
   ) {}
 
   @ResolveProperty('author')
   async getAuthor(@Parent() comment: Comment) {
     const { authorId } = comment;
-    // TODO: use Dataloader
-    return authorId;
+    return this.usersDataLoader.load(authorId);
   }
 
   @Mutation()
