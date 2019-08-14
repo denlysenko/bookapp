@@ -11,3 +11,5 @@ export * from './lib/mocks/api/users.service';
 export * from './lib/mocks/api/model';
 export * from './lib/mocks/api/logs.service';
 export * from './lib/mocks/api/books.service';
+export * from './lib/mocks/api/users.dataloader';
+export * from './lib/mocks/api/books.dataloader';
