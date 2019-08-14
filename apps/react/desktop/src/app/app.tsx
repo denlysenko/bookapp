@@ -1,8 +1,7 @@
 import React from 'react';
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
 import './app.scss';
-
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 export const App = () => {
   return (
@@ -41,7 +40,8 @@ export const App = () => {
         </ul>
         <Route
           path="/"
-          exact
+          exact={true}
+          // tslint:disable-next-line: jsx-no-lambda
           render={() => <div>This is the root route.</div>}
         />
       </div>

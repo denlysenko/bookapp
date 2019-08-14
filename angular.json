@@ -276,10 +276,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/api/graphql/tsconfig.lib.json",
-              "libs/api/graphql/tsconfig.spec.json"
-            ],
+            "tsConfig": ["libs/api/graphql/tsconfig.lib.json"],
             "exclude": ["**/node_modules/**", "!libs/api/graphql/**"]
           }
         }
