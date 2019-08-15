@@ -73,6 +73,9 @@
     },
     "angular-mobile": {
       "tags": []
+    },
+    "shared-queries": {
+      "tags": ["scope:shared", "type:data-access"]
     }
   }
 }
