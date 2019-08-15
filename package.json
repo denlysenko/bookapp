@@ -84,6 +84,7 @@
     "@nrwl/react": "8.4.8",
     "@nrwl/web": "8.4.8",
     "@nrwl/workspace": "8.4.8",
+    "@nstudio/xplat": "^8.0.5",
     "@testing-library/react": "^9.1.1",
     "@types/jest": "24.0.17",
     "@types/mongoose": "^5.5.12",
