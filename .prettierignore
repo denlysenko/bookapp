@@ -1,3 +1,16 @@
 # Add files here to ignore them from prettier formatting
 
 **/xplat/*/.xplatframework
+
+
+# xplat added rules
+**/*.d.ts
+**/apps/**/platforms/**/*
+**/App_Resources/**/*
+**/apps/nativescript*/hooks/**/*
+**/apps/nativescript*/tools/**/*
+**/apps/nativescript*/src/assets/*.min.css
+**/apps/*nativescript/hooks/**/*
+**/apps/*nativescript/tools/**/*
+**/apps/*nativescript/src/assets/*.min.css
+**/xplat/nativescript*/plugins/**/*

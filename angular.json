@@ -604,6 +604,45 @@
           }
         }
       }
+    },
+    "angular-mobile": {
+      "root": "apps/angular/mobile/",
+      "sourceRoot": "apps/angular/mobile/src",
+      "projectType": "application",
+      "prefix": "bookapp",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "architect": {
+        "serve": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "npm run start.nativescript.mobile.preview"
+              }
+            ]
+          },
+          "configurations": {
+            "ios": {
+              "commands": [
+                {
+                  "command": "npm run start.nativescript.mobile.ios"
+                }
+              ]
+            },
+            "android": {
+              "commands": [
+                {
+                  "command": "npm run start.nativescript.mobile.android"
+                }
+              ]
+            }
+          }
+        }
+      }
     }
   },
   "cli": {
@@ -611,7 +650,7 @@
       "typescriptMismatch": false,
       "versionMismatch": false
     },
-    "defaultCollection": "@nrwl/nest"
+    "defaultCollection": "@nrwl/workspace"
   },
   "schematics": {
     "@nrwl/angular:application": {
@@ -622,5 +661,5 @@
       "unitTestRunner": "jest"
     }
   },
-  "defaultProject": "ng-desktop"
+  "defaultProject": "angular-desktop"
 }

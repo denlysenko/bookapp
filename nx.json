@@ -70,6 +70,9 @@
     },
     "api-dataloaders": {
       "tags": ["scope:api.type:feature", "platform:server"]
+    },
+    "angular-mobile": {
+      "tags": []
     }
   }
 }

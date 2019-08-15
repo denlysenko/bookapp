@@ -1,0 +1,35 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+  <shortcut
+      android:shortcutId="reading"
+      android:enabled="true"
+      android:icon="@drawable/book"
+      android:shortcutShortLabel="@string/shortcut_reading">
+    <intent
+        android:action="shortcut.type.reading"
+        android:targetPackage="org.nativescript.bookapp"
+        android:targetClass="com.tns.NativeScriptActivity"/>
+    <categories android:name="android.shortcut.conversation"/>
+  </shortcut>
+  <shortcut
+      android:shortcutId="browse"
+      android:enabled="true"
+      android:icon="@drawable/language"
+      android:shortcutShortLabel="@string/shortcut_browse">
+    <intent
+        android:action="shortcut.type.browse"
+        android:targetPackage="org.nativescript.bookapp"
+        android:targetClass="com.tns.NativeScriptActivity"/>
+    <categories android:name="android.shortcut.conversation"/>
+  </shortcut>
+  <shortcut
+      android:shortcutId="buy"
+      android:enabled="true"
+      android:icon="@drawable/shopping_cart"
+      android:shortcutShortLabel="@string/shortcut_buy">
+    <intent
+        android:action="shortcut.type.buy"
+        android:targetPackage="org.nativescript.bookapp"
+        android:targetClass="com.tns.NativeScriptActivity"/>
+    <categories android:name="android.shortcut.conversation"/>
+  </shortcut>
+</shortcuts>

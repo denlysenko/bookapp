@@ -24,7 +24,12 @@
     "update:check": "ng update",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "clean": "npx rimraf -- hooks node_modules package-lock.json && npm i",
+    "start.nativescript.mobile.ios": "cd apps/angular/mobile && tns run ios --emulator",
+    "start.nativescript.mobile.android": "cd apps/angular/mobile && tns run android --emulator",
+    "start.nativescript.mobile.preview": "cd apps/angular/mobile && tns preview",
+    "clean.nativescript.mobile": "cd apps/angular/mobile && npx rimraf -- hooks node_modules platforms package-lock.json && npm i && npx rimraf -- package-lock.json"
   },
   "private": true,
   "dependencies": {
@@ -60,6 +65,9 @@
     "graphql-tools": "^4.0.5",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.6.9",
+    "nativescript-angular": "~8.0.0",
+    "nativescript-ngx-fonticon": "^4.2.0",
+    "nativescript-theme-core": "^2.0.5",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "react": "16.9.0",
@@ -67,6 +75,7 @@
     "react-router-dom": "5.0.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.5.2",
+    "tns-core-modules": "^6.0.6",
     "uuidv4": "^4.0.0",
     "zone.js": "^0.10.2"
   },
@@ -77,6 +86,7 @@
     "@angular/language-service": "^8.2.2",
     "@nestjs/schematics": "^6.4.3",
     "@nestjs/testing": "^6.5.3",
+    "@nrwl/angular": "^8.4.8",
     "@nrwl/cypress": "8.4.8",
     "@nrwl/jest": "8.4.8",
     "@nrwl/nest": "8.4.8",
@@ -84,6 +94,9 @@
     "@nrwl/react": "8.4.8",
     "@nrwl/web": "8.4.8",
     "@nrwl/workspace": "8.4.8",
+    "@nstudio/angular": "8.0.5",
+    "@nstudio/nativescript": "8.0.5",
+    "@nstudio/nativescript-angular": "8.0.5",
     "@nstudio/xplat": "^8.0.5",
     "@testing-library/react": "^9.1.1",
     "@types/jest": "24.0.17",
@@ -97,6 +110,7 @@
     "cypress": "^3.4.1",
     "jest": "24.8.0",
     "jest-preset-angular": "^7.1.1",
+    "node-sass": "^4.12.0",
     "prettier": "1.18.2",
     "rxjs-tslint-rules": "^4.24.3",
     "supertest": "^4.0.2",
@@ -107,6 +121,10 @@
     "tslint-plugin-prettier": "^2.0.1",
     "tslint-react": "^4.0.0",
     "tslint-sonarts": "^1.9.0",
-    "typescript": "~3.5.3"
+    "typescript": "~3.4.5"
+  },
+  "xplat": {
+    "prefix": "bookapp",
+    "framework": "angular"
   }
 }
