@@ -658,6 +658,22 @@
           }
         }
       }
+    },
+    "angular-shared-core": {
+      "projectType": "library",
+      "root": "libs/angular/shared/core",
+      "sourceRoot": "libs/angular/shared/core/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/angular/shared/core/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/shared/core/**"]
+          }
+        }
+      },
+      "schematics": {}
     }
   },
   "cli": {

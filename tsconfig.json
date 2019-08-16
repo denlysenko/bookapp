@@ -31,7 +31,8 @@
       "@bookapp/api/books": ["libs/api/books/src/index.ts"],
       "@bookapp/api/comments": ["libs/api/comments/src/index.ts"],
       "@bookapp/api/dataloaders": ["libs/api/dataloaders/src/index.ts"],
-      "@bookapp/shared/queries": ["libs/shared/queries/src/index.ts"]
+      "@bookapp/shared/queries": ["libs/shared/queries/src/index.ts"],
+      "@bookapp/angular/shared/core": ["libs/angular/shared/core/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

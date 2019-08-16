@@ -76,6 +76,9 @@
     },
     "shared-queries": {
       "tags": ["scope:shared", "type:data-access"]
+    },
+    "angular-shared-core": {
+      "tags": ["scope:shared"]
     }
   }
 }
