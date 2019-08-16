@@ -79,6 +79,9 @@
     },
     "angular-shared-core": {
       "tags": ["scope:shared"]
+    },
+    "angular-shared-graphql": {
+      "tags": ["scope:shared"]
     }
   }
 }

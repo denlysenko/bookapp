@@ -674,6 +674,22 @@
         }
       },
       "schematics": {}
+    },
+    "angular-shared-graphql": {
+      "projectType": "library",
+      "root": "libs/angular/shared/graphql",
+      "sourceRoot": "libs/angular/shared/graphql/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/angular/shared/graphql/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/shared/graphql/**"]
+          }
+        }
+      },
+      "schematics": {}
     }
   },
   "cli": {
