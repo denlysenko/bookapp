@@ -1,9 +1,10 @@
 import { HttpHeaders } from '@angular/common/http';
-import { InjectionToken } from '@angular/core';
 
 import {
-  Environment,
+  AUTH_TOKEN,
+  EnvConfig,
   FeedbackPlatformService,
+  HTTP_STATUS,
   StoragePlatformService
 } from '@bookapp/angular/shared/core';
 
@@ -14,12 +15,6 @@ import { onError } from 'apollo-link-error';
 import { RetryLink } from 'apollo-link-retry';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
-
-import { HTTP_STATUS } from './constants';
-
-export const WebSocketImpl = new InjectionToken('WebSocketImpl');
-// TODO: move to appropriate module later
-export const AUTH_TOKEN = 'ba_auth_token';
 
 interface Definition {
   kind: string;
@@ -43,7 +38,7 @@ export function createApolloFactory(
   storageService: StoragePlatformService,
   webSocketImpl: any,
   feedbackService: FeedbackPlatformService,
-  environment: Environment
+  environment: EnvConfig
 ) {
   const http = httpLink.create({
     uri: environment.endpointUrl

@@ -1,9 +1,15 @@
+import { EnvConfig } from '@bookapp/angular/shared/core';
+
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
-  production: false
+export const environment: EnvConfig = {
+  production: false,
+  endpointUrl: 'https://bookapp-api.herokuapp.com/graphql',
+  subscriptionsEndpoint: 'wss://bookapp-api.herokuapp.com/graphql',
+  uploadUrl:
+    'https://api-bookapp-api.7e14.starter-us-west-2.openshiftapps.com/api/files'
 };
 
 /*

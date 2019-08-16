@@ -1,4 +1,4 @@
-export interface Environment {
+export interface EnvConfig {
   production: boolean;
   endpointUrl: string;
   subscriptionsEndpoint: string;
