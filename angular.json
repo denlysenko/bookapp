@@ -687,6 +687,33 @@
         }
       },
       "schematics": {}
+    },
+    "angular-data-access": {
+      "projectType": "library",
+      "root": "libs/angular/data-access",
+      "sourceRoot": "libs/angular/data-access/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/angular/data-access/tsconfig.lib.json",
+              "libs/angular/data-access/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/angular/data-access/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/angular/data-access/jest.config.js",
+            "tsConfig": "libs/angular/data-access/tsconfig.spec.json",
+            "setupFile": "libs/angular/data-access/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
     }
   },
   "cli": {

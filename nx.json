@@ -82,6 +82,9 @@
     },
     "angular-graphql": {
       "tags": ["scope:angular"]
+    },
+    "angular-data-access": {
+      "tags": ["scope:angular", "type:data-access"]
     }
   }
 }
