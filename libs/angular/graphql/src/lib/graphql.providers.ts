@@ -59,7 +59,7 @@ export function createApolloFactory(
     operation.setContext({
       headers: new HttpHeaders().set(
         'Authorization',
-        `Bearer ${localStorage.getItem(AUTH_TOKEN)}` || null
+        `Bearer ${storageService.getItem(AUTH_TOKEN)}` || null
       )
     });
 

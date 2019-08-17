@@ -318,6 +318,12 @@ module.exports = env => {
         {
           test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
           parser: { system: true }
+        },
+        // https://github.com/graphql/graphql-js/issues/1272#issuecomment-393903706
+        {
+          test: /\.mjs$/,
+          include: /node_modules/,
+          type: 'javascript/auto'
         }
       ]
     },
