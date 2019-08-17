@@ -13,3 +13,5 @@ export * from './lib/mocks/api/logs.service';
 export * from './lib/mocks/api/books.service';
 export * from './lib/mocks/api/users.dataloader';
 export * from './lib/mocks/api/books.dataloader';
+
+export * from './lib/mocks/angular/storage-platform.service';
