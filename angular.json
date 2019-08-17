@@ -476,10 +476,7 @@
           "builder": "@nrwl/linter:lint",
           "options": {
             "linter": "tslint",
-            "tsConfig": [
-              "libs/api/files/tsconfig.lib.json",
-              "libs/api/files/tsconfig.spec.json"
-            ],
+            "tsConfig": ["libs/api/files/tsconfig.lib.json"],
             "exclude": ["**/node_modules/**", "!libs/api/files/**"]
           }
         }
@@ -659,33 +656,33 @@
         }
       }
     },
-    "angular-shared-core": {
+    "angular-core": {
       "projectType": "library",
-      "root": "libs/angular/shared/core",
-      "sourceRoot": "libs/angular/shared/core/src",
+      "root": "libs/angular/core",
+      "sourceRoot": "libs/angular/core/src",
       "prefix": "bookapp",
       "architect": {
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["libs/angular/shared/core/tsconfig.lib.json"],
-            "exclude": ["**/node_modules/**", "!libs/angular/shared/core/**"]
+            "tsConfig": ["libs/angular/core/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/core/**"]
           }
         }
       },
       "schematics": {}
     },
-    "angular-shared-graphql": {
+    "angular-graphql": {
       "projectType": "library",
-      "root": "libs/angular/shared/graphql",
-      "sourceRoot": "libs/angular/shared/graphql/src",
+      "root": "libs/angular/graphql",
+      "sourceRoot": "libs/angular/graphql/src",
       "prefix": "bookapp",
       "architect": {
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["libs/angular/shared/graphql/tsconfig.lib.json"],
-            "exclude": ["**/node_modules/**", "!libs/angular/shared/graphql/**"]
+            "tsConfig": ["libs/angular/graphql/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/graphql/**"]
           }
         }
       },

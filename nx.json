@@ -77,11 +77,11 @@
     "shared-queries": {
       "tags": ["scope:shared", "type:data-access"]
     },
-    "angular-shared-core": {
-      "tags": ["scope:shared"]
+    "angular-core": {
+      "tags": ["scope:angular"]
     },
-    "angular-shared-graphql": {
-      "tags": ["scope:shared"]
+    "angular-graphql": {
+      "tags": ["scope:angular"]
     }
   }
 }

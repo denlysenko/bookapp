@@ -1,4 +1,4 @@
-import { EnvConfig } from '@bookapp/angular/shared/core';
+import { EnvConfig } from '@bookapp/angular/core';
 
 export const environment: EnvConfig = {
   production: true,

@@ -11,8 +11,8 @@ import {
   FeedbackPlatformService,
   StoragePlatformService,
   WebSocketImpl
-} from '@bookapp/angular/shared/core';
-import { GraphQLModule } from '@bookapp/angular/shared/graphql';
+} from '@bookapp/angular/core';
+import { GraphQLModule } from '@bookapp/angular/graphql';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';

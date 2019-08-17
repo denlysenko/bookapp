@@ -6,7 +6,7 @@ import {
   FeedbackPlatformService,
   HTTP_STATUS,
   StoragePlatformService
-} from '@bookapp/angular/shared/core';
+} from '@bookapp/angular/core';
 
 import { HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';

@@ -5,7 +5,7 @@ import {
   FeedbackPlatformService,
   StoragePlatformService,
   WebSocketImpl
-} from '@bookapp/angular/shared/core';
+} from '@bookapp/angular/core';
 
 import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
