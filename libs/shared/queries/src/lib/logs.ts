@@ -8,7 +8,7 @@ export const LOGS_QUERY = gql`
         action
         createdAt
         book {
-          id
+          _id
           title
           author
           url

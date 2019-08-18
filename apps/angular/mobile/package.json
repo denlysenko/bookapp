@@ -32,6 +32,7 @@
     "nativescript-websockets": "^1.5.4",
     "reflect-metadata": "file:../../../node_modules/reflect-metadata",
     "rxjs": "file:../../../node_modules/rxjs",
+    "subscriptions-transport-ws": "^0.9.16",
     "tns-core-modules": "file:../../../node_modules/tns-core-modules",
     "zone.js": "file:../../../node_modules/zone.js"
   },
