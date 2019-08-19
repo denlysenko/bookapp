@@ -33,6 +33,7 @@ const defaultOptions = {
   }
 };
 
+// tslint:disable-next-line: cognitive-complexity
 export function createApolloFactory(
   httpLink: HttpLink,
   storageService: StoragePlatformService,
@@ -75,7 +76,7 @@ export function createApolloFactory(
     auth.concat(http)
   );
 
-  const errorLink = onError(({ networkError }) => {
+  const errorLink = onError(({ networkError, graphQLErrors }) => {
     if (networkError) {
       let msg: string;
 
@@ -95,6 +96,24 @@ export function createApolloFactory(
 
       if (msg) {
         feedbackService.error(msg);
+      }
+    }
+
+    if (graphQLErrors) {
+      const [error] = graphQLErrors;
+
+      if (
+        error.extensions.exception.response.statusCode ===
+        HTTP_STATUS.UNAUTHORIZED
+      ) {
+        // TODO: redirect to login page
+        feedbackService.error(error.extensions.exception.response.error);
+      }
+
+      if (
+        error.extensions.exception.response.statusCode === HTTP_STATUS.FORBIDDEN
+      ) {
+        feedbackService.error(error.extensions.exception.response.error);
       }
     }
   });
