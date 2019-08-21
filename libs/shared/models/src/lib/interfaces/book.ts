@@ -19,3 +19,12 @@ export interface Book {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface BookFormModel {
+  title: string;
+  author: string;
+  coverUrl: string;
+  epubUrl: string;
+  description: string;
+  paid: boolean;
+}

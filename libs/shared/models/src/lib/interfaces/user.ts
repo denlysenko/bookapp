@@ -8,8 +8,10 @@ export interface User {
   roles: string[];
   createdAt: Date;
   updatedAt: Date;
-  reading: {
-    epubUrl: string;
-    bookmark?: string;
-  };
+  reading: Reading;
+}
+
+export interface Reading {
+  epubUrl: string;
+  bookmark?: string;
 }

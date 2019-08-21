@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 
 import { AuthService } from './services/auth/auth.service';
+import { BooksService } from './services/books/books.service';
 import { PasswordService } from './services/password/password.service';
 import { ProfileService } from './services/profile/profile.service';
 
 @NgModule({
-  providers: [AuthService, PasswordService, ProfileService]
+  providers: [AuthService, PasswordService, ProfileService, BooksService]
 })
 export class DataAccessModule {}

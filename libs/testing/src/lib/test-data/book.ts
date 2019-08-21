@@ -14,7 +14,7 @@ export const book = {
   rating: 4,
   views: 20,
   paid: false,
-  price: undefined,
+  price: null,
   comments: [comment],
   createdAt: 1563132857195,
   updatedAt: 1563132857195
