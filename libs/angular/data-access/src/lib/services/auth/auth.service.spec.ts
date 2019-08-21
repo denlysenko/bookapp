@@ -92,11 +92,12 @@ describe('AuthService', () => {
       lastName: 'Last Name'
     };
 
-    it('should signup', () => {
+    it('should signup', done => {
       service
         .signup(credentials)
         .subscribe(({ data: { signup: { token } } }) => {
           expect(token).toEqual(authPayload.token);
+          done();
         });
 
       const op = controller.expectOne(SIGNUP_MUTATION);

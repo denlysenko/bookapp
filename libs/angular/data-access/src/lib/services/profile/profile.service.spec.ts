@@ -10,6 +10,8 @@ import {
 
 import { ProfileService } from './profile.service';
 
+const userWithTypename = { ...user, __typename: 'User' };
+
 describe('ProfileService', () => {
   let controller: ApolloTestingController;
   let service: ProfileService;
@@ -33,13 +35,14 @@ describe('ProfileService', () => {
   });
 
   describe('update()', () => {
-    it('should update profile', () => {
+    it('should update profile', done => {
       const updatedUser = { firstName: 'Updated' };
 
       service
         .update(user._id, updatedUser)
         .subscribe(({ data: { updateUser } }) => {
-          expect(updateUser).toEqual(user);
+          expect(updateUser).toEqual(userWithTypename);
+          done();
         });
 
       const op = controller.expectOne(UPDATE_USER_MUTATION);
@@ -49,7 +52,7 @@ describe('ProfileService', () => {
 
       op.flush({
         data: {
-          updateUser: { ...user, __typename: 'User' }
+          updateUser: userWithTypename
         }
       });
 
