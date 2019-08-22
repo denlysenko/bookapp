@@ -34,7 +34,8 @@
       "@bookapp/shared/queries": ["libs/shared/queries/src/index.ts"],
       "@bookapp/angular/core": ["libs/angular/core/src/index.ts"],
       "@bookapp/angular/graphql": ["libs/angular/graphql/src/index.ts"],
-      "@bookapp/angular/data-access": ["libs/angular/data-access/src/index.ts"]
+      "@bookapp/angular/data-access": ["libs/angular/data-access/src/index.ts"],
+      "@bookapp/angular/base": ["libs/angular/base/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

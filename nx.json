@@ -85,6 +85,9 @@
     },
     "angular-data-access": {
       "tags": ["scope:angular", "type:data-access"]
+    },
+    "angular-base": {
+      "tags": []
     }
   }
 }

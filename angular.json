@@ -714,6 +714,21 @@
         }
       },
       "schematics": {}
+    },
+    "angular-base": {
+      "root": "libs/angular/base",
+      "sourceRoot": "libs/angular/base/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/angular/base/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/base/**"]
+          }
+        }
+      }
     }
   },
   "cli": {
