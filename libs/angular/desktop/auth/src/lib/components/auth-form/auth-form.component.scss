@@ -1,0 +1,49 @@
+@import 'variables';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+.auth-form {
+  width: 600px;
+
+  @media (max-width: 599px) {
+    width: 100%;
+  }
+
+  .mat-card-header {
+    justify-content: center;
+    margin: -50px 0 20px;
+    padding: 20px;
+    background-color: $sidenav-background;
+    color: $primary-text;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14),
+      0 7px 10px -5px rgba(31, 38, 55, 0.4);
+    border-radius: 2px;
+    text-transform: uppercase;
+
+    .mat-card-title {
+      font-size: 18px;
+    }
+  }
+
+  .mat-form-field {
+    width: 100%;
+  }
+
+  .mat-card-actions {
+    margin-left: 0;
+    margin-right: 0;
+    text-align: right;
+
+    button {
+      min-width: 150px;
+      text-transform: uppercase;
+    }
+  }
+}

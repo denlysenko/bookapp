@@ -1,0 +1,81 @@
+<div class="auth-form">
+  <mat-card>
+    <form [formGroup]="form"
+          (submit)="submit()"
+          novalidate>
+      <mat-card-header>
+        <mat-card-title>{{
+          isLoggingIn ? 'Login into account' : 'Create account'
+        }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="!isLoggingIn">
+          <mat-form-field appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input matInput
+                   placeholder="First Name"
+                   formControlName="firstName" />
+            <mat-error *ngIf="form.get('firstName').hasError('required')">This field is required</mat-error>
+            <mat-error *ngIf="form.get('email').hasError('serverError')">{{
+              errors['firstName']
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div *ngIf="!isLoggingIn">
+          <mat-form-field appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input matInput
+                   placeholder="Last Name"
+                   formControlName="lastName" />
+            <mat-error *ngIf="form.get('lastName').hasError('required')">This field is required</mat-error>
+            <mat-error *ngIf="form.get('email').hasError('serverError')">{{
+              errors['lastName']
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input type="email"
+                   matInput
+                   placeholder="Email"
+                   formControlName="email" />
+            <mat-error *ngIf="form.get('email').hasError('required')">This field is required</mat-error>
+            <mat-error *ngIf="form.get('email').hasError('email')">Not a valid email</mat-error>
+            <mat-error *ngIf="form.get('email').hasError('serverError')">{{
+              errors['email']
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input type="password"
+                   matInput
+                   placeholder="Password"
+                   formControlName="password" />
+            <mat-error *ngIf="form.get('password').hasError('required')">This field is required</mat-error>
+            <mat-error *ngIf="form.get('password').hasError('serverError')">{{
+              errors['password']
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <span>{{
+            isLoggingIn ? "Don't have an account?" : 'Already have an account?'
+          }}
+          <a mat-button
+             href="javascript:void(0)"
+             (click)="toggleAuthMode()"
+             [disabled]="loading">{{ isLoggingIn ? 'Create one' : 'Back to Login' }}</a>
+        </span>
+        <button mat-raised-button
+                color="primary"
+                [disabled]="loading">
+          {{ isLoggingIn ? 'Login' : 'Create' }}
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>

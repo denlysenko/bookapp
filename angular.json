@@ -174,6 +174,9 @@
               "apps/angular/desktop/src/assets"
             ],
             "styles": ["apps/angular/desktop/src/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["libs/angular/styles/src/lib/"]
+            },
             "scripts": []
           },
           "configurations": {
@@ -727,6 +730,37 @@
             "tsConfig": ["libs/angular/base/tsconfig.lib.json"],
             "exclude": ["**/node_modules/**", "!libs/angular/base/**"]
           }
+        }
+      }
+    },
+    "angular-desktop-auth": {
+      "projectType": "library",
+      "root": "libs/angular/desktop/auth",
+      "sourceRoot": "libs/angular/desktop/auth/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/angular/desktop/auth/tsconfig.lib.json",
+              "libs/angular/desktop/auth/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/angular/desktop/auth/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/angular/desktop/auth/jest.config.js",
+            "tsConfig": "libs/angular/desktop/auth/tsconfig.spec.json",
+            "setupFile": "libs/angular/desktop/auth/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
         }
       }
     }

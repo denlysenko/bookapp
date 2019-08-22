@@ -1,6 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  MatSnackBarModule,
+  MAT_SNACK_BAR_DEFAULT_OPTIONS
+} from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -12,6 +15,8 @@ import {
   StoragePlatformService,
   WebSocketImpl
 } from '@bookapp/angular/core';
+import { DataAccessModule } from '@bookapp/angular/data-access';
+import { AuthModule, AuthPageComponent } from '@bookapp/angular/desktop/auth';
 import { GraphQLModule } from '@bookapp/angular/graphql';
 
 import { environment } from '../environments/environment';
@@ -28,7 +33,17 @@ import { StorageService } from './services/storage.service';
     CoreModule,
     GraphQLModule,
     MatSnackBarModule,
-    RouterModule.forRoot([], { initialNavigation: 'enabled' })
+    DataAccessModule,
+    AuthModule,
+    RouterModule.forRoot(
+      [
+        {
+          path: 'auth',
+          component: AuthPageComponent
+        }
+      ],
+      { initialNavigation: 'enabled' }
+    )
   ],
   providers: [
     {
@@ -46,6 +61,14 @@ import { StorageService } from './services/storage.service';
     {
       provide: FeedbackPlatformService,
       useClass: FeedbackService
+    },
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+      useValue: {
+        duration: 3500,
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
+      }
     }
   ],
   bootstrap: [AppComponent]

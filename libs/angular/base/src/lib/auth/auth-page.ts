@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 export abstract class AuthPageBase {
-  private errors = new BehaviorSubject<any | null>(null);
+  private error = new BehaviorSubject<any | null>(null);
   private loading = new BehaviorSubject<boolean>(false);
 
   constructor(
@@ -18,8 +18,8 @@ export abstract class AuthPageBase {
     return this.loading.asObservable();
   }
 
-  get errors$(): Observable<any | null> {
-    return this.errors.asObservable();
+  get error$(): Observable<any | null> {
+    return this.error.asObservable();
   }
 
   submit({ isLoggingIn, credentials }) {
@@ -66,7 +66,7 @@ export abstract class AuthPageBase {
     }
 
     if (errors) {
-      this.errors.next(errors);
+      this.error.next(errors[errors.length - 1]);
     }
   }
 }
