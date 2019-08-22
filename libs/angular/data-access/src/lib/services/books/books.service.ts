@@ -2,32 +2,31 @@ import { Injectable } from '@angular/core';
 
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import {
+  AddCommentResponse,
   ApiResponse,
   Book,
   BookFormModel,
-  Bookmark,
   BooksFilterInput,
-  Comment
+  RateBookResponse
 } from '@bookapp/shared/models';
 import {
   ADD_COMMENT_MUTATION,
-  ADD_TO_BOOKMARKS_MUTATION,
   BOOK_QUERY,
-  BOOKMARKS_BY_USER_AND_BOOK_QUERY,
   CREATE_BOOK_MUTATION,
   FREE_BOOKS_QUERY,
   PAID_BOOKS_QUERY,
-  REMOVE_FROM_BOOKMARKS_MUTATION,
+  RATE_BOOK_MUTATION,
   UPDATE_BOOK_MUTATION
 } from '@bookapp/shared/queries';
 
 import { Apollo } from 'apollo-angular';
+import { DataProxy } from 'apollo-cache';
 
 export const DEFAULT_SORT_VALUE = 'createdAt_desc';
 
 @Injectable()
 export class BooksService {
-  constructor(private apollo: Apollo) {}
+  constructor(private readonly apollo: Apollo) {}
 
   create(book: BookFormModel) {
     return this.apollo.mutate<{ createBook: Book }>({
@@ -80,93 +79,32 @@ export class BooksService {
     });
   }
 
-  addComment(bookId: string, text: string, slug: string) {
-    return this.apollo.mutate<{ addComment: Comment }>({
+  rateBook(
+    { bookId, rate },
+    update: (store: DataProxy, response: { data: RateBookResponse }) => void
+  ) {
+    return this.apollo.mutate<RateBookResponse>({
+      mutation: RATE_BOOK_MUTATION,
+      variables: {
+        bookId,
+        rate
+      },
+      update
+    });
+  }
+
+  addComment(
+    bookId: string,
+    text: string,
+    update: (store: DataProxy, response: { data: AddCommentResponse }) => void
+  ) {
+    return this.apollo.mutate<AddCommentResponse>({
       mutation: ADD_COMMENT_MUTATION,
       variables: {
         bookId,
         text
       },
-      update: (store, { data: { addComment } }) => {
-        const data: { book: Book } = store.readQuery({
-          query: BOOK_QUERY,
-          variables: {
-            slug
-          }
-        });
-
-        data.book.comments.push(addComment);
-
-        store.writeQuery({
-          query: BOOK_QUERY,
-          variables: {
-            slug
-          },
-          data
-        });
-      }
-    });
-  }
-
-  addToBookmarks({ type, bookId }) {
-    return this.apollo.mutate<{ addToBookmarks: Bookmark }>({
-      mutation: ADD_TO_BOOKMARKS_MUTATION,
-      variables: {
-        type,
-        bookId
-      },
-      update: (store, { data: { addToBookmarks } }) => {
-        const data: {
-          userBookmarksByBook: Array<{ type: string }>;
-        } = store.readQuery({
-          query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
-          variables: {
-            bookId
-          }
-        });
-
-        data.userBookmarksByBook.push(addToBookmarks);
-
-        store.writeQuery({
-          query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
-          variables: {
-            bookId
-          },
-          data
-        });
-      }
-    });
-  }
-
-  removeFromBookmarks({ type, bookId }) {
-    return this.apollo.mutate<{ removeFromBookmarks: Bookmark }>({
-      mutation: REMOVE_FROM_BOOKMARKS_MUTATION,
-      variables: {
-        type,
-        bookId
-      },
-      update: (store, { data: { removeFromBookmarks } }) => {
-        const data: {
-          userBookmarksByBook: Array<{ type: string }>;
-        } = store.readQuery({
-          query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
-          variables: {
-            bookId
-          }
-        });
-
-        data.userBookmarksByBook = data.userBookmarksByBook.filter(
-          bookmark => bookmark.type !== removeFromBookmarks.type
-        );
-
-        store.writeQuery({
-          query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
-          variables: {
-            bookId
-          },
-          data
-        });
-      }
+      update
     });
   }
 }

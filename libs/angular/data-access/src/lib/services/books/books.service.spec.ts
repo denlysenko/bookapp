@@ -3,19 +3,17 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
-import { Book, BOOKMARKS } from '@bookapp/shared/models';
+import { Book } from '@bookapp/shared/models';
 import {
   ADD_COMMENT_MUTATION,
-  ADD_TO_BOOKMARKS_MUTATION,
   BOOK_QUERY,
-  BOOKMARKS_BY_USER_AND_BOOK_QUERY,
   CREATE_BOOK_MUTATION,
   FREE_BOOKS_QUERY,
   PAID_BOOKS_QUERY,
-  REMOVE_FROM_BOOKMARKS_MUTATION,
+  RATE_BOOK_MUTATION,
   UPDATE_BOOK_MUTATION
 } from '@bookapp/shared/queries';
-import { book, bookmark, user } from '@bookapp/testing';
+import { book, user } from '@bookapp/testing';
 
 import { Apollo } from 'apollo-angular';
 import {
@@ -29,7 +27,6 @@ import { addTypenameToDocument } from 'apollo-utilities';
 import { BooksService, DEFAULT_SORT_VALUE } from './books.service';
 
 const bookWithTypename = { ...book, __typename: 'Book' };
-const bookmarkWithTypename = { type: bookmark.type, __typename: 'Bookmark' };
 
 describe('BooksService', () => {
   let controller: ApolloTestingController;
@@ -355,6 +352,94 @@ describe('BooksService', () => {
     });
   });
 
+  describe('rateBook()', () => {
+    const update = (store, { data: { rateBook } }) => {
+      const data: { book: Book } = store.readQuery({
+        query: BOOK_QUERY,
+        variables: {
+          slug: book.slug
+        }
+      });
+
+      data.book.rating = rateBook.rating;
+      data.book.total_rates = rateBook.total_rates;
+      data.book.total_rating = rateBook.total_rating;
+
+      store.writeQuery({
+        query: BOOK_QUERY,
+        variables: {
+          slug: book.slug
+        },
+        data
+      });
+    };
+
+    beforeEach(() => {
+      service.getBook(book.slug).valueChanges.subscribe();
+      controller.expectOne(addTypenameToDocument(BOOK_QUERY)).flush({
+        data: {
+          book: { ...bookWithTypename, comments: [] }
+        }
+      });
+    });
+
+    it('should call RATE_BOOK_MUTATION', done => {
+      service
+        .rateBook({ bookId: book._id, rate: 5 }, update)
+        .subscribe(({ data: { rateBook } }) => {
+          expect(rateBook.total_rates).toEqual(book.total_rates + 1);
+          done();
+        });
+
+      const op = controller.expectOne(
+        addTypenameToDocument(RATE_BOOK_MUTATION)
+      );
+
+      expect(op.operation.variables.bookId).toEqual(book._id);
+      expect(op.operation.variables.rate).toEqual(5);
+
+      op.flush({
+        data: {
+          rateBook: {
+            ...bookWithTypename,
+            total_rates: bookWithTypename.total_rates + 1
+          }
+        }
+      });
+
+      controller.verify();
+    });
+
+    it('should update book in store with new rating', done => {
+      const apollo: Apollo = TestBed.get(Apollo);
+
+      service.rateBook({ bookId: book._id, rate: 5 }, update).subscribe(() => {
+        apollo
+          .query<{ book: Book }>({
+            query: BOOK_QUERY,
+            variables: {
+              slug: book.slug
+            }
+          })
+          .subscribe(({ data: { book } }) => {
+            expect(book.total_rates).toEqual(bookWithTypename.total_rates + 1);
+            done();
+          });
+      });
+
+      controller.expectOne(addTypenameToDocument(RATE_BOOK_MUTATION)).flush({
+        data: {
+          rateBook: {
+            ...bookWithTypename,
+            total_rates: bookWithTypename.total_rates + 1
+          }
+        }
+      });
+
+      controller.verify();
+    });
+  });
+
   describe('addComment()', () => {
     const comment = {
       _id: 'comment_2',
@@ -363,6 +448,25 @@ describe('BooksService', () => {
       text: 'New comment',
       createdAt: 1563132857195,
       __typename: 'Comment'
+    };
+
+    const update = (store, { data: { addComment } }) => {
+      const data: { book: Book } = store.readQuery({
+        query: BOOK_QUERY,
+        variables: {
+          slug: book.slug
+        }
+      });
+
+      data.book.comments.push(addComment);
+
+      store.writeQuery({
+        query: BOOK_QUERY,
+        variables: {
+          slug: book.slug
+        },
+        data
+      });
     };
 
     beforeEach(() => {
@@ -376,7 +480,7 @@ describe('BooksService', () => {
 
     it('should call ADD_COMMENT_MUTATION', done => {
       service
-        .addComment(book._id, comment.text, book.slug)
+        .addComment(book._id, comment.text, update)
         .subscribe(({ data: { addComment } }) => {
           expect(addComment.text).toEqual(comment.text);
           done();
@@ -401,7 +505,7 @@ describe('BooksService', () => {
     it('should update book in store with new comment', done => {
       const apollo: Apollo = TestBed.get(Apollo);
 
-      service.addComment(book._id, comment.text, book.slug).subscribe(() => {
+      service.addComment(book._id, comment.text, update).subscribe(() => {
         apollo
           .query<{ book: Book }>({
             query: BOOK_QUERY,
@@ -421,161 +525,6 @@ describe('BooksService', () => {
           addComment: comment
         }
       });
-
-      controller.verify();
-    });
-  });
-
-  describe('addToBookmarks()', () => {
-    let apollo: Apollo;
-
-    beforeEach(() => {
-      apollo = TestBed.get(Apollo);
-
-      apollo
-        .query({
-          query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
-          variables: {
-            bookId: book._id
-          }
-        })
-        .subscribe();
-
-      controller
-        .expectOne(addTypenameToDocument(BOOKMARKS_BY_USER_AND_BOOK_QUERY))
-        .flush({
-          data: {
-            userBookmarksByBook: []
-          }
-        });
-    });
-
-    it('should call ADD_TO_BOOKMARKS_MUTATION', done => {
-      service
-        .addToBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id })
-        .subscribe(({ data: { addToBookmarks } }) => {
-          expect(addToBookmarks.type).toEqual(BOOKMARKS.FAVORITES);
-          done();
-        });
-
-      const op = controller.expectOne(
-        addTypenameToDocument(ADD_TO_BOOKMARKS_MUTATION)
-      );
-
-      expect(op.operation.variables.bookId).toEqual(book._id);
-      expect(op.operation.variables.type).toEqual(BOOKMARKS.FAVORITES);
-
-      op.flush({
-        data: {
-          addToBookmarks: bookmarkWithTypename
-        }
-      });
-
-      controller.verify();
-    });
-
-    it('should add new bookmark in bookmarks list in store', done => {
-      service
-        .addToBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id })
-        .subscribe(() => {
-          apollo
-            .query<{ userBookmarksByBook: Array<{ type: number }> }>({
-              query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
-              variables: {
-                bookId: book._id
-              }
-            })
-            .subscribe(({ data: { userBookmarksByBook } }) => {
-              expect(userBookmarksByBook.length).toEqual(1);
-              expect(userBookmarksByBook[0].type).toEqual(bookmark.type);
-              done();
-            });
-        });
-
-      controller
-        .expectOne(addTypenameToDocument(ADD_TO_BOOKMARKS_MUTATION))
-        .flush({
-          data: {
-            addToBookmarks: bookmarkWithTypename
-          }
-        });
-
-      controller.verify();
-    });
-  });
-
-  describe('removeFromBookmarks()', () => {
-    let apollo: Apollo;
-
-    beforeEach(() => {
-      apollo = TestBed.get(Apollo);
-
-      apollo
-        .query({
-          query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
-          variables: {
-            bookId: book._id
-          }
-        })
-        .subscribe();
-
-      controller
-        .expectOne(addTypenameToDocument(BOOKMARKS_BY_USER_AND_BOOK_QUERY))
-        .flush({
-          data: {
-            userBookmarksByBook: [bookmarkWithTypename]
-          }
-        });
-    });
-
-    it('should call REMOVE_FROM_BOOKMARKS_MUTATION', done => {
-      service
-        .removeFromBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id })
-        .subscribe(({ data: { removeFromBookmarks } }) => {
-          expect(removeFromBookmarks.type).toEqual(BOOKMARKS.FAVORITES);
-          done();
-        });
-
-      const op = controller.expectOne(
-        addTypenameToDocument(REMOVE_FROM_BOOKMARKS_MUTATION)
-      );
-
-      expect(op.operation.variables.bookId).toEqual(book._id);
-      expect(op.operation.variables.type).toEqual(BOOKMARKS.FAVORITES);
-
-      op.flush({
-        data: {
-          removeFromBookmarks: bookmarkWithTypename
-        }
-      });
-
-      controller.verify();
-    });
-
-    it('should remove bookmark from bookmarks list in store', done => {
-      service
-        .removeFromBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id })
-        .subscribe(() => {
-          apollo
-            .query<{ userBookmarksByBook: Array<{ type: number }> }>({
-              query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
-              variables: {
-                bookId: book._id
-              }
-            })
-            .subscribe(({ data: { userBookmarksByBook } }) => {
-              expect(userBookmarksByBook.length).toEqual(0);
-              done();
-            });
-        });
-
-      controller
-        .expectOne(addTypenameToDocument(REMOVE_FROM_BOOKMARKS_MUTATION))
-        .flush({
-          data: {
-            removeFromBookmarks: bookmarkWithTypename
-          }
-        });
 
       controller.verify();
     });

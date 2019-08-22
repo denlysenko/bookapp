@@ -28,3 +28,7 @@ export interface BookFormModel {
   description: string;
   paid: boolean;
 }
+
+export interface RateBookResponse {
+  rateBook: Book;
+}

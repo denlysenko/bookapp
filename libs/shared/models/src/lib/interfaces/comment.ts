@@ -5,3 +5,7 @@ export interface Comment {
   text: string;
   createdAt: Date;
 }
+
+export interface AddCommentResponse {
+  addComment: Comment;
+}
