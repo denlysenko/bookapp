@@ -7,7 +7,7 @@ import { Apollo } from 'apollo-angular';
 
 @Injectable()
 export class ProfileService {
-  constructor(private apollo: Apollo) {}
+  constructor(private readonly apollo: Apollo) {}
 
   update(id: string, user: Partial<User>) {
     return this.apollo.mutate<{ updateUser: User }>({

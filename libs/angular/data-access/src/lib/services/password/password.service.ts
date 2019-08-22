@@ -6,7 +6,7 @@ import { Apollo } from 'apollo-angular';
 
 @Injectable()
 export class PasswordService {
-  constructor(private apollo: Apollo) {}
+  constructor(private readonly apollo: Apollo) {}
 
   changePassword(newPassword: string, oldPassword: string) {
     return this.apollo.mutate<{ changePassword: true }>({
