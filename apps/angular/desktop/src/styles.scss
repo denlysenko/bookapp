@@ -1,1 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+@import './theme.scss';
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: Roboto, 'Helvetica Neue Light', 'Helvetica Neue', Helvetica,
+    Arial, 'Lucida Grande', sans-serif;
+  font-size: 14px;
+  background-color: #eeeeee;
+}
+
+a {
+  color: inherit;
+}
+
+// https://github.com/angular/flex-layout/issues/171#issuecomment-353973748
+router-outlet.router-flex + * {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow-y: auto;
+  min-height: 100px;
+}
+
+.view-content {
+  padding: 1.5rem;
+}
+
+.mat-toolbar {
+  background: #eef1f7;
+}
+
+.mat-toolbar-row.mobile-height-auto {
+  @media (max-width: 768px) {
+    height: auto;
+    padding-bottom: 1em;
+  }
+}
+
+.hidden {
+  display: none;
+}

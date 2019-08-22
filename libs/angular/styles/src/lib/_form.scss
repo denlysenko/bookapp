@@ -1,0 +1,14 @@
+.mat-card-actions {
+  text-align: right;
+  margin-right: 0;
+}
+
+.form {
+  .mat-form-field {
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    margin-top: 1rem;
+  }
+}

@@ -1,0 +1,83 @@
+$primary-text: #9ca5b9;
+
+$dark-primary-text: rgba($primary-text, 0.87);
+$dark-secondary-text: rgba($primary-text, 0.6);
+$dark-disabled-text: rgba($primary-text, 0.38);
+$light-primary-text: white;
+$light-secondary-text: rgba(white, 0.6);
+$light-disabled-text: rgba(white, 0.38);
+
+$black-primary-text: rgba(black, 0.87);
+$black-secondary-text: rgba(black, 0.6);
+
+$sidenav-background: #1f2637;
+$light-blue: #15a4fa;
+$orange: #f16441;
+$surface-backgroud: #eeeeee;
+$toolbar-color: #eef1f7;
+
+$custom-deep-blue: (
+  50: #edefff,
+  100: #d1d9ee,
+  200: #b8c0d8,
+  300: #9da6c3,
+  400: #8893b2,
+  500: #7480a2,
+  600: #657190,
+  700: #535d79,
+  800: #434b62,
+  900: #2f364a,
+  A100: #d1d9ee,
+  A200: #b8c0d8,
+  A400: #8893b2,
+  A700: #535d79,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $light-primary-text,
+    400: $light-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $dark-primary-text,
+    800: $dark-primary-text,
+    900: $dark-primary-text,
+    A100: $dark-primary-text,
+    A200: $light-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text
+  )
+);
+
+$custom-orange: (
+  50: #f7eae9,
+  100: #f8cec3,
+  200: #f5af9d,
+  300: #f39077,
+  400: #f2795a,
+  500: #f16441,
+  600: #e75e3c,
+  700: #d85738,
+  800: #ca5134,
+  900: #b1452b,
+  A100: #f8cec3,
+  A200: #f5af9d,
+  A400: #f2795a,
+  A700: #d85738,
+  contrast: (
+    50: $black-primary-text,
+    100: $black-primary-text,
+    200: $black-primary-text,
+    300: $black-primary-text,
+    400: $black-primary-text,
+    500: $black-primary-text,
+    600: $black-primary-text,
+    700: $black-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $black-primary-text,
+    A200: $black-primary-text,
+    A400: $black-primary-text,
+    A700: $black-primary-text
+  )
+);

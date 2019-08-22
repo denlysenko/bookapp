@@ -1,0 +1,48 @@
+@import 'variables';
+
+#file {
+  display: none;
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  min-height: 154px;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 8px;
+
+  .material-icons {
+    font-size: 100px;
+    color: $dark-secondary-text;
+  }
+
+  &.highlighted {
+    border: 2px solid $dark-secondary-text;
+  }
+}
+
+.mat-dialog-actions {
+  justify-content: center;
+}
+
+.mat-dialog-content {
+  position: relative;
+}
+
+.progress {
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(238, 238, 238, 0.7);
+  z-index: 3;
+
+  .mat-progress-bar {
+    width: 80%;
+  }
+}
