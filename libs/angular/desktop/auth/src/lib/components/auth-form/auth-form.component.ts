@@ -1,4 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component
+} from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 
 import { AuthFormBase } from '@bookapp/angular/base';
@@ -11,7 +15,11 @@ import { FeedbackPlatformService } from '@bookapp/angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AuthFormComponent extends AuthFormBase {
-  constructor(feedbackService: FeedbackPlatformService, fb: FormBuilder) {
-    super(feedbackService, fb);
+  constructor(
+    feedbackService: FeedbackPlatformService,
+    fb: FormBuilder,
+    cdr: ChangeDetectorRef
+  ) {
+    super(feedbackService, fb, cdr);
   }
 }

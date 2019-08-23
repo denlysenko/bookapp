@@ -1,4 +1,10 @@
-import { EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ChangeDetectorRef
+} from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
@@ -25,7 +31,8 @@ export abstract class AuthFormBase extends BaseForm implements OnInit {
 
   constructor(
     feedbackService: FeedbackPlatformService,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private readonly cdr: ChangeDetectorRef
   ) {
     super(feedbackService);
   }
@@ -40,6 +47,7 @@ export abstract class AuthFormBase extends BaseForm implements OnInit {
   toggleAuthMode() {
     this.isLoggingIn = !this.isLoggingIn;
     this.isLoggingIn ? this.disableFields() : this.enableFields();
+    this.cdr.markForCheck();
   }
 
   submit() {

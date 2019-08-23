@@ -15,5 +15,6 @@ export * from './lib/mocks/api/users.dataloader';
 export * from './lib/mocks/api/books.dataloader';
 
 export * from './lib/mocks/angular/storage-platform.service';
+export * from './lib/mocks/angular/feedback-platform.service';
 
 export * from './lib/mocks/shared/localStorage';
