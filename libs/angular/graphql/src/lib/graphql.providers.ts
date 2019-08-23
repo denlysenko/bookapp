@@ -103,14 +103,16 @@ export function createApolloFactory(
       const [error] = graphQLErrors;
 
       if (
+        error.extensions &&
         error.extensions.exception.response.statusCode ===
-        HTTP_STATUS.UNAUTHORIZED
+          HTTP_STATUS.UNAUTHORIZED
       ) {
         // TODO: redirect to login page
         feedbackService.error(error.extensions.exception.response.error);
       }
 
       if (
+        error.extensions &&
         error.extensions.exception.response.statusCode === HTTP_STATUS.FORBIDDEN
       ) {
         feedbackService.error(error.extensions.exception.response.error);

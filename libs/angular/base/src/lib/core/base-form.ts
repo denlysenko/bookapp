@@ -9,17 +9,18 @@ export abstract class BaseForm {
   constructor(protected readonly feedbackService: FeedbackPlatformService) {}
 
   protected handleError(err: any) {
-    if (err.errors) {
-      const error = err.errors;
-      Object.keys(error).forEach(key => {
-        const formControl = this.form.get(key);
-        if (formControl) {
-          formControl.setErrors({ serverError: true });
-          this.errors[key] = error[key].message;
-        }
-      });
-    } else if (err.message && err.message.message) {
+    if (err.message && err.message.message) {
       this.feedbackService.error(err.message.message);
+      return;
     }
+
+    Object.keys(err).forEach(key => {
+      const formControl = this.form.get(key);
+
+      if (formControl) {
+        formControl.setErrors({ serverError: true });
+        this.errors[key] = err[key].message;
+      }
+    });
   }
 }
