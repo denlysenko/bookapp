@@ -38,7 +38,8 @@
       "@bookapp/angular/base": ["libs/angular/base/src/index.ts"],
       "@bookapp/angular/desktop/auth": [
         "libs/angular/desktop/auth/src/index.ts"
-      ]
+      ],
+      "@bookapp/angular/mobile/auth": ["libs/angular/mobile/auth/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

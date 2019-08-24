@@ -763,6 +763,37 @@
           "styleext": "scss"
         }
       }
+    },
+    "angular-mobile-auth": {
+      "projectType": "library",
+      "root": "libs/angular/mobile/auth",
+      "sourceRoot": "libs/angular/mobile/auth/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/angular/mobile/auth/tsconfig.lib.json",
+              "libs/angular/mobile/auth/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/angular/mobile/auth/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/angular/mobile/auth/jest.config.js",
+            "tsConfig": "libs/angular/mobile/auth/tsconfig.spec.json",
+            "setupFile": "libs/angular/mobile/auth/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {
