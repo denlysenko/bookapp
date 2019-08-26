@@ -1,7 +1,7 @@
 {
   "name": "mobile",
   "nativescript": {
-    "id": "org.nativescript.mobile",
+    "id": "org.nativescript.bookapp",
     "tns-ios": {
       "version": "6.0.2"
     },
@@ -22,6 +22,7 @@
     "@angular/platform-browser": "file:../../../node_modules/@angular/platform-browser",
     "@angular/platform-browser-dynamic": "file:../../../node_modules/@angular/platform-browser-dynamic",
     "@angular/router": "file:../../../node_modules/@angular/router",
+    "@bookapp/angular-styles": "file:../../../libs/angular/styles",
     "nativescript-angular": "file:../../../node_modules/nativescript-angular",
     "nativescript-app-shortcuts": "^2.1.0",
     "nativescript-feedback": "^1.3.10",
@@ -40,6 +41,7 @@
     "@angular/compiler-cli": "~8.1.0",
     "@ngtools/webpack": "~8.1.0",
     "nativescript-dev-webpack": "~1.0.1",
+    "node-sass": "file:../../../node_modules/node-sass",
     "typescript": "file:../../../node_modules/typescript"
   }
 }

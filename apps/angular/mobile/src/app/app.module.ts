@@ -8,7 +8,9 @@ import {
   StoragePlatformService,
   WebSocketImpl
 } from '@bookapp/angular/core';
+import { DataAccessModule } from '@bookapp/angular/data-access';
 import { GraphQLModule } from '@bookapp/angular/graphql';
+import { AuthModule } from '@bookapp/angular/mobile/auth';
 
 import { NativeScriptAnimationsModule } from 'nativescript-angular/animations';
 import { registerElement } from 'nativescript-angular/element-registry';
@@ -20,8 +22,6 @@ import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
 import { environment } from '../../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ItemDetailComponent } from './item/item-detail.component';
-import { ItemsComponent } from './item/items.component';
 import { FeedbackService } from './services/feedback.service';
 import { LoaderService } from './services/loader.service';
 import { StorageService } from './services/storage.service';
@@ -45,9 +45,11 @@ registerElement(
       mdi: './assets/material-design-icons.css'
     }),
     CoreModule,
-    GraphQLModule
+    GraphQLModule,
+    DataAccessModule,
+    AuthModule
   ],
-  declarations: [AppComponent, ItemsComponent, ItemDetailComponent],
+  declarations: [AppComponent],
   providers: [
     LoaderService,
     {

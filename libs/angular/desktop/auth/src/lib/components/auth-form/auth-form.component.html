@@ -16,7 +16,7 @@
                    placeholder="First Name"
                    formControlName="firstName" />
             <mat-error *ngIf="form.get('firstName').hasError('required')">This field is required</mat-error>
-            <mat-error *ngIf="form.get('email').hasError('serverError')">{{
+            <mat-error *ngIf="form.get('firstName').hasError('serverError')">{{
               errors['firstName']
             }}</mat-error>
           </mat-form-field>
@@ -28,7 +28,7 @@
                    placeholder="Last Name"
                    formControlName="lastName" />
             <mat-error *ngIf="form.get('lastName').hasError('required')">This field is required</mat-error>
-            <mat-error *ngIf="form.get('email').hasError('serverError')">{{
+            <mat-error *ngIf="form.get('lastName').hasError('serverError')">{{
               errors['lastName']
             }}</mat-error>
           </mat-form-field>

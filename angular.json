@@ -175,7 +175,7 @@
             ],
             "styles": ["apps/angular/desktop/src/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["libs/angular/styles/src/lib/"]
+              "includePaths": ["libs/angular/styles/"]
             },
             "scripts": []
           },
@@ -773,19 +773,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/angular/mobile/auth/tsconfig.lib.json",
-              "libs/angular/mobile/auth/tsconfig.spec.json"
-            ],
+            "tsConfig": ["libs/angular/mobile/auth/tsconfig.lib.json"],
             "exclude": ["**/node_modules/**", "!libs/angular/mobile/auth/**"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/angular/mobile/auth/jest.config.js",
-            "tsConfig": "libs/angular/mobile/auth/tsconfig.spec.json",
-            "setupFile": "libs/angular/mobile/auth/src/test-setup.ts"
           }
         }
       },
