@@ -6,6 +6,7 @@ export const user = {
   roles: ['user'],
   displayName: '',
   avatar: null,
+  avatarUrl: null,
   createdAt: 1563132857195,
   updatedAt: null,
   reading: {

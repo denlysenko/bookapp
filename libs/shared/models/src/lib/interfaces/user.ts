@@ -6,8 +6,8 @@ export interface User {
   displayName: string;
   avatarUrl: string;
   roles: string[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: number;
+  updatedAt: number;
   reading: Reading;
 }
 

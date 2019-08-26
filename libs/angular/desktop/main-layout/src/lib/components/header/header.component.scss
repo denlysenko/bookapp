@@ -1,0 +1,41 @@
+@import 'variables';
+
+.brand {
+  padding-left: 0;
+}
+
+.menu-toggler {
+  display: none;
+}
+
+.is-mobile {
+  .menu-toggler {
+    display: inline-block;
+  }
+}
+
+.mat-menu-item {
+  color: $black-primary-text;
+}
+
+a {
+  color: $primary-text;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  margin-right: 10px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  vertical-align: top;
+}
+
+.user-menu {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  height: 100%;
+}
