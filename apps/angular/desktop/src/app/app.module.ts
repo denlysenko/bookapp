@@ -6,7 +6,6 @@ import {
 } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
 
 import {
   CoreModule,
@@ -16,10 +15,11 @@ import {
   WebSocketImpl
 } from '@bookapp/angular/core';
 import { DataAccessModule } from '@bookapp/angular/data-access';
-import { AuthModule, AuthPageComponent } from '@bookapp/angular/desktop/auth';
+import { AuthModule } from '@bookapp/angular/desktop/auth';
 import { GraphQLModule } from '@bookapp/angular/graphql';
 
 import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FeedbackService } from './services/feedback.service';
 import { StorageService } from './services/storage.service';
@@ -30,20 +30,12 @@ import { StorageService } from './services/storage.service';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    AppRoutingModule,
     CoreModule,
     GraphQLModule,
     MatSnackBarModule,
     DataAccessModule,
-    AuthModule,
-    RouterModule.forRoot(
-      [
-        {
-          path: 'auth',
-          component: AuthPageComponent
-        }
-      ],
-      { initialNavigation: 'enabled' }
-    )
+    AuthModule
   ],
   providers: [
     {
