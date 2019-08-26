@@ -1,0 +1,44 @@
+.mat-nav-list {
+  padding-top: 0;
+}
+
+.mat-list-item {
+  text-transform: capitalize;
+  color: #78829d;
+  font-size: 14px;
+
+  &.active {
+    background: #15a4fa;
+    color: #fff;
+  }
+
+  .material-icons {
+    margin-right: 10px;
+    font-size: 20px;
+
+    &.mat-list-icon {
+      margin-right: 0;
+    }
+  }
+
+  ::ng-deep .mat-list-text {
+    padding-left: 0 !important;
+  }
+
+  .footnote {
+    font-size: 12px;
+  }
+
+  .mat-line.action {
+    white-space: normal;
+  }
+}
+
+.divider {
+  display: block;
+  width: 100%;
+  height: 5px;
+  background: #19202e;
+  border-top: inset 1px rgba(0, 0, 0, 0.3);
+  border-bottom: inset 1px rgba(0, 0, 0, 0.3);
+}
