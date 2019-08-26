@@ -783,6 +783,40 @@
           "styleext": "scss"
         }
       }
+    },
+    "angular-desktop-main-layout": {
+      "projectType": "library",
+      "root": "libs/angular/desktop/main-layout",
+      "sourceRoot": "libs/angular/desktop/main-layout/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/angular/desktop/main-layout/tsconfig.lib.json",
+              "libs/angular/desktop/main-layout/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/angular/desktop/main-layout/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/angular/desktop/main-layout/jest.config.js",
+            "tsConfig": "libs/angular/desktop/main-layout/tsconfig.spec.json",
+            "setupFile": "libs/angular/desktop/main-layout/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

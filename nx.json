@@ -97,6 +97,9 @@
     },
     "angular-mobile-auth": {
       "tags": []
+    },
+    "angular-desktop-main-layout": {
+      "tags": []
     }
   }
 }
