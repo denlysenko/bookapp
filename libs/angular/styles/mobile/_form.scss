@@ -1,0 +1,18 @@
+.form {
+  .error {
+    visibility: collapse;
+  }
+
+  .has-error {
+    .input {
+      border-color: $danger-color;
+    }
+
+    .error {
+      margin-top: 5;
+      font-size: 12;
+      color: $danger-color;
+      visibility: visible;
+    }
+  }
+}

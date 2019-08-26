@@ -1,0 +1,5 @@
+@import '~nativescript-theme-core/scss/platforms/index.ios';
+// place iOS overrides here...
+.btn {
+  text-transform: uppercase;
+}

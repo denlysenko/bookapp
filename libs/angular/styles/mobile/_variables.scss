@@ -1,0 +1,16 @@
+@import '~nativescript-theme-core/scss/light';
+@import '../variables';
+
+$primary-color: #2f364a;
+$danger-color: #f44336;
+
+// buttons
+$btn-color: $primary-color;
+$btn-color-secondary: $orange;
+$enable-rounded: true;
+$btn-margin-x: 0;
+$btn-color-outline-highlighted: $primary-color;
+
+// ActionBar
+$ab-background: $primary-color;
+$ab-color: $dark-primary-text;
