@@ -16,7 +16,9 @@ import {
 } from '@bookapp/angular/core';
 import { DataAccessModule } from '@bookapp/angular/data-access';
 import { AuthModule } from '@bookapp/angular/desktop/auth';
+import { MainLayoutModule } from '@bookapp/angular/desktop/main-layout';
 import { GraphQLModule } from '@bookapp/angular/graphql';
+import { AuthGuard } from '@bookapp/angular/shared';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -35,9 +37,11 @@ import { StorageService } from './services/storage.service';
     GraphQLModule,
     MatSnackBarModule,
     DataAccessModule,
-    AuthModule
+    AuthModule,
+    MainLayoutModule
   ],
   providers: [
+    AuthGuard,
     {
       provide: WebSocketImpl,
       useValue: null
