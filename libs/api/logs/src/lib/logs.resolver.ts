@@ -48,7 +48,6 @@ export class LogsResolver {
     filter: (payload, variables) =>
       payload.logCreated.userId.equals(variables.userId)
   })
-  @UseGuards(GqlAuthGuard)
   logCreated() {
     return this.pubSub.asyncIterator('logCreated');
   }
