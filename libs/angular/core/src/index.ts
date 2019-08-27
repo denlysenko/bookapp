@@ -8,5 +8,3 @@ export * from './lib/services/feedback-platform.service';
 export * from './lib/services/router-extensions.service';
 export * from './lib/services/storage-platform.service';
 export * from './lib/services/store.service';
-
-export * from './lib/common/menu-items';

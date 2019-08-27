@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import {
   Environment,
@@ -7,7 +7,7 @@ import {
   WebSocketImpl
 } from '@bookapp/angular/core';
 
-import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
+import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
 
 import { createApolloFactory } from './graphql.providers';
