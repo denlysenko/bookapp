@@ -17,5 +17,7 @@ export * from './lib/mocks/api/books.dataloader';
 export * from './lib/mocks/angular/storage-platform.service';
 export * from './lib/mocks/angular/feedback-platform.service';
 export * from './lib/mocks/angular/router-extensions.service';
+export * from './lib/mocks/angular/auth.service';
+export * from './lib/mocks/angular/logs.service';
 
 export * from './lib/mocks/shared/localStorage';
