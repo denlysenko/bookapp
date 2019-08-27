@@ -6,7 +6,7 @@ import {
   Output
 } from '@angular/core';
 
-import { userMenu } from '@bookapp/angular/core';
+import { userMenu } from '@bookapp/angular/shared';
 import { User } from '@bookapp/shared/models';
 
 @Component({
