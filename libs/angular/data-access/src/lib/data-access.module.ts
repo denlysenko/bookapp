@@ -5,6 +5,7 @@ import { ReadBookResolver } from './resolvers/read-book.resolver';
 import { AuthService } from './services/auth/auth.service';
 import { BookmarksService } from './services/bookmarks/bookmarks.service';
 import { BooksService } from './services/books/books.service';
+import { LogsService } from './services/logs/logs.service';
 import { PasswordService } from './services/password/password.service';
 import { ProfileService } from './services/profile/profile.service';
 
@@ -16,7 +17,8 @@ import { ProfileService } from './services/profile/profile.service';
     BooksService,
     BookmarksService,
     ReadBookResolver,
-    EditBookResolver
+    EditBookResolver,
+    LogsService
   ]
 })
 export class DataAccessModule {}
