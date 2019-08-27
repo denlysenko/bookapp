@@ -1,13 +1,29 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AUTH_TOKEN, StoragePlatformService } from '@bookapp/angular/core';
-import { LOGIN_MUTATION, SIGNUP_MUTATION } from '@bookapp/shared/queries';
-import { authPayload, MockStoragePlatformService } from '@bookapp/testing';
+import {
+  AUTH_TOKEN,
+  RouterExtensions,
+  StoragePlatformService
+} from '@bookapp/angular/core';
+import {
+  LOGIN_MUTATION,
+  ME_QUERY,
+  SIGNUP_MUTATION
+} from '@bookapp/shared/queries';
+import {
+  authPayload,
+  MockRouterExtensions,
+  MockStoragePlatformService,
+  user
+} from '@bookapp/testing';
 
 import {
   ApolloTestingController,
-  ApolloTestingModule
+  ApolloTestingModule,
+  APOLLO_TESTING_CACHE
 } from 'apollo-angular/testing';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { addTypenameToDocument } from 'apollo-utilities';
 
 import { AuthService } from './auth.service';
 
@@ -18,6 +34,7 @@ describe('AuthService', () => {
   let controller: ApolloTestingController;
   let service: AuthService;
   let storageService: StoragePlatformService;
+  let router: RouterExtensions;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -27,6 +44,10 @@ describe('AuthService', () => {
         {
           provide: StoragePlatformService,
           useValue: MockStoragePlatformService
+        },
+        {
+          provide: RouterExtensions,
+          useValue: MockRouterExtensions
         }
       ]
     });
@@ -34,6 +55,7 @@ describe('AuthService', () => {
     controller = TestBed.get(ApolloTestingController);
     service = TestBed.get(AuthService);
     storageService = TestBed.get(StoragePlatformService);
+    router = TestBed.get(RouterExtensions);
   });
 
   afterEach(() => {
@@ -133,10 +155,61 @@ describe('AuthService', () => {
     });
   });
 
+  describe('me()', () => {
+    beforeEach(() => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [ApolloTestingModule],
+        providers: [
+          AuthService,
+          {
+            provide: StoragePlatformService,
+            useValue: MockStoragePlatformService
+          },
+          {
+            provide: RouterExtensions,
+            useValue: MockRouterExtensions
+          },
+          {
+            provide: APOLLO_TESTING_CACHE,
+            useValue: new InMemoryCache({ addTypename: true })
+          }
+        ]
+      });
+
+      controller = TestBed.get(ApolloTestingController);
+      service = TestBed.get(AuthService);
+    });
+
+    it('should return logged user', done => {
+      service.me().valueChanges.subscribe(({ data: { me } }) => {
+        expect(me._id).toEqual(user._id);
+        done();
+      });
+
+      controller.expectOne(addTypenameToDocument(ME_QUERY)).flush({
+        data: {
+          me: {
+            ...user,
+            __typename: 'User',
+            reading: { ...user.reading, __typename: 'Reading' }
+          }
+        }
+      });
+
+      controller.verify();
+    });
+  });
+
   describe('logout()', () => {
     it('should remove token from storage', async () => {
       await service.logout();
       expect(storageService.removeItem).toHaveBeenCalledWith(AUTH_TOKEN);
+    });
+
+    it('should navigate to auth', async () => {
+      await service.logout();
+      expect(router.navigate).toHaveBeenCalled();
     });
   });
 });

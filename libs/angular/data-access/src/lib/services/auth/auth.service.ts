@@ -1,8 +1,16 @@
 import { Injectable } from '@angular/core';
 
-import { AUTH_TOKEN, StoragePlatformService } from '@bookapp/angular/core';
+import {
+  AUTH_TOKEN,
+  RouterExtensions,
+  StoragePlatformService
+} from '@bookapp/angular/core';
 import { AuthPayload, SignupCredentials, User } from '@bookapp/shared/models';
-import { LOGIN_MUTATION, SIGNUP_MUTATION } from '@bookapp/shared/queries';
+import {
+  LOGIN_MUTATION,
+  ME_QUERY,
+  SIGNUP_MUTATION
+} from '@bookapp/shared/queries';
 
 import { Apollo } from 'apollo-angular';
 import { tap } from 'rxjs/operators';
@@ -11,7 +19,8 @@ import { tap } from 'rxjs/operators';
 export class AuthService {
   constructor(
     private readonly apollo: Apollo,
-    private readonly storagePlatformService: StoragePlatformService
+    private readonly storagePlatformService: StoragePlatformService,
+    private readonly routerExtensions: RouterExtensions
   ) {}
 
   login(email: string, password: string) {
@@ -55,8 +64,23 @@ export class AuthService {
       );
   }
 
+  me() {
+    return this.apollo.watchQuery<{ me: User }>({
+      query: ME_QUERY
+    });
+  }
+
   async logout() {
     this.storagePlatformService.removeItem(AUTH_TOKEN);
     await this.apollo.getClient().resetStore();
+    this.routerExtensions.navigate(['auth'], {
+      // for nativescript
+      clearHistory: true,
+      transition: {
+        name: 'flip',
+        duration: 300,
+        curve: 'linear'
+      }
+    });
   }
 }
