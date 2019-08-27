@@ -42,7 +42,8 @@
       "@bookapp/angular/mobile/auth": ["libs/angular/mobile/auth/src/index.ts"],
       "@bookapp/angular/desktop/main-layout": [
         "libs/angular/desktop/main-layout/src/index.ts"
-      ]
+      ],
+      "@bookapp/angular/shared": ["libs/angular/shared/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
