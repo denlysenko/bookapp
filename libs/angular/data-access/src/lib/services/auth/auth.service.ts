@@ -72,7 +72,6 @@ export class AuthService {
 
   async logout() {
     this.storagePlatformService.removeItem(AUTH_TOKEN);
-    await this.apollo.getClient().resetStore();
     this.routerExtensions.navigate(['auth'], {
       // for nativescript
       clearHistory: true,
@@ -82,5 +81,7 @@ export class AuthService {
         curve: 'linear'
       }
     });
+
+    await this.apollo.getClient().resetStore();
   }
 }
