@@ -1,0 +1,26 @@
+<StackLayout>
+  <GridLayout *ngFor="let item of userMenu"
+              columns="auto, *"
+              class="menu-item"
+              [nsRouterLink]="'/' + item.path"
+              nsRouterLinkActive="selected"
+              pageTransition="fade">
+    <Label col="0"
+           [text]="item.icon"
+           class="mdi"></Label>
+    <Label col="1"
+           [text]="item.label"
+           class="p-r-10"></Label>
+  </GridLayout>
+  <StackLayout class="divider"></StackLayout>
+  <GridLayout columns="auto, *"
+              class="menu-item"
+              (tap)="logout.emit()">
+    <Label col="0"
+           text="exit_to_app"
+           class="mdi"></Label>
+    <Label col="1"
+           text="Logout"
+           class="p-r-10"></Label>
+  </GridLayout>
+</StackLayout>
