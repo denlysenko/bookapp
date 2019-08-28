@@ -10,7 +10,13 @@ import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
 import { BOOKMARKS, ROLES } from '@bookapp/shared/models';
-import { bookmark, MockConfigService, MockModel, user } from '@bookapp/testing';
+import {
+  bookmark,
+  MockConfigService,
+  mockConnection,
+  MockModel,
+  user
+} from '@bookapp/testing';
 
 import {
   BadRequestException,
@@ -18,7 +24,11 @@ import {
   INestApplication,
   NotFoundException
 } from '@nestjs/common';
-import { getModelToken } from '@nestjs/mongoose';
+import {
+  getConnectionToken,
+  getModelToken,
+  MongooseModule
+} from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
 import * as jwt from 'jsonwebtoken';
@@ -40,8 +50,16 @@ describe('BookmarksModule', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [ConfigModule, AuthModule, GraphqlModule, BookmarksModule]
+      imports: [
+        ConfigModule,
+        AuthModule,
+        GraphqlModule,
+        BookmarksModule,
+        MongooseModule.forRoot('test')
+      ]
     })
+      .overrideProvider(getConnectionToken())
+      .useValue(mockConnection)
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
       .overrideProvider(getModelToken(ModelNames.BOOKMARK))

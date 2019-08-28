@@ -7,13 +7,18 @@ import { ROLES } from '@bookapp/shared/models';
 import {
   log,
   MockConfigService,
+  mockConnection,
   MockLogsService,
   MockModel,
   user
 } from '@bookapp/testing';
 
 import { HttpStatus, INestApplication } from '@nestjs/common';
-import { getModelToken } from '@nestjs/mongoose';
+import {
+  getConnectionToken,
+  getModelToken,
+  MongooseModule
+} from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
 import * as jwt from 'jsonwebtoken';
@@ -28,8 +33,16 @@ describe('LogsModule', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [ConfigModule, LogsModule, AuthModule, GraphqlModule]
+      imports: [
+        ConfigModule,
+        LogsModule,
+        AuthModule,
+        GraphqlModule,
+        MongooseModule.forRoot('test')
+      ]
     })
+      .overrideProvider(getConnectionToken())
+      .useValue(mockConnection)
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
       .overrideProvider(getModelToken(ModelNames.LOG))

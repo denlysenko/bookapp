@@ -4,10 +4,20 @@ import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
 import { ROLES } from '@bookapp/shared/models';
-import { comment, MockConfigService, MockModel, user } from '@bookapp/testing';
+import {
+  comment,
+  MockConfigService,
+  mockConnection,
+  MockModel,
+  user
+} from '@bookapp/testing';
 
 import { HttpStatus, INestApplication } from '@nestjs/common';
-import { getModelToken } from '@nestjs/mongoose';
+import {
+  getConnectionToken,
+  getModelToken,
+  MongooseModule
+} from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
 import * as jwt from 'jsonwebtoken';
@@ -26,8 +36,16 @@ describe('CommentsModule', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [ConfigModule, AuthModule, GraphqlModule, CommentsModule]
+      imports: [
+        ConfigModule,
+        AuthModule,
+        GraphqlModule,
+        CommentsModule,
+        MongooseModule.forRoot('test')
+      ]
     })
+      .overrideProvider(getConnectionToken())
+      .useValue(mockConnection)
       .overrideProvider(getModelToken(ModelNames.COMMENT))
       .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.USER))

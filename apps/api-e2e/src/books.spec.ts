@@ -14,6 +14,7 @@ import {
   book,
   MockBooksService,
   MockConfigService,
+  mockConnection,
   MockModel,
   user
 } from '@bookapp/testing';
@@ -23,7 +24,11 @@ import {
   INestApplication,
   NotFoundException
 } from '@nestjs/common';
-import { getModelToken } from '@nestjs/mongoose';
+import {
+  getConnectionToken,
+  getModelToken,
+  MongooseModule
+} from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
 import * as jwt from 'jsonwebtoken';
@@ -49,8 +54,16 @@ describe('BooksModule', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [ConfigModule, AuthModule, GraphqlModule, BooksModule]
+      imports: [
+        ConfigModule,
+        AuthModule,
+        GraphqlModule,
+        BooksModule,
+        MongooseModule.forRoot('test')
+      ]
     })
+      .overrideProvider(getConnectionToken())
+      .useValue(mockConnection)
       .overrideProvider(getModelToken(ModelNames.BOOK))
       .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.USER))
