@@ -1,0 +1,57 @@
+<RadSideDrawer #drawer
+               id="drawer"
+               class="drawer"
+               showOverNavigation="true"
+               [drawerTransition]="sideDrawerTransition">
+  <StackLayout tkDrawerContent
+               scrollableContent="true">
+    <ng-container *ngIf="(user$ | async) as user">
+      <GridLayout rows="auto, *"
+                  class="sidedrawer sidedrawer-left">
+        <StackLayout row="0"
+                     class="sidedrawer-header">
+          <GridLayout rows="*, auto">
+            <FlexboxLayout row="0"
+                           alignItems="flex-start">
+              <StackLayout class="avatar">
+                <Image width="60"
+                       height="60"
+                       borderRadius="100"
+                       [src]="user.avatar ? user.avatar : 'res://noavatar'"></Image>
+              </StackLayout>
+            </FlexboxLayout>
+            <StackLayout row="1"
+                         class="user"
+                         (tap)="isUserMenuOpen = !isUserMenuOpen">
+              <Label [text]="user.displayName"
+                     class="name"></Label>
+              <GridLayout columns="*, auto">
+                <Label col="0"
+                       [text]="user.email"
+                       class="email"></Label>
+                <Label col="1"
+                       text="arrow_drop_down"
+                       class="mdi"
+                       [ngClass]="{ opened: isUserMenuOpen, closed: !isUserMenuOpen }"></Label>
+              </GridLayout>
+            </StackLayout>
+          </GridLayout>
+        </StackLayout>
+        <ScrollView row="1">
+          <StackLayout class="sidedrawer-content">
+            <StackLayout class="divider"></StackLayout>
+            <StackLayout [@state]="isUserMenuOpen ? 'out' : 'in'"
+                         [visibility]="!isUserMenuOpen ? 'visible' : 'collapsed'">
+              <bookapp-app-menu [logs]="logs$ | async"></bookapp-app-menu>
+            </StackLayout>
+            <StackLayout [@state]="isUserMenuOpen ? 'in' : 'out'"
+                         [visibility]="isUserMenuOpen ? 'visible' : 'collapsed'">
+              <bookapp-user-menu (logout)="logout()"></bookapp-user-menu>
+            </StackLayout>
+          </StackLayout>
+        </ScrollView>
+      </GridLayout>
+    </ng-container>
+  </StackLayout>
+  <page-router-outlet tkMainContent></page-router-outlet>
+</RadSideDrawer>

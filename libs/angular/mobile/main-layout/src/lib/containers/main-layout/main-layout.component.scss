@@ -1,0 +1,64 @@
+@import '~@bookapp/angular-styles/mobile/variables';
+
+.sidedrawer {
+  background-color: $sidenav-background;
+  color: $dark-primary-text;
+
+  .sidedrawer-header {
+    background-color: $sidenav-background;
+  }
+
+  .avatar {
+    width: 60;
+    height: 60;
+    border-width: 2;
+    border-color: white;
+    border-radius: 50%;
+  }
+
+  .user {
+    padding-bottom: 10;
+
+    .name {
+      font-size: 18;
+    }
+
+    .email {
+      font-size: 16;
+    }
+
+    .mdi {
+      font-size: 22;
+
+      &.opened {
+        animation-name: open;
+        animation-duration: 0.3s;
+        animation-fill-mode: forwards;
+      }
+
+      &.closed {
+        animation-name: close;
+        animation-duration: 0.3s;
+        animation-fill-mode: forwards;
+      }
+    }
+  }
+}
+
+@keyframes open {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes close {
+  from {
+    transform: rotate(180deg);
+  }
+  to {
+    transform: rotate(0);
+  }
+}
