@@ -14,7 +14,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import * as path from 'path';
-import * as uuidv4 from 'uuidv4';
+import * as uuidv4 from 'uuid/v4';
 
 import { FILE_ERRORS } from './constants';
 import { FilesService } from './files.service';
