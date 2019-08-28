@@ -1,9 +1,9 @@
 import {
+  ChangeDetectorRef,
   EventEmitter,
   Input,
   OnInit,
-  Output,
-  ChangeDetectorRef
+  Output
 } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 

@@ -9,6 +9,10 @@ import { of } from 'rxjs';
 
 import { AuthPageComponent } from './auth-page.component';
 
+const email = 'test@test.com';
+// tslint:disable-next-line: no-hardcoded-credentials
+const password = 'pass';
+
 describe('AuthPageComponent', () => {
   let component: AuthPageComponent;
   let fixture: ComponentFixture<AuthPageComponent>;
@@ -54,7 +58,7 @@ describe('AuthPageComponent', () => {
 
   describe('submit()', () => {
     it('should login', () => {
-      const credentials = { email: 'test@test.com', password: 'pass' };
+      const credentials = { email, password };
       component.submit({ isLoggingIn: true, credentials });
       expect(authService.login).toHaveBeenCalledWith(
         credentials.email,
@@ -64,8 +68,8 @@ describe('AuthPageComponent', () => {
 
     it('should signup', () => {
       const credentials = {
-        email: 'test@test.com',
-        password: 'pass',
+        email,
+        password,
         firstName: 'First Name',
         lastName: 'Last Name'
       };
@@ -74,7 +78,7 @@ describe('AuthPageComponent', () => {
     });
 
     it('should navigate to main page if success', () => {
-      const credentials = { email: 'test@test.com', password: 'pass' };
+      const credentials = { email, password };
       component.submit({ isLoggingIn: true, credentials });
       expect(router.navigate).toHaveBeenCalled();
     });
@@ -95,7 +99,7 @@ describe('AuthPageComponent', () => {
 
       component.submit({
         isLoggingIn: true,
-        credentials: { email: 'test@test.com', password: 'pass' }
+        credentials: { email, password }
       });
 
       expect(result).toEqual(error);

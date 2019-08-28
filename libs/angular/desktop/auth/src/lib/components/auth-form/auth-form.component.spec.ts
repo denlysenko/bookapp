@@ -1,3 +1,7 @@
+// tslint:disable: no-identical-functions
+// tslint:disable: no-big-function
+// tslint:disable: no-hardcoded-credentials
+// tslint:disable: no-duplicate-string
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';

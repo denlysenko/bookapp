@@ -17,9 +17,9 @@ import { book, user } from '@bookapp/testing';
 
 import { Apollo } from 'apollo-angular';
 import {
+  APOLLO_TESTING_CACHE,
   ApolloTestingController,
-  ApolloTestingModule,
-  APOLLO_TESTING_CACHE
+  ApolloTestingModule
 } from 'apollo-angular/testing';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { addTypenameToDocument } from 'apollo-utilities';

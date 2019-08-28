@@ -7,7 +7,7 @@ import {
   WebSocketImpl
 } from '@bookapp/angular/core';
 
-import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
+import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
 
 import { createApolloFactory } from './graphql.providers';
