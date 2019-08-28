@@ -833,13 +833,6 @@
             ],
             "exclude": ["**/node_modules/**", "!libs/angular/shared/**"]
           }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/angular/shared/jest.config.js",
-            "tsConfig": "libs/angular/shared/tsconfig.spec.json"
-          }
         }
       }
     },
