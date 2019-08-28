@@ -103,6 +103,9 @@
     },
     "angular-shared": {
       "tags": []
+    },
+    "angular-mobile-main-layout": {
+      "tags": []
     }
   }
 }

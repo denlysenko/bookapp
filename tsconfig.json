@@ -43,7 +43,10 @@
       "@bookapp/angular/desktop/main-layout": [
         "libs/angular/desktop/main-layout/src/index.ts"
       ],
-      "@bookapp/angular/shared": ["libs/angular/shared/src/index.ts"]
+      "@bookapp/angular/shared": ["libs/angular/shared/src/index.ts"],
+      "@bookapp/angular/mobile/main-layout": [
+        "libs/angular/mobile/main-layout/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

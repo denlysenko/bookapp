@@ -842,6 +842,29 @@
           }
         }
       }
+    },
+    "angular-mobile-main-layout": {
+      "projectType": "library",
+      "root": "libs/angular/mobile/main-layout",
+      "sourceRoot": "libs/angular/mobile/main-layout/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/angular/mobile/main-layout/tsconfig.lib.json"],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/angular/mobile/main-layout/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {
