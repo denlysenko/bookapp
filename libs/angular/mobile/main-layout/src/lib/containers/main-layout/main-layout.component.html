@@ -3,8 +3,8 @@
                class="drawer"
                showOverNavigation="true"
                [drawerTransition]="sideDrawerTransition">
-  <StackLayout tkDrawerContent
-               scrollableContent="true">
+  <GridLayout tkDrawerContent
+              scrollableContent="true">
     <ng-container *ngIf="(user$ | async) as user">
       <GridLayout rows="auto, *"
                   class="sidedrawer sidedrawer-left">
@@ -52,6 +52,6 @@
         </ScrollView>
       </GridLayout>
     </ng-container>
-  </StackLayout>
+  </GridLayout>
   <page-router-outlet tkMainContent></page-router-outlet>
 </RadSideDrawer>

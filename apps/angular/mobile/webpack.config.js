@@ -329,9 +329,10 @@ module.exports = env => {
     },
     plugins: [
       // Define useful constants like TNS_WEBPACK
+      // https://github.com/NativeScript/nativescript-angular/issues/1433#issuecomment-407766584
       new webpack.DefinePlugin({
         'global.TNS_WEBPACK': 'true',
-        process: 'global.process'
+        process: undefined
       }),
       // Remove all files from the out dir.
       new CleanWebpackPlugin(itemsToClean, { verbose: !!verbose }),
@@ -339,6 +340,7 @@ module.exports = env => {
       new CopyWebpackPlugin(
         [
           { from: { glob: 'fonts/**' } },
+          { from: { glob: 'assets/**' } },
           { from: { glob: '**/*.jpg' } },
           { from: { glob: '**/*.png' } }
         ],

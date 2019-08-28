@@ -5,7 +5,7 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { MainLayoutBase } from '@bookapp/angular/base';
@@ -35,17 +35,15 @@ import { takeUntil } from 'rxjs/operators';
     ])
   ]
 })
-export class MainLayoutComponent extends MainLayoutBase {
+export class MainLayoutComponent extends MainLayoutBase
+  implements AfterViewInit {
   isUserMenuOpen = false;
 
-  @ViewChild('drawer', { static: true })
+  @ViewChild('drawer', { static: false })
   drawerComponent: RadSideDrawerComponent;
 
   private _sideDrawerTransition: DrawerTransitionBase;
-
-  private get drawer(): SideDrawerType {
-    return this.drawerComponent.sideDrawer;
-  }
+  private drawer: SideDrawerType;
 
   constructor(
     authService: AuthService,
@@ -59,6 +57,10 @@ export class MainLayoutComponent extends MainLayoutBase {
         this.drawer.closeDrawer();
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this.drawer = this.drawerComponent.sideDrawer;
   }
 
   get sideDrawerTransition(): DrawerTransitionBase {

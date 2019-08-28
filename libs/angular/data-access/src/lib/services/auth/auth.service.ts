@@ -82,6 +82,6 @@ export class AuthService {
       }
     });
 
-    await this.apollo.getClient().resetStore();
+    await this.apollo.getClient().clearStore();
   }
 }

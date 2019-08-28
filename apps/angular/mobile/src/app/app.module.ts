@@ -11,6 +11,8 @@ import {
 import { DataAccessModule } from '@bookapp/angular/data-access';
 import { GraphQLModule } from '@bookapp/angular/graphql';
 import { AuthModule } from '@bookapp/angular/mobile/auth';
+import { MainLayoutModule } from '@bookapp/angular/mobile/main-layout';
+import { AuthGuard } from '@bookapp/angular/shared';
 
 import { NativeScriptAnimationsModule } from 'nativescript-angular/animations';
 import { registerElement } from 'nativescript-angular/element-registry';
@@ -47,11 +49,13 @@ registerElement(
     CoreModule,
     GraphQLModule,
     DataAccessModule,
-    AuthModule
+    AuthModule,
+    MainLayoutModule
   ],
   declarations: [AppComponent],
   providers: [
     LoaderService,
+    AuthGuard,
     {
       provide: WebSocketImpl,
       useValue: WebSocket
