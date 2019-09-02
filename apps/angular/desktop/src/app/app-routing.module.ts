@@ -16,7 +16,17 @@ import { AuthGuard } from '@bookapp/angular/shared';
         {
           path: '',
           component: MainLayoutComponent,
-          canActivate: [AuthGuard]
+          canActivate: [AuthGuard],
+          children: [
+            {
+              path: 'password',
+              loadChildren: () =>
+                import('@bookapp/angular/desktop/password').then(
+                  m => m.PasswordModule
+                ),
+              canLoad: [AuthGuard]
+            }
+          ]
         }
       ],
       { initialNavigation: 'enabled' }

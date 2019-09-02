@@ -1,1 +1,3 @@
-export const MockFeedbackPlatformService = {};
+export const MockFeedbackPlatformService = {
+  success: jest.fn()
+};
