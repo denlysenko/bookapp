@@ -29,7 +29,8 @@
     <mat-menu #menu="matMenu">
       <a *ngFor="let item of userMenu"
          mat-menu-item
-         [routerLink]="['/', item.path]">{{ item.label }}</a>
+         [routerLink]="['/', item.path]"
+         routerLinkActive="active">{{ item.label }}</a>
       <mat-divider></mat-divider>
       <a mat-menu-item
          id="logout"
