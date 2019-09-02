@@ -103,6 +103,9 @@
     },
     "angular-mobile-main-layout": {
       "tags": []
+    },
+    "angular-desktop-password": {
+      "tags": []
     }
   }
 }

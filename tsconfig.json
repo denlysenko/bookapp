@@ -46,6 +46,9 @@
       "@bookapp/angular/shared": ["libs/angular/shared/src/index.ts"],
       "@bookapp/angular/mobile/main-layout": [
         "libs/angular/mobile/main-layout/src/index.ts"
+      ],
+      "@bookapp/angular/desktop/password": [
+        "libs/angular/desktop/password/src/index.ts"
       ]
     }
   },

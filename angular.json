@@ -858,6 +858,40 @@
           "styleext": "scss"
         }
       }
+    },
+    "angular-desktop-password": {
+      "projectType": "library",
+      "root": "libs/angular/desktop/password",
+      "sourceRoot": "libs/angular/desktop/password/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/angular/desktop/password/tsconfig.lib.json",
+              "libs/angular/desktop/password/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/angular/desktop/password/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/angular/desktop/password/jest.config.js",
+            "tsConfig": "libs/angular/desktop/password/tsconfig.spec.json",
+            "setupFile": "libs/angular/desktop/password/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {
