@@ -892,6 +892,29 @@
           "styleext": "scss"
         }
       }
+    },
+    "angular-mobile-password": {
+      "projectType": "library",
+      "root": "libs/angular/mobile/password",
+      "sourceRoot": "libs/angular/mobile/password/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/angular/mobile/password/tsconfig.lib.json"],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/angular/mobile/password/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

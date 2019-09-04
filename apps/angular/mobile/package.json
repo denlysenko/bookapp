@@ -30,6 +30,7 @@
     "nativescript-loading-indicator": "^2.5.2",
     "nativescript-ngx-fonticon": "file:../../../node_modules/nativescript-ngx-fonticon",
     "nativescript-ui-sidedrawer": "file:../../../node_modules/nativescript-ui-sidedrawer",
+    "nativescript-ui-dataform": "file:../../../node_modules/nativescript-ui-dataform",
     "nativescript-theme-core": "file:../../../node_modules/nativescript-theme-core",
     "nativescript-websockets": "^1.5.4",
     "reflect-metadata": "file:../../../node_modules/reflect-metadata",

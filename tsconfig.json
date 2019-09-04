@@ -49,6 +49,9 @@
       ],
       "@bookapp/angular/desktop/password": [
         "libs/angular/desktop/password/src/index.ts"
+      ],
+      "@bookapp/angular/mobile/password": [
+        "libs/angular/mobile/password/src/index.ts"
       ]
     }
   },
