@@ -1,7 +1,6 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
     "target": "es5",
     "noEmitHelpers": true,
     "noEmitOnError": true,

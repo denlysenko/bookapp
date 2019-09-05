@@ -8,17 +8,32 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
 
 @NgModule({
   imports: [
-    NativeScriptRouterModule.forRoot([
+    NativeScriptRouterModule.forRoot(
+      [
+        {
+          path: 'auth',
+          component: AuthPageComponent
+        },
+        {
+          path: '',
+          component: MainLayoutComponent,
+          canActivate: [AuthGuard],
+          children: [
+            {
+              path: 'password',
+              loadChildren: () =>
+                import('@bookapp/angular/mobile/password').then(
+                  m => m.PasswordModule
+                ),
+              canLoad: [AuthGuard]
+            }
+          ]
+        }
+      ],
       {
-        path: 'auth',
-        component: AuthPageComponent
-      },
-      {
-        path: '',
-        component: MainLayoutComponent,
-        canActivate: [AuthGuard]
+        scrollPositionRestoration: 'enabled'
       }
-    ])
+    )
   ],
   exports: [NativeScriptRouterModule]
 })

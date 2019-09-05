@@ -1,4 +1,18 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
+
+import { NsBaseForm, PasswordForm } from '@bookapp/angular/base';
+import { FeedbackPlatformService } from '@bookapp/angular/core';
+
+import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
+
+import * as app from 'tns-core-modules/application';
+import { getViewById } from 'tns-core-modules/ui/page/page';
 
 @Component({
   selector: 'bookapp-password-form',
@@ -6,11 +20,40 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['./password-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PasswordFormComponent implements OnInit {
+export class PasswordFormComponent extends NsBaseForm {
+  source = {
+    oldPassword: '',
+    password: ''
+  };
 
-  constructor() { }
+  @Input() loading: boolean;
 
-  ngOnInit() {
+  @Input()
+  set error(error: any) {
+    if (error) {
+      this.handleError(error);
+    }
   }
 
+  @Output() formSubmitted = new EventEmitter<PasswordForm>();
+
+  constructor(feedbackService: FeedbackPlatformService) {
+    super(feedbackService);
+  }
+
+  async submit() {
+    const valid = await this.dataForm.dataForm.validateAll();
+
+    if (valid) {
+      this.formSubmitted.emit(this.source);
+    }
+  }
+
+  onDrawerButtonTap() {
+    const sideDrawer = getViewById(
+      app.getRootView(),
+      'drawer'
+    ) as RadSideDrawer;
+    sideDrawer.toggleDrawerState();
+  }
 }
