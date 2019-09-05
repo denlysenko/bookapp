@@ -416,7 +416,7 @@ describe('UsersModule', () => {
         .set('Authorization', `Bearer ${authToken}`)
         .send({
           query: `mutation {
-            changePassword(newPassword: "newPassword", oldPassword: "oldPassword")
+            changePassword(password: "newPassword", oldPassword: "oldPassword")
           }`
         })
         .expect({
@@ -448,7 +448,7 @@ describe('UsersModule', () => {
         .set('Authorization', `Bearer ${authToken}`)
         .send({
           query: `mutation {
-            changePassword(newPassword: "newPassword", oldPassword: "oldPassword")
+            changePassword(password: "newPassword", oldPassword: "oldPassword")
           }`
         });
 
@@ -466,7 +466,7 @@ describe('UsersModule', () => {
         .post('/graphql')
         .send({
           query: `mutation {
-            changePassword(newPassword: "newPassword", oldPassword: "oldPassword")
+            changePassword(password: "newPassword", oldPassword: "oldPassword")
           }`
         });
 

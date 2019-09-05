@@ -60,7 +60,7 @@ export class UsersResolver {
   @UseGuards(GqlAuthGuard)
   changePassword(
     @Args('oldPassword') oldPassword: string,
-    @Args('newPassword') newPassword: string,
+    @Args('password') newPassword: string,
     @Context('req') req: RequestWithUser
   ) {
     const id = req.user._id;
