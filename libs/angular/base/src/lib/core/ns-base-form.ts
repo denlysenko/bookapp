@@ -2,21 +2,18 @@ import { ViewChild } from '@angular/core';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 
-import { RadDataForm } from 'nativescript-ui-dataform';
-import { RadDataFormComponent } from 'nativescript-ui-dataform/angular';
-
 export abstract class NsBaseForm {
   constructor(protected readonly feedbackService: FeedbackPlatformService) {}
 
   @ViewChild('dataForm', { static: false })
-  dataForm: RadDataFormComponent;
+  // use any for now because of jest transform error
+  dataForm: any;
 
-  get dataform(): RadDataForm {
+  get dataform() {
     return this.dataForm.dataForm;
   }
 
   protected handleError(err: any) {
-    console.log(err);
     if (err.message && err.message.message) {
       this.feedbackService.error(err.message.message);
       return;
