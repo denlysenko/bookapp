@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+
+import { ProfilePageBase } from '@bookapp/angular/base';
+import { FeedbackPlatformService } from '@bookapp/angular/core';
+import { AuthService, ProfileService } from '@bookapp/angular/data-access';
 
 @Component({
   selector: 'bookapp-profile-page',
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss']
 })
-export class ProfilePageComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+export class ProfilePageComponent extends ProfilePageBase {
+  constructor(
+    profileService: ProfileService,
+    authService: AuthService,
+    feedbackService: FeedbackPlatformService
+  ) {
+    super(profileService, authService, feedbackService);
   }
-
 }
