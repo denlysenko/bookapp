@@ -109,6 +109,9 @@
     },
     "angular-mobile-password": {
       "tags": []
+    },
+    "angular-desktop-profile": {
+      "tags": []
     }
   }
 }

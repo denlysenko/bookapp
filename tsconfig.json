@@ -52,6 +52,9 @@
       ],
       "@bookapp/angular/mobile/password": [
         "libs/angular/mobile/password/src/index.ts"
+      ],
+      "@bookapp/angular/desktop/profile": [
+        "libs/angular/desktop/profile/src/index.ts"
       ]
     }
   },
