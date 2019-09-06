@@ -1,4 +1,5 @@
 export * from './lib/interfaces/api-response';
+export * from './lib/interfaces/upload-response';
 export * from './lib/interfaces/auth-payload';
 export * from './lib/interfaces/book';
 export * from './lib/interfaces/bookmark';

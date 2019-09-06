@@ -12,6 +12,7 @@ import {
   Environment,
   FeedbackPlatformService,
   StoragePlatformService,
+  UploadPlatformService,
   WebSocketImpl
 } from '@bookapp/angular/core';
 import { DataAccessModule } from '@bookapp/angular/data-access';
@@ -25,6 +26,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FeedbackService } from './services/feedback.service';
 import { StorageService } from './services/storage.service';
+import { UploadService } from './services/upload.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -57,6 +59,10 @@ import { StorageService } from './services/storage.service';
     {
       provide: FeedbackPlatformService,
       useClass: FeedbackService
+    },
+    {
+      provide: UploadPlatformService,
+      useClass: UploadService
     },
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,

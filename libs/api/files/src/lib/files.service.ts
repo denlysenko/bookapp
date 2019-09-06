@@ -1,4 +1,5 @@
 import { ConfigService } from '@bookapp/api/config';
+import { UploadResponse } from '@bookapp/shared/models';
 
 import { Bucket, Storage } from '@google-cloud/storage';
 
@@ -17,7 +18,7 @@ export class FilesService {
     }).bucket(configService.get('FIREBASE_BUCKET_URL'));
   }
 
-  uploadToBucket(file: any, filename: string): Promise<{ publicUrl: string }> {
+  uploadToBucket(file: any, filename: string): Promise<UploadResponse> {
     return new Promise((resolve, reject) => {
       const blob = this.bucket.file(filename);
 
@@ -34,9 +35,7 @@ export class FilesService {
       blobStream.on('finish', () => {
         const publicUrl = format(
           // tslint:disable-next-line: prettier
-          `https://firebasestorage.googleapis.com/v0/b/${this.bucket.name}/o/${
-            blob.name
-          }?alt=media`
+          `https://firebasestorage.googleapis.com/v0/b/${this.bucket.name}/o/${blob.name}?alt=media`
         );
         resolve({ publicUrl });
       });
