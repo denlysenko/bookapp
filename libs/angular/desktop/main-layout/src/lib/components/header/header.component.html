@@ -20,7 +20,7 @@
             id="user-menu-toggler"
             [matMenuTriggerFor]="menu">
       <img class="avatar"
-           [src]="user.avatarUrl ? user.avatarUrl : '/assets/images/no-avatar.svg'"
+           [src]="user.avatar ? user.avatar : '/assets/images/no-avatar.svg'"
            alt="avatar"> {{ user.displayName }}
       <i class="material-icons">
         expand_more
