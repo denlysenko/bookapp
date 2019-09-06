@@ -1,8 +1,15 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
-import { PasswordFormBase } from '@bookapp/angular/base';
+import { BaseForm } from '@bookapp/angular/base';
 import { FeedbackPlatformService } from '@bookapp/angular/core';
+import { PasswordForm } from '@bookapp/shared/models';
 
 @Component({
   selector: 'bookapp-password-form',
@@ -10,7 +17,23 @@ import { FeedbackPlatformService } from '@bookapp/angular/core';
   styleUrls: ['./password-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PasswordFormComponent extends PasswordFormBase {
+export class PasswordFormComponent extends BaseForm {
+  form = this.fb.group({
+    password: [null, Validators.required],
+    oldPassword: [null, Validators.required]
+  });
+
+  @Input() loading: boolean;
+
+  @Input()
+  set error(error: any) {
+    if (error) {
+      this.handleError(error);
+    }
+  }
+
+  @Output() formSubmitted = new EventEmitter<PasswordForm>();
+
   constructor(
     feedbackService: FeedbackPlatformService,
     private readonly fb: FormBuilder
@@ -22,12 +45,5 @@ export class PasswordFormComponent extends PasswordFormBase {
     if (this.form.valid) {
       this.formSubmitted.emit(this.form.value);
     }
-  }
-
-  protected initForm() {
-    this.form = this.fb.group({
-      newPassword: [null, Validators.required],
-      oldPassword: [null, Validators.required]
-    });
   }
 }

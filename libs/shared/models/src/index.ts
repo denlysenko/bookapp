@@ -7,6 +7,7 @@ export * from './lib/interfaces/log';
 export * from './lib/interfaces/user';
 export * from './lib/interfaces/signup-credentials';
 export * from './lib/interfaces/books-filter';
+export * from './lib/interfaces/password-form';
 
 export * from './lib/enums/user-actions';
 export * from './lib/enums/bookmarks';

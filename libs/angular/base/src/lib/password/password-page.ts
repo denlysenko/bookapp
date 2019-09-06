@@ -23,11 +23,11 @@ export abstract class PasswordPageBase {
     return this.error.asObservable();
   }
 
-  changePassword({ newPassword, oldPassword }) {
+  changePassword({ password, oldPassword }) {
     this.loading.next(true);
 
     this.passwordService
-      .changePassword(newPassword, oldPassword)
+      .changePassword(password, oldPassword)
       .pipe(
         finalize(() => {
           this.loading.next(false);

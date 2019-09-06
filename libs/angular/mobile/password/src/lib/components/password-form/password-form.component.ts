@@ -6,11 +6,11 @@ import {
   Output
 } from '@angular/core';
 
-import { NsBaseForm, PasswordForm } from '@bookapp/angular/base';
+import { NsBaseForm } from '@bookapp/angular/base';
 import { FeedbackPlatformService } from '@bookapp/angular/core';
+import { PasswordForm } from '@bookapp/shared/models';
 
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
-
 import * as app from 'tns-core-modules/application';
 import { getViewById } from 'tns-core-modules/ui/page/page';
 

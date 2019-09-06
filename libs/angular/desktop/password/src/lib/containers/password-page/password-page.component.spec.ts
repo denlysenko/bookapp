@@ -9,7 +9,8 @@ import { of } from 'rxjs';
 
 import { PasswordPageComponent } from './password-page.component';
 
-const newPassword = 'newPassword';
+// tslint:disable-next-line: no-hardcoded-credentials
+const password = 'newPassword';
 const oldPassword = 'oldPassword';
 
 describe('PasswordPageComponent', () => {
@@ -52,9 +53,9 @@ describe('PasswordPageComponent', () => {
 
   describe('changePassword()', () => {
     it('should change password', () => {
-      component.changePassword({ oldPassword, newPassword });
+      component.changePassword({ oldPassword, password });
       expect(passwordService.changePassword).toHaveBeenCalledWith(
-        newPassword,
+        password,
         oldPassword
       );
     });
@@ -75,7 +76,7 @@ describe('PasswordPageComponent', () => {
 
       component.changePassword({
         oldPassword,
-        newPassword
+        password
       });
 
       expect(result).toEqual(error);

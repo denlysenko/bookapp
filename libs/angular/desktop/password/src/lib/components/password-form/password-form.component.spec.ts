@@ -39,7 +39,7 @@ describe('PasswordFormComponent', () => {
   it('should init form', () => {
     expect(component.form.value).toEqual({
       oldPassword: null,
-      newPassword: null
+      password: null
     });
   });
 
@@ -68,25 +68,25 @@ describe('PasswordFormComponent', () => {
     });
 
     describe('newPassword', () => {
-      let newPasswordField: AbstractControl;
+      let passwordField: AbstractControl;
       let input: HTMLInputElement;
 
       beforeEach(() => {
-        newPasswordField = component.form.get('newPassword');
+        passwordField = component.form.get('password');
         input = fixture.debugElement.query(
-          By.css('input[formcontrolname=newPassword]')
+          By.css('input[formcontrolname=password]')
         ).nativeElement;
       });
 
       it('should have required error', () => {
-        expect(newPasswordField.hasError('required')).toEqual(true);
+        expect(passwordField.hasError('required')).toEqual(true);
       });
 
       it('should not have required error', () => {
         input.value = 'test';
         input.dispatchEvent(new Event('input'));
         fixture.detectChanges();
-        expect(newPasswordField.hasError('required')).toEqual(false);
+        expect(passwordField.hasError('required')).toEqual(false);
       });
     });
   });
@@ -104,7 +104,8 @@ describe('PasswordFormComponent', () => {
     it('should emit formSubmitted if form is valid', () => {
       const formValue = {
         oldPassword: 'oldPassword',
-        newPassword: 'newPassword'
+        // tslint:disable-next-line: no-hardcoded-credentials
+        password: 'newPassword'
       };
       component.form.patchValue(formValue);
       component.submit();
