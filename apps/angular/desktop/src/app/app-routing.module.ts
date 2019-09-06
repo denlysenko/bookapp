@@ -25,6 +25,14 @@ import { AuthGuard } from '@bookapp/angular/shared';
                   m => m.PasswordModule
                 ),
               canLoad: [AuthGuard]
+            },
+            {
+              path: 'profile',
+              loadChildren: () =>
+                import('@bookapp/angular/desktop/profile').then(
+                  m => m.ProfileModule
+                ),
+              canLoad: [AuthGuard]
             }
           ]
         }
