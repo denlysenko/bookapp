@@ -8,3 +8,5 @@ export * from './lib/auth/auth-form';
 export * from './lib/main-layout/main-layout';
 
 export * from './lib/password/password-page';
+
+export * from './lib/profile/profile-page';
