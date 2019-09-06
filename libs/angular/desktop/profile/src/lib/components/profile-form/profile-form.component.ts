@@ -9,12 +9,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 import { BaseForm } from '@bookapp/angular/base';
 import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { User } from '@bookapp/shared/models';
-
-interface ProfileForm {
-  id: any;
-  user: Partial<User>;
-}
+import { ProfileForm, User } from '@bookapp/shared/models';
 
 @Component({
   selector: 'bookapp-profile-form',
