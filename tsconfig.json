@@ -55,7 +55,9 @@
       ],
       "@bookapp/angular/desktop/profile": [
         "libs/angular/desktop/profile/src/index.ts"
-      ]
+      ],
+      "@bookapp/angular/utils": ["libs/angular/utils/src/index.ts"],
+      "@bookapp/angular/ui": ["libs/angular/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

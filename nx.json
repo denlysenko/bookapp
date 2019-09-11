@@ -112,6 +112,12 @@
     },
     "angular-desktop-profile": {
       "tags": []
+    },
+    "angular-utils": {
+      "tags": []
+    },
+    "angular-ui": {
+      "tags": []
     }
   }
 }

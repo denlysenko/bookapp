@@ -1,4 +1,5 @@
 import { UploadPlatformService } from '@bookapp/angular/core';
+import { UploadResponse } from '@bookapp/shared/models';
 
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -6,9 +7,10 @@ import { catchError, map, tap } from 'rxjs/operators';
 export abstract class FileSelectorBase {
   constructor(protected readonly uploadService: UploadPlatformService) {}
 
-  private imageChangedEvent = new BehaviorSubject<any>(null);
+  protected error = new BehaviorSubject<string | undefined>(undefined);
+  protected imageChangedEvent = new BehaviorSubject<any>(null);
+
   private loading = new BehaviorSubject<boolean>(false);
-  private error = new BehaviorSubject<string | undefined>(undefined);
 
   get imageChangedEvent$(): Observable<any> {
     return this.imageChangedEvent.asObservable();
@@ -34,10 +36,10 @@ export abstract class FileSelectorBase {
     });
   }
 
-  upload(file: File | Blob) {
+  upload(file: File | Blob): Observable<UploadResponse> {
     this.loading.next(true);
 
-    this.uploadService.upload(file).pipe(
+    return this.uploadService.upload(file).pipe(
       tap(() => {
         this.loading.next(false);
       }),

@@ -75,6 +75,7 @@
     "nativescript-theme-core": "~1.0.4",
     "nativescript-ui-dataform": "^5.0.0",
     "nativescript-ui-sidedrawer": "^7.0.1",
+    "ngx-image-cropper": "^1.4.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "react": "16.9.0",

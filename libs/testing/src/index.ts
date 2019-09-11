@@ -4,6 +4,7 @@ export * from './lib/test-data/log';
 export * from './lib/test-data/bookmark';
 export * from './lib/test-data/comment';
 export * from './lib/test-data/book';
+export * from './lib/test-data/dataUriImage';
 
 export * from './lib/mocks/api/config.service';
 export * from './lib/mocks/api/auth.service';

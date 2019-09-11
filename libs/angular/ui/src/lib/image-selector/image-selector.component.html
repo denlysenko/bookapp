@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>Select File</h2>
+<mat-divider></mat-divider>
+<mat-dialog-content>
+  <div *ngIf="loading$ | async"
+       class="progress">
+    <mat-progress-bar [value]="progress$ | async"
+                      color="accent"></mat-progress-bar>
+  </div>
+  <div *ngIf="!(cropperReady$ | async)"
+       bookappDrop
+       class="dropzone"
+       (dropped)="onFileDrop($event)">
+    <input type="file"
+           id="file"
+           (change)="onFileChange($event)">
+    <label class="mat-button"
+           for="file">Click to select</label>
+    <i class="material-icons">
+      add_photo_alternate
+    </i>
+    or drop file here
+    <small *ngIf="(error$ | async) as error"
+           class="mat-error">{{ error }}</small>
+  </div>
+  <image-cropper [style.display]="(cropperReady$ | async) ? null : 'none'"
+                 [imageChangedEvent]="imageChangedEvent$ | async"
+                 [maintainAspectRatio]="maintainAspectRatio"
+                 (imageCroppedBase64)="imageCropped($event)"
+                 (imageLoaded)="onCropperReady()"
+                 (loadImageFailed)="onLoadImageFail()"></image-cropper>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <button type="button"
+          mat-raised-button
+          mat-dialog-close>CANCEL</button>
+  <button type="button"
+          mat-raised-button
+          color="accent"
+          (click)="save()">UPLOAD</button>
+</mat-dialog-actions>
