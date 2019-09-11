@@ -1,0 +1,10 @@
+<div class="avatar-selector">
+  <mat-card>
+    <img [src]="user.avatar ? user.avatar : '/assets/images/no-avatar.svg'"
+         alt="avatar">
+  </mat-card>
+  <button mat-raised-button
+          color="primary"
+          (click)="showSelector()">Change Avatar
+  </button>
+</div>
