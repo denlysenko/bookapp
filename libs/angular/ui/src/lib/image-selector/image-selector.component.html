@@ -33,9 +33,11 @@
 <mat-dialog-actions>
   <button type="button"
           mat-raised-button
-          mat-dialog-close>CANCEL</button>
+          mat-dialog-close
+          [disabled]="loading$ | async">CANCEL</button>
   <button type="button"
           mat-raised-button
           color="accent"
-          (click)="save()">UPLOAD</button>
+          (click)="save()"
+          [disabled]="loading$ | async">UPLOAD</button>
 </mat-dialog-actions>
