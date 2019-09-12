@@ -1,6 +1,7 @@
 import { ConfigService } from '@bookapp/api/config';
 import { FilesService } from '@bookapp/api/files';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
+import { extractFileKey } from '@bookapp/api/utils';
 import { ApiResponse } from '@bookapp/shared/models';
 
 import {
@@ -73,8 +74,7 @@ export class UsersService {
       user.avatar !== updatedUser.avatar
     ) {
       try {
-        const splitted = user.avatar.split('/'); // take last part of uri as a key
-        await this.filesService.deleteFromBucket(splitted[splitted.length - 1]);
+        await this.filesService.deleteFromBucket(extractFileKey(user.avatar));
       } catch (err) {
         throw new BadRequestException(err);
       }
@@ -109,7 +109,7 @@ export class UsersService {
   }
 
   async requestResetPassword(email: string): Promise<string> {
-    let token;
+    let token: string;
 
     const user = await this.userModel
       .findOne({ email }, EXCLUDED_FIELDS)
@@ -159,6 +159,10 @@ export class UsersService {
 
     if (!user) {
       throw new NotFoundException(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
+    }
+
+    if (user.avatar) {
+      await this.filesService.deleteFromBucket(extractFileKey(user.avatar));
     }
 
     await user.remove();

@@ -436,6 +436,22 @@ describe('UsersService', () => {
       expect(userModel.remove).toHaveBeenCalled();
     });
 
+    it('should not remove avatar if it does not exist', async () => {
+      await usersService.remove(user._id);
+      expect(filesService.deleteFromBucket).not.toHaveBeenCalled();
+    });
+
+    it('should remove avatar if it exists', async () => {
+      jest
+        .spyOn(userModel, 'exec')
+        .mockImplementationOnce(() =>
+          Promise.resolve({ ...MockMongooseModel, avatar: 'storage/avatarUrl' })
+        );
+
+      await usersService.remove(user._id);
+      expect(filesService.deleteFromBucket).toHaveBeenCalledWith('avatarUrl');
+    });
+
     it('should reject user remove', async () => {
       const error = { message: 'error' };
 
