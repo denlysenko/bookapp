@@ -11,7 +11,7 @@ import {
   FeedbackPlatformService,
   UploadPlatformService
 } from '@bookapp/angular/core';
-import { User } from '@bookapp/shared/models';
+import { ProfileForm, User } from '@bookapp/shared/models';
 
 import { requestPermissions, takePicture } from 'nativescript-camera';
 import { ImageCropper } from 'nativescript-imagecropper';
@@ -59,16 +59,16 @@ export class ProfileFormComponent extends NsBaseForm {
     }
   }
 
-  @Output() formSubmitted = new EventEmitter<any>();
+  @Output() formSubmitted = new EventEmitter<ProfileForm>();
 
   private imageCropper = new ImageCropper();
   private _user: Partial<User>;
+  private uploading = new BehaviorSubject<boolean>(false);
   private source = new BehaviorSubject<Partial<User>>({
     firstName: '',
     lastName: '',
     email: ''
   });
-  private uploading = new BehaviorSubject<boolean>(false);
 
   constructor(
     feedbackService: FeedbackPlatformService,
@@ -89,7 +89,10 @@ export class ProfileFormComponent extends NsBaseForm {
     const valid = await this.dataForm.dataForm.validateAll();
 
     if (valid) {
-      this.formSubmitted.emit(this.source);
+      this.formSubmitted.emit({
+        id: this.user._id,
+        user: this.source.getValue()
+      });
     }
   }
 
@@ -139,22 +142,7 @@ export class ProfileFormComponent extends NsBaseForm {
       return;
     }
 
-    let localPath = null;
-
-    if (isAndroid) {
-      localPath = cropped.image.android;
-    }
-
-    if (isIOS) {
-      const folder = knownFolders.documents();
-      const filePath = path.join(
-        folder.path,
-        `avatar_for_ba_${new Date().getTime()}.png`
-      );
-      cropped.image.saveToFile(filePath, 'png');
-
-      localPath = filePath;
-    }
+    const localPath = this.getImageLocalPath(cropped.image);
 
     if (localPath) {
       this.uploading.next(true);
@@ -183,5 +171,26 @@ export class ProfileFormComponent extends NsBaseForm {
       'drawer'
     ) as RadSideDrawer;
     sideDrawer.toggleDrawerState();
+  }
+
+  private getImageLocalPath(image: ImageSource): string {
+    let localPath = null;
+
+    if (isAndroid) {
+      localPath = image.android;
+    }
+
+    if (isIOS) {
+      const folder = knownFolders.documents();
+      const filePath = path.join(
+        folder.path,
+        `avatar_for_ba_${new Date().getTime()}.png`
+      );
+      image.saveToFile(filePath, 'png');
+
+      localPath = filePath;
+    }
+
+    return localPath;
   }
 }
