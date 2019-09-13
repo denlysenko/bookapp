@@ -61,7 +61,6 @@ export class ProfileFormComponent extends NsBaseForm {
 
   @Output() formSubmitted = new EventEmitter<any>();
 
-  private imageSource = new ImageSource();
   private imageCropper = new ImageCropper();
   private _user: Partial<User>;
   private source = new BehaviorSubject<Partial<User>>({
@@ -102,21 +101,41 @@ export class ProfileFormComponent extends NsBaseForm {
       return;
     }
 
-    const imageAsset: any = await takePicture({
-      width: 300,
-      height: 300,
-      keepAspectRatio: true
-    });
+    let imageAsset: any = null;
 
-    const imageSource = await this.imageSource.fromAsset(imageAsset);
+    try {
+      imageAsset = await takePicture({
+        width: 300,
+        height: 300,
+        keepAspectRatio: true
+      });
+    } catch (err) {}
 
-    const cropped = await this.imageCropper.show(imageSource, {
-      width: 300,
-      height: 300,
-      lockSquare: true
-    });
+    if (!imageAsset) {
+      return;
+    }
 
-    if (!cropped.image) {
+    let imageSource = null;
+
+    try {
+      imageSource = await new ImageSource().fromAsset(imageAsset);
+    } catch (err) {}
+
+    if (!imageSource) {
+      return;
+    }
+
+    let cropped = null;
+
+    try {
+      cropped = await this.imageCropper.show(imageSource, {
+        width: 300,
+        height: 300,
+        lockSquare: true
+      });
+    } catch (err) {}
+
+    if (!cropped || !cropped.image) {
       return;
     }
 

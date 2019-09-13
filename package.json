@@ -71,7 +71,7 @@
     "mongoose": "^5.7.0",
     "nativescript-angular": "~8.2.1",
     "nativescript-camera": "^4.5.0",
-    "nativescript-imagecropper": "^1.0.7",
+    "nativescript-imagecropper": "1.0.4",
     "nativescript-ngx-fonticon": "^4.2.1",
     "nativescript-ngx-shadow": "6.1.0",
     "nativescript-theme-core": "~1.0.4",
