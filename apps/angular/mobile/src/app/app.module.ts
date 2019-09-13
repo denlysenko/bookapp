@@ -6,6 +6,7 @@ import {
   FeedbackPlatformService,
   RouterExtensions,
   StoragePlatformService,
+  UploadPlatformService,
   WebSocketImpl
 } from '@bookapp/angular/core';
 import { DataAccessModule } from '@bookapp/angular/data-access';
@@ -27,6 +28,7 @@ import { AppComponent } from './app.component';
 import { FeedbackService } from './services/feedback.service';
 import { LoaderService } from './services/loader.service';
 import { StorageService } from './services/storage.service';
+import { UploadService } from './services/upload.service';
 
 // tslint:disable-next-line: no-var-requires
 require('nativescript-websockets');
@@ -75,6 +77,10 @@ registerElement(
     {
       provide: FeedbackPlatformService,
       useClass: FeedbackService
+    },
+    {
+      provide: UploadPlatformService,
+      useClass: UploadService
     }
   ],
   schemas: [NO_ERRORS_SCHEMA]

@@ -25,6 +25,7 @@
     "@bookapp/angular-styles": "file:../../../libs/angular/styles",
     "nativescript-angular": "file:../../../node_modules/nativescript-angular",
     "nativescript-app-shortcuts": "^2.1.0",
+    "nativescript-background-http": "^4.1.0",
     "nativescript-feedback": "^1.3.11",
     "nativescript-iqkeyboardmanager": "^1.5.1",
     "nativescript-loading-indicator": "^2.5.2",
