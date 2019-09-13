@@ -118,6 +118,9 @@
     },
     "angular-ui": {
       "tags": []
+    },
+    "angular-mobile-profile": {
+      "tags": []
     }
   }
 }

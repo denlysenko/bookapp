@@ -57,7 +57,10 @@
         "libs/angular/desktop/profile/src/index.ts"
       ],
       "@bookapp/angular/utils": ["libs/angular/utils/src/index.ts"],
-      "@bookapp/angular/ui": ["libs/angular/ui/src/index.ts"]
+      "@bookapp/angular/ui": ["libs/angular/ui/src/index.ts"],
+      "@bookapp/angular/mobile/profile": [
+        "libs/angular/mobile/profile/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
