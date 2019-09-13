@@ -6,7 +6,7 @@
     <mat-progress-bar [value]="progress$ | async"
                       color="accent"></mat-progress-bar>
   </div>
-  <div *ngIf="!(cropperReady$ | async)"
+  <div *ngIf="(cropperReady$ | async) !== true"
        bookappDrop
        class="dropzone"
        (dropped)="onFileDrop($event)">
