@@ -1,0 +1,4 @@
+<bookapp-profile-form [user]="user$ | async"
+                      [loading]="loading$ | async"
+                      [error]="error$ | async"
+                      (formSubmitted)="updateProfile($event)"></bookapp-profile-form>
