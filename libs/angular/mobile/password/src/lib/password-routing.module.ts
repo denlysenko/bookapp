@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 
+import { AuthGuard } from '@bookapp/angular/shared';
+
 import { NativeScriptRouterModule } from 'nativescript-angular';
 
 import { PasswordPageComponent } from './containers/password-page/password-page.component';
@@ -10,7 +12,8 @@ import { PasswordPageComponent } from './containers/password-page/password-page.
     NativeScriptRouterModule.forChild([
       {
         path: '',
-        component: PasswordPageComponent
+        component: PasswordPageComponent,
+        canActivate: [AuthGuard]
       }
     ])
   ],
