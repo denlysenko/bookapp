@@ -26,6 +26,14 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
                   m => m.PasswordModule
                 ),
               canLoad: [AuthGuard]
+            },
+            {
+              path: 'profile',
+              loadChildren: () =>
+                import('@bookapp/angular/mobile/profile').then(
+                  m => m.ProfileModule
+                ),
+              canLoad: [AuthGuard]
             }
           ]
         }
