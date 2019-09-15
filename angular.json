@@ -390,31 +390,6 @@
         }
       }
     },
-    "api-utils": {
-      "root": "libs/api/utils",
-      "sourceRoot": "libs/api/utils/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/api/utils/tsconfig.lib.json",
-              "libs/api/utils/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/api/utils/**"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/api/utils/jest.config.js",
-            "tsConfig": "libs/api/utils/tsconfig.spec.json"
-          }
-        }
-      }
-    },
     "testing": {
       "root": "libs/testing",
       "sourceRoot": "libs/testing/src",
@@ -920,21 +895,6 @@
         }
       }
     },
-    "angular-utils": {
-      "root": "libs/angular/utils",
-      "sourceRoot": "libs/angular/utils/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["libs/angular/utils/tsconfig.lib.json"],
-            "exclude": ["**/node_modules/**", "!libs/angular/utils/**"]
-          }
-        }
-      }
-    },
     "angular-ui": {
       "root": "libs/angular/ui",
       "sourceRoot": "libs/angular/ui/src",
@@ -1023,6 +983,31 @@
           "options": {
             "tsConfig": ["libs/shared/tsconfig.lib.json"],
             "exclude": ["**/node_modules/**", "!libs/shared/**"]
+          }
+        }
+      }
+    },
+    "utils": {
+      "root": "libs/utils",
+      "sourceRoot": "libs/utils/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/utils/tsconfig.lib.json",
+              "libs/utils/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/utils/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/utils/jest.config.js",
+            "tsConfig": "libs/utils/tsconfig.spec.json"
           }
         }
       }

@@ -6,8 +6,8 @@ import {
   GqlAuthGuard,
   RequestWithUser
 } from '@bookapp/api/shared';
-import { convertToMongoSortQuery } from '@bookapp/api/utils';
 import { Log } from '@bookapp/shared';
+import { convertToMongoSortQuery } from '@bookapp/utils';
 
 import { Inject, UseGuards } from '@nestjs/common';
 import {

@@ -44,9 +44,6 @@
     "api-database": {
       "tags": ["scope:api", "type:feature", "platform:server"]
     },
-    "api-utils": {
-      "tags": ["scope:api", "type:utils", "platform:server"]
-    },
     "testing": {
       "tags": []
     },
@@ -107,9 +104,6 @@
     "angular-desktop-profile": {
       "tags": []
     },
-    "angular-utils": {
-      "tags": []
-    },
     "angular-ui": {
       "tags": []
     },
@@ -120,6 +114,9 @@
       "tags": []
     },
     "shared": {
+      "tags": []
+    },
+    "utils": {
       "tags": []
     }
   }

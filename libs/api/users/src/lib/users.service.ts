@@ -1,8 +1,8 @@
 import { ConfigService } from '@bookapp/api/config';
 import { FilesService } from '@bookapp/api/files';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
-import { extractFileKey } from '@bookapp/api/utils';
 import { ApiResponse } from '@bookapp/shared';
+import { extractFileKey } from '@bookapp/utils';
 
 import {
   BadRequestException,

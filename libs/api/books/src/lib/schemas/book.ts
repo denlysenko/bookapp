@@ -1,5 +1,5 @@
 // tslint:disable:only-arrow-functions
-import { slugify } from '@bookapp/api/utils';
+import { slugify } from '@bookapp/utils';
 
 import { Schema } from 'mongoose';
 

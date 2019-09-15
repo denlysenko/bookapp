@@ -22,7 +22,6 @@
       "@bookapp/api/users": ["libs/api/users/src/index.ts"],
       "@bookapp/api/shared": ["libs/api/shared/src/index.ts"],
       "@bookapp/api/database": ["libs/api/database/src/index.ts"],
-      "@bookapp/api/utils": ["libs/api/utils/src/index.ts"],
       "@bookapp/testing": ["libs/testing/src/index.ts"],
       "@bookapp/api/files": ["libs/api/files/src/index.ts"],
       "@bookapp/api/logs": ["libs/api/logs/src/index.ts"],
@@ -54,7 +53,6 @@
       "@bookapp/angular/desktop/profile": [
         "libs/angular/desktop/profile/src/index.ts"
       ],
-      "@bookapp/angular/utils": ["libs/angular/utils/src/index.ts"],
       "@bookapp/angular/ui": ["libs/angular/ui/src/index.ts"],
       "@bookapp/angular/mobile/profile": [
         "libs/angular/mobile/profile/src/index.ts"
@@ -62,7 +60,8 @@
       "@bookapp/angular/desktop/books": [
         "libs/angular/desktop/books/src/index.ts"
       ],
-      "@bookapp/shared": ["libs/shared/src/index.ts"]
+      "@bookapp/shared": ["libs/shared/src/index.ts"],
+      "@bookapp/utils": ["libs/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

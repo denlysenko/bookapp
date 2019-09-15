@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { FileSelectorBase } from '@bookapp/angular/base';
 import { UploadPlatformService } from '@bookapp/angular/core';
-import { dataURIToBlob } from '@bookapp/angular/utils';
+import { dataURIToBlob } from '@bookapp/utils';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
