@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import { Bookmark } from '@bookapp/shared/models';
 import {
   ADD_TO_BOOKMARKS_MUTATION,
+  Bookmark,
   BOOKMARKS_BY_USER_AND_BOOK_QUERY,
   REMOVE_FROM_BOOKMARKS_MUTATION
-} from '@bookapp/shared/queries';
+} from '@bookapp/shared';
 
 import { Apollo } from 'apollo-angular';
 

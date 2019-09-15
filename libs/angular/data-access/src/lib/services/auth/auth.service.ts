@@ -5,12 +5,14 @@ import {
   RouterExtensions,
   StoragePlatformService
 } from '@bookapp/angular/core';
-import { AuthPayload, SignupCredentials, User } from '@bookapp/shared/models';
 import {
+  AuthPayload,
   LOGIN_MUTATION,
   ME_QUERY,
-  SIGNUP_MUTATION
-} from '@bookapp/shared/queries';
+  SIGNUP_MUTATION,
+  SignupCredentials,
+  User
+} from '@bookapp/shared';
 
 import { Apollo } from 'apollo-angular';
 import { tap } from 'rxjs/operators';

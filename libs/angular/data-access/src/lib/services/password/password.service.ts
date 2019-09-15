@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { CHANGE_PASSWORD_MUTATION } from '@bookapp/shared/queries';
+import { CHANGE_PASSWORD_MUTATION } from '@bookapp/shared';
 
 import { Apollo } from 'apollo-angular';
 

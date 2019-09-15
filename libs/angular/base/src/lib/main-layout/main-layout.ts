@@ -1,7 +1,7 @@
 import { OnDestroy } from '@angular/core';
 
 import { AuthService, LogsService } from '@bookapp/angular/data-access';
-import { LOG_CREATED_SUBSCRIPTION } from '@bookapp/shared/queries';
+import { LOG_CREATED_SUBSCRIPTION } from '@bookapp/shared';
 
 import { map, tap } from 'rxjs/operators';
 

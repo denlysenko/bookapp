@@ -1,6 +1,6 @@
 import { BooksDataLoader } from '@bookapp/api/dataloaders';
 import { ApiQuery, GqlAuthGuard, RequestWithUser } from '@bookapp/api/shared';
-import { Bookmark } from '@bookapp/shared/models';
+import { Bookmark } from '@bookapp/shared';
 
 import { UseGuards } from '@nestjs/common';
 import {

@@ -1,5 +1,5 @@
 import { ModelNames } from '@bookapp/api/shared';
-import { Book } from '@bookapp/shared/models';
+import { Book } from '@bookapp/shared';
 
 import * as DataLoader from 'dataloader';
 import { Connection } from 'mongoose';

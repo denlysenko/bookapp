@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LAST_LOGS_QUERY } from '@bookapp/shared/queries';
+import { LAST_LOGS_QUERY } from '@bookapp/shared';
 import { book, log } from '@bookapp/testing';
 
 import {

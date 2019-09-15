@@ -13,7 +13,8 @@ mongoose.set('debug', process.env.NODE_ENV !== 'production');
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get('DB_URL'),
         useNewUrlParser: true,
-        useFindAndModify: false
+        useFindAndModify: false,
+        useUnifiedTopology: true
       }),
       inject: [ConfigService]
     })

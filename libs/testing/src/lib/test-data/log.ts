@@ -1,4 +1,4 @@
-import { UserActions } from '@bookapp/shared/models';
+import { UserActions } from '@bookapp/shared';
 
 export const log = {
   _id: 'id',

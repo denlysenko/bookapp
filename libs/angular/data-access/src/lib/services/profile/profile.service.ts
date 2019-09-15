@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { User } from '@bookapp/shared/models';
-import { UPDATE_USER_MUTATION } from '@bookapp/shared/queries';
+import { UPDATE_USER_MUTATION, User } from '@bookapp/shared';
 
 import { Apollo } from 'apollo-angular';
 

@@ -1,6 +1,6 @@
 import { ConfigService } from '@bookapp/api/config';
 import { UserDto, UsersService } from '@bookapp/api/users';
-import { AuthPayload, User } from '@bookapp/shared/models';
+import { AuthPayload, User } from '@bookapp/shared';
 
 import { BadRequestException, Injectable } from '@nestjs/common';
 

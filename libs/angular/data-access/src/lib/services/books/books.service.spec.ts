@@ -3,16 +3,16 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
-import { Book } from '@bookapp/shared/models';
 import {
   ADD_COMMENT_MUTATION,
+  Book,
   BOOK_QUERY,
   CREATE_BOOK_MUTATION,
   FREE_BOOKS_QUERY,
   PAID_BOOKS_QUERY,
   RATE_BOOK_MUTATION,
   UPDATE_BOOK_MUTATION
-} from '@bookapp/shared/queries';
+} from '@bookapp/shared';
 import { book, user } from '@bookapp/testing';
 
 import { Apollo } from 'apollo-angular';

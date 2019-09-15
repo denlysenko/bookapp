@@ -1,4 +1,4 @@
-import { User } from '@bookapp/shared/models';
+import { User } from '@bookapp/shared';
 import { Document } from 'mongoose';
 
 export interface UserModel extends User, Document {

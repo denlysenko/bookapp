@@ -11,7 +11,7 @@ import {
   FeedbackPlatformService,
   UploadPlatformService
 } from '@bookapp/angular/core';
-import { ProfileForm, User } from '@bookapp/shared/models';
+import { ProfileForm, User } from '@bookapp/shared';
 
 import { requestPermissions, takePicture } from 'nativescript-camera';
 import { ImageCropper } from 'nativescript-imagecropper';

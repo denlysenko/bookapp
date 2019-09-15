@@ -29,9 +29,6 @@
     "api-graphql": {
       "tags": ["scope:api", "type:feature", "platform:server"]
     },
-    "shared-models": {
-      "tags": ["scope:shared", "type:data-access"]
-    },
     "api-auth": {
       "tags": ["scope:api", "type:feature", "platform:server"]
     },
@@ -73,9 +70,6 @@
     },
     "angular-mobile": {
       "tags": []
-    },
-    "shared-queries": {
-      "tags": ["scope:shared", "type:data-access"]
     },
     "angular-core": {
       "tags": ["scope:angular"]
@@ -123,6 +117,9 @@
       "tags": []
     },
     "angular-desktop-books": {
+      "tags": []
+    },
+    "shared": {
       "tags": []
     }
   }

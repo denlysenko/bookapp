@@ -8,7 +8,7 @@ import {
 
 import { NsBaseForm } from '@bookapp/angular/base';
 import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { PasswordForm } from '@bookapp/shared/models';
+import { PasswordForm } from '@bookapp/shared';
 
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import * as app from 'tns-core-modules/application';

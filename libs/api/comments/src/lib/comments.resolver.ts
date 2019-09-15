@@ -1,7 +1,7 @@
 import { UsersDataLoader } from '@bookapp/api/dataloaders';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { GqlAuthGuard, RequestWithUser } from '@bookapp/api/shared';
-import { Comment } from '@bookapp/shared/models';
+import { Comment } from '@bookapp/shared';
 
 import { Inject, UseGuards } from '@nestjs/common';
 import {

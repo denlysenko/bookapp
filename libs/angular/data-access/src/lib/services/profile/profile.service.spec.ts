@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UPDATE_USER_MUTATION } from '@bookapp/shared/queries';
+import { UPDATE_USER_MUTATION } from '@bookapp/shared';
 import { user } from '@bookapp/testing';
 
 import {

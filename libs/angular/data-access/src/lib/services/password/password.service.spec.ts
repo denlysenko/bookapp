@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CHANGE_PASSWORD_MUTATION } from '@bookapp/shared/queries';
+import { CHANGE_PASSWORD_MUTATION } from '@bookapp/shared';
 
 import {
   ApolloTestingController,

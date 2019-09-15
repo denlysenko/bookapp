@@ -2,7 +2,7 @@
 import { ConfigService } from '@bookapp/api/config';
 import { LogsService } from '@bookapp/api/logs';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
-import { BOOKMARKS, UserActions } from '@bookapp/shared/models';
+import { BOOKMARKS, UserActions } from '@bookapp/shared';
 import {
   MockConfigService,
   MockLogsService,

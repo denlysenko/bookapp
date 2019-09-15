@@ -8,7 +8,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 
 import { ImageSelectorComponent } from '@bookapp/angular/ui';
-import { ProfileForm, User } from '@bookapp/shared/models';
+import { ProfileForm, User } from '@bookapp/shared';
 
 @Component({
   selector: 'bookapp-avatar-selector',

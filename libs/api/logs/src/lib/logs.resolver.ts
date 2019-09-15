@@ -7,7 +7,7 @@ import {
   RequestWithUser
 } from '@bookapp/api/shared';
 import { convertToMongoSortQuery } from '@bookapp/api/utils';
-import { Log } from '@bookapp/shared/models';
+import { Log } from '@bookapp/shared';
 
 import { Inject, UseGuards } from '@nestjs/common';
 import {

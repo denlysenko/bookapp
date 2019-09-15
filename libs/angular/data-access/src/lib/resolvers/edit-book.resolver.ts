@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 
-import { Book } from '@bookapp/shared/models';
-import { BOOK_FOR_EDIT_QUERY } from '@bookapp/shared/queries';
+import { Book, BOOK_FOR_EDIT_QUERY } from '@bookapp/shared';
 
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';

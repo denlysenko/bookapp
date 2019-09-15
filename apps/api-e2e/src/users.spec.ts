@@ -9,7 +9,7 @@ import {
   UsersModule,
   UsersService
 } from '@bookapp/api/users';
-import { ROLES } from '@bookapp/shared/models';
+import { ROLES } from '@bookapp/shared';
 import {
   MockConfigService,
   MockModel,

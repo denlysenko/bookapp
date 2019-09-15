@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { BOOKMARKS } from '@bookapp/shared/models';
+import { BOOKMARKS } from '@bookapp/shared';
 
 export const BookmarkSchema = new Schema({
   bookId: Schema.Types.ObjectId,

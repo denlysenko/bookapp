@@ -1,5 +1,5 @@
 import { ConfigService } from '@bookapp/api/config';
-import { UploadResponse } from '@bookapp/shared/models';
+import { UploadResponse } from '@bookapp/shared';
 
 import { Bucket, Storage } from '@google-cloud/storage';
 

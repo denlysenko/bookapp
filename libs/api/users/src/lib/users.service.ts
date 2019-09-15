@@ -2,7 +2,7 @@ import { ConfigService } from '@bookapp/api/config';
 import { FilesService } from '@bookapp/api/files';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { extractFileKey } from '@bookapp/api/utils';
-import { ApiResponse } from '@bookapp/shared/models';
+import { ApiResponse } from '@bookapp/shared';
 
 import {
   BadRequestException,

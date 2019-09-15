@@ -5,11 +5,7 @@ import {
   RouterExtensions,
   StoragePlatformService
 } from '@bookapp/angular/core';
-import {
-  LOGIN_MUTATION,
-  ME_QUERY,
-  SIGNUP_MUTATION
-} from '@bookapp/shared/queries';
+import { LOGIN_MUTATION, ME_QUERY, SIGNUP_MUTATION } from '@bookapp/shared';
 import {
   authPayload,
   MockRouterExtensions,

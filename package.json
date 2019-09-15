@@ -85,6 +85,7 @@
     "react-router-dom": "5.0.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.5.3",
+    "saslprep": "^1.0.3",
     "tns-core-modules": "^6.1.1",
     "uuidv4": "^5.0.1",
     "zone.js": "~0.10.2"

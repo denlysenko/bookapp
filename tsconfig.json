@@ -17,7 +17,6 @@
     "baseUrl": ".",
     "paths": {
       "@bookapp/api/graphql": ["libs/api/graphql/src/index.ts"],
-      "@bookapp/shared/models": ["libs/shared/models/src/index.ts"],
       "@bookapp/api/auth": ["libs/api/auth/src/index.ts"],
       "@bookapp/api/config": ["libs/api/config/src/index.ts"],
       "@bookapp/api/users": ["libs/api/users/src/index.ts"],
@@ -31,7 +30,6 @@
       "@bookapp/api/books": ["libs/api/books/src/index.ts"],
       "@bookapp/api/comments": ["libs/api/comments/src/index.ts"],
       "@bookapp/api/dataloaders": ["libs/api/dataloaders/src/index.ts"],
-      "@bookapp/shared/queries": ["libs/shared/queries/src/index.ts"],
       "@bookapp/angular/core": ["libs/angular/core/src/index.ts"],
       "@bookapp/angular/graphql": ["libs/angular/graphql/src/index.ts"],
       "@bookapp/angular/data-access": ["libs/angular/data-access/src/index.ts"],
@@ -63,7 +61,8 @@
       ],
       "@bookapp/angular/desktop/books": [
         "libs/angular/desktop/books/src/index.ts"
-      ]
+      ],
+      "@bookapp/shared": ["libs/shared/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

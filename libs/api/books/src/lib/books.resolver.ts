@@ -8,7 +8,7 @@ import {
   RolesGuard
 } from '@bookapp/api/shared';
 import { convertToMongoSortQuery } from '@bookapp/api/utils';
-import { Book, ROLES } from '@bookapp/shared/models';
+import { Book, ROLES } from '@bookapp/shared';
 
 import { Inject, UseGuards } from '@nestjs/common';
 import {

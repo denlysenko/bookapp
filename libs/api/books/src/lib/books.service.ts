@@ -3,7 +3,7 @@ import { FilesService } from '@bookapp/api/files';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogDto, LogsService } from '@bookapp/api/logs';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
-import { ApiResponse, UserActions } from '@bookapp/shared/models';
+import { ApiResponse, UserActions } from '@bookapp/shared';
 
 import {
   BadRequestException,

@@ -2,22 +2,20 @@ import { Injectable } from '@angular/core';
 
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import {
+  ADD_COMMENT_MUTATION,
   AddCommentResponse,
   ApiResponse,
   Book,
+  BOOK_QUERY,
   BookFormModel,
   BooksFilterInput,
-  RateBookResponse
-} from '@bookapp/shared/models';
-import {
-  ADD_COMMENT_MUTATION,
-  BOOK_QUERY,
   CREATE_BOOK_MUTATION,
   FREE_BOOKS_QUERY,
   PAID_BOOKS_QUERY,
   RATE_BOOK_MUTATION,
+  RateBookResponse,
   UPDATE_BOOK_MUTATION
-} from '@bookapp/shared/queries';
+} from '@bookapp/shared';
 
 import { Apollo } from 'apollo-angular';
 import { DataProxy } from 'apollo-cache';

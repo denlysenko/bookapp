@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import { userMenu } from '@bookapp/angular/shared';
-import { User } from '@bookapp/shared/models';
+import { User } from '@bookapp/shared';
 
 @Component({
   selector: 'bookapp-header',

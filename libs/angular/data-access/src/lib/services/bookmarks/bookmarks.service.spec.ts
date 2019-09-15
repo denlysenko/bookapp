@@ -1,12 +1,12 @@
 // tslint:disable: no-big-function
 import { TestBed } from '@angular/core/testing';
 
-import { BOOKMARKS } from '@bookapp/shared/models';
 import {
   ADD_TO_BOOKMARKS_MUTATION,
+  BOOKMARKS,
   BOOKMARKS_BY_USER_AND_BOOK_QUERY,
   REMOVE_FROM_BOOKMARKS_MUTATION
-} from '@bookapp/shared/queries';
+} from '@bookapp/shared';
 import { book, bookmark } from '@bookapp/testing';
 
 import { Apollo } from 'apollo-angular';

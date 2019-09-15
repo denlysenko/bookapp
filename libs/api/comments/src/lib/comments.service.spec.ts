@@ -2,7 +2,7 @@ import { ConfigService } from '@bookapp/api/config';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogsService } from '@bookapp/api/logs';
 import { ModelNames } from '@bookapp/api/shared';
-import { UserActions } from '@bookapp/shared/models';
+import { UserActions } from '@bookapp/shared';
 import {
   MockConfigService,
   MockLogsService,

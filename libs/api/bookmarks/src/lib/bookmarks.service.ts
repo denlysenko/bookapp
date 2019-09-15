@@ -1,7 +1,7 @@
 import { ConfigService } from '@bookapp/api/config';
 import { LogDto, LogsService } from '@bookapp/api/logs';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
-import { ApiResponse, BOOKMARKS, UserActions } from '@bookapp/shared/models';
+import { ApiResponse, BOOKMARKS, UserActions } from '@bookapp/shared';
 
 import {
   BadRequestException,

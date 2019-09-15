@@ -1,4 +1,4 @@
-import { BOOKMARKS } from '@bookapp/shared/models';
+import { BOOKMARKS } from '@bookapp/shared';
 import { book } from './book';
 
 export const bookmark = {

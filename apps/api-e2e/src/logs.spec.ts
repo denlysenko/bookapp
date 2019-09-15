@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { LogsModule, LogsService } from '@bookapp/api/logs';
 import { ModelNames } from '@bookapp/api/shared';
-import { ROLES } from '@bookapp/shared/models';
+import { ROLES } from '@bookapp/shared';
 import {
   log,
   MockConfigService,

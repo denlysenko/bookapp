@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { ApiResponse, Log } from '@bookapp/shared/models';
-import { LAST_LOGS_QUERY } from '@bookapp/shared/queries';
+import { ApiResponse, LAST_LOGS_QUERY, Log } from '@bookapp/shared';
 
 import { Apollo } from 'apollo-angular';
 

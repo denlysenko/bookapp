@@ -9,7 +9,7 @@ import {
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
-import { BOOKMARKS, ROLES } from '@bookapp/shared/models';
+import { BOOKMARKS, ROLES } from '@bookapp/shared';
 import {
   bookmark,
   MockConfigService,
