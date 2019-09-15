@@ -121,6 +121,9 @@
     },
     "angular-mobile-profile": {
       "tags": []
+    },
+    "angular-desktop-books": {
+      "tags": []
     }
   }
 }
