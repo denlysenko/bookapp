@@ -3,7 +3,8 @@ import { RouterModule } from '@angular/router';
 
 import { AuthPageComponent } from '@bookapp/angular/desktop/auth';
 import { MainLayoutComponent } from '@bookapp/angular/desktop/main-layout';
-import { AuthGuard } from '@bookapp/angular/shared';
+import { AuthGuard, RolesGuard } from '@bookapp/angular/shared';
+import { ROLES } from '@bookapp/shared';
 
 @NgModule({
   imports: [
@@ -33,6 +34,17 @@ import { AuthGuard } from '@bookapp/angular/shared';
                   m => m.ProfileModule
                 ),
               canLoad: [AuthGuard]
+            },
+            {
+              path: 'books/add',
+              loadChildren: () =>
+                import('@bookapp/angular/desktop/books').then(
+                  m => m.AddBookModule
+                ),
+              canLoad: [AuthGuard, RolesGuard],
+              data: {
+                roles: [ROLES.ADMIN]
+              }
             }
           ]
         }
