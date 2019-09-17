@@ -1,32 +1,27 @@
 // tslint:disable: no-identical-functions
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-  MatDialogRef
-} from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { UploadPlatformService } from '@bookapp/angular/core';
-import { dataUriImage } from '@bookapp/testing';
 
 import { of, throwError } from 'rxjs';
 
-import { ImageSelectorComponent } from './image-selector.component';
+import { FileSelectorComponent } from './file-selector.component';
 
 const publicUrl = '/uploads/publicUrl';
-const imageEvent = { image: 'test' };
+const imageEvent = { target: { files: { 0: 'test' } } };
 
-describe('ImageSelectorComponent', () => {
-  let component: ImageSelectorComponent;
-  let fixture: ComponentFixture<ImageSelectorComponent>;
+describe('FileSelectorComponent', () => {
+  let component: FileSelectorComponent;
+  let fixture: ComponentFixture<FileSelectorComponent>;
   let uploadService: UploadPlatformService;
   let dialog: MatDialogRef<any>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MatDialogModule],
-      declarations: [ImageSelectorComponent],
+      declarations: [FileSelectorComponent],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {
@@ -42,70 +37,21 @@ describe('ImageSelectorComponent', () => {
           useValue: {
             close: jest.fn()
           }
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: {}
         }
       ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ImageSelectorComponent);
+    fixture = TestBed.createComponent(FileSelectorComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
     uploadService = TestBed.get(UploadPlatformService);
     dialog = TestBed.get(MatDialogRef);
-    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('cropperReady()', () => {
-    it('should emit true into cropperReady$', done => {
-      component.onCropperReady();
-
-      component.cropperReady$.subscribe(ready => {
-        expect(ready).toEqual(true);
-        done();
-      });
-    });
-  });
-
-  describe('loadImageFail()', () => {
-    beforeEach(() => {
-      component.onLoadImageFail();
-    });
-
-    it('should propagate error', done => {
-      component.error$.subscribe(err => {
-        expect(err).toEqual('INVALID_IMG_ERR');
-        done();
-      });
-    });
-
-    it('should propagate false to cropperReady$', done => {
-      component.cropperReady$.subscribe(ready => {
-        expect(ready).toEqual(false);
-        done();
-      });
-    });
-
-    it('should propagate null to imageChangedEvent$', done => {
-      component.imageChangedEvent$.subscribe(event => {
-        expect(event).toEqual(null);
-        done();
-      });
-    });
-  });
-
-  describe('imageCropped()', () => {
-    it('should save image', () => {
-      component.imageCropped(dataUriImage);
-      expect(component['croppedImage']).toEqual(dataUriImage);
-    });
   });
 
   describe('onFileChange()', () => {
@@ -151,33 +97,33 @@ describe('ImageSelectorComponent', () => {
   });
 
   describe('save()', () => {
-    it('should not upload if there is no croppedImage', () => {
+    it('should not upload if there is no imageChangedEvent value', () => {
       component.save();
       expect(uploadService.upload).not.toHaveBeenCalled();
     });
 
-    it('should upload image', () => {
-      component.imageCropped(dataUriImage);
+    it('should upload file', () => {
+      component.onFileChange(imageEvent);
       component.save();
       expect(uploadService.upload).toHaveBeenCalled();
     });
 
     it('should close dialog with publicUrl', () => {
-      component.imageCropped(dataUriImage);
+      component.onFileChange(imageEvent);
       component.save();
       expect(dialog.close).toHaveBeenCalledWith(publicUrl);
     });
 
-    it('should propagate false to cropperReady$ if error', done => {
+    it('should propagate null to imageChangedEvent$ if error', done => {
       jest
         .spyOn(uploadService, 'upload')
         .mockImplementationOnce(() => throwError({}));
 
-      component.imageCropped(dataUriImage);
+      component.onFileChange(imageEvent);
       component.save();
 
-      component.cropperReady$.subscribe(ready => {
-        expect(ready).toEqual(false);
+      component.imageChangedEvent$.subscribe(event => {
+        expect(event).toEqual(null);
         done();
       });
     });

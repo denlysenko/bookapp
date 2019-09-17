@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>Select File</h2>
+<mat-divider></mat-divider>
+<mat-dialog-content>
+  <div *ngIf="loading$ | async"
+       class="progress">
+    <mat-progress-bar [value]="progress$ | async"
+                      color="accent"></mat-progress-bar>
+  </div>
+  <div *ngIf="!(imageChangedEvent$ | async)"
+       class="dropzone"
+       bookappDrop
+       (dropped)="onFileDrop($event)">
+    <input type="file"
+           id="file"
+           (change)="onFileChange($event)">
+    <label class="mat-button"
+           for="file">Click to select</label>
+    <i class="material-icons">
+      add_box
+    </i>
+    or drop file here
+    <small *ngIf="(error$ | async) as error"
+           class="mat-error">{{ error }}</small>
+  </div>
+  <div *ngIf="(imageChangedEvent$ | async) as imageChangedEvent"
+       class="attachment">
+    <i class="material-icons">
+      attach_file
+    </i>
+    <span>{{ imageChangedEvent.target.files[0].name }}</span>
+  </div>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <button type="button"
+          mat-raised-button
+          mat-dialog-close
+          [disabled]="loading$ | async">CANCEL</button>
+  <button type="button"
+          mat-raised-button
+          color="accent"
+          (click)="save()"
+          [disabled]="loading$ | async">UPLOAD</button>
+</mat-dialog-actions>
