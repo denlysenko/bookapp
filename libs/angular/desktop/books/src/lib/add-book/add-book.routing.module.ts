@@ -24,7 +24,7 @@ import { AddBookPageComponent } from './containers/add-book-page/add-book-page.c
         }
       },
       {
-        path: 'edit/:author/:slug',
+        path: ':author/:slug',
         component: AddBookPageComponent,
         canActivate: [AuthGuard, RolesGuard],
         canDeactivate: [CanDeactivateGuard],
