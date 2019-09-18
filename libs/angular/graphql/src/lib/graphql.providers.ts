@@ -104,6 +104,8 @@ export function createApolloFactory(
 
       if (
         error.extensions &&
+        error.extensions.exception &&
+        error.extensions.exception.response &&
         error.extensions.exception.response.statusCode ===
           HTTP_STATUS.UNAUTHORIZED
       ) {
@@ -113,6 +115,8 @@ export function createApolloFactory(
 
       if (
         error.extensions &&
+        error.extensions.exception &&
+        error.extensions.exception.response &&
         error.extensions.exception.response.statusCode === HTTP_STATUS.FORBIDDEN
       ) {
         feedbackService.error(error.extensions.exception.response.error);
