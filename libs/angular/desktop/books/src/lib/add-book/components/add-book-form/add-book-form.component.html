@@ -1,1 +1,76 @@
-<p>add-book-form works!</p>
+<div class="book-form">
+  <div class="cover">
+    <mat-card>
+      <img [src]="coverUrl || '/assets/images/add-photo.svg'"
+           alt="cover">
+    </mat-card>
+    <button id="cover-btn"
+            type="button"
+            mat-raised-button
+            color="primary"
+            [disabled]="loading"
+            (click)="showCoverSelector()">Change Cover
+    </button>
+  </div>
+  <form id="bookForm"
+        [formGroup]="form"
+        class="form"
+        (submit)="submit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput
+             placeholder="Title"
+             formControlName="title">
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Author</mat-label>
+      <input matInput
+             placeholder="Author"
+             formControlName="author">
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput
+                placeholder="Description"
+                rows="4"
+                formControlName="description"></textarea>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+    <div class="mat-form-field-wrapper epub">
+      <button id="epub-btn"
+              type="button"
+              mat-raised-button
+              color="primary"
+              [disabled]="loading"
+              (click)="showFileSelector()">CHANGE EPUB
+      </button>
+      <a *ngIf="epubUrl"
+         [href]="epubUrl"
+         mat-button
+         target="_blank">DOWNLOAD</a>
+    </div>
+    <div class="mat-form-field-wrapper">
+      <mat-checkbox formControlName="paid">Paid</mat-checkbox>
+    </div>
+    <mat-form-field *ngIf="isPaid"
+                    appearance="outline"
+                    class="price">
+      <mat-label>Price</mat-label>
+      <input type="number"
+             matInput
+             placeholder="Price"
+             formControlName="price">
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+    <mat-card-actions>
+      <button type="submit"
+              form="bookForm"
+              mat-raised-button
+              color="accent"
+              [disabled]="loading">SAVE
+      </button>
+    </mat-card-actions>
+  </form>
+</div>

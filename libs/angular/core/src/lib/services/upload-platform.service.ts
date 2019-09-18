@@ -11,4 +11,8 @@ export class UploadPlatformService {
   upload(file: any, name: string = 'file'): Observable<string> {
     return of('');
   }
+
+  deleteFile(file: string): Observable<string> {
+    return of('');
+  }
 }

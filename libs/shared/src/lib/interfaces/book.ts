@@ -16,11 +16,12 @@ export interface Book {
   paid: boolean;
   price: number;
   comments: Comment[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: number;
+  updatedAt: number;
 }
 
 export interface BookFormModel {
+  _id?: any;
   title: string;
   author: string;
   coverUrl: string;

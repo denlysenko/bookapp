@@ -2,11 +2,15 @@ import { FormGroup } from '@angular/forms';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 
-export abstract class BaseForm {
+import { BaseComponent } from './base-component';
+
+export abstract class BaseForm extends BaseComponent {
   form: FormGroup;
   errors: { [key: string]: string } = {};
 
-  constructor(protected readonly feedbackService: FeedbackPlatformService) {}
+  constructor(protected readonly feedbackService: FeedbackPlatformService) {
+    super();
+  }
 
   protected handleError(err: any) {
     if (err.message && err.message.message) {

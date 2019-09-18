@@ -1,0 +1,59 @@
+@import 'desktop/form';
+
+.book-form {
+  display: flex;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.cover {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 25%;
+
+  .mat-card {
+    margin-bottom: 1rem;
+    display: flex;
+    min-height: 212px;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 150px;
+      height: 212px;
+    }
+  }
+
+  .mat-raised-button {
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 768px) {
+    margin-right: 1.5rem;
+    max-width: 180px;
+  }
+}
+
+.form {
+  .epub {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .epub > .mat-primary,
+  .epub > .mat-button,
+  .mat-form-field.price {
+    width: 180px;
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
+
+  label.mat-primary,
+  a.mat-button {
+    text-transform: uppercase;
+  }
+}
