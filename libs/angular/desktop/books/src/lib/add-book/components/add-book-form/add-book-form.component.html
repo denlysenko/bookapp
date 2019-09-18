@@ -34,7 +34,8 @@
       <mat-label>Description</mat-label>
       <textarea matInput
                 placeholder="Description"
-                rows="4"
+                cdkAutosizeMinRows="4"
+                cdkTextareaAutosize
                 formControlName="description"></textarea>
       <mat-error>This field is required</mat-error>
     </mat-form-field>
