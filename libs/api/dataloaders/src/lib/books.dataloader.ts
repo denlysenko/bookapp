@@ -10,7 +10,7 @@ export class BooksDataLoader implements IDataLoader<string, Book> {
   constructor(private readonly dataLoader: DataLoader<string, Book>) {}
 
   static async create(connection: Connection) {
-    const bookModel = connection.model(ModelNames.USER);
+    const bookModel = connection.model(ModelNames.BOOK);
 
     const dataloader = new DataLoader(
       async (bookIds: string[]) => {
