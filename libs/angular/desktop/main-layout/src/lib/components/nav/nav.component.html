@@ -41,9 +41,10 @@
     <p matLine
        class="footnote">
       <span>{{ log.book.title }}</span>
+      <br>
       <span> by {{ log.book.author }}</span>
     </p>
     <p matLine
-       class="footnote">{{ log.createdAt }}</p>
+       class="footnote">{{ log.createdAt | date: 'dd.MM.yyyy' }}</p>
   </mat-list-item>
 </mat-list>

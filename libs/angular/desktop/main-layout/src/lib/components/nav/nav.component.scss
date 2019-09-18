@@ -27,6 +27,10 @@
 
   .footnote {
     font-size: 12px;
+
+    span {
+      text-transform: none;
+    }
   }
 
   .mat-line.action {
