@@ -21,3 +21,5 @@ export * from './lib/mocks/angular/auth.service';
 export * from './lib/mocks/angular/logs.service';
 
 export * from './lib/mocks/shared/localStorage';
+
+export * from './lib/helpers/angular/clickOnBtn';

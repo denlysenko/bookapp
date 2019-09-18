@@ -11,20 +11,15 @@ import {
   FeedbackPlatformService,
   UploadPlatformService
 } from '@bookapp/angular/core';
-import { book, MockFeedbackPlatformService } from '@bookapp/testing';
+import {
+  book,
+  clickOnBtn,
+  MockFeedbackPlatformService
+} from '@bookapp/testing';
 
 import { of } from 'rxjs';
 
 import { AddBookFormComponent } from './add-book-form.component';
-
-const clickOnBtn = (
-  fixture: ComponentFixture<AddBookFormComponent>,
-  selector = 'button'
-) => {
-  const btn = fixture.debugElement.query(By.css(selector)).nativeElement;
-  btn.click();
-  fixture.detectChanges();
-};
 
 const publicUrl = 'uploads/publicUrl';
 

@@ -1,21 +1,14 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { By } from '@angular/platform-browser';
 
-import { user } from '@bookapp/testing';
+import { clickOnBtn, user } from '@bookapp/testing';
 
 import { of } from 'rxjs';
 
 import { AvatarSelectorComponent } from './avatar-selector.component';
 
 const avatarUrl = 'avatarUrl';
-
-const clickOnBtn = (fixture: ComponentFixture<AvatarSelectorComponent>) => {
-  const btn = fixture.debugElement.query(By.css('button')).nativeElement;
-  btn.click();
-  fixture.detectChanges();
-};
 
 describe('AvatarSelectorComponent', () => {
   let component: AvatarSelectorComponent;
