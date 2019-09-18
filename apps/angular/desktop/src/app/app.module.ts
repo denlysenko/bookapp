@@ -19,7 +19,11 @@ import { DataAccessModule } from '@bookapp/angular/data-access';
 import { AuthModule } from '@bookapp/angular/desktop/auth';
 import { MainLayoutModule } from '@bookapp/angular/desktop/main-layout';
 import { GraphQLModule } from '@bookapp/angular/graphql';
-import { AuthGuard, RolesGuard } from '@bookapp/angular/shared';
+import {
+  AuthGuard,
+  CanDeactivateGuard,
+  RolesGuard
+} from '@bookapp/angular/shared';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -45,6 +49,7 @@ import { UploadService } from './services/upload.service';
   providers: [
     AuthGuard,
     RolesGuard,
+    CanDeactivateGuard,
     {
       provide: WebSocketImpl,
       useValue: null
