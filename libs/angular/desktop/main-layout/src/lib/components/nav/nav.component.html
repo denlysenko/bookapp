@@ -12,7 +12,7 @@
 <mat-nav-list class="nav">
   <a mat-list-item
      *ngFor="let link of navMenu"
-     [routerLink]="['/', link.path]"
+     [routerLink]="'/' + link.path"
      routerLinkActive="active">
     <i class="material-icons">
       {{ link.icon }}
@@ -22,7 +22,7 @@
 <mat-nav-list class="categories">
   <a mat-list-item
      *ngFor="let link of categoryMenu"
-     [routerLink]="['/', link.path]"
+     [routerLink]="'/' + link.path"
      routerLinkActive="active">
     <i class="material-icons"
        [style.color]="link.color">
