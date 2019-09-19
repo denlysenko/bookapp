@@ -67,7 +67,7 @@ export class AddBookFormComponent extends BaseForm {
   @Output() formSubmitted = new EventEmitter<Book>();
 
   private _book: Book;
-  private initialFormValue: any = { ...this.form.value };
+  private initialFormValue: any;
 
   constructor(
     feedbackService: FeedbackPlatformService,
@@ -81,6 +81,7 @@ export class AddBookFormComponent extends BaseForm {
     this.paidControl.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(this.togglePriceField.bind(this));
+    this.initialFormValue = { ...this.form.value };
   }
 
   get coverUrl(): string {
