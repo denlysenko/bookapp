@@ -57,11 +57,14 @@
       "@bookapp/angular/mobile/profile": [
         "libs/angular/mobile/profile/src/index.ts"
       ],
-      "@bookapp/angular/desktop/books": [
-        "libs/angular/desktop/books/src/index.ts"
-      ],
       "@bookapp/shared": ["libs/shared/src/index.ts"],
-      "@bookapp/utils": ["libs/utils/src/index.ts"]
+      "@bookapp/utils": ["libs/utils/src/index.ts"],
+      "@bookapp/angular/desktop/books/add-book": [
+        "libs/angular/desktop/books/add-book/src/index.ts"
+      ],
+      "@bookapp/angular/desktop/books/browse-books": [
+        "libs/angular/desktop/books/browse-books/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

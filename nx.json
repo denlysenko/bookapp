@@ -110,13 +110,16 @@
     "angular-mobile-profile": {
       "tags": []
     },
-    "angular-desktop-books": {
-      "tags": []
-    },
     "shared": {
       "tags": []
     },
     "utils": {
+      "tags": []
+    },
+    "angular-desktop-books-add-book": {
+      "tags": []
+    },
+    "angular-desktop-books-browse-books": {
       "tags": []
     }
   }

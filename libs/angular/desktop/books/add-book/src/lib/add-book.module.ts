@@ -13,7 +13,7 @@ import {
   ImageSelectorModule
 } from '@bookapp/angular/ui';
 
-import { AddBookRoutingModule } from './add-book.routing.module';
+import { AddBookRoutingModule } from './add-book-routing.module';
 import { AddBookFormComponent } from './components/add-book-form/add-book-form.component';
 import { AddBookPageComponent } from './containers/add-book-page/add-book-page.component';
 

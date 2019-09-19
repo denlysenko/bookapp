@@ -17,6 +17,7 @@ import {
 } from '@bookapp/angular/core';
 import { DataAccessModule } from '@bookapp/angular/data-access';
 import { AuthModule } from '@bookapp/angular/desktop/auth';
+import { BrowseBooksModule } from '@bookapp/angular/desktop/books/browse-books';
 import { MainLayoutModule } from '@bookapp/angular/desktop/main-layout';
 import { GraphQLModule } from '@bookapp/angular/graphql';
 import {
@@ -44,7 +45,8 @@ import { UploadService } from './services/upload.service';
     MatSnackBarModule,
     DataAccessModule,
     AuthModule,
-    MainLayoutModule
+    MainLayoutModule,
+    BrowseBooksModule
   ],
   providers: [
     AuthGuard,
