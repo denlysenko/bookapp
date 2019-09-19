@@ -4,7 +4,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output
 } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
@@ -32,7 +31,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./add-book-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddBookFormComponent extends BaseForm implements OnInit {
+export class AddBookFormComponent extends BaseForm {
   form = this.fb.group({
     _id: [null],
     title: [null, Validators.required],
@@ -78,6 +77,10 @@ export class AddBookFormComponent extends BaseForm implements OnInit {
     private readonly cdr: ChangeDetectorRef
   ) {
     super(feedbackService);
+    this.togglePriceField(false);
+    this.paidControl.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(this.togglePriceField.bind(this));
   }
 
   get coverUrl(): string {
@@ -98,12 +101,6 @@ export class AddBookFormComponent extends BaseForm implements OnInit {
 
   get isPaid(): boolean {
     return this.paidControl.value === true;
-  }
-
-  ngOnInit() {
-    this.paidControl.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(this.togglePriceField.bind(this));
   }
 
   showCoverSelector() {
@@ -137,6 +134,7 @@ export class AddBookFormComponent extends BaseForm implements OnInit {
     if (this.form.valid) {
       const { value } = this.form;
       this.formSubmitted.emit(value);
+      this.initialFormValue = { ...value };
     }
   }
 
