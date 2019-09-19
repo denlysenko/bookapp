@@ -1,0 +1,17 @@
+.spinner {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 111;
+
+  &.visible {
+    display: flex;
+  }
+}
