@@ -1,0 +1,37 @@
+@import 'variables';
+
+:host {
+  width: 100%;
+}
+
+.mat-toolbar-row {
+  justify-content: space-between;
+  padding: 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+    align-items: flex-start;
+  }
+}
+
+.mat-button-toggle-group {
+  font-size: 12px;
+}
+
+.mat-button-toggle-checked {
+  background: #97b3ce;
+  color: white;
+}
+
+.mat-form-field {
+  flex-basis: 35%;
+  font-size: 14px;
+  height: 38px;
+  color: $primary-text;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-top: 1em;
+  }
+}

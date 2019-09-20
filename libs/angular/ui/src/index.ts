@@ -10,3 +10,5 @@ export * from './lib/desktop/dialogs/dialogs.module';
 export * from './lib/desktop/dialogs/confirm-dialog/confirm-dialog.component';
 
 export * from './lib/desktop/preloader/preloader.module';
+
+export * from './lib/desktop/books-filter/books-filter.module';
