@@ -1,0 +1,59 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -0.75rem -1.5rem -0.75rem;
+
+  .list-item-wrapper {
+    width: 100%;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    margin-bottom: 1.5rem;
+
+    @media (min-width: 634px) {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+
+    @media (min-width: 970px) {
+      flex: 0 0 25%;
+      max-width: 25%;
+    }
+  }
+}
+
+.list-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 360px;
+  cursor: pointer;
+
+  ::ng-deep &.mat-card {
+    padding: 1rem;
+  }
+}
+
+.cover {
+  max-width: 200px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 20px;
+
+  img {
+    width: 100%;
+    max-height: 227px;
+    height: auto;
+    vertical-align: top;
+  }
+}
+
+.title {
+  text-decoration: none;
+  font-size: 16px;
+  text-transform: capitalize;
+}
+
+.author {
+  font-size: 12px;
+}
