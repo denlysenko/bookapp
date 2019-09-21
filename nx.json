@@ -121,6 +121,9 @@
     },
     "angular-desktop-books-browse-books": {
       "tags": []
+    },
+    "angular-desktop-books-buy-books": {
+      "tags": []
     }
   }
 }

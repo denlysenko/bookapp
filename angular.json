@@ -1048,6 +1048,40 @@
           "styleext": "scss"
         }
       }
+    },
+    "angular-desktop-books-buy-books": {
+      "projectType": "library",
+      "root": "libs/angular/desktop/books/buy-books",
+      "sourceRoot": "libs/angular/desktop/books/buy-books/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/angular/desktop/books/buy-books/tsconfig.lib.json",
+              "libs/angular/desktop/books/buy-books/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/angular/desktop/books/buy-books/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/angular/desktop/books/buy-books/jest.config.js",
+            "tsConfig": "libs/angular/desktop/books/buy-books/tsconfig.spec.json",
+            "setupFile": "libs/angular/desktop/books/buy-books/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

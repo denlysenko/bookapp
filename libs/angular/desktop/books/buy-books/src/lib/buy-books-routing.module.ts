@@ -3,18 +3,18 @@ import { RouterModule } from '@angular/router';
 
 import { AuthGuard } from '@bookapp/angular/shared';
 
-import { BrowseBooksPageComponent } from './containers/browse-books-page/browse-books-page.component';
+import { BuyBooksPageComponent } from './containers/buy-books-page/buy-books-page.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
         path: '',
-        component: BrowseBooksPageComponent,
+        component: BuyBooksPageComponent,
         canActivate: [AuthGuard]
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class BrowseBooksRoutingModule {}
+export class BuyBooksRoutingModule {}

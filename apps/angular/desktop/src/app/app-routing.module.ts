@@ -31,6 +31,14 @@ import { ROLES } from '@bookapp/shared';
               canActivate: [AuthGuard]
             },
             {
+              path: 'books/buy',
+              loadChildren: () =>
+                import('@bookapp/angular/desktop/books/buy-books').then(
+                  m => m.BuyBooksModule
+                ),
+              canLoad: [AuthGuard]
+            },
+            {
               path: 'books/add',
               loadChildren: () =>
                 import('@bookapp/angular/desktop/books/add-book').then(

@@ -64,6 +64,9 @@
       ],
       "@bookapp/angular/desktop/books/browse-books": [
         "libs/angular/desktop/books/browse-books/src/index.ts"
+      ],
+      "@bookapp/angular/desktop/books/buy-books": [
+        "libs/angular/desktop/books/buy-books/src/index.ts"
       ]
     }
   },

@@ -8,16 +8,18 @@ import {
   PreloaderModule
 } from '@bookapp/angular/ui';
 
-import { BrowseBooksPageComponent } from './containers/browse-books-page/browse-books-page.component';
+import { BuyBooksRoutingModule } from './buy-books-routing.module';
+import { BuyBooksPageComponent } from './containers/buy-books-page/buy-books-page.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    BuyBooksRoutingModule,
     MatToolbarModule,
     PreloaderModule,
     BooksFilterModule,
     BooksListModule
   ],
-  declarations: [BrowseBooksPageComponent]
+  declarations: [BuyBooksPageComponent]
 })
-export class BrowseBooksModule {}
+export class BuyBooksModule {}
