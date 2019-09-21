@@ -24,7 +24,8 @@ export class FilesService {
 
       const blobStream = blob.createWriteStream({
         metadata: {
-          contentType: file.mimetype
+          contentType: file.mimetype,
+          cacheControl: 'max-age=31536000'
         }
       });
 
