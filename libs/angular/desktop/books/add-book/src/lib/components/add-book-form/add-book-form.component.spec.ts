@@ -89,7 +89,6 @@ describe('AddBookFormComponent', () => {
       author: null,
       description: null,
       paid: false,
-      price: null,
       coverUrl: null,
       epubUrl: null
     });

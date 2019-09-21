@@ -1,1 +1,15 @@
-<p>browse-books-page works!</p>
+<bookapp-preloader [visible]="loading$ | async"></bookapp-preloader>
+<mat-toolbar>
+  <mat-toolbar-row>
+    <span>Browse Free Books</span>
+  </mat-toolbar-row>
+  <mat-toolbar-row class="mobile-height-auto">
+    <bookapp-books-filter [filter]="filter$ | async"
+                          (sortChanged)="sort($event)"
+                          (searchChanged)="search($event)"></bookapp-books-filter>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div class="view-content">
+  <bookapp-books-list [books]="books$ | async"
+                      (bookRated)="rate($event)"></bookapp-books-list>
+</div>

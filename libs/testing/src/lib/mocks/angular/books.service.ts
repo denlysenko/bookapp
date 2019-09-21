@@ -3,5 +3,11 @@ import { book } from '../../test-data/book';
 
 export const MockAngularBooksService = {
   create: jest.fn().mockImplementation(() => of({ data: book })),
-  update: jest.fn().mockImplementation(() => of({ data: book }))
+  update: jest.fn().mockImplementation(() => of({ data: book })),
+  getBooks: jest.fn().mockImplementation(() => ({
+    valueChanges: of({ data: { books: { rows: [book], count: 1 } } }),
+    refetch: jest.fn(),
+    fetchMore: jest.fn()
+  })),
+  rateBook: jest.fn().mockImplementation(() => of({}))
 };

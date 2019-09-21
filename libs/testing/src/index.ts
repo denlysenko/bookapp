@@ -21,6 +21,7 @@ export * from './lib/mocks/angular/auth.service';
 export * from './lib/mocks/angular/logs.service';
 export * from './lib/mocks/angular/mat-dialog';
 export * from './lib/mocks/angular/books.service';
+export * from './lib/mocks/angular/store.service';
 
 export * from './lib/mocks/shared/localStorage';
 

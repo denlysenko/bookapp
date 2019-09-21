@@ -12,3 +12,5 @@ export * from './lib/main-layout/main-layout';
 export * from './lib/password/password-page';
 
 export * from './lib/profile/profile-page';
+
+export * from './lib/books/books-page';
