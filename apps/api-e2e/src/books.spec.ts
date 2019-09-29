@@ -9,6 +9,7 @@ import {
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
+import { UsersService } from '@bookapp/api/users';
 import { ROLES } from '@bookapp/shared';
 import {
   book,
@@ -35,7 +36,7 @@ import * as jwt from 'jsonwebtoken';
 import { ValidationError } from 'mongoose/lib/error';
 import * as request from 'supertest';
 
-const authToken = jwt.sign({ id: user._id }, 'JWT_SECRET');
+const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
 
 const validationError = new ValidationError();
 validationError.errors = {
@@ -50,7 +51,7 @@ validationError.errors = {
 describe('BooksModule', () => {
   let app: INestApplication;
   let booksService: BooksService;
-  let authService: AuthService;
+  let usersService: UsersService;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -79,9 +80,9 @@ describe('BooksModule', () => {
       .compile();
 
     booksService = module.get<BooksService>(BooksService);
-    authService = module.get<AuthService>(AuthService);
+    usersService = module.get<UsersService>(UsersService);
 
-    jest.spyOn(authService, 'validate').mockResolvedValue({
+    jest.spyOn(usersService, 'findById').mockResolvedValue({
       ...user,
       roles: [ROLES.ADMIN]
     } as any);
@@ -460,7 +461,7 @@ describe('BooksModule', () => {
 
     it('should return FORBIDDEN error', async () => {
       jest
-        .spyOn(authService, 'validate')
+        .spyOn(usersService, 'findById')
         .mockImplementationOnce(() => Promise.resolve({ ...user } as any));
 
       const res = await request(app.getHttpServer())
@@ -575,7 +576,7 @@ describe('BooksModule', () => {
 
     it('should return FORBIDDEN error', async () => {
       jest
-        .spyOn(authService, 'validate')
+        .spyOn(usersService, 'findById')
         .mockImplementationOnce(() => Promise.resolve({ ...user } as any));
 
       const res = await request(app.getHttpServer())

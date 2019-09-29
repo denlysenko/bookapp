@@ -3,5 +3,6 @@ export enum ModelNames {
   BOOK = 'Book',
   COMMENT = 'Comment',
   LOG = 'Log',
-  USER = 'User'
+  USER = 'User',
+  AUTH_TOKEN = 'AuthToken'
 }

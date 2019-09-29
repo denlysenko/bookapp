@@ -1,16 +1,19 @@
+import { AuthTokensService } from '@bookapp/api/auth-tokens';
 import { ConfigService } from '@bookapp/api/config';
+import { AUTH_ERRORS } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
 import {
   authPayload,
+  MockAuthTokensService,
   MockConfigService,
   MockUsersService,
+  refreshToken,
   user
 } from '@bookapp/testing';
 
 import { Test } from '@nestjs/testing';
 
 import { AuthService } from './auth.service';
-import { AUTH_ERRORS } from './constants';
 
 const email = 'test@test.com';
 // tslint:disable-next-line: no-hardcoded-credentials
@@ -19,6 +22,7 @@ const password = 'password';
 describe('AuthService', () => {
   let authService: AuthService;
   let usersService: UsersService;
+  let authTokensService: AuthTokensService;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -31,19 +35,21 @@ describe('AuthService', () => {
         {
           provide: ConfigService,
           useValue: MockConfigService
+        },
+        {
+          provide: AuthTokensService,
+          useValue: MockAuthTokensService
         }
       ]
     }).compile();
 
     authService = module.get<AuthService>(AuthService);
     usersService = module.get<UsersService>(UsersService);
-    jest
-      .spyOn(authService, 'createToken')
-      .mockImplementation(() => authPayload.token);
+    authTokensService = module.get<AuthTokensService>(AuthTokensService);
   });
 
   describe('login()', () => {
-    it('should return token', async () => {
+    it('should return tokens', async () => {
       jest
         .spyOn(usersService, 'findByEmail')
         .mockImplementation(() =>
@@ -107,17 +113,12 @@ describe('AuthService', () => {
     });
   });
 
-  describe('validate()', () => {
-    it('should return user', async () => {
-      expect(await authService.validate({ id: 'id' })).toEqual(user);
-    });
-
-    it('should return null', async () => {
-      jest
-        .spyOn(usersService, 'findById')
-        .mockImplementation(() => Promise.resolve(null));
-
-      expect(await authService.validate({ id: 'id' })).toEqual(null);
+  describe('logout()', () => {
+    it('should remove refresh token', async () => {
+      await authService.logout(refreshToken);
+      expect(authTokensService.removeRefreshToken).toHaveBeenCalledWith(
+        refreshToken
+      );
     });
   });
 });

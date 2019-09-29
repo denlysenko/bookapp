@@ -1,6 +1,6 @@
 // tslint:disable: no-big-function
 // tslint:disable: no-duplicate-string
-import { AuthModule, AuthService } from '@bookapp/api/auth';
+import { AuthModule } from '@bookapp/api/auth';
 import {
   BOOKMARK_ERRORS,
   BookmarksModule,
@@ -9,7 +9,8 @@ import {
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
-import { BOOKMARKS, ROLES } from '@bookapp/shared';
+import { UsersService } from '@bookapp/api/users';
+import { BOOKMARKS } from '@bookapp/shared';
 import {
   bookmark,
   MockConfigService,
@@ -34,7 +35,7 @@ import { Test } from '@nestjs/testing';
 import * as jwt from 'jsonwebtoken';
 import * as request from 'supertest';
 
-const authToken = jwt.sign({ id: user._id }, 'JWT_SECRET');
+const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
 
 const MockBookmarksService = {
   getByType: jest.fn().mockResolvedValue({ count: 1, rows: [bookmark] }),
@@ -46,7 +47,7 @@ const MockBookmarksService = {
 describe('BookmarksModule', () => {
   let app: INestApplication;
   let bookmarksService: BookmarksService;
-  let authService: AuthService;
+  let usersService: UsersService;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -73,12 +74,9 @@ describe('BookmarksModule', () => {
       .compile();
 
     bookmarksService = module.get<BookmarksService>(BookmarksService);
-    authService = module.get<AuthService>(AuthService);
+    usersService = module.get<UsersService>(UsersService);
 
-    jest.spyOn(authService, 'validate').mockResolvedValue({
-      ...user,
-      roles: [ROLES.ADMIN]
-    } as any);
+    jest.spyOn(usersService, 'findById').mockResolvedValue(user as any);
 
     app = module.createNestApplication();
     await app.init();

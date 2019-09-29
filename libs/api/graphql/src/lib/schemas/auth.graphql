@@ -1,8 +1,10 @@
 type Mutation {
   login(email: String!, password: String!): AuthPayload!
   signup(user: UserInput!): AuthPayload!
+  logout(refreshToken: String!): Boolean
 }
 
 type AuthPayload {
-  token: String
+  accessToken: String!
+  refreshToken: String!
 }

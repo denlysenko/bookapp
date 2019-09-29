@@ -1,9 +1,9 @@
-import { AuthModule, AuthService } from '@bookapp/api/auth';
+import { AuthModule } from '@bookapp/api/auth';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { LogsModule, LogsService } from '@bookapp/api/logs';
 import { ModelNames } from '@bookapp/api/shared';
-import { ROLES } from '@bookapp/shared';
+import { UsersService } from '@bookapp/api/users';
 import {
   log,
   MockConfigService,
@@ -24,12 +24,12 @@ import { Test } from '@nestjs/testing';
 import * as jwt from 'jsonwebtoken';
 import * as request from 'supertest';
 
-const authToken = jwt.sign({ id: user._id }, 'JWT_SECRET');
+const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
 
 describe('LogsModule', () => {
   let app: INestApplication;
   let logsService: LogsService;
-  let authService: AuthService;
+  let usersService: UsersService;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -54,12 +54,9 @@ describe('LogsModule', () => {
       .compile();
 
     logsService = module.get<LogsService>(LogsService);
-    authService = module.get<AuthService>(AuthService);
+    usersService = module.get<UsersService>(UsersService);
 
-    jest.spyOn(authService, 'validate').mockResolvedValue({
-      ...user,
-      roles: [ROLES.ADMIN]
-    } as any);
+    jest.spyOn(usersService, 'findById').mockResolvedValue(user as any);
 
     app = module.createNestApplication();
     await app.init();

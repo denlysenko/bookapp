@@ -1,3 +1,6 @@
+import { accessToken, refreshToken } from '../mocks/api/auth-tokens.service';
+
 export const authPayload = {
-  token: 'token'
+  accessToken,
+  refreshToken
 };

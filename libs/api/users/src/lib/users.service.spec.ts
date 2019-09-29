@@ -1,11 +1,14 @@
 // tslint:disable: no-big-function
 // tslint:disable: no-duplicate-string
 // tslint:disable: no-identical-functions
+import { AuthTokensService } from '@bookapp/api/auth-tokens';
 import { ConfigService } from '@bookapp/api/config';
 import { FilesService } from '@bookapp/api/files';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
 import {
+  authPayload,
+  MockAuthTokensService,
   MockConfigService,
   MockModel,
   MockMongooseModel,
@@ -25,6 +28,7 @@ describe('UsersService', () => {
   let configService: ConfigService;
   let filesService: FilesService;
   let userModel: any;
+  let authTokensService: AuthTokensService;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -37,6 +41,10 @@ describe('UsersService', () => {
         {
           provide: getModelToken(ModelNames.USER),
           useValue: MockModel
+        },
+        {
+          provide: AuthTokensService,
+          useValue: MockAuthTokensService
         },
         {
           provide: FilesService,
@@ -53,6 +61,7 @@ describe('UsersService', () => {
     configService = module.get<ConfigService>(ConfigService);
     filesService = module.get<FilesService>(FilesService);
     userModel = module.get(getModelToken(ModelNames.USER));
+    authTokensService = module.get<AuthTokensService>(AuthTokensService);
 
     jest
       .spyOn(userModel, 'exec')
@@ -283,14 +292,19 @@ describe('UsersService', () => {
       }
     });
 
-    it('should update password', async () => {
+    it('should update password and return new pair of tokens', async () => {
       expect(
         await usersService.changePassword(
           user._id,
           'oldPassword',
           'newPassword'
         )
-      ).toEqual(true);
+      ).toEqual(authPayload);
+    });
+
+    it('should revoke user tokens', async () => {
+      await usersService.changePassword(user._id, 'oldPassword', 'newPassword');
+      expect(authTokensService.revokeUserTokens).toHaveBeenCalledWith(user._id);
     });
 
     it('should reject password update', async () => {

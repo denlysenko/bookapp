@@ -1,3 +1,4 @@
+import { authPayload } from '../../test-data/auth-payload';
 import { user } from '../../test-data/user';
 
 export const MockUsersService = {
@@ -12,7 +13,9 @@ export const MockUsersService = {
   findById: jest.fn().mockImplementation(() => Promise.resolve(user)),
   create: jest.fn().mockImplementation(() => Promise.resolve(user)),
   update: jest.fn().mockImplementation(() => Promise.resolve(user)),
-  changePassword: jest.fn().mockImplementation(() => Promise.resolve(true)),
+  changePassword: jest
+    .fn()
+    .mockImplementation(() => Promise.resolve(authPayload)),
   requestResetPassword: jest
     .fn()
     .mockImplementation(() => Promise.resolve('token')),

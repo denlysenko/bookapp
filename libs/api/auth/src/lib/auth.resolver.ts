@@ -17,4 +17,9 @@ export class AuthResolver {
   signup(@Args('user') user: UserDto) {
     return this.authService.signup(user);
   }
+
+  @Mutation()
+  logout(@Args('refreshToken') token: string) {
+    return this.authService.logout(token);
+  }
 }

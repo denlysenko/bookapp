@@ -124,6 +124,9 @@
     },
     "angular-desktop-books-buy-books": {
       "tags": []
+    },
+    "api-auth-tokens": {
+      "tags": ["scope:api", "type:feature", "platform:server"]
     }
   }
 }

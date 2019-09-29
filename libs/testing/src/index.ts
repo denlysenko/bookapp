@@ -13,6 +13,7 @@ export * from './lib/mocks/api/model';
 export * from './lib/mocks/api/logs.service';
 export * from './lib/mocks/api/books.service';
 export * from './lib/mocks/api/connection';
+export * from './lib/mocks/api/auth-tokens.service';
 
 export * from './lib/mocks/angular/storage-platform.service';
 export * from './lib/mocks/angular/feedback-platform.service';

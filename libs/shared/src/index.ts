@@ -14,6 +14,7 @@ export * from './lib/interfaces/profile-form';
 export * from './lib/interfaces/signup-credentials';
 export * from './lib/interfaces/upload-response';
 export * from './lib/interfaces/user';
+export * from './lib/interfaces/jwt-payload';
 
 export * from './lib/queries/auth';
 export * from './lib/queries/bookmarks';

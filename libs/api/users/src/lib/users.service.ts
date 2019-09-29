@@ -1,7 +1,8 @@
+import { AuthTokensService } from '@bookapp/api/auth-tokens';
 import { ConfigService } from '@bookapp/api/config';
 import { FilesService } from '@bookapp/api/files';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
-import { ApiResponse } from '@bookapp/shared';
+import { ApiResponse, AuthPayload } from '@bookapp/shared';
 import { extractFileKey } from '@bookapp/utils';
 
 import {
@@ -26,7 +27,8 @@ export class UsersService {
   constructor(
     @InjectModel(ModelNames.USER) private readonly userModel: Model<UserModel>,
     private readonly configService: ConfigService,
-    private readonly filesService: FilesService
+    private readonly filesService: FilesService,
+    private readonly authTokensService: AuthTokensService
   ) {}
 
   async findAll(query?: ApiQuery): Promise<ApiResponse<UserModel>> {
@@ -89,7 +91,7 @@ export class UsersService {
     id: string,
     oldPassword: string,
     newPassword: string
-  ): Promise<boolean> {
+  ): Promise<AuthPayload> {
     const user = await this.userModel.findById(id).exec();
 
     if (!user) {
@@ -105,7 +107,12 @@ export class UsersService {
     user.password = newPassword;
 
     await user.save();
-    return true;
+    await this.authTokensService.revokeUserTokens(user._id);
+
+    return {
+      accessToken: this.authTokensService.createAccessToken(user._id),
+      refreshToken: await this.authTokensService.createRefreshToken(user._id)
+    };
   }
 
   async requestResetPassword(email: string): Promise<string> {

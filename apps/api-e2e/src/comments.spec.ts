@@ -3,7 +3,7 @@ import { CommentsModule, CommentsService } from '@bookapp/api/comments';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
-import { ROLES } from '@bookapp/shared';
+import { UsersService } from '@bookapp/api/users';
 import {
   comment,
   MockConfigService,
@@ -23,7 +23,7 @@ import { Test } from '@nestjs/testing';
 import * as jwt from 'jsonwebtoken';
 import * as request from 'supertest';
 
-const authToken = jwt.sign({ id: user._id }, 'JWT_SECRET');
+const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
 
 const MockCommentsService = {
   saveForBook: jest.fn().mockResolvedValue(comment)
@@ -32,7 +32,7 @@ const MockCommentsService = {
 describe('CommentsModule', () => {
   let app: INestApplication;
   let commentsService: CommentsService;
-  let authService: AuthService;
+  let usersService: UsersService;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -59,12 +59,9 @@ describe('CommentsModule', () => {
       .compile();
 
     commentsService = module.get<CommentsService>(CommentsService);
-    authService = module.get<AuthService>(AuthService);
+    usersService = module.get<UsersService>(UsersService);
 
-    jest.spyOn(authService, 'validate').mockResolvedValue({
-      ...user,
-      roles: [ROLES.ADMIN]
-    } as any);
+    jest.spyOn(usersService, 'findById').mockResolvedValue(user as any);
 
     app = module.createNestApplication();
     await app.init();

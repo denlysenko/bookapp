@@ -1,10 +1,12 @@
-import { AUTH_ERRORS, AuthModule, AuthService } from '@bookapp/api/auth';
+import { AuthModule, AuthService } from '@bookapp/api/auth';
+import { AuthTokensService } from '@bookapp/api/auth-tokens';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
-import { ModelNames } from '@bookapp/api/shared';
+import { AUTH_ERRORS, ModelNames } from '@bookapp/api/shared';
 import { USER_VALIDATION_ERRORS, UsersService } from '@bookapp/api/users';
 import {
   authPayload,
+  MockAuthTokensService,
   MockConfigService,
   MockModel,
   MockUsersService
@@ -43,14 +45,16 @@ describe('AuthModule', () => {
       .useValue(MockConfigService)
       .overrideProvider(getModelToken(ModelNames.USER))
       .useValue(MockModel)
+      .overrideProvider(getModelToken(ModelNames.AUTH_TOKEN))
+      .useValue(MockModel)
       .overrideProvider(UsersService)
       .useValue(MockUsersService)
+      .overrideProvider(AuthTokensService)
+      .useValue(MockAuthTokensService)
       .compile();
 
     usersService = module.get<UsersService>(UsersService);
     authService = module.get<AuthService>(AuthService);
-
-    jest.spyOn(authService, 'createToken').mockReturnValue(authPayload.token);
 
     app = module.createNestApplication();
     await app.init();
@@ -63,7 +67,8 @@ describe('AuthModule', () => {
         .send({
           query: `mutation {
             login(email: "test@test.com", password: "password") {
-              token
+              accessToken
+              refreshToken
             }
           }`
         })
@@ -84,7 +89,8 @@ describe('AuthModule', () => {
         .send({
           query: `mutation { 
             login(email: "test@test.com", password: "password") { 
-              token
+              accessToken
+              refreshToken
             }
           }`
         });
@@ -105,7 +111,8 @@ describe('AuthModule', () => {
         .send({
           query: `mutation { 
             login(email: "test@test.com", password: "password") { 
-              token
+              accessToken
+              refreshToken
             }
           }`
         });
@@ -127,7 +134,8 @@ describe('AuthModule', () => {
               email: "test@test.com",
               password: "password"
             }) {
-              token
+              accessToken
+              refreshToken
             }
           }`
         })
@@ -153,7 +161,8 @@ describe('AuthModule', () => {
               email: "",
               password: ""
             }) {
-              token
+              accessToken
+              refreshToken
             }
           }`
         });
@@ -165,6 +174,23 @@ describe('AuthModule', () => {
         firstName: { message: USER_VALIDATION_ERRORS.FIRST_NAME_REQUIRED_ERR },
         email: { message: USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR }
       });
+    });
+  });
+
+  describe('logout()', () => {
+    it('should logout', () => {
+      return request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
+            logout(refreshToken: "refreshToken")
+          }`
+        })
+        .expect({
+          data: {
+            logout: true
+          }
+        });
     });
   });
 

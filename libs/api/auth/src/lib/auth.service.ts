@@ -1,17 +1,14 @@
-import { ConfigService } from '@bookapp/api/config';
+import { AuthTokensService } from '@bookapp/api/auth-tokens';
+import { AUTH_ERRORS } from '@bookapp/api/shared';
 import { UserDto, UsersService } from '@bookapp/api/users';
-import { AuthPayload, User } from '@bookapp/shared';
+import { AuthPayload } from '@bookapp/shared';
 
 import { BadRequestException, Injectable } from '@nestjs/common';
-
-import * as jwt from 'jsonwebtoken';
-
-import { AUTH_ERRORS } from './constants';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly configService: ConfigService,
+    private readonly authTokensService: AuthTokensService,
     private readonly usersService: UsersService
   ) {}
 
@@ -26,21 +23,24 @@ export class AuthService {
       throw new BadRequestException(AUTH_ERRORS.INCORRECT_PASSWORD_ERR);
     }
 
-    return { token: this.createToken(user._id) };
+    return {
+      accessToken: this.authTokensService.createAccessToken(user._id),
+      refreshToken: await this.authTokensService.createRefreshToken(user._id)
+    };
   }
 
   async signup(user: UserDto): Promise<AuthPayload> {
     const newUser = await this.usersService.create(user);
-    return { token: this.createToken(newUser._id) };
+
+    return {
+      accessToken: this.authTokensService.createAccessToken(newUser._id),
+      refreshToken: await this.authTokensService.createRefreshToken(newUser._id)
+    };
   }
 
-  validate({ id }): Promise<User> {
-    return this.usersService.findById(id);
-  }
+  async logout(token: string): Promise<boolean> {
+    await this.authTokensService.removeRefreshToken(token);
 
-  createToken(id: string): string {
-    return jwt.sign({ id }, this.configService.get('JWT_SECRET'), {
-      expiresIn: parseInt(this.configService.get('TOKEN_EXPIRATION_TIME'), 10)
-    });
+    return true;
   }
 }

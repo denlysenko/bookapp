@@ -1082,6 +1082,31 @@
           "styleext": "scss"
         }
       }
+    },
+    "api-auth-tokens": {
+      "root": "libs/api/auth-tokens",
+      "sourceRoot": "libs/api/auth-tokens/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/api/auth-tokens/tsconfig.lib.json",
+              "libs/api/auth-tokens/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/api/auth-tokens/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/api/auth-tokens/jest.config.js",
+            "tsConfig": "libs/api/auth-tokens/tsconfig.spec.json"
+          }
+        }
+      }
     }
   },
   "cli": {

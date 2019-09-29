@@ -1,28 +1,28 @@
 import { ConfigService } from '@bookapp/api/config';
+import { AUTH_ERRORS } from '@bookapp/api/shared';
+import { UsersService } from '@bookapp/api/users';
+import { JwtPayload } from '@bookapp/shared';
 
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { AuthService } from './auth.service';
-import { AUTH_ERRORS } from './constants';
-import { JwtPayload } from './interfaces/jwt-payload';
-
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     configService: ConfigService,
-    private readonly authService: AuthService
+    private readonly usersService: UsersService
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: configService.get('JWT_SECRET')
+      secretOrKey: configService.get('ACCESS_TOKEN_SECRET')
     });
   }
 
   async validate(payload: JwtPayload, done: any) {
-    const user = await this.authService.validate(payload);
+    const user = await this.usersService.findById(payload.id);
+
     if (!user) {
       return done(
         new UnauthorizedException(AUTH_ERRORS.UNAUTHORIZED_ERR),

@@ -1,8 +1,15 @@
-import { AuthModule, AuthService } from '@bookapp/api/auth';
+import { AuthModule } from '@bookapp/api/auth';
+import { AuthTokensService } from '@bookapp/api/auth-tokens';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { FILE_ERRORS, FilesModule, FilesService } from '@bookapp/api/files';
 import { ModelNames } from '@bookapp/api/shared';
-import { MockConfigService, MockModel, user } from '@bookapp/testing';
+import { UsersService } from '@bookapp/api/users';
+import {
+  MockAuthTokensService,
+  MockConfigService,
+  MockModel,
+  user
+} from '@bookapp/testing';
 
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
@@ -12,7 +19,7 @@ import * as jwt from 'jsonwebtoken';
 import { resolve } from 'path';
 import * as request from 'supertest';
 
-const authToken = jwt.sign({ id: user._id }, 'JWT_SECRET');
+const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
 const publicUrl = 'public_url';
 const filesPath = resolve(`${__dirname}`, '../test-files');
 
@@ -26,7 +33,7 @@ const MockFilesService = {
 describe('FilesModule', () => {
   let app: INestApplication;
   let filesService: FilesService;
-  let authService: AuthService;
+  let usersService: UsersService;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -36,14 +43,18 @@ describe('FilesModule', () => {
       .useValue(MockConfigService)
       .overrideProvider(getModelToken(ModelNames.USER))
       .useValue(MockModel)
+      .overrideProvider(getModelToken(ModelNames.AUTH_TOKEN))
+      .useValue(MockModel)
       .overrideProvider(FilesService)
       .useValue(MockFilesService)
+      .overrideProvider(AuthTokensService)
+      .useValue(MockAuthTokensService)
       .compile();
 
     filesService = module.get<FilesService>(FilesService);
-    authService = module.get<AuthService>(AuthService);
+    usersService = module.get<UsersService>(UsersService);
 
-    jest.spyOn(authService, 'validate').mockResolvedValue(user as any);
+    jest.spyOn(usersService, 'findById').mockResolvedValue(user as any);
 
     app = module.createNestApplication();
     await app.init();

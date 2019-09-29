@@ -1,6 +1,7 @@
 // tslint:disable: no-big-function
 // tslint:disable: no-duplicate-string
 import { AuthModule, AuthService } from '@bookapp/api/auth';
+import { AuthTokensService } from '@bookapp/api/auth-tokens';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
@@ -11,6 +12,8 @@ import {
 } from '@bookapp/api/users';
 import { ROLES } from '@bookapp/shared';
 import {
+  authPayload,
+  MockAuthTokensService,
   MockConfigService,
   MockModel,
   MockUsersService,
@@ -30,7 +33,7 @@ import * as jwt from 'jsonwebtoken';
 import { ValidationError } from 'mongoose/lib/error';
 import * as request from 'supertest';
 
-const authToken = jwt.sign({ id: user._id }, 'JWT_SECRET');
+const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
 
 const validationError = new ValidationError();
 validationError.errors = {
@@ -42,7 +45,6 @@ validationError.errors = {
 describe('UsersModule', () => {
   let app: INestApplication;
   let usersService: UsersService;
-  let authService: AuthService;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -52,14 +54,17 @@ describe('UsersModule', () => {
       .useValue(MockConfigService)
       .overrideProvider(getModelToken(ModelNames.USER))
       .useValue(MockModel)
+      .overrideProvider(getModelToken(ModelNames.AUTH_TOKEN))
+      .useValue(MockModel)
       .overrideProvider(UsersService)
       .useValue(MockUsersService)
+      .overrideProvider(AuthTokensService)
+      .useValue(MockAuthTokensService)
       .compile();
 
     usersService = module.get<UsersService>(UsersService);
-    authService = module.get<AuthService>(AuthService);
 
-    jest.spyOn(authService, 'validate').mockResolvedValue({
+    jest.spyOn(usersService, 'findById').mockResolvedValue({
       ...user,
       roles: [ROLES.ADMIN]
     } as any);
@@ -206,7 +211,7 @@ describe('UsersModule', () => {
 
     it('should return FORBIDDEN error', async () => {
       jest
-        .spyOn(authService, 'validate')
+        .spyOn(usersService, 'findById')
         .mockImplementationOnce(() => Promise.resolve({ ...user } as any));
 
       const res = await request(app.getHttpServer())
@@ -276,7 +281,7 @@ describe('UsersModule', () => {
 
     it('should return FORBIDDEN error', async () => {
       jest
-        .spyOn(authService, 'validate')
+        .spyOn(usersService, 'findById')
         .mockImplementationOnce(() => Promise.resolve({ ...user } as any));
 
       const res = await request(app.getHttpServer())
@@ -416,12 +421,15 @@ describe('UsersModule', () => {
         .set('Authorization', `Bearer ${authToken}`)
         .send({
           query: `mutation {
-            changePassword(password: "newPassword", oldPassword: "oldPassword")
+            changePassword(password: "newPassword", oldPassword: "oldPassword") {
+              accessToken
+              refreshToken
+            }
           }`
         })
         .expect({
           data: {
-            changePassword: true
+            changePassword: authPayload
           }
         });
 
@@ -448,7 +456,10 @@ describe('UsersModule', () => {
         .set('Authorization', `Bearer ${authToken}`)
         .send({
           query: `mutation {
-            changePassword(password: "newPassword", oldPassword: "oldPassword")
+            changePassword(password: "newPassword", oldPassword: "oldPassword") {
+              accessToken
+              refreshToken
+            }
           }`
         });
 
@@ -466,7 +477,10 @@ describe('UsersModule', () => {
         .post('/graphql')
         .send({
           query: `mutation {
-            changePassword(password: "newPassword", oldPassword: "oldPassword")
+            changePassword(password: "newPassword", oldPassword: "oldPassword") {
+              accessToken
+              refreshToken
+            }
           }`
         });
 
@@ -647,7 +661,7 @@ describe('UsersModule', () => {
 
     it('should return FORBIDDEN error', async () => {
       jest
-        .spyOn(authService, 'validate')
+        .spyOn(usersService, 'findById')
         .mockImplementationOnce(() => Promise.resolve({ ...user } as any));
 
       const res = await request(app.getHttpServer())

@@ -9,7 +9,10 @@ export const MockMongooseModel = {
   sort: jest.fn(() => MockMongooseModel),
   exec: jest.fn(),
   save: jest.fn(),
-  remove: jest.fn()
+  remove: jest.fn(),
+  deleteOne: jest.fn(() => MockMongooseModel),
+  deleteMany: jest.fn(() => MockMongooseModel),
+  create: jest.fn().mockResolvedValue(true)
 };
 
 export class MockModel {
