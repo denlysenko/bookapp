@@ -1,17 +1,38 @@
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
 import { CanActivate, CanLoad } from '@angular/router';
 
-import { AUTH_TOKEN, StoragePlatformService } from '@bookapp/angular/core';
+import {
+  AUTH_TOKEN,
+  EnvConfig,
+  Environment,
+  RouterExtensions,
+  StoragePlatformService,
+  StoreService
+} from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
+import { AuthPayload, REFRESH_TOKEN_HEADER } from '@bookapp/shared';
 
-import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { isNil } from 'lodash';
+import { Observable, of } from 'rxjs';
+import {
+  catchError,
+  filter,
+  mapTo,
+  switchMapTo,
+  take,
+  tap
+} from 'rxjs/operators';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad {
   constructor(
+    private readonly storeService: StoreService,
     private readonly storagePlatformService: StoragePlatformService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly routerExtensions: RouterExtensions,
+    private readonly http: HttpClient,
+    @Inject(Environment) private readonly environment: EnvConfig
   ) {}
 
   canActivate(): Observable<boolean> | boolean {
@@ -22,28 +43,50 @@ export class AuthGuard implements CanActivate, CanLoad {
     return this.hasAccess();
   }
 
-  private waitForUser() {
-    return this.authService.me().valueChanges.pipe(
-      map(({ data }) => {
-        if (data && data.me) {
-          return true;
-        }
-
-        this.authService.logout();
-        return false;
-      }),
-      take(1)
-    );
-  }
-
   private hasAccess() {
-    const loggedIn = !!this.storagePlatformService.getItem(AUTH_TOKEN);
+    const accessToken = this.storeService.get(AUTH_TOKEN);
+    const refreshToken = this.storagePlatformService.getItem(AUTH_TOKEN);
 
-    if (!loggedIn) {
-      this.authService.logout();
-      return false;
+    if (accessToken) {
+      return this.waitForUser();
     }
 
-    return this.waitForUser();
+    if (!accessToken && refreshToken) {
+      return this.http
+        .post<AuthPayload>(this.environment.refreshTokenUrl, null, {
+          headers: new HttpHeaders().set(REFRESH_TOKEN_HEADER, refreshToken)
+        })
+        .pipe(
+          tap(payload => {
+            this.storeService.set(AUTH_TOKEN, payload.accessToken);
+            this.storagePlatformService.setItem(
+              AUTH_TOKEN,
+              payload.refreshToken
+            );
+          }),
+          switchMapTo(this.waitForUser()),
+          catchError(() => of(false))
+        );
+    }
+
+    this.routerExtensions.navigate(['auth'], {
+      // for nativescript
+      clearHistory: true,
+      transition: {
+        name: 'flip',
+        duration: 300,
+        curve: 'linear'
+      }
+    });
+
+    return false;
+  }
+
+  private waitForUser() {
+    return this.authService.me().valueChanges.pipe(
+      filter(({ data }) => !isNil(data) && !isNil(data.me)),
+      mapTo(true),
+      take(1)
+    );
   }
 }

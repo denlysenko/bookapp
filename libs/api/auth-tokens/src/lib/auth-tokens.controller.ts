@@ -1,4 +1,12 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { REFRESH_TOKEN_HEADER } from '@bookapp/shared';
+
+import {
+  Controller,
+  Headers,
+  HttpCode,
+  HttpStatus,
+  Post
+} from '@nestjs/common';
 
 import { AuthTokensService } from './auth-tokens.service';
 
@@ -8,7 +16,7 @@ export class AuthTokensController {
 
   @Post('refreshTokens')
   @HttpCode(HttpStatus.OK)
-  refreshTokens(@Body('refreshToken') refreshToken: string) {
+  refreshTokens(@Headers(REFRESH_TOKEN_HEADER) refreshToken: string) {
     return this.authTokensService.refreshTokens(refreshToken);
   }
 }

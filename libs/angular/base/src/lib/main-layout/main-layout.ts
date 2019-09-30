@@ -34,7 +34,7 @@ export abstract class MainLayoutBase extends BaseComponent
   }
 
   logout() {
-    this.authService.logout();
+    this.authService.logout().subscribe();
   }
 
   ngOnDestroy() {

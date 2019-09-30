@@ -1,20 +1,26 @@
-import { HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injector } from '@angular/core';
 
 import {
   AUTH_TOKEN,
   EnvConfig,
   FeedbackPlatformService,
   HTTP_STATUS,
-  StoragePlatformService
+  StoragePlatformService,
+  StoreService
 } from '@bookapp/angular/core';
+import { AuthService } from '@bookapp/angular/data-access';
+import { AuthPayload, REFRESH_TOKEN_HEADER } from '@bookapp/shared';
 
 import { HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloLink, split } from 'apollo-link';
 import { onError } from 'apollo-link-error';
 import { RetryLink } from 'apollo-link-retry';
+import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
+import * as jwtDecode from 'jwt-decode';
 
 interface Definition {
   kind: string;
@@ -37,9 +43,11 @@ const defaultOptions = {
 export function createApolloFactory(
   httpLink: HttpLink,
   storageService: StoragePlatformService,
+  storeService: StoreService,
   webSocketImpl: any,
-  feedbackService: FeedbackPlatformService,
-  environment: EnvConfig
+  environment: EnvConfig,
+  httpClient: HttpClient,
+  injector: Injector
 ) {
   const http = httpLink.create({
     uri: environment.endpointUrl
@@ -50,7 +58,7 @@ export function createApolloFactory(
     options: {
       reconnect: true,
       connectionParams: {
-        authToken: storageService.getItem(AUTH_TOKEN)
+        authToken: storeService.get(AUTH_TOKEN)
       }
     },
     webSocketImpl
@@ -60,7 +68,7 @@ export function createApolloFactory(
     operation.setContext({
       headers: new HttpHeaders().set(
         'Authorization',
-        `Bearer ${storageService.getItem(AUTH_TOKEN)}` || null
+        `Bearer ${storeService.get(AUTH_TOKEN)}`
       )
     });
 
@@ -77,6 +85,8 @@ export function createApolloFactory(
   );
 
   const errorLink = onError(({ networkError, graphQLErrors }) => {
+    const feedbackService = injector.get(FeedbackPlatformService);
+
     if (networkError) {
       let msg: string;
 
@@ -109,8 +119,11 @@ export function createApolloFactory(
         error.extensions.exception.response.statusCode ===
           HTTP_STATUS.UNAUTHORIZED
       ) {
-        // TODO: redirect to login page
+        const authService = injector.get(AuthService);
+
         feedbackService.error(error.extensions.exception.response.error);
+        authService.logout().subscribe();
+        return;
       }
 
       if (
@@ -120,6 +133,7 @@ export function createApolloFactory(
         error.extensions.exception.response.statusCode === HTTP_STATUS.FORBIDDEN
       ) {
         feedbackService.error(error.extensions.exception.response.error);
+        return;
       }
     }
   });
@@ -138,8 +152,43 @@ export function createApolloFactory(
     }
   });
 
+  const refreshTokenLink = new TokenRefreshLink({
+    accessTokenField: 'accessToken',
+    isTokenValidOrUndefined: () => {
+      const token = storeService.get(AUTH_TOKEN);
+
+      if (!token) {
+        return true;
+      }
+
+      try {
+        const { exp } = jwtDecode(token);
+        return Date.now() < exp * 1000;
+      } catch (err) {
+        return false;
+      }
+    },
+    fetchAccessToken: () => {
+      return httpClient
+        .post<Response>(environment.refreshTokenUrl, null, {
+          headers: new HttpHeaders().set(
+            REFRESH_TOKEN_HEADER,
+            storageService.getItem(AUTH_TOKEN)
+          )
+        })
+        .toPromise();
+    },
+    handleResponse: () => (response: AuthPayload) => {
+      storageService.setItem(AUTH_TOKEN, response.refreshToken);
+      return response;
+    },
+    handleFetch: accessToken => {
+      storeService.set(AUTH_TOKEN, accessToken);
+    }
+  });
+
   return {
-    link: ApolloLink.from([errorLink, retryLink, link]),
+    link: ApolloLink.from([refreshTokenLink, errorLink, retryLink, link]),
     cache: new InMemoryCache(),
     defaultOptions
   };

@@ -4,7 +4,7 @@ import {
   AUTH_TOKEN,
   EnvConfig,
   Environment,
-  StoragePlatformService
+  StoreService
 } from '@bookapp/angular/core';
 
 import {
@@ -23,7 +23,7 @@ export class UploadService {
   private progress = new BehaviorSubject<number>(0);
 
   constructor(
-    private readonly storageService: StoragePlatformService,
+    private readonly storeService: StoreService,
     @Inject(Environment) private readonly environment: EnvConfig
   ) {}
 
@@ -33,7 +33,7 @@ export class UploadService {
 
   upload(fileUrl: string, name: string = 'file'): Observable<string> {
     return new Observable(observer => {
-      const token = this.storageService.getItem(AUTH_TOKEN);
+      const token = this.storeService.get(AUTH_TOKEN);
 
       const request: Request = {
         url: this.environment.uploadUrl,

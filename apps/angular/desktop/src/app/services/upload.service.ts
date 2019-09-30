@@ -5,7 +5,7 @@ import {
   EnvConfig,
   Environment,
   HTTP_STATUS,
-  StoragePlatformService
+  StoreService
 } from '@bookapp/angular/core';
 
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable()
 export class UploadService {
   constructor(
-    private readonly storageService: StoragePlatformService,
+    private readonly storeService: StoreService,
     @Inject(Environment) private readonly environment: EnvConfig
   ) {}
 
@@ -58,7 +58,7 @@ export class UploadService {
         }
       };
 
-      const token = this.storageService.getItem(AUTH_TOKEN);
+      const token = this.storeService.get(AUTH_TOKEN);
 
       xhr.open('POST', `${this.environment.uploadUrl}`, true);
       xhr.setRequestHeader('Authorization', `Bearer ${token}`);
@@ -83,7 +83,7 @@ export class UploadService {
         }
       };
 
-      const token = this.storageService.getItem(AUTH_TOKEN);
+      const token = this.storeService.get(AUTH_TOKEN);
 
       xhr.open('DELETE', `${this.environment.uploadUrl}/${key}`, true);
       xhr.setRequestHeader('Authorization', `Bearer ${token}`);

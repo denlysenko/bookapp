@@ -3,13 +3,20 @@ import { TestBed } from '@angular/core/testing';
 import {
   AUTH_TOKEN,
   RouterExtensions,
-  StoragePlatformService
+  StoragePlatformService,
+  StoreService
 } from '@bookapp/angular/core';
-import { LOGIN_MUTATION, ME_QUERY, SIGNUP_MUTATION } from '@bookapp/shared';
+import {
+  LOGIN_MUTATION,
+  LOGOUT_MUTATION,
+  ME_QUERY,
+  SIGNUP_MUTATION
+} from '@bookapp/shared';
 import {
   authPayload,
   MockRouterExtensions,
   MockStoragePlatformService,
+  MockStoreService,
   user
 } from '@bookapp/testing';
 
@@ -26,11 +33,13 @@ import { AuthService } from './auth.service';
 const email = 'test@test.com';
 const pass = 'pass';
 
+// tslint:disable-next-line: no-big-function
 describe('AuthService', () => {
   let controller: ApolloTestingController;
   let service: AuthService;
   let storageService: StoragePlatformService;
   let router: RouterExtensions;
+  let storeService: StoreService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -44,6 +53,10 @@ describe('AuthService', () => {
         {
           provide: RouterExtensions,
           useValue: MockRouterExtensions
+        },
+        {
+          provide: StoreService,
+          useValue: MockStoreService
         }
       ]
     });
@@ -52,6 +65,7 @@ describe('AuthService', () => {
     service = TestBed.get(AuthService);
     storageService = TestBed.get(StoragePlatformService);
     router = TestBed.get(RouterExtensions);
+    storeService = TestBed.get(StoreService);
   });
 
   afterEach(() => {
@@ -64,8 +78,8 @@ describe('AuthService', () => {
 
   describe('login()', () => {
     it('should login', () => {
-      service.login(email, pass).subscribe(({ data: { login: { token } } }) => {
-        expect(token).toEqual(authPayload.token);
+      service.login(email, pass).subscribe(({ data: { login } }) => {
+        expect(login).toEqual(authPayload);
       });
 
       const op = controller.expectOne(LOGIN_MUTATION);
@@ -82,14 +96,19 @@ describe('AuthService', () => {
       controller.verify();
     });
 
-    it('should save token to storage', () => {
+    it('should save tokens to storages', () => {
       service.login(email, pass).subscribe();
 
       const op = controller.expectOne(LOGIN_MUTATION);
 
       expect(storageService.setItem).toHaveBeenCalledWith(
         AUTH_TOKEN,
-        authPayload.token
+        authPayload.refreshToken
+      );
+
+      expect(storeService.set).toHaveBeenCalledWith(
+        AUTH_TOKEN,
+        authPayload.accessToken
       );
 
       op.flush({
@@ -111,12 +130,10 @@ describe('AuthService', () => {
     };
 
     it('should signup', done => {
-      service
-        .signup(credentials)
-        .subscribe(({ data: { signup: { token } } }) => {
-          expect(token).toEqual(authPayload.token);
-          done();
-        });
+      service.signup(credentials).subscribe(({ data: { signup } }) => {
+        expect(signup).toEqual(authPayload);
+        done();
+      });
 
       const op = controller.expectOne(SIGNUP_MUTATION);
 
@@ -131,14 +148,19 @@ describe('AuthService', () => {
       controller.verify();
     });
 
-    it('should save token to storage', () => {
+    it('should save tokens to storages', () => {
       service.signup(credentials).subscribe();
 
       const op = controller.expectOne(SIGNUP_MUTATION);
 
       expect(storageService.setItem).toHaveBeenCalledWith(
         AUTH_TOKEN,
-        authPayload.token
+        authPayload.refreshToken
+      );
+
+      expect(storeService.set).toHaveBeenCalledWith(
+        AUTH_TOKEN,
+        authPayload.accessToken
       );
 
       op.flush({
@@ -165,6 +187,10 @@ describe('AuthService', () => {
           {
             provide: RouterExtensions,
             useValue: MockRouterExtensions
+          },
+          {
+            provide: StoreService,
+            useValue: MockStoreService
           },
           {
             provide: APOLLO_TESTING_CACHE,
@@ -198,13 +224,57 @@ describe('AuthService', () => {
   });
 
   describe('logout()', () => {
-    it('should remove token from storage', async () => {
-      await service.logout();
-      expect(storageService.removeItem).toHaveBeenCalledWith(AUTH_TOKEN);
+    it('should logout', done => {
+      service.logout().subscribe(({ data: { logout } }) => {
+        expect(logout).toEqual(true);
+        done();
+      });
+
+      const op = controller.expectOne(LOGOUT_MUTATION);
+
+      op.flush({
+        data: {
+          logout: true
+        }
+      });
+
+      controller.verify();
     });
 
-    it('should navigate to auth', async () => {
-      await service.logout();
+    it('should remove tokens from storages', done => {
+      service.logout().subscribe(() => {
+        done();
+      });
+
+      const op = controller.expectOne(LOGOUT_MUTATION);
+
+      op.flush({
+        data: {
+          logout: true
+        }
+      });
+
+      controller.verify();
+
+      expect(storageService.removeItem).toHaveBeenCalledWith(AUTH_TOKEN);
+      expect(storeService.remove).toHaveBeenCalledWith(AUTH_TOKEN);
+    });
+
+    it('should navigate to auth', done => {
+      service.logout().subscribe(() => {
+        done();
+      });
+
+      const op = controller.expectOne(LOGOUT_MUTATION);
+
+      op.flush({
+        data: {
+          logout: true
+        }
+      });
+
+      controller.verify();
+
       expect(router.navigate).toHaveBeenCalled();
     });
   });

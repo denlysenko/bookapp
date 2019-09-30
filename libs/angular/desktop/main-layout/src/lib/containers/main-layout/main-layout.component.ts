@@ -23,10 +23,12 @@ export class MainLayoutComponent extends MainLayoutBase implements OnDestroy {
     super(authService, logsService);
     this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
     this.mobileQueryListener = () => this.cdr.detectChanges();
+    // tslint:disable-next-line: deprecation
     this.mobileQuery.addListener(this.mobileQueryListener);
   }
 
   ngOnDestroy() {
+    // tslint:disable-next-line: deprecation
     this.mobileQuery.removeListener(this.mobileQueryListener);
     super.ngOnDestroy();
   }

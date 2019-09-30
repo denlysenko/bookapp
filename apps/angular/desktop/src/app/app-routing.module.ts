@@ -68,7 +68,7 @@ import { ROLES } from '@bookapp/shared';
           ]
         }
       ],
-      { initialNavigation: 'enabled' }
+      { initialNavigation: 'disabled' }
     )
   ],
   exports: [RouterModule]

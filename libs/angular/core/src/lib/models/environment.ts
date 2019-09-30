@@ -3,4 +3,5 @@ export interface EnvConfig {
   endpointUrl: string;
   subscriptionsEndpoint: string;
   uploadUrl: string;
+  refreshTokenUrl: string;
 }

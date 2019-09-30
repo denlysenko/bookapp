@@ -5,7 +5,8 @@ import { ProfileFragment } from './fragments';
 export const LOGIN_MUTATION = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
-      token
+      accessToken
+      refreshToken
     }
   }
 `;
@@ -13,8 +14,15 @@ export const LOGIN_MUTATION = gql`
 export const SIGNUP_MUTATION = gql`
   mutation signup($user: UserInput!) {
     signup(user: $user) {
-      token
+      accessToken
+      refreshToken
     }
+  }
+`;
+
+export const LOGOUT_MUTATION = gql`
+  mutation logout($refreshToken: String!) {
+    logout(refreshToken: $refreshToken)
   }
 `;
 

@@ -1,15 +1,15 @@
-import { NgModule } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injector, NgModule } from '@angular/core';
 
 import {
   Environment,
-  FeedbackPlatformService,
   StoragePlatformService,
+  StoreService,
   WebSocketImpl
 } from '@bookapp/angular/core';
 
 import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
-
 import { createApolloFactory } from './graphql.providers';
 
 @NgModule({
@@ -21,9 +21,11 @@ import { createApolloFactory } from './graphql.providers';
       deps: [
         HttpLink,
         StoragePlatformService,
+        StoreService,
         WebSocketImpl,
-        FeedbackPlatformService,
-        Environment
+        Environment,
+        HttpClient,
+        Injector
       ]
     }
   ]
