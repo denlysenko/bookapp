@@ -127,6 +127,9 @@
     },
     "api-auth-tokens": {
       "tags": ["scope:api", "type:feature", "platform:server"]
+    },
+    "angular-mobile-books-browse-books": {
+      "tags": []
     }
   }
 }

@@ -68,7 +68,10 @@
       "@bookapp/angular/desktop/books/buy-books": [
         "libs/angular/desktop/books/buy-books/src/index.ts"
       ],
-      "@bookapp/api/auth-tokens": ["libs/api/auth-tokens/src/index.ts"]
+      "@bookapp/api/auth-tokens": ["libs/api/auth-tokens/src/index.ts"],
+      "@bookapp/angular/mobile/books/browse-books": [
+        "libs/angular/mobile/books/browse-books/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
