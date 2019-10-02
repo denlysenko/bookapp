@@ -1,7 +1,7 @@
-# angular-ui-ui-desktop
+# angular-ui-desktop
 
 This library was generated with [Nx](https://nx.dev).
 
 ## Running unit tests
 
-Run `ng test angular-ui-ui-desktop` to execute the unit tests via [Jest](https://jestjs.io).
+Run `ng test angular-ui-desktop` to execute the unit tests via [Jest](https://jestjs.io).

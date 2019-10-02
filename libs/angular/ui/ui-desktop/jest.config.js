@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'angular-ui-ui-desktop',
+  name: 'angular-ui-desktop',
   preset: '../../../../jest.config.js',
   transform: {
     '^.+\\.[tj]sx?$': 'ts-jest'
