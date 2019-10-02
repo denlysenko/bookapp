@@ -2,7 +2,7 @@
   <GridLayout *ngFor="let item of navMenu"
               columns="auto, *"
               class="menu-item"
-              [nsRouterLink]="['/', item.path]"
+              [nsRouterLink]="'/' + item.path"
               nsRouterLinkActive="selected"
               pageTransition="fade">
     <Label col="0"
@@ -16,7 +16,7 @@
   <GridLayout *ngFor="let item of categoryMenu"
               columns="auto, *"
               class="menu-item"
-              [nsRouterLink]="['/', item.path]"
+              [nsRouterLink]="'/' + item.path"
               nsRouterLinkActive="selected"
               pageTransition="fade">
     <Label col="0"
