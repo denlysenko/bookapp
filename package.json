@@ -79,6 +79,7 @@
     "nativescript-ngx-shadow": "6.1.0",
     "nativescript-theme-core": "~1.0.4",
     "nativescript-ui-dataform": "^5.1.0",
+    "nativescript-ui-listview": "^7.1.0",
     "nativescript-ui-sidedrawer": "^7.0.1",
     "ngx-image-cropper": "^1.4.1",
     "passport": "^0.4.0",
