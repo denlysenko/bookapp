@@ -6,7 +6,7 @@ import {
   BooksFilterModule,
   BooksListModule,
   PreloaderModule
-} from '@bookapp/angular/ui';
+} from '@bookapp/angular/ui-desktop';
 
 import { BrowseBooksPageComponent } from './containers/browse-books-page/browse-books-page.component';
 

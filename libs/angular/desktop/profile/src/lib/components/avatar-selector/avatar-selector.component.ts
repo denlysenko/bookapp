@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { ImageSelectorComponent } from '@bookapp/angular/ui';
+import { ImageSelectorComponent } from '@bookapp/angular/ui-desktop';
 import { ProfileForm, User } from '@bookapp/shared';
 
 @Component({

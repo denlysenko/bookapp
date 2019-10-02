@@ -53,7 +53,9 @@
       "@bookapp/angular/desktop/profile": [
         "libs/angular/desktop/profile/src/index.ts"
       ],
-      "@bookapp/angular/ui": ["libs/angular/ui/src/index.ts"],
+      "@bookapp/angular/ui-desktop": [
+        "libs/angular/ui/ui-desktop/src/index.ts"
+      ],
       "@bookapp/angular/mobile/profile": [
         "libs/angular/mobile/profile/src/index.ts"
       ],
@@ -71,7 +73,8 @@
       "@bookapp/api/auth-tokens": ["libs/api/auth-tokens/src/index.ts"],
       "@bookapp/angular/mobile/books/browse-books": [
         "libs/angular/mobile/books/browse-books/src/index.ts"
-      ]
+      ],
+      "@bookapp/angular/ui-mobile": ["libs/angular/ui/ui-mobile/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { BooksService } from '@bookapp/angular/data-access';
-import { ConfirmDialogComponent } from '@bookapp/angular/ui';
+import { ConfirmDialogComponent } from '@bookapp/angular/ui-desktop';
 import { Book, BookFormModel } from '@bookapp/shared';
 
 import { BehaviorSubject, Observable, of } from 'rxjs';

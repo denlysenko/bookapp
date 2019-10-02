@@ -17,7 +17,7 @@ import {
 import {
   FileSelectorComponent,
   ImageSelectorComponent
-} from '@bookapp/angular/ui';
+} from '@bookapp/angular/ui-desktop';
 import { Book } from '@bookapp/shared';
 import { extractFileKey } from '@bookapp/utils';
 

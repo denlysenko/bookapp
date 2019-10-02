@@ -895,9 +895,9 @@
         }
       }
     },
-    "angular-ui": {
-      "root": "libs/angular/ui",
-      "sourceRoot": "libs/angular/ui/src",
+    "angular-ui-desktop": {
+      "root": "libs/angular/ui/ui-desktop",
+      "sourceRoot": "libs/angular/ui/ui-desktop/src",
       "projectType": "library",
       "schematics": {},
       "architect": {
@@ -905,18 +905,18 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "libs/angular/ui/tsconfig.lib.json",
-              "libs/angular/ui/tsconfig.spec.json"
+              "libs/angular/ui/ui-desktop/tsconfig.lib.json",
+              "libs/angular/ui/ui-desktop/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/angular/ui/**"]
+            "exclude": ["**/node_modules/**", "!libs/angular/ui/ui-desktop/**"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/angular/ui/jest.config.js",
-            "tsConfig": "libs/angular/ui/tsconfig.spec.json",
-            "setupFile": "libs/angular/ui/src/test-setup.ts"
+            "jestConfig": "libs/angular/ui/ui-desktop/jest.config.js",
+            "tsConfig": "libs/angular/ui/ui-desktop/tsconfig.spec.json",
+            "setupFile": "libs/angular/ui/ui-desktop/src/test-setup.ts"
           }
         }
       }
@@ -1130,6 +1130,21 @@
       "schematics": {
         "@nrwl/angular:component": {
           "styleext": "scss"
+        }
+      }
+    },
+    "angular-ui-mobile": {
+      "root": "libs/angular/ui/ui-mobile",
+      "sourceRoot": "libs/angular/ui/ui-mobile/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/angular/ui/ui-mobile/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/ui/ui-mobile/**"]
+          }
         }
       }
     }

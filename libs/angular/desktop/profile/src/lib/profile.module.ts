@@ -7,7 +7,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
-import { ImageSelectorModule } from '@bookapp/angular/ui';
+import { ImageSelectorModule } from '@bookapp/angular/ui-desktop';
 
 import { AvatarSelectorComponent } from './components/avatar-selector/avatar-selector.component';
 import { ProfileFormComponent } from './components/profile-form/profile-form.component';

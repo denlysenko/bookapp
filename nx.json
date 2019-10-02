@@ -104,7 +104,7 @@
     "angular-desktop-profile": {
       "tags": []
     },
-    "angular-ui": {
+    "angular-ui-desktop": {
       "tags": []
     },
     "angular-mobile-profile": {
@@ -129,6 +129,9 @@
       "tags": ["scope:api", "type:feature", "platform:server"]
     },
     "angular-mobile-books-browse-books": {
+      "tags": []
+    },
+    "angular-ui-mobile": {
       "tags": []
     }
   }

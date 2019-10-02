@@ -11,7 +11,7 @@ import {
   DialogsModule,
   FileSelectorModule,
   ImageSelectorModule
-} from '@bookapp/angular/ui';
+} from '@bookapp/angular/ui-desktop';
 
 import { AddBookRoutingModule } from './add-book-routing.module';
 import { AddBookFormComponent } from './components/add-book-form/add-book-form.component';
