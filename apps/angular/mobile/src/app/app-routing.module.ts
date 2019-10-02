@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { AuthPageComponent } from '@bookapp/angular/mobile/auth';
+import { BrowseBooksPageComponent } from '@bookapp/angular/mobile/books/browse-books';
 import { MainLayoutComponent } from '@bookapp/angular/mobile/main-layout';
 import { AuthGuard } from '@bookapp/angular/shared';
 
@@ -19,6 +20,16 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
           component: MainLayoutComponent,
           canActivate: [AuthGuard],
           children: [
+            {
+              path: '',
+              pathMatch: 'full',
+              redirectTo: '/books/browse'
+            },
+            {
+              path: 'books/browse',
+              component: BrowseBooksPageComponent,
+              canActivate: [AuthGuard]
+            },
             {
               path: 'password',
               loadChildren: () =>

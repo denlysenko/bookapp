@@ -12,6 +12,7 @@ import {
 import { DataAccessModule } from '@bookapp/angular/data-access';
 import { GraphQLModule } from '@bookapp/angular/graphql';
 import { AuthModule } from '@bookapp/angular/mobile/auth';
+import { BrowseBooksModule } from '@bookapp/angular/mobile/books/browse-books';
 import { MainLayoutModule } from '@bookapp/angular/mobile/main-layout';
 import { AuthGuard } from '@bookapp/angular/shared';
 
@@ -52,7 +53,8 @@ registerElement(
     GraphQLModule,
     DataAccessModule,
     AuthModule,
-    MainLayoutModule
+    MainLayoutModule,
+    BrowseBooksModule
   ],
   declarations: [AppComponent],
   providers: [
