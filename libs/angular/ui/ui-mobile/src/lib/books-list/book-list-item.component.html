@@ -1,0 +1,33 @@
+<StackLayout *ngIf="book"
+             class="m-5"
+             [shadow]="2">
+  <FlexboxLayout class="mat-card"
+                 flexDirection="column"
+                 justifyContent="center"
+                 alignItems="center">
+    <StackLayout class="cover">
+      <Image [src]="book.coverUrl ? book.coverUrl : 'res://nocover'">
+      </Image>
+    </StackLayout>
+    <StackLayout class="info"
+                 nsRouterLink="{{ book.paid ? '/buy/' + book.url : '/browse/' + book.url }}"
+                 [queryParams]="{ bookId: book._id }">
+      <Label class="title"
+             textWrap="true"
+             [text]="book.title">
+      </Label>
+      <Label class="author"
+             [text]="'by ' + book.author"></Label>
+      <Label *ngIf="book.paid"
+             class="price"
+             [text]="book.price | currency: 'USD': 'symbol-narrow'"></Label>
+    </StackLayout>
+    <StarRating #rating
+                emptyBorderColor="#ffab00"
+                emptyColor="white"
+                filledBorderColor="#ffab00"
+                filledColor="#ffab00"
+                max="5"
+                isindicator="false"></StarRating>
+  </FlexboxLayout>
+</StackLayout>

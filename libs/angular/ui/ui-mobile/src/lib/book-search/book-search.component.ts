@@ -22,6 +22,7 @@ import { SearchBar } from 'tns-core-modules/ui/search-bar';
 const SEARCH_FIELD = 'title';
 
 @Component({
+  moduleId: module.id,
   selector: 'bookapp-book-search',
   templateUrl: './book-search.component.html',
   styleUrls: ['./book-search.component.scss'],
