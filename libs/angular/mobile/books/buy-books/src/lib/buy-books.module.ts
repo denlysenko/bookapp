@@ -1,19 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-import { NativeScriptCommonModule } from 'nativescript-angular/common';
 
 import { BookSearchModule, BooksListModule } from '@bookapp/angular/ui-mobile';
 
-import { BrowseBooksPageComponent } from './containers/browse-books-page/browse-books-page.component';
+import { NativeScriptCommonModule } from 'nativescript-angular/common';
+
+import { BuyBooksRoutingModule } from './buy-books-routing.module';
+import { BuyBooksPageComponent } from './containers/buy-books-page/buy-books-page.component';
 
 @NgModule({
   imports: [
     NativeScriptCommonModule,
     CommonModule,
+    BuyBooksRoutingModule,
     BookSearchModule,
     BooksListModule
   ],
-  declarations: [BrowseBooksPageComponent],
+  declarations: [BuyBooksPageComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })
-export class BrowseBooksModule {}
+export class BuyBooksModule {}

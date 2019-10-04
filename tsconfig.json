@@ -74,7 +74,10 @@
       "@bookapp/angular/mobile/books/browse-books": [
         "libs/angular/mobile/books/browse-books/src/index.ts"
       ],
-      "@bookapp/angular/ui-mobile": ["libs/angular/ui/ui-mobile/src/index.ts"]
+      "@bookapp/angular/ui-mobile": ["libs/angular/ui/ui-mobile/src/index.ts"],
+      "@bookapp/angular/mobile/books/buy-books": [
+        "libs/angular/mobile/books/buy-books/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

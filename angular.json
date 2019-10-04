@@ -1147,6 +1147,31 @@
           }
         }
       }
+    },
+    "angular-mobile-books-buy-books": {
+      "projectType": "library",
+      "root": "libs/angular/mobile/books/buy-books",
+      "sourceRoot": "libs/angular/mobile/books/buy-books/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/angular/mobile/books/buy-books/tsconfig.lib.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/angular/mobile/books/buy-books/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

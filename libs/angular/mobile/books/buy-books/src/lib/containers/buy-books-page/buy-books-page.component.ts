@@ -26,13 +26,14 @@ interface SortOption {
   label: string;
 }
 
+/* TODO: move common of this class and browse books class logic to the base class. didn't do during the development because jest could not transform Nativescript files, and threw errors */
 @Component({
   moduleId: module.id,
-  selector: 'bookapp-browse-books-page',
-  templateUrl: './browse-books-page.component.html',
-  styleUrls: ['./browse-books-page.component.scss']
+  selector: 'bookapp-buy-books-page',
+  templateUrl: './buy-books-page.component.html',
+  styleUrls: ['./buy-books-page.component.scss']
 })
-export class BrowseBooksPageComponent extends BooksPageBase {
+export class BuyBooksPageComponent extends BooksPageBase {
   sortOptions: SortOption[] = [
     {
       value: 'rating_desc',
@@ -66,7 +67,7 @@ export class BrowseBooksPageComponent extends BooksPageBase {
     storeService: StoreService,
     booksService: BooksService
   ) {
-    super(storeService, booksService, false);
+    super(storeService, booksService, true);
     this.setInitialSorting();
   }
 

@@ -133,6 +133,9 @@
     },
     "angular-ui-mobile": {
       "tags": []
+    },
+    "angular-mobile-books-buy-books": {
+      "tags": []
     }
   }
 }

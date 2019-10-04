@@ -31,6 +31,14 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
               canActivate: [AuthGuard]
             },
             {
+              path: 'books/buy',
+              loadChildren: () =>
+                import('@bookapp/angular/mobile/books/buy-books').then(
+                  m => m.BuyBooksModule
+                ),
+              canLoad: [AuthGuard]
+            },
+            {
               path: 'password',
               loadChildren: () =>
                 import('@bookapp/angular/mobile/password').then(

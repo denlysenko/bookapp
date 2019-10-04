@@ -1,0 +1,14 @@
+@import 'variables';
+
+.sort {
+  padding: 15 0;
+  background-color: $primary-color;
+
+  .segmented-bar {
+    selected-background-color: $primary-text;
+    color: $primary-text;
+    background-color: $primary-color;
+    border-width: 1;
+    border-color: $primary-text;
+  }
+}
