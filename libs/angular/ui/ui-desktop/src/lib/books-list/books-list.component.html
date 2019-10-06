@@ -3,14 +3,14 @@
   <mat-card class="list-item">
     <div class="cover">
       <a routerLink="{{ book.paid ? '/books/buy/' + book.url : '/books/browse/' + book.url }}"
-         [queryParams]="{ bookId: book.id }">
+         [queryParams]="{ bookId: book._id }">
         <img [src]="book.coverUrl ? book.coverUrl : '/assets/images/nocover.svg'"
              [alt]="book.title">
       </a>
     </div>
     <a class="title"
        routerLink="{{ book.paid ? '/books/buy/' + book.url : '/books/browse/' + book.url }}"
-       [queryParams]="{ bookId: book.id }">
+       [queryParams]="{ bookId: book._id }">
       {{ book.title }}
     </a>
     <span class="author">by {{ book.author }}</span>
