@@ -136,6 +136,9 @@
     },
     "angular-mobile-books-buy-books": {
       "tags": []
+    },
+    "angular-desktop-books-view-book": {
+      "tags": []
     }
   }
 }
