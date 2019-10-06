@@ -7,3 +7,8 @@ export interface Bookmark {
   bookId: string;
   book?: Book;
 }
+
+export interface BookmarkEvent {
+  type: string;
+  bookId: string;
+}
