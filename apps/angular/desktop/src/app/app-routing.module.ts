@@ -31,10 +31,26 @@ import { ROLES } from '@bookapp/shared';
               canActivate: [AuthGuard]
             },
             {
+              path: 'books/browse/:author/:slug',
+              loadChildren: () =>
+                import('@bookapp/angular/desktop/books/view-book').then(
+                  m => m.ViewBookModule
+                ),
+              canLoad: [AuthGuard]
+            },
+            {
               path: 'books/buy',
               loadChildren: () =>
                 import('@bookapp/angular/desktop/books/buy-books').then(
                   m => m.BuyBooksModule
+                ),
+              canLoad: [AuthGuard]
+            },
+            {
+              path: 'books/buy/:author/:slug',
+              loadChildren: () =>
+                import('@bookapp/angular/desktop/books/view-book').then(
+                  m => m.ViewBookModule
                 ),
               canLoad: [AuthGuard]
             },
