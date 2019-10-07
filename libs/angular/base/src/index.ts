@@ -16,3 +16,4 @@ export * from './lib/profile/profile-page';
 export * from './lib/books/books-page';
 export * from './lib/books/view-book-page';
 export * from './lib/books/book-details';
+export * from './lib/books/book-comments';

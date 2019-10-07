@@ -1,0 +1,34 @@
+<div class="book-comments">
+  <h4>Comments</h4>
+  <mat-list *ngIf="comments.length"
+            #list>
+    <mat-list-item *ngFor="let comment of comments">
+      <div mat-line>
+        <span class="author">{{ comment.author.displayName }}</span>
+        <span class="metadata">{{ comment.createdAt | date }}</span>
+      </div>
+      <p mat-line
+         class="text">
+        {{ comment.text }}
+      </p>
+    </mat-list-item>
+  </mat-list>
+  <p *ngIf="!comments.length">No comments yet</p>
+  <h4>Submit a Comment</h4>
+  <mat-form-field appearance="outline">
+    <textarea matInput
+              placeholder="Write a short comment..."
+              name="text"
+              [(ngModel)]="text"
+              cdkAutosizeMinRows="4"
+              cdkTextareaAutosize></textarea>
+  </mat-form-field>
+  <mat-card-actions>
+    <button type="submit"
+            mat-raised-button
+            color="accent"
+            [disabled]="loading"
+            (click)="commentAdded.emit(text)">SUBMIT COMMENT
+    </button>
+  </mat-card-actions>
+</div>

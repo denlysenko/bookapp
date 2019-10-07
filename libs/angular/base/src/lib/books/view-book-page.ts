@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { BookmarksService, BooksService } from '@bookapp/angular/data-access';
 import { Book, BOOK_QUERY, BookmarkEvent } from '@bookapp/shared';
 
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 
 export abstract class ViewBookPageBase {
   book$: Observable<Book> = this.booksService
@@ -18,17 +18,23 @@ export abstract class ViewBookPageBase {
       map(bookmarks => bookmarks.map(bookmark => bookmark.type))
     );
 
+  private loading = new BehaviorSubject<boolean>(false);
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly booksService: BooksService,
     private readonly bookmarksService: BookmarksService
   ) {}
 
+  get loading$() {
+    return this.loading.asObservable();
+  }
+
   submitComment(bookId: string, text: string, slug: string) {
-    this.booksService.addComment(
-      bookId,
-      text,
-      (store, { data: { addComment } }) => {
+    this.loading.next(true);
+
+    this.booksService
+      .addComment(bookId, text, (store, { data: { addComment } }) => {
         const data: {
           book: Book;
         } = store.readQuery({
@@ -47,8 +53,13 @@ export abstract class ViewBookPageBase {
           },
           data
         });
-      }
-    );
+      })
+      .pipe(
+        finalize(() => {
+          this.loading.next(false);
+        })
+      )
+      .subscribe();
   }
 
   addToBookmarks(event: BookmarkEvent) {
