@@ -80,6 +80,9 @@
       ],
       "@bookapp/angular/desktop/books/view-book": [
         "libs/angular/desktop/books/view-book/src/index.ts"
+      ],
+      "@bookapp/angular/mobile/books/view-book": [
+        "libs/angular/mobile/books/view-book/src/index.ts"
       ]
     }
   },
