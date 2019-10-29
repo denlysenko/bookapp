@@ -4,6 +4,7 @@ import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogDto, LogsService } from '@bookapp/api/logs';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { ApiResponse, UserActions } from '@bookapp/shared';
+import { extractFileKey } from '@bookapp/utils';
 
 import {
   BadRequestException,
@@ -103,9 +104,8 @@ export class BooksService {
       updatedBook.coverUrl &&
       book.coverUrl !== updatedBook.coverUrl
     ) {
-      const splitted = book.coverUrl.split('/'); // take last part of uri as a key
       filePromises.push(
-        this.filesService.deleteFromBucket(splitted[splitted.length - 1])
+        this.filesService.deleteFromBucket(extractFileKey(book.coverUrl))
       );
     }
 
@@ -114,9 +114,8 @@ export class BooksService {
       updatedBook.epubUrl &&
       book.epubUrl !== updatedBook.epubUrl
     ) {
-      const splitted = book.epubUrl.split('/'); // take last part of uri as a key
       filePromises.push(
-        this.filesService.deleteFromBucket(splitted[splitted.length - 1])
+        this.filesService.deleteFromBucket(extractFileKey(book.epubUrl))
       );
     }
 
