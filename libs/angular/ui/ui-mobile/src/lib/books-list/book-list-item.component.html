@@ -10,7 +10,7 @@
       </Image>
     </StackLayout>
     <StackLayout class="info"
-                 nsRouterLink="{{ book.paid ? '/buy/' + book.url : '/browse/' + book.url }}"
+                 nsRouterLink="{{ book.paid ? '/books/buy/' + book.url : '/books/browse/' + book.url }}"
                  [queryParams]="{ bookId: book._id }">
       <Label class="title"
              textWrap="true"

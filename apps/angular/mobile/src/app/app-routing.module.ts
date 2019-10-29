@@ -16,6 +16,22 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
           component: AuthPageComponent
         },
         {
+          path: 'books/browse/:author/:slug',
+          loadChildren: () =>
+            import('@bookapp/angular/mobile/books/view-book').then(
+              m => m.ViewBookModule
+            ),
+          canLoad: [AuthGuard]
+        },
+        {
+          path: 'books/buy/:author/:slug',
+          loadChildren: () =>
+            import('@bookapp/angular/mobile/books/view-book').then(
+              m => m.ViewBookModule
+            ),
+          canLoad: [AuthGuard]
+        },
+        {
           path: '',
           component: MainLayoutComponent,
           canActivate: [AuthGuard],

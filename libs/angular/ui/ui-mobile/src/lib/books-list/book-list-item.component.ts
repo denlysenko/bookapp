@@ -5,6 +5,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnDestroy,
   Output,
   ViewChild
 } from '@angular/core';
@@ -17,7 +18,7 @@ import { Book } from '@bookapp/shared';
   styleUrls: ['./book-list-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BookListItemComponent implements AfterViewInit {
+export class BookListItemComponent implements AfterViewInit, OnDestroy {
   @Input()
   set book(value: Book) {
     if (value) {
@@ -40,14 +41,19 @@ export class BookListItemComponent implements AfterViewInit {
   private _book: Book;
 
   ngAfterViewInit() {
-    this.ratingElemRef.nativeElement.value = this._book.rating;
     this.subscribeToRatingChanges();
+  }
+
+  ngOnDestroy() {
+    if (this.ratingElemRef) {
+      this.ratingElemRef.nativeElement.off('valueChange');
+    }
   }
 
   private subscribeToRatingChanges() {
     // as books are loaded dynamically and to not emit event each time the book value changed, first off the listener
     this.ratingElemRef.nativeElement.off('valueChange');
-    this.ratingElemRef.nativeElement.value = this._book.rating;
+    this.ratingElemRef.nativeElement.value = this.book.rating;
     this.ratingElemRef.nativeElement.on('valueChange', (args: any) => {
       const val = args.object.get('value');
       this.rate.emit({ bookId: this.book._id, rate: val });

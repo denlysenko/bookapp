@@ -27,7 +27,7 @@ import { isIOS } from 'tns-core-modules/platform';
 })
 export class BooksListComponent {
   @Input()
-  set books(books: Book) {
+  set books(books: Book[]) {
     if (books) {
       this._books.next(new ObservableArray(books));
     }

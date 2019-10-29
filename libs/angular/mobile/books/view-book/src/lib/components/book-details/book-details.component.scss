@@ -1,0 +1,57 @@
+@import '~@bookapp/angular-styles/mobile/variables';
+
+.mat-card {
+  padding: 24 16;
+}
+
+.cover {
+  margin-bottom: 10;
+  width: 100%;
+  height: 250;
+}
+
+.actions {
+  margin: 10 0;
+
+  button {
+    width: 50;
+    height: 50;
+    border-radius: 50%;
+    color: $orange;
+  }
+}
+
+.view-num {
+  color: $dark-primary-text;
+
+  .mdi {
+    margin-right: 10;
+    font-size: 20;
+  }
+}
+
+.details {
+  margin: 10 0;
+
+  .h3 {
+    font-size: 24;
+  }
+
+  .h4 {
+    font-size: 18;
+  }
+
+  .toolbar {
+    margin-top: 10;
+  }
+}
+
+.price {
+  font-size: 14;
+  margin-bottom: 10;
+}
+
+.toolbar {
+  padding: 16;
+  background-color: $toolbar-color;
+}

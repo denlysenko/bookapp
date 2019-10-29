@@ -1,0 +1,30 @@
+@import '~@bookapp/angular-styles/mobile/variables';
+
+.list-group {
+  separator-color: $toolbar-color;
+  background-color: $toolbar-color;
+  margin-bottom: 10;
+  height: 87%;
+}
+
+.author {
+  font-size: 16;
+  font-weight: 700;
+}
+
+.metadata {
+  margin-left: 8;
+  font-size: 14;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.button {
+  width: 50;
+  height: 50;
+  border-radius: 50%;
+  color: $orange;
+}
+
+.input.input-padding {
+  padding: 5;
+}

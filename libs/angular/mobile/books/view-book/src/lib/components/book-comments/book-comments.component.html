@@ -1,0 +1,53 @@
+<StackLayout>
+  <StackLayout class="m-10"
+               [shadow]="2">
+    <FlexboxLayout flexDirection="column"
+                   height="100%">
+      <StackLayout class="mat-card"
+                   flexGrow="1">
+        <Label *ngIf="!comments.length"
+               row="0"
+               text="No comments yet"
+               marginBottom="10"></Label>
+        <ListView *ngIf="comments.length"
+                  #listView
+                  [items]="comments"
+                  row="0"
+                  class="list-group">
+          <ng-template let-comment="item">
+            <StackLayout class="list-group-item">
+              <StackLayout orientation="horizontal">
+                <Label class="author"
+                       [text]="comment.author.displayName"></Label>
+                <Label class="metadata"
+                       [text]="comment.createdAt | date"></Label>
+              </StackLayout>
+              <Label [text]="comment.text"
+                     textWrap="true"></Label>
+            </StackLayout>
+          </ng-template>
+        </ListView>
+        <GridLayout height="13%"
+                    class="form"
+                    row="1"
+                    columns="*, auto">
+          <TextView #textView
+                    col="0"
+                    [(ngModel)]="text"
+                    hint="Write a short comment"
+                    class="input input-border input-padding"></TextView>
+          <Button class="button"
+                  col="1"
+                  [isEnabled]="!loading"
+                  (tap)="submitComment()">
+            <FormattedString>
+              <Span class="mdi"
+                    fontSize="24"
+                    text="send"></Span>
+            </FormattedString>
+          </Button>
+        </GridLayout>
+      </StackLayout>
+    </FlexboxLayout>
+  </StackLayout>
+</StackLayout>

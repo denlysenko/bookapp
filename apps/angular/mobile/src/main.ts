@@ -1,7 +1,13 @@
 // this import should be first in order to load some required settings (like globals and reflect-metadata)
+import { registerElement } from 'nativescript-angular/element-registry';
 import { platformNativeScriptDynamic } from 'nativescript-angular/platform';
 
 import { AppModule } from './app/app.module';
+
+registerElement(
+  'StarRating',
+  () => require('nativescript-star-ratings').StarRating
+);
 
 // A traditional NativeScript application starts by initializing global objects,
 // setting up global CSS rules, creating, and navigating to the main page.
