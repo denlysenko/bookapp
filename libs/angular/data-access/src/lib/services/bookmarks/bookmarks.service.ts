@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 
+import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import {
   ADD_TO_BOOKMARKS_MUTATION,
+  ApiResponse,
   Bookmark,
   BOOKMARKS_BY_USER_AND_BOOK_QUERY,
+  BOOKMARKS_QUERY,
   REMOVE_FROM_BOOKMARKS_MUTATION
 } from '@bookapp/shared';
 
@@ -13,7 +16,7 @@ import { Apollo } from 'apollo-angular';
 export class BookmarksService {
   constructor(private readonly apollo: Apollo) {}
 
-  getBookmarks(bookId: string) {
+  getBookmarksByBook(bookId: string) {
     return this.apollo.watchQuery<{
       userBookmarksByBook: Array<{ type: string }>;
     }>({
@@ -21,6 +24,19 @@ export class BookmarksService {
       variables: {
         bookId
       }
+    });
+  }
+
+  getBookmarksByType(type: string, skip = 0, first = DEFAULT_LIMIT) {
+    return this.apollo.watchQuery<{ bookmarks: ApiResponse<Bookmark> }>({
+      query: BOOKMARKS_QUERY,
+      variables: {
+        type,
+        skip,
+        first
+      },
+      fetchPolicy: 'network-only',
+      notifyOnNetworkStatusChange: true
     });
   }
 

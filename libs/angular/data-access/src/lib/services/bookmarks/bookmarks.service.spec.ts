@@ -5,6 +5,7 @@ import {
   ADD_TO_BOOKMARKS_MUTATION,
   BOOKMARKS,
   BOOKMARKS_BY_USER_AND_BOOK_QUERY,
+  BOOKMARKS_QUERY,
   REMOVE_FROM_BOOKMARKS_MUTATION
 } from '@bookapp/shared';
 import { book, bookmark } from '@bookapp/testing';
@@ -50,10 +51,10 @@ describe('BookmarksService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('getBookmarks()', () => {
-    it('should get bookmarks', done => {
+  describe('getBookmarksByBook()', () => {
+    it('should get bookmarks by book', done => {
       service
-        .getBookmarks(book._id)
+        .getBookmarksByBook(book._id)
         .valueChanges.subscribe(({ data: { userBookmarksByBook } }) => {
           expect(userBookmarksByBook.length).toEqual(1);
           expect(userBookmarksByBook[0].type).toEqual(
@@ -71,6 +72,34 @@ describe('BookmarksService', () => {
       op.flush({
         data: {
           userBookmarksByBook: [bookmarkWithTypename]
+        }
+      });
+
+      controller.verify();
+    });
+  });
+
+  describe('getBookmarksByType()', () => {
+    it('should get bookmarks by type', done => {
+      service
+        .getBookmarksByType(BOOKMARKS.FAVORITES)
+        .valueChanges.subscribe(({ data: { bookmarks } }) => {
+          expect(bookmarks.rows.length).toEqual(1);
+          expect(bookmarks.rows[0].type).toEqual(BOOKMARKS.FAVORITES);
+          done();
+        });
+
+      const op = controller.expectOne(addTypenameToDocument(BOOKMARKS_QUERY));
+
+      expect(op.operation.variables.type).toEqual(BOOKMARKS.FAVORITES);
+
+      op.flush({
+        data: {
+          bookmarks: {
+            rows: [{ ...bookmarkWithTypename, book: null }],
+            count: 1,
+            __typename: 'Bookmark'
+          }
         }
       });
 

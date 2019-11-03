@@ -12,7 +12,7 @@ export abstract class ViewBookPageBase {
     .valueChanges.pipe(map(({ data }) => data.book));
 
   bookmarks$: Observable<string[]> = this.bookmarksService
-    .getBookmarks(this.route.snapshot.queryParamMap.get('bookId'))
+    .getBookmarksByBook(this.route.snapshot.queryParamMap.get('bookId'))
     .valueChanges.pipe(
       map(({ data }) => data.userBookmarksByBook),
       map(bookmarks => bookmarks.map(bookmark => bookmark.type))
