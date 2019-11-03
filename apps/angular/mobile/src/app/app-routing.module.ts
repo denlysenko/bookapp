@@ -21,7 +21,8 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
             import('@bookapp/angular/mobile/books/view-book').then(
               m => m.ViewBookModule
             ),
-          canLoad: [AuthGuard]
+          canLoad: [AuthGuard],
+          canActivate: [AuthGuard]
         },
         {
           path: 'books/buy/:author/:slug',
@@ -29,7 +30,8 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
             import('@bookapp/angular/mobile/books/view-book').then(
               m => m.ViewBookModule
             ),
-          canLoad: [AuthGuard]
+          canLoad: [AuthGuard],
+          canActivate: [AuthGuard]
         },
         {
           path: '',
@@ -52,7 +54,8 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
                 import('@bookapp/angular/mobile/books/buy-books').then(
                   m => m.BuyBooksModule
                 ),
-              canLoad: [AuthGuard]
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard]
             },
             {
               path: 'password',
@@ -60,7 +63,8 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
                 import('@bookapp/angular/mobile/password').then(
                   m => m.PasswordModule
                 ),
-              canLoad: [AuthGuard]
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard]
             },
             {
               path: 'profile',
@@ -68,7 +72,8 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
                 import('@bookapp/angular/mobile/profile').then(
                   m => m.ProfileModule
                 ),
-              canLoad: [AuthGuard]
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard]
             }
           ]
         }

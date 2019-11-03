@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AuthGuard } from '@bookapp/angular/shared';
-
 import { ProfilePageComponent } from './containers/profile-page/profile-page.component';
 
 @NgModule({
@@ -10,8 +8,7 @@ import { ProfilePageComponent } from './containers/profile-page/profile-page.com
     RouterModule.forChild([
       {
         path: '',
-        component: ProfilePageComponent,
-        canActivate: [AuthGuard]
+        component: ProfilePageComponent
       }
     ])
   ],

@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AuthGuard } from '@bookapp/angular/shared';
-
 import { PasswordPageComponent } from './containers/password-page/password-page.component';
 
 @NgModule({
@@ -10,8 +8,7 @@ import { PasswordPageComponent } from './containers/password-page/password-page.
     RouterModule.forChild([
       {
         path: '',
-        component: PasswordPageComponent,
-        canActivate: [AuthGuard]
+        component: PasswordPageComponent
       }
     ])
   ],

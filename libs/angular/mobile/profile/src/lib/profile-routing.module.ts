@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 
-import { AuthGuard } from '@bookapp/angular/shared';
-
 import { NativeScriptRouterModule } from 'nativescript-angular';
 
 import { ProfilePageComponent } from './containers/profile-page/profile-page.component';
@@ -12,8 +10,7 @@ import { ProfilePageComponent } from './containers/profile-page/profile-page.com
     NativeScriptRouterModule.forChild([
       {
         path: '',
-        component: ProfilePageComponent,
-        canActivate: [AuthGuard]
+        component: ProfilePageComponent
       }
     ])
   ],

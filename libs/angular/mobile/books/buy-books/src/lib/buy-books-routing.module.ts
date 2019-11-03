@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 
-import { AuthGuard } from '@bookapp/angular/shared';
-
 import { NativeScriptRouterModule } from 'nativescript-angular';
 
 import { BuyBooksPageComponent } from './containers/buy-books-page/buy-books-page.component';
@@ -12,8 +10,7 @@ import { BuyBooksPageComponent } from './containers/buy-books-page/buy-books-pag
     NativeScriptRouterModule.forChild([
       {
         path: '',
-        component: BuyBooksPageComponent,
-        canActivate: [AuthGuard]
+        component: BuyBooksPageComponent
       }
     ])
   ],

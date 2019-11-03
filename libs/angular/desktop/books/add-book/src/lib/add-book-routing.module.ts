@@ -2,11 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { EditBookResolver } from '@bookapp/angular/data-access';
-import {
-  AuthGuard,
-  CanDeactivateGuard,
-  RolesGuard
-} from '@bookapp/angular/shared';
+import { CanDeactivateGuard } from '@bookapp/angular/shared';
 import { ROLES } from '@bookapp/shared';
 
 import { AddBookPageComponent } from './containers/add-book-page/add-book-page.component';
@@ -17,7 +13,6 @@ import { AddBookPageComponent } from './containers/add-book-page/add-book-page.c
       {
         path: '',
         component: AddBookPageComponent,
-        canActivate: [AuthGuard, RolesGuard],
         canDeactivate: [CanDeactivateGuard],
         data: {
           roles: [ROLES.ADMIN]
@@ -26,7 +21,6 @@ import { AddBookPageComponent } from './containers/add-book-page/add-book-page.c
       {
         path: ':author/:slug',
         component: AddBookPageComponent,
-        canActivate: [AuthGuard, RolesGuard],
         canDeactivate: [CanDeactivateGuard],
         resolve: {
           book: EditBookResolver

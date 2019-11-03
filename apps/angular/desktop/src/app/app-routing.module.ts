@@ -36,7 +36,8 @@ import { ROLES } from '@bookapp/shared';
                 import('@bookapp/angular/desktop/books/view-book').then(
                   m => m.ViewBookModule
                 ),
-              canLoad: [AuthGuard]
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard]
             },
             {
               path: 'books/buy',
@@ -44,7 +45,8 @@ import { ROLES } from '@bookapp/shared';
                 import('@bookapp/angular/desktop/books/buy-books').then(
                   m => m.BuyBooksModule
                 ),
-              canLoad: [AuthGuard]
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard]
             },
             {
               path: 'books/buy/:author/:slug',
@@ -52,7 +54,8 @@ import { ROLES } from '@bookapp/shared';
                 import('@bookapp/angular/desktop/books/view-book').then(
                   m => m.ViewBookModule
                 ),
-              canLoad: [AuthGuard]
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard]
             },
             {
               path: 'books/add',
@@ -61,6 +64,7 @@ import { ROLES } from '@bookapp/shared';
                   m => m.AddBookModule
                 ),
               canLoad: [AuthGuard, RolesGuard],
+              canActivate: [AuthGuard, RolesGuard],
               data: {
                 roles: [ROLES.ADMIN]
               }
@@ -71,7 +75,8 @@ import { ROLES } from '@bookapp/shared';
                 import('@bookapp/angular/desktop/password').then(
                   m => m.PasswordModule
                 ),
-              canLoad: [AuthGuard]
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard]
             },
             {
               path: 'profile',
@@ -79,7 +84,8 @@ import { ROLES } from '@bookapp/shared';
                 import('@bookapp/angular/desktop/profile').then(
                   m => m.ProfileModule
                 ),
-              canLoad: [AuthGuard]
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard]
             }
           ]
         }

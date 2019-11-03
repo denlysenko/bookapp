@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AuthGuard } from '@bookapp/angular/shared';
-
 import { BuyBooksPageComponent } from './containers/buy-books-page/buy-books-page.component';
 
 @NgModule({
@@ -10,8 +8,7 @@ import { BuyBooksPageComponent } from './containers/buy-books-page/buy-books-pag
     RouterModule.forChild([
       {
         path: '',
-        component: BuyBooksPageComponent,
-        canActivate: [AuthGuard]
+        component: BuyBooksPageComponent
       }
     ])
   ],
