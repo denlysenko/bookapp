@@ -1231,6 +1231,40 @@
           "styleext": "scss"
         }
       }
+    },
+    "angular-desktop-bookmarks": {
+      "projectType": "library",
+      "root": "libs/angular/desktop/bookmarks",
+      "sourceRoot": "libs/angular/desktop/bookmarks/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/angular/desktop/bookmarks/tsconfig.lib.json",
+              "libs/angular/desktop/bookmarks/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/angular/desktop/bookmarks/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/angular/desktop/bookmarks/jest.config.js",
+            "tsConfig": "libs/angular/desktop/bookmarks/tsconfig.spec.json",
+            "setupFile": "libs/angular/desktop/bookmarks/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

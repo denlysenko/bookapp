@@ -83,6 +83,9 @@
       ],
       "@bookapp/angular/mobile/books/view-book": [
         "libs/angular/mobile/books/view-book/src/index.ts"
+      ],
+      "@bookapp/angular/desktop/bookmarks": [
+        "libs/angular/desktop/bookmarks/src/index.ts"
       ]
     }
   },

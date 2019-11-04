@@ -142,6 +142,9 @@
     },
     "angular-mobile-books-view-book": {
       "tags": []
+    },
+    "angular-desktop-bookmarks": {
+      "tags": []
     }
   }
 }
