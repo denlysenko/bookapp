@@ -15,7 +15,7 @@ import {
 
 import { BookmarksService } from './bookmarks.service';
 
-@Resolver()
+@Resolver('Bookmark')
 export class BookmarksResolver {
   constructor(
     private readonly bookmarksService: BookmarksService,
