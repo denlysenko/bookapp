@@ -5,8 +5,9 @@ import { AuthPageComponent } from '@bookapp/angular/desktop/auth';
 import { BrowseBooksPageComponent } from '@bookapp/angular/desktop/books/browse-books';
 import { MainLayoutComponent } from '@bookapp/angular/desktop/main-layout';
 import { AuthGuard, RolesGuard } from '@bookapp/angular/shared';
-import { ROLES } from '@bookapp/shared';
+import { BOOKMARKS, ROLES } from '@bookapp/shared';
 
+// tslint:disable: no-duplicate-string
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -67,6 +68,46 @@ import { ROLES } from '@bookapp/shared';
               canActivate: [AuthGuard, RolesGuard],
               data: {
                 roles: [ROLES.ADMIN]
+              }
+            },
+
+            {
+              path: 'bookmarks/favorites',
+              loadChildren: () =>
+                import('@bookapp/angular/desktop/bookmarks').then(
+                  m => m.BookmarksModule
+                ),
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard],
+              data: {
+                title: 'Favorite Books',
+                type: BOOKMARKS.FAVORITES
+              }
+            },
+            {
+              path: 'bookmarks/mustread',
+              loadChildren: () =>
+                import('@bookapp/angular/desktop/bookmarks').then(
+                  m => m.BookmarksModule
+                ),
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard],
+              data: {
+                title: 'Must Read Titles',
+                type: BOOKMARKS.MUSTREAD
+              }
+            },
+            {
+              path: 'bookmarks/wishlist',
+              loadChildren: () =>
+                import('@bookapp/angular/desktop/bookmarks').then(
+                  m => m.BookmarksModule
+                ),
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard],
+              data: {
+                title: 'Wishlist',
+                type: BOOKMARKS.WISHLIST
               }
             },
             {

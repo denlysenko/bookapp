@@ -17,4 +17,5 @@ export * from './lib/books/books-page';
 export * from './lib/books/view-book-page';
 export * from './lib/books/book-details';
 export * from './lib/books/book-comments';
-export * from './lib/books/bookmarks-page';
+
+export * from './lib/bookmarks/bookmarks-page';

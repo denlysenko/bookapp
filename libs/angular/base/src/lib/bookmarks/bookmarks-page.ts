@@ -1,20 +1,25 @@
+import { ActivatedRoute } from '@angular/router';
+
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import { BookmarksService, BooksService } from '@bookapp/angular/data-access';
-import { ApiResponse, Bookmark, BOOKMARKS_QUERY } from '@bookapp/shared';
+import { ApiResponse, Book, Bookmark, BOOKMARKS_QUERY } from '@bookapp/shared';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, pluck, tap } from 'rxjs/operators';
 
 export abstract class BookmarksPageBase {
-  bookmarksQueryRef = this.bookmarksService.getBookmarksByType(this.type);
+  readonly type: string = this.route.snapshot.data.type;
+  readonly bookmarksQueryRef = this.bookmarksService.getBookmarksByType(
+    this.type
+  );
 
-  bookmarks$: Observable<Bookmark[]> = this.bookmarksQueryRef.valueChanges.pipe(
+  books$: Observable<Book[]> = this.bookmarksQueryRef.valueChanges.pipe(
     tap(({ data: { bookmarks: { rows, count } } }) => {
       if (rows.length === count) {
         this.hasMoreItems.next(false);
       }
     }),
-    map(({ data }) => data.bookmarks.rows)
+    map(({ data }) => data.bookmarks.rows.map(bookmark => bookmark.book))
   );
 
   loading$: Observable<boolean> = this.bookmarksQueryRef.valueChanges.pipe(
@@ -24,15 +29,17 @@ export abstract class BookmarksPageBase {
     })
   );
 
-  constructor(
-    private readonly booksService: BooksService,
-    private readonly bookmarksService: BookmarksService,
-    private readonly type: string
-  ) {}
+  title$: Observable<string> = this.route.data.pipe(pluck('title'));
 
   private hasMoreItems = new BehaviorSubject<boolean>(true);
   private skip = 0;
   private pending = false;
+
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly booksService: BooksService,
+    private readonly bookmarksService: BookmarksService
+  ) {}
 
   get hasMoreItems$() {
     return this.hasMoreItems.asObservable();
