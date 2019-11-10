@@ -9,6 +9,11 @@ export const MockAngularBooksService = {
     refetch: jest.fn(),
     fetchMore: jest.fn()
   })),
+  getBestBooks: jest.fn().mockImplementation(() => ({
+    valueChanges: of({ data: { bestBooks: { rows: [book], count: 1 } } }),
+    refetch: jest.fn(),
+    fetchMore: jest.fn()
+  })),
   rateBook: jest.fn().mockImplementation(() => of({})),
   getBook: jest
     .fn()
