@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import {
   ADD_COMMENT_MUTATION,
   AddCommentResponse,
   ApiResponse,
+  BEST_BOOKS_QUERY,
   Book,
   BOOK_QUERY,
   BookFormModel,
@@ -16,11 +16,12 @@ import {
   RateBookResponse,
   UPDATE_BOOK_MUTATION
 } from '@bookapp/shared';
-
 import { Apollo } from 'apollo-angular';
 import { DataProxy } from 'apollo-cache';
 
 export const DEFAULT_SORT_VALUE = 'createdAt_desc';
+
+const fetchPolicy = 'network-only';
 
 @Injectable()
 export class BooksService {
@@ -61,7 +62,7 @@ export class BooksService {
         first,
         orderBy
       },
-      fetchPolicy: 'network-only',
+      fetchPolicy,
       notifyOnNetworkStatusChange: true
     });
   }
@@ -72,7 +73,19 @@ export class BooksService {
       variables: {
         slug
       },
-      fetchPolicy: 'network-only',
+      fetchPolicy,
+      notifyOnNetworkStatusChange: true
+    });
+  }
+
+  getBestBooks(skip = 0, first = DEFAULT_LIMIT) {
+    return this.apollo.watchQuery<{ bestBooks: ApiResponse<Book> }>({
+      query: BEST_BOOKS_QUERY,
+      variables: {
+        skip,
+        first
+      },
+      fetchPolicy,
       notifyOnNetworkStatusChange: true
     });
   }

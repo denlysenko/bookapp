@@ -5,6 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import {
   ADD_COMMENT_MUTATION,
+  BEST_BOOKS_QUERY,
   Book,
   BOOK_QUERY,
   CREATE_BOOK_MUTATION,
@@ -345,6 +346,30 @@ describe('BooksService', () => {
       op.flush({
         data: {
           book: { ...bookWithTypename, comments: [] }
+        }
+      });
+
+      controller.verify();
+    });
+  });
+
+  describe('getBestBook()', () => {
+    it('should get best book', done => {
+      service.getBestBooks().valueChanges.subscribe(({ data }) => {
+        const [b] = data.bestBooks.rows;
+        expect(b._id).toEqual(book._id);
+        done();
+      });
+
+      const op = controller.expectOne(addTypenameToDocument(BEST_BOOKS_QUERY));
+
+      op.flush({
+        data: {
+          bestBooks: {
+            rows: [bookWithTypename],
+            count: 1,
+            __typename: 'BestBooks'
+          }
         }
       });
 
