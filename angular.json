@@ -1265,6 +1265,40 @@
           "styleext": "scss"
         }
       }
+    },
+    "angular-desktop-books-best-books": {
+      "projectType": "library",
+      "root": "libs/angular/desktop/books/best-books",
+      "sourceRoot": "libs/angular/desktop/books/best-books/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/angular/desktop/books/best-books/tsconfig.lib.json",
+              "libs/angular/desktop/books/best-books/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/angular/desktop/books/best-books/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/angular/desktop/books/best-books/jest.config.js",
+            "tsConfig": "libs/angular/desktop/books/best-books/tsconfig.spec.json",
+            "setupFile": "libs/angular/desktop/books/best-books/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {
