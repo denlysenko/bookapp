@@ -1,1 +1,8 @@
-<p>best-books-page works!</p>
+<bookapp-preloader [visible]="loading$ | async"></bookapp-preloader>
+<mat-toolbar>
+  <span>List Of The Best</span>
+</mat-toolbar>
+<div class="view-content">
+  <bookapp-books-list [books]="books$ | async"
+                      (bookRated)="rate($event)"></bookapp-books-list>
+</div>

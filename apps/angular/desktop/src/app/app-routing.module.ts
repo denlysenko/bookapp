@@ -70,7 +70,15 @@ import { BOOKMARKS, ROLES } from '@bookapp/shared';
                 roles: [ROLES.ADMIN]
               }
             },
-
+            {
+              path: 'books/best',
+              loadChildren: () =>
+                import('@bookapp/angular/desktop/books/best-books').then(
+                  m => m.BestBooksModule
+                ),
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard]
+            },
             {
               path: 'bookmarks/favorites',
               loadChildren: () =>
