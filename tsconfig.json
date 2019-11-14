@@ -89,6 +89,9 @@
       ],
       "@bookapp/angular/desktop/books/best-books": [
         "libs/angular/desktop/books/best-books/src/index.ts"
+      ],
+      "@bookapp/angular/desktop/history": [
+        "libs/angular/desktop/history/src/index.ts"
       ]
     }
   },
