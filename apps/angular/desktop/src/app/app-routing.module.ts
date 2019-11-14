@@ -119,6 +119,15 @@ import { BOOKMARKS, ROLES } from '@bookapp/shared';
               }
             },
             {
+              path: 'history',
+              loadChildren: () =>
+                import('@bookapp/angular/desktop/history').then(
+                  m => m.HistoryModule
+                ),
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard]
+            },
+            {
               path: 'password',
               loadChildren: () =>
                 import('@bookapp/angular/desktop/password').then(
