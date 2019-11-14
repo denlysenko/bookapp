@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
+
+import { DEFAULT_LIMIT } from '@bookapp/angular/core';
+import { Log, UserActionsDesc } from '@bookapp/shared';
 
 @Component({
   selector: 'bookapp-history-list',
@@ -6,8 +17,24 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   styleUrls: ['./history-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HistoryListComponent implements OnInit {
-  constructor() {}
+export class HistoryListComponent {
+  readonly displayedColumns = ['createdAt', 'action', 'book'];
+  readonly defaultLimit = DEFAULT_LIMIT;
+  readonly actions = UserActionsDesc;
+  readonly sorting = {
+    active: 'createdAt',
+    direction: 'desc'
+  };
 
-  ngOnInit() {}
+  @Input()
+  logs: Log[];
+
+  @Input()
+  totalCount: number;
+
+  @Output()
+  sortChanged = new EventEmitter<Sort>();
+
+  @Output()
+  pageChanged = new EventEmitter<PageEvent>();
 }
