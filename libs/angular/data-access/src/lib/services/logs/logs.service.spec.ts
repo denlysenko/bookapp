@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LAST_LOGS_QUERY } from '@bookapp/shared';
+import { DEFAULT_LIMIT } from '@bookapp/angular/core';
+import { LAST_LOGS_QUERY, LOGS_QUERY } from '@bookapp/shared';
 import { book, log } from '@bookapp/testing';
 
 import {
@@ -11,7 +12,7 @@ import {
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { addTypenameToDocument } from 'apollo-utilities';
 
-import { LogsService } from './logs.service';
+import { DEFAULT_ORDER_BY, LogsService } from './logs.service';
 
 describe('LogsService', () => {
   let controller: ApolloTestingController;
@@ -66,6 +67,50 @@ describe('LogsService', () => {
                 }
               }
             ],
+            __typename: 'LogsResponse'
+          }
+        }
+      });
+
+      controller.verify();
+    });
+  });
+
+  describe('getLogs()', () => {
+    it('should get logs', done => {
+      service
+        .getLogs()
+        // tslint:disable-next-line: no-identical-functions
+        .valueChanges.subscribe(({ data: { logs: { rows } } }) => {
+          const [l] = rows;
+          expect(l.action).toEqual(log.action);
+          done();
+        });
+
+      const op = controller.expectOne(addTypenameToDocument(LOGS_QUERY));
+
+      expect(op.operation.variables.first).toEqual(DEFAULT_LIMIT);
+      expect(op.operation.variables.orderBy).toEqual(DEFAULT_ORDER_BY);
+
+      op.flush({
+        data: {
+          logs: {
+            rows: [
+              {
+                action: log.action,
+                createdAt: log.createdAt,
+                __typename: 'Log',
+                book: {
+                  _id: book._id,
+                  title: book.title,
+                  author: book.author,
+                  url: book.url,
+                  paid: book.paid,
+                  __typename: 'Book'
+                }
+              }
+            ],
+            count: 1,
             __typename: 'LogsResponse'
           }
         }
