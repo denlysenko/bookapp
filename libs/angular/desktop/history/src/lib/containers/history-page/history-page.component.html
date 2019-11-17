@@ -1,1 +1,10 @@
-<p>history-page works!</p>
+<bookapp-preloader [visible]="loading$ | async"></bookapp-preloader>
+<mat-toolbar>
+  <span>History</span>
+</mat-toolbar>
+<div class="view-content">
+  <bookapp-history-list [logs]="logs$ | async"
+                        [totalCount]="count$ | async"
+                        (sortChanged)="sort($event)"
+                        (pageChanged)="paginate($event)"></bookapp-history-list>
+</div>

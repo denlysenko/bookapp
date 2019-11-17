@@ -28,7 +28,7 @@
         <td mat-cell
             *matCellDef="let element">
           <a routerLink="{{ element.book.paid ? '/books/buy/' + element.book.url : '/books/browse/' + element.book.url }}"
-             [queryParams]="{ bookId: element.book.id }">{{ element.book.title }}</a>
+             [queryParams]="{ bookId: element.book._id }">{{ element.book.title }}</a>
           <br />
           <small> by {{ element.book.author }}</small>
         </td>
