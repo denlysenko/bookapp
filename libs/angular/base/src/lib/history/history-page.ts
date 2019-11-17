@@ -13,6 +13,7 @@ export abstract class HistoryPageBase {
   logs$: Observable<Log[]> = this.logsQueryRef.valueChanges.pipe(
     map(({ data }) => data.logs.rows)
   );
+
   count$: Observable<number> = this.logsQueryRef.valueChanges.pipe(
     map(({ data }) => data.logs.count)
   );
