@@ -20,3 +20,5 @@ export * from './lib/books/book-comments';
 export * from './lib/books/best-books';
 
 export * from './lib/bookmarks/bookmarks-page';
+
+export * from './lib/history/history-page';
