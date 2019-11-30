@@ -92,6 +92,9 @@
       ],
       "@bookapp/angular/desktop/history": [
         "libs/angular/desktop/history/src/index.ts"
+      ],
+      "@bookapp/angular/mobile/bookmarks": [
+        "libs/angular/mobile/bookmarks/src/index.ts"
       ]
     }
   },

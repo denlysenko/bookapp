@@ -1333,6 +1333,29 @@
           "styleext": "scss"
         }
       }
+    },
+    "angular-mobile-bookmarks": {
+      "projectType": "library",
+      "root": "libs/angular/mobile/bookmarks",
+      "sourceRoot": "libs/angular/mobile/bookmarks/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/angular/mobile/bookmarks/tsconfig.lib.json"],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/angular/mobile/bookmarks/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

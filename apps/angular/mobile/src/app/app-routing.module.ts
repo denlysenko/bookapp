@@ -4,9 +4,11 @@ import { AuthPageComponent } from '@bookapp/angular/mobile/auth';
 import { BrowseBooksPageComponent } from '@bookapp/angular/mobile/books/browse-books';
 import { MainLayoutComponent } from '@bookapp/angular/mobile/main-layout';
 import { AuthGuard } from '@bookapp/angular/shared';
+import { BOOKMARKS } from '@bookapp/shared';
 
 import { NativeScriptRouterModule } from 'nativescript-angular/router';
 
+// tslint:disable: no-duplicate-string
 @NgModule({
   imports: [
     NativeScriptRouterModule.forRoot(
@@ -56,6 +58,45 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
                 ),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard]
+            },
+            {
+              path: 'bookmarks/favorites',
+              loadChildren: () =>
+                import('@bookapp/angular/mobile/bookmarks').then(
+                  m => m.BookmarksModule
+                ),
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard],
+              data: {
+                title: 'Favorite Books',
+                type: BOOKMARKS.FAVORITES
+              }
+            },
+            {
+              path: 'bookmarks/mustread',
+              loadChildren: () =>
+                import('@bookapp/angular/mobile/bookmarks').then(
+                  m => m.BookmarksModule
+                ),
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard],
+              data: {
+                title: 'Must Read Titles',
+                type: BOOKMARKS.MUSTREAD
+              }
+            },
+            {
+              path: 'bookmarks/wishlist',
+              loadChildren: () =>
+                import('@bookapp/angular/mobile/bookmarks').then(
+                  m => m.BookmarksModule
+                ),
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard],
+              data: {
+                title: 'Wishlist',
+                type: BOOKMARKS.WISHLIST
+              }
             },
             {
               path: 'password',
