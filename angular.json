@@ -61,10 +61,7 @@
             "main": "apps/react/desktop/src/main.tsx",
             "polyfills": "apps/react/desktop/src/polyfills.ts",
             "tsConfig": "apps/react/desktop/tsconfig.app.json",
-            "assets": [
-              "apps/react/desktop/src/favicon.ico",
-              "apps/react/desktop/src/assets"
-            ],
+            "assets": ["apps/react/desktop/src/favicon.ico", "apps/react/desktop/src/assets"],
             "styles": ["apps/react/desktop/src/styles.scss"],
             "scripts": []
           },
@@ -169,10 +166,7 @@
             "main": "apps/angular/desktop/src/main.ts",
             "polyfills": "apps/angular/desktop/src/polyfills.ts",
             "tsConfig": "apps/angular/desktop/tsconfig.app.json",
-            "assets": [
-              "apps/angular/desktop/src/favicon.ico",
-              "apps/angular/desktop/src/assets"
-            ],
+            "assets": ["apps/angular/desktop/src/favicon.ico", "apps/angular/desktop/src/assets"],
             "styles": ["apps/angular/desktop/src/styles.scss"],
             "stylePreprocessorOptions": {
               "includePaths": ["libs/angular/styles/"]
@@ -294,10 +288,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/api/auth/tsconfig.lib.json",
-              "libs/api/auth/tsconfig.spec.json"
-            ],
+            "tsConfig": ["libs/api/auth/tsconfig.lib.json", "libs/api/auth/tsconfig.spec.json"],
             "exclude": ["**/node_modules/**", "!libs/api/auth/**"]
           }
         },
@@ -319,10 +310,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/api/config/tsconfig.lib.json",
-              "libs/api/config/tsconfig.spec.json"
-            ],
+            "tsConfig": ["libs/api/config/tsconfig.lib.json", "libs/api/config/tsconfig.spec.json"],
             "exclude": ["**/node_modules/**", "!libs/api/config/**"]
           }
         },
@@ -344,10 +332,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/api/users/tsconfig.lib.json",
-              "libs/api/users/tsconfig.spec.json"
-            ],
+            "tsConfig": ["libs/api/users/tsconfig.lib.json", "libs/api/users/tsconfig.spec.json"],
             "exclude": ["**/node_modules/**", "!libs/api/users/**"]
           }
         },
@@ -455,10 +440,7 @@
           "builder": "@nrwl/linter:lint",
           "options": {
             "linter": "tslint",
-            "tsConfig": [
-              "libs/api/logs/tsconfig.lib.json",
-              "libs/api/logs/tsconfig.spec.json"
-            ],
+            "tsConfig": ["libs/api/logs/tsconfig.lib.json", "libs/api/logs/tsconfig.spec.json"],
             "exclude": ["**/node_modules/**", "!libs/api/logs/**"]
           }
         },
@@ -507,10 +489,7 @@
           "builder": "@nrwl/linter:lint",
           "options": {
             "linter": "tslint",
-            "tsConfig": [
-              "libs/api/books/tsconfig.lib.json",
-              "libs/api/books/tsconfig.spec.json"
-            ],
+            "tsConfig": ["libs/api/books/tsconfig.lib.json", "libs/api/books/tsconfig.spec.json"],
             "exclude": ["**/node_modules/**", "!libs/api/books/**"]
           }
         },
@@ -742,10 +721,7 @@
               "libs/angular/desktop/main-layout/tsconfig.lib.json",
               "libs/angular/desktop/main-layout/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/desktop/main-layout/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/angular/desktop/main-layout/**"]
           }
         },
         "test": {
@@ -791,10 +767,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": ["libs/angular/mobile/main-layout/tsconfig.lib.json"],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/mobile/main-layout/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/angular/mobile/main-layout/**"]
           }
         }
       },
@@ -817,10 +790,7 @@
               "libs/angular/desktop/password/tsconfig.lib.json",
               "libs/angular/desktop/password/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/desktop/password/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/angular/desktop/password/**"]
           }
         },
         "test": {
@@ -848,10 +818,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": ["libs/angular/mobile/password/tsconfig.lib.json"],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/mobile/password/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/angular/mobile/password/**"]
           }
         }
       },
@@ -874,10 +841,7 @@
               "libs/angular/desktop/profile/tsconfig.lib.json",
               "libs/angular/desktop/profile/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/desktop/profile/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/angular/desktop/profile/**"]
           }
         },
         "test": {
@@ -965,10 +929,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/utils/tsconfig.lib.json",
-              "libs/utils/tsconfig.spec.json"
-            ],
+            "tsConfig": ["libs/utils/tsconfig.lib.json", "libs/utils/tsconfig.spec.json"],
             "exclude": ["**/node_modules/**", "!libs/utils/**"]
           }
         },
@@ -994,10 +955,7 @@
               "libs/angular/desktop/books/add-book/tsconfig.lib.json",
               "libs/angular/desktop/books/add-book/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/desktop/books/add-book/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/angular/desktop/books/add-book/**"]
           }
         },
         "test": {
@@ -1028,10 +986,7 @@
               "libs/angular/desktop/books/browse-books/tsconfig.lib.json",
               "libs/angular/desktop/books/browse-books/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/desktop/books/browse-books/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/angular/desktop/books/browse-books/**"]
           }
         },
         "test": {
@@ -1062,10 +1017,7 @@
               "libs/angular/desktop/books/buy-books/tsconfig.lib.json",
               "libs/angular/desktop/books/buy-books/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/desktop/books/buy-books/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/angular/desktop/books/buy-books/**"]
           }
         },
         "test": {
@@ -1117,13 +1069,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/angular/mobile/books/browse-books/tsconfig.lib.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/mobile/books/browse-books/**"
-            ]
+            "tsConfig": ["libs/angular/mobile/books/browse-books/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/mobile/books/browse-books/**"]
           }
         }
       },
@@ -1157,13 +1104,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/angular/mobile/books/buy-books/tsconfig.lib.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/mobile/books/buy-books/**"
-            ]
+            "tsConfig": ["libs/angular/mobile/books/buy-books/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/mobile/books/buy-books/**"]
           }
         }
       },
@@ -1186,10 +1128,7 @@
               "libs/angular/desktop/books/view-book/tsconfig.lib.json",
               "libs/angular/desktop/books/view-book/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/desktop/books/view-book/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/angular/desktop/books/view-book/**"]
           }
         },
         "test": {
@@ -1216,13 +1155,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/angular/mobile/books/view-book/tsconfig.lib.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/mobile/books/view-book/**"
-            ]
+            "tsConfig": ["libs/angular/mobile/books/view-book/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/mobile/books/view-book/**"]
           }
         }
       },
@@ -1245,10 +1179,7 @@
               "libs/angular/desktop/bookmarks/tsconfig.lib.json",
               "libs/angular/desktop/bookmarks/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/desktop/bookmarks/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/angular/desktop/bookmarks/**"]
           }
         },
         "test": {
@@ -1279,10 +1210,7 @@
               "libs/angular/desktop/books/best-books/tsconfig.lib.json",
               "libs/angular/desktop/books/best-books/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/desktop/books/best-books/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/angular/desktop/books/best-books/**"]
           }
         },
         "test": {
@@ -1313,10 +1241,7 @@
               "libs/angular/desktop/history/tsconfig.lib.json",
               "libs/angular/desktop/history/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/desktop/history/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/angular/desktop/history/**"]
           }
         },
         "test": {
@@ -1344,10 +1269,27 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": ["libs/angular/mobile/bookmarks/tsconfig.lib.json"],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/angular/mobile/bookmarks/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/angular/mobile/bookmarks/**"]
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "angular-mobile-books-best-books": {
+      "projectType": "library",
+      "root": "libs/angular/mobile/books/best-books",
+      "sourceRoot": "libs/angular/mobile/books/best-books/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/angular/mobile/books/best-books/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/mobile/books/best-books/**"]
           }
         }
       },

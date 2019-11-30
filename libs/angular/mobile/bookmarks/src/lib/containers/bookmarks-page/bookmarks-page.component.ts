@@ -24,10 +24,7 @@ export class BookmarksPageComponent extends BookmarksPageBase {
   }
 
   onDrawerButtonTap() {
-    const sideDrawer = getViewById(
-      app.getRootView(),
-      'drawer'
-    ) as RadSideDrawer;
+    const sideDrawer = getViewById(app.getRootView(), 'drawer') as RadSideDrawer;
     sideDrawer.toggleDrawerState();
   }
 }

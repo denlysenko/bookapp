@@ -9,11 +9,17 @@ export abstract class BestBooksBase {
   booksQueryRef = this.booksService.getBestBooks();
 
   books$: Observable<Book[]> = this.booksQueryRef.valueChanges.pipe(
-    tap(({ data: { bestBooks: { rows, count } } }) => {
-      if (rows.length === count) {
-        this.hasMoreItems.next(false);
+    tap(
+      ({
+        data: {
+          bestBooks: { rows, count }
+        }
+      }) => {
+        if (rows.length === count) {
+          this.hasMoreItems.next(false);
+        }
       }
-    }),
+    ),
     map(({ data }) => data.bestBooks.rows)
   );
 
@@ -80,16 +86,12 @@ export abstract class BestBooksBase {
         });
 
         if (rateBook.rating < 5) {
-          const updatedBookIndex = data.bestBooks.rows.findIndex(
-            ({ _id }) => _id === event.bookId
-          );
+          const updatedBookIndex = data.bestBooks.rows.findIndex(({ _id }) => _id === event.bookId);
           if (updatedBookIndex > -1) {
             data.bestBooks.rows.splice(updatedBookIndex, 1);
           }
         } else {
-          const updatedBook = data.bestBooks.rows.find(
-            ({ _id }) => _id === event.bookId
-          );
+          const updatedBook = data.bestBooks.rows.find(({ _id }) => _id === event.bookId);
           updatedBook.rating = rateBook.rating;
           updatedBook.total_rates = rateBook.total_rates;
           updatedBook.total_rating = rateBook.total_rating;

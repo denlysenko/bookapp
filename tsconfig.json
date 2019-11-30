@@ -33,32 +33,16 @@
       "@bookapp/angular/graphql": ["libs/angular/graphql/src/index.ts"],
       "@bookapp/angular/data-access": ["libs/angular/data-access/src/index.ts"],
       "@bookapp/angular/base": ["libs/angular/base/src/index.ts"],
-      "@bookapp/angular/desktop/auth": [
-        "libs/angular/desktop/auth/src/index.ts"
-      ],
+      "@bookapp/angular/desktop/auth": ["libs/angular/desktop/auth/src/index.ts"],
       "@bookapp/angular/mobile/auth": ["libs/angular/mobile/auth/src/index.ts"],
-      "@bookapp/angular/desktop/main-layout": [
-        "libs/angular/desktop/main-layout/src/index.ts"
-      ],
+      "@bookapp/angular/desktop/main-layout": ["libs/angular/desktop/main-layout/src/index.ts"],
       "@bookapp/angular/shared": ["libs/angular/shared/src/index.ts"],
-      "@bookapp/angular/mobile/main-layout": [
-        "libs/angular/mobile/main-layout/src/index.ts"
-      ],
-      "@bookapp/angular/desktop/password": [
-        "libs/angular/desktop/password/src/index.ts"
-      ],
-      "@bookapp/angular/mobile/password": [
-        "libs/angular/mobile/password/src/index.ts"
-      ],
-      "@bookapp/angular/desktop/profile": [
-        "libs/angular/desktop/profile/src/index.ts"
-      ],
-      "@bookapp/angular/ui-desktop": [
-        "libs/angular/ui/ui-desktop/src/index.ts"
-      ],
-      "@bookapp/angular/mobile/profile": [
-        "libs/angular/mobile/profile/src/index.ts"
-      ],
+      "@bookapp/angular/mobile/main-layout": ["libs/angular/mobile/main-layout/src/index.ts"],
+      "@bookapp/angular/desktop/password": ["libs/angular/desktop/password/src/index.ts"],
+      "@bookapp/angular/mobile/password": ["libs/angular/mobile/password/src/index.ts"],
+      "@bookapp/angular/desktop/profile": ["libs/angular/desktop/profile/src/index.ts"],
+      "@bookapp/angular/ui-desktop": ["libs/angular/ui/ui-desktop/src/index.ts"],
+      "@bookapp/angular/mobile/profile": ["libs/angular/mobile/profile/src/index.ts"],
       "@bookapp/shared": ["libs/shared/src/index.ts"],
       "@bookapp/utils": ["libs/utils/src/index.ts"],
       "@bookapp/angular/desktop/books/add-book": [
@@ -84,17 +68,14 @@
       "@bookapp/angular/mobile/books/view-book": [
         "libs/angular/mobile/books/view-book/src/index.ts"
       ],
-      "@bookapp/angular/desktop/bookmarks": [
-        "libs/angular/desktop/bookmarks/src/index.ts"
-      ],
+      "@bookapp/angular/desktop/bookmarks": ["libs/angular/desktop/bookmarks/src/index.ts"],
       "@bookapp/angular/desktop/books/best-books": [
         "libs/angular/desktop/books/best-books/src/index.ts"
       ],
-      "@bookapp/angular/desktop/history": [
-        "libs/angular/desktop/history/src/index.ts"
-      ],
-      "@bookapp/angular/mobile/bookmarks": [
-        "libs/angular/mobile/bookmarks/src/index.ts"
+      "@bookapp/angular/desktop/history": ["libs/angular/desktop/history/src/index.ts"],
+      "@bookapp/angular/mobile/bookmarks": ["libs/angular/mobile/bookmarks/src/index.ts"],
+      "@bookapp/angular/mobile/books/best-books": [
+        "libs/angular/mobile/books/best-books/src/index.ts"
       ]
     }
   },

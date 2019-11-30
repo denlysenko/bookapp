@@ -20,18 +20,14 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
         {
           path: 'books/browse/:author/:slug',
           loadChildren: () =>
-            import('@bookapp/angular/mobile/books/view-book').then(
-              m => m.ViewBookModule
-            ),
+            import('@bookapp/angular/mobile/books/view-book').then(m => m.ViewBookModule),
           canLoad: [AuthGuard],
           canActivate: [AuthGuard]
         },
         {
           path: 'books/buy/:author/:slug',
           loadChildren: () =>
-            import('@bookapp/angular/mobile/books/view-book').then(
-              m => m.ViewBookModule
-            ),
+            import('@bookapp/angular/mobile/books/view-book').then(m => m.ViewBookModule),
           canLoad: [AuthGuard],
           canActivate: [AuthGuard]
         },
@@ -53,18 +49,21 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
             {
               path: 'books/buy',
               loadChildren: () =>
-                import('@bookapp/angular/mobile/books/buy-books').then(
-                  m => m.BuyBooksModule
-                ),
+                import('@bookapp/angular/mobile/books/buy-books').then(m => m.BuyBooksModule),
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard]
+            },
+            {
+              path: 'books/best',
+              loadChildren: () =>
+                import('@bookapp/angular/mobile/books/best-books').then(m => m.BestBooksModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard]
             },
             {
               path: 'bookmarks/favorites',
               loadChildren: () =>
-                import('@bookapp/angular/mobile/bookmarks').then(
-                  m => m.BookmarksModule
-                ),
+                import('@bookapp/angular/mobile/bookmarks').then(m => m.BookmarksModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard],
               data: {
@@ -75,9 +74,7 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
             {
               path: 'bookmarks/mustread',
               loadChildren: () =>
-                import('@bookapp/angular/mobile/bookmarks').then(
-                  m => m.BookmarksModule
-                ),
+                import('@bookapp/angular/mobile/bookmarks').then(m => m.BookmarksModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard],
               data: {
@@ -88,9 +85,7 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
             {
               path: 'bookmarks/wishlist',
               loadChildren: () =>
-                import('@bookapp/angular/mobile/bookmarks').then(
-                  m => m.BookmarksModule
-                ),
+                import('@bookapp/angular/mobile/bookmarks').then(m => m.BookmarksModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard],
               data: {
@@ -101,18 +96,14 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
             {
               path: 'password',
               loadChildren: () =>
-                import('@bookapp/angular/mobile/password').then(
-                  m => m.PasswordModule
-                ),
+                import('@bookapp/angular/mobile/password').then(m => m.PasswordModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard]
             },
             {
               path: 'profile',
               loadChildren: () =>
-                import('@bookapp/angular/mobile/profile').then(
-                  m => m.ProfileModule
-                ),
+                import('@bookapp/angular/mobile/profile').then(m => m.ProfileModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard]
             }
