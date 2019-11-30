@@ -3,8 +3,10 @@
   <span>History</span>
 </mat-toolbar>
 <div class="view-content">
-  <bookapp-history-list [logs]="logs$ | async"
-                        [totalCount]="count$ | async"
-                        (sortChanged)="sort($event)"
-                        (pageChanged)="paginate($event)"></bookapp-history-list>
+  <bookapp-history-list
+    [logs]="logs$ | async"
+    [totalCount]="count$ | async"
+    (sortChanged)="sort($event)"
+    (pageChanged)="paginate($event)"
+  ></bookapp-history-list>
 </div>

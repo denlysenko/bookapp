@@ -1,6 +1,5 @@
 <div class="mat-toolbar-row">
-  <mat-button-toggle-group (change)="sort($event)"
-                           [value]="sortValue">
+  <mat-button-toggle-group (change)="sort($event)" [value]="sortValue">
     <mat-button-toggle value="rating_desc">
       <span>All books</span>
     </mat-button-toggle>
@@ -12,10 +11,7 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
   <mat-form-field>
-    <input autocomplete="off"
-           matInput
-           placeholder="Enter Book Title"
-           [formControl]="searchQuery">
+    <input autocomplete="off" matInput placeholder="Enter Book Title" [formControl]="searchQuery" />
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
 </div>

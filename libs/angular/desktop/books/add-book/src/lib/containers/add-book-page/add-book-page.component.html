@@ -2,10 +2,12 @@
   <mat-card>
     <mat-card-title>Add a Book</mat-card-title>
     <mat-card-content>
-      <bookapp-add-book-form [book]="book$ | async"
-                             [loading]="loading$ | async"
-                             [error]="error$ | async"
-                             (formSubmitted)="save($event)"></bookapp-add-book-form>
+      <bookapp-add-book-form
+        [book]="book$ | async"
+        [loading]="loading$ | async"
+        [error]="error$ | async"
+        (formSubmitted)="save($event)"
+      ></bookapp-add-book-form>
     </mat-card-content>
   </mat-card>
 </div>

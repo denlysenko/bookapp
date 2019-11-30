@@ -14,5 +14,3 @@
 **/apps/*nativescript/tools/**/*
 **/apps/*nativescript/src/assets/*.min.css
 **/xplat/nativescript*/plugins/**/*
-
-*.html

@@ -1,19 +1,23 @@
-<ActionBar class="action-bar"
-           flat="true">
-  <NavigationButton ios:visibility="collapsed"
-                    icon="res://menu"
-                    (tap)="onDrawerButtonTap()"></NavigationButton>
-  <ActionItem icon="res://menu"
-              android:visibility="collapsed"
-              ios.position="left"
-              (tap)="onDrawerButtonTap()">
+<ActionBar class="action-bar" flat="true">
+  <NavigationButton
+    ios:visibility="collapsed"
+    icon="res://menu"
+    (tap)="onDrawerButtonTap()"
+  ></NavigationButton>
+  <ActionItem
+    icon="res://menu"
+    android:visibility="collapsed"
+    ios.position="left"
+    (tap)="onDrawerButtonTap()"
+  >
   </ActionItem>
-  <Label class="action-bar-title"
-         [text]="title$ | async"></Label>
+  <Label class="action-bar-title" [text]="title$ | async"></Label>
 </ActionBar>
 <GridLayout>
-  <bookapp-books-list [books]="books$ | async"
-                      [hasMoreItems]="hasMoreItems$ | async"
-                      (loadMore)="loadMore()"
-                      (rate)="rate($event)"></bookapp-books-list>
+  <bookapp-books-list
+    [books]="books$ | async"
+    [hasMoreItems]="hasMoreItems$ | async"
+    (loadMore)="loadMore()"
+    (rate)="rate($event)"
+  ></bookapp-books-list>
 </GridLayout>

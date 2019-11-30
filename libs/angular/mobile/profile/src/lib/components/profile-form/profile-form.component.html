@@ -1,101 +1,109 @@
-<ActionBar class="action-bar"
-           flat="true">
-  <NavigationButton ios:visibility="collapsed"
-                    icon="res://menu"
-                    (tap)="onDrawerButtonTap()"></NavigationButton>
-  <ActionItem icon="res://menu"
-              android:visibility="collapsed"
-              ios.position="left"
-              (tap)="onDrawerButtonTap()">
+<ActionBar class="action-bar" flat="true">
+  <NavigationButton
+    ios:visibility="collapsed"
+    icon="res://menu"
+    (tap)="onDrawerButtonTap()"
+  ></NavigationButton>
+  <ActionItem
+    icon="res://menu"
+    android:visibility="collapsed"
+    ios.position="left"
+    (tap)="onDrawerButtonTap()"
+  >
   </ActionItem>
-  <ActionItem ios.systemIcon="3"
-              ios.position="right"
-              android.position="actionBar"
-              android.systemIcon="ic_menu_save"
-              (tap)="submit()"></ActionItem>
-  <Label class="action-bar-title"
-         text="Edit Profile"></Label>
+  <ActionItem
+    ios.systemIcon="3"
+    ios.position="right"
+    android.position="actionBar"
+    android.systemIcon="ic_menu_save"
+    (tap)="submit()"
+  ></ActionItem>
+  <Label class="action-bar-title" text="Edit Profile"></Label>
 </ActionBar>
 <StackLayout>
-  <StackLayout class="m-10"
-               [shadow]="2">
-    <FlexboxLayout flexDirection="column"
-                   height="100%">
-      <StackLayout class="mat-card"
-                   flexGrow="1">
+  <StackLayout class="m-10" [shadow]="2">
+    <FlexboxLayout flexDirection="column" height="100%">
+      <StackLayout class="mat-card" flexGrow="1">
         <ScrollView>
           <StackLayout>
-            <FlexboxLayout flexDirection="column"
-                           justifyContenet="center"
-                           alignItems="center">
-              <Label class="h3"
-                     text="Profile Photo"></Label>
-              <AbsoluteLayout *ngIf="user"
-                              class="avatar-block">
-                <Image class="avatar"
-                       [src]="user.avatar ? user.avatar : 'res://noavatar'"
-                       left="0"
-                       top="0"></Image>
-                <GridLayout class="avatar-btn"
-                            rows="*"
-                            columns="*"
-                            left="50"
-                            top="45"
-                            (tap)="changeAvatar()">
-                  <Label class="mdi"
-                         text="add_a_photo"
-                         style.verticalAlignment="center"
-                         style.textAlignment="center"></Label>
+            <FlexboxLayout flexDirection="column" justifyContenet="center" alignItems="center">
+              <Label class="h3" text="Profile Photo"></Label>
+              <AbsoluteLayout *ngIf="user" class="avatar-block">
+                <Image
+                  class="avatar"
+                  [src]="user.avatar ? user.avatar : 'res://noavatar'"
+                  left="0"
+                  top="0"
+                ></Image>
+                <GridLayout
+                  class="avatar-btn"
+                  rows="*"
+                  columns="*"
+                  left="50"
+                  top="45"
+                  (tap)="changeAvatar()"
+                >
+                  <Label
+                    class="mdi"
+                    text="add_a_photo"
+                    style.verticalAlignment="center"
+                    style.textAlignment="center"
+                  ></Label>
                 </GridLayout>
               </AbsoluteLayout>
-              <Progress *ngIf="uploading$ | async"
-                        [value]="progress$ | async"
-                        maxValue="100"
-                        class="m-t-20"></Progress>
+              <Progress
+                *ngIf="uploading$ | async"
+                [value]="progress$ | async"
+                maxValue="100"
+                class="m-t-20"
+              ></Progress>
             </FlexboxLayout>
-            <RadDataForm #dataForm
-                         class="m-t-30"
-                         [source]="source$ | async">
-              <TKEntityProperty tkDataFormProperty
-                                name="firstName"
-                                displayName="First Name">
-                <TKPropertyEditor tkEntityPropertyEditor
-                                  type="Text">
-                  <TKPropertyEditorStyle tkPropertyEditorStyle
-                                         labelTextSize="14"
-                                         labelFontStyle="Italic"
-                                         labelPosition="Top"></TKPropertyEditorStyle>
+            <RadDataForm #dataForm class="m-t-30" [source]="source$ | async">
+              <TKEntityProperty tkDataFormProperty name="firstName" displayName="First Name">
+                <TKPropertyEditor tkEntityPropertyEditor type="Text">
+                  <TKPropertyEditorStyle
+                    tkPropertyEditorStyle
+                    labelTextSize="14"
+                    labelFontStyle="Italic"
+                    labelPosition="Top"
+                  ></TKPropertyEditorStyle>
                 </TKPropertyEditor>
-                <TKNonEmptyValidator tkEntityPropertyValidators
-                                     errorMessage="This field is required"></TKNonEmptyValidator>
+                <TKNonEmptyValidator
+                  tkEntityPropertyValidators
+                  errorMessage="This field is required"
+                ></TKNonEmptyValidator>
               </TKEntityProperty>
-              <TKEntityProperty tkDataFormProperty
-                                name="lastName"
-                                displayName="Last Name">
-                <TKPropertyEditor tkEntityPropertyEditor
-                                  type="Text">
-                  <TKPropertyEditorStyle tkPropertyEditorStyle
-                                         labelTextSize="14"
-                                         labelFontStyle="Italic"
-                                         labelPosition="Top"></TKPropertyEditorStyle>
+              <TKEntityProperty tkDataFormProperty name="lastName" displayName="Last Name">
+                <TKPropertyEditor tkEntityPropertyEditor type="Text">
+                  <TKPropertyEditorStyle
+                    tkPropertyEditorStyle
+                    labelTextSize="14"
+                    labelFontStyle="Italic"
+                    labelPosition="Top"
+                  ></TKPropertyEditorStyle>
                 </TKPropertyEditor>
-                <TKNonEmptyValidator tkEntityPropertyValidators
-                                     errorMessage="This field is required"></TKNonEmptyValidator>
+                <TKNonEmptyValidator
+                  tkEntityPropertyValidators
+                  errorMessage="This field is required"
+                ></TKNonEmptyValidator>
               </TKEntityProperty>
-              <TKEntityProperty tkDataFormProperty
-                                name="email"
-                                displayName="Email">
-                <TKPropertyEditor tkEntityPropertyEditor
-                                  type="Email">
-                  <TKPropertyEditorStyle tkPropertyEditorStyle
-                                         labelTextSize="14"
-                                         labelFontStyle="Italic"
-                                         labelPosition="Top"></TKPropertyEditorStyle>
+              <TKEntityProperty tkDataFormProperty name="email" displayName="Email">
+                <TKPropertyEditor tkEntityPropertyEditor type="Email">
+                  <TKPropertyEditorStyle
+                    tkPropertyEditorStyle
+                    labelTextSize="14"
+                    labelFontStyle="Italic"
+                    labelPosition="Top"
+                  ></TKPropertyEditorStyle>
                 </TKPropertyEditor>
-                <TKNonEmptyValidator tkEntityPropertyValidators
-                                     errorMessage="This field is required"></TKNonEmptyValidator>
-                <TKEmailValidator tkEntityPropertyValidators
-                                  errorMessage="Not a valid email"></TKEmailValidator>
+                <TKNonEmptyValidator
+                  tkEntityPropertyValidators
+                  errorMessage="This field is required"
+                ></TKNonEmptyValidator>
+                <TKEmailValidator
+                  tkEntityPropertyValidators
+                  errorMessage="Not a valid email"
+                ></TKEmailValidator>
               </TKEntityProperty>
             </RadDataForm>
           </StackLayout>

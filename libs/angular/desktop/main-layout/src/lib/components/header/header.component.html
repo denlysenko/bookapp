@@ -1,40 +1,39 @@
-<mat-toolbar color="primary"
-             [class.is-mobile]="isMobile">
-  <button mat-icon-button
-          class="menu-toggler"
-          (click)="doToggleSidenav()">
+<mat-toolbar color="primary" [class.is-mobile]="isMobile">
+  <button mat-icon-button class="menu-toggler" (click)="doToggleSidenav()">
     <i class="material-icons">
       menu
     </i>
   </button>
-  <a [routerLink]="['/']"
-     class="brand mat-button">
+  <a [routerLink]="['/']" class="brand mat-button">
     <span class="mat-button-wrapper">
       <i class="material-icons">
         book
-      </i> {{ title }}</span>
+      </i>
+      {{ title }}</span
+    >
   </a>
-  <div *ngIf="user"
-       class="user-menu">
-    <button mat-button
-            id="user-menu-toggler"
-            [matMenuTriggerFor]="menu">
-      <img class="avatar"
-           [src]="user.avatar ? user.avatar : '/assets/images/no-avatar.svg'"
-           alt="avatar"> {{ user.displayName }}
+  <div *ngIf="user" class="user-menu">
+    <button mat-button id="user-menu-toggler" [matMenuTriggerFor]="menu">
+      <img
+        class="avatar"
+        [src]="user.avatar ? user.avatar : '/assets/images/no-avatar.svg'"
+        alt="avatar"
+      />
+      {{ user.displayName }}
       <i class="material-icons">
         expand_more
       </i>
     </button>
     <mat-menu #menu="matMenu">
-      <a *ngFor="let item of userMenu"
-         mat-menu-item
-         [routerLink]="['/', item.path]"
-         routerLinkActive="active">{{ item.label }}</a>
+      <a
+        *ngFor="let item of userMenu"
+        mat-menu-item
+        [routerLink]="['/', item.path]"
+        routerLinkActive="active"
+        >{{ item.label }}</a
+      >
       <mat-divider></mat-divider>
-      <a mat-menu-item
-         id="logout"
-         (click)="doLogout()">Signout</a>
+      <a mat-menu-item id="logout" (click)="doLogout()">Signout</a>
     </mat-menu>
   </div>
 </mat-toolbar>

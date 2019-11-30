@@ -1,90 +1,126 @@
-<FlexboxLayout flexDirection="column"
-               justifyContent="center">
-  <StackLayout class="m-20"
-               [shadow]="2">
+<FlexboxLayout flexDirection="column" justifyContent="center">
+  <StackLayout class="m-20" [shadow]="2">
     <StackLayout class="mat-card">
       <StackLayout class="mat-header">
-        <Label class="h2"
-               [text]="isLoggingIn ? 'Login into account' : 'Create account'"
-               textWrap="true"></Label>
+        <Label
+          class="h2"
+          [text]="isLoggingIn ? 'Login into account' : 'Create account'"
+          textWrap="true"
+        ></Label>
       </StackLayout>
-      <StackLayout class="form"
-                   [formGroup]="form">
+      <StackLayout class="form" [formGroup]="form">
         <PreviousNextView>
           <StackLayout>
-            <StackLayout *ngIf="!isLoggingIn"
-                         class="m-b-20"
-                         [class.has-error]="submitting && form.get('firstName').invalid">
-              <TextField hint="First Name"
-                         class="input input-border"
-                         autocorrect="false"
-                         autocapitalizationType="none"
-                         formControlName="firstName"></TextField>
-              <label *ngIf="form.get('firstName').hasError('required')"
-                     text="This field is required"
-                     class="error"></label>
-              <label *ngIf="form.get('firstName').hasError('serverError')"
-                     [text]="errors['firstName']"
-                     class="error"></label>
+            <StackLayout
+              *ngIf="!isLoggingIn"
+              class="m-b-20"
+              [class.has-error]="submitting && form.get('firstName').invalid"
+            >
+              <TextField
+                hint="First Name"
+                class="input input-border"
+                autocorrect="false"
+                autocapitalizationType="none"
+                formControlName="firstName"
+              ></TextField>
+              <label
+                *ngIf="form.get('firstName').hasError('required')"
+                text="This field is required"
+                class="error"
+              ></label>
+              <label
+                *ngIf="form.get('firstName').hasError('serverError')"
+                [text]="errors['firstName']"
+                class="error"
+              ></label>
             </StackLayout>
-            <StackLayout *ngIf="!isLoggingIn"
-                         class="m-b-20"
-                         [class.has-error]="submitting && form.get('lastName').invalid">
-              <TextField hint="Last Name"
-                         class="input input-border"
-                         autocorrect="false"
-                         autocapitalizationType="none"
-                         formControlName="lastName"></TextField>
-              <label *ngIf="form.get('lastName').hasError('required')"
-                     text="This field is required"
-                     class="error"></label>
-              <label *ngIf="form.get('lastName').hasError('serverError')"
-                     [text]="errors['lastName']"
-                     class="error"></label>
+            <StackLayout
+              *ngIf="!isLoggingIn"
+              class="m-b-20"
+              [class.has-error]="submitting && form.get('lastName').invalid"
+            >
+              <TextField
+                hint="Last Name"
+                class="input input-border"
+                autocorrect="false"
+                autocapitalizationType="none"
+                formControlName="lastName"
+              ></TextField>
+              <label
+                *ngIf="form.get('lastName').hasError('required')"
+                text="This field is required"
+                class="error"
+              ></label>
+              <label
+                *ngIf="form.get('lastName').hasError('serverError')"
+                [text]="errors['lastName']"
+                class="error"
+              ></label>
             </StackLayout>
-            <StackLayout class="m-b-20"
-                         [class.has-error]="submitting && form.get('email').invalid">
-              <TextField hint="Email"
-                         class="input input-border"
-                         keyboardType="email"
-                         autocorrect="false"
-                         autocapitalizationType="none"
-                         formControlName="email"></TextField>
-              <label *ngIf="form.get('email').hasError('required')"
-                     text="This field is required"
-                     class="error"></label>
-              <label *ngIf="form.get('email').hasError('email')"
-                     text="Not a valid email"
-                     class="error"></label>
-              <label *ngIf="form.get('email').hasError('serverError')"
-                     [text]="errors['email']"
-                     class="error"></label>
+            <StackLayout class="m-b-20" [class.has-error]="submitting && form.get('email').invalid">
+              <TextField
+                hint="Email"
+                class="input input-border"
+                keyboardType="email"
+                autocorrect="false"
+                autocapitalizationType="none"
+                formControlName="email"
+              ></TextField>
+              <label
+                *ngIf="form.get('email').hasError('required')"
+                text="This field is required"
+                class="error"
+              ></label>
+              <label
+                *ngIf="form.get('email').hasError('email')"
+                text="Not a valid email"
+                class="error"
+              ></label>
+              <label
+                *ngIf="form.get('email').hasError('serverError')"
+                [text]="errors['email']"
+                class="error"
+              ></label>
             </StackLayout>
-            <StackLayout class="m-b-20"
-                         [class.has-error]="submitting && form.get('password').invalid">
-              <TextField hint="Password"
-                         class="input input-border"
-                         secure="true"
-                         formControlName="password"></TextField>
-              <label *ngIf="form.get('password').hasError('required')"
-                     text="This field is required"
-                     class="error"></label>
-              <label *ngIf="form.get('password').hasError('serverError')"
-                     [text]="errors['password']"
-                     class="error"></label>
+            <StackLayout
+              class="m-b-20"
+              [class.has-error]="submitting && form.get('password').invalid"
+            >
+              <TextField
+                hint="Password"
+                class="input input-border"
+                secure="true"
+                formControlName="password"
+              ></TextField>
+              <label
+                *ngIf="form.get('password').hasError('required')"
+                text="This field is required"
+                class="error"
+              ></label>
+              <label
+                *ngIf="form.get('password').hasError('serverError')"
+                [text]="errors['password']"
+                class="error"
+              ></label>
             </StackLayout>
           </StackLayout>
         </PreviousNextView>
-        <Button class="btn btn-primary btn-active"
-                [text]="isLoggingIn ? 'Login' : 'Create'"
-                [isEnabled]="!loading"
-                (tap)="submit()"></Button>
-        <Label class="h3"
-               [text]="isLoggingIn ? 'Don\'t have an account?' : 'Already have an account?'"></Label>
-        <Button class="btn btn-outline btn-active"
-                [text]="isLoggingIn ? 'Create one' : 'Back to Login'"
-                (tap)="toggleAuthMode()"
-                [isEnabled]="!loading"></Button>
+        <Button
+          class="btn btn-primary btn-active"
+          [text]="isLoggingIn ? 'Login' : 'Create'"
+          [isEnabled]="!loading"
+          (tap)="submit()"
+        ></Button>
+        <Label
+          class="h3"
+          [text]="isLoggingIn ? 'Don\'t have an account?' : 'Already have an account?'"
+        ></Label>
+        <Button
+          class="btn btn-outline btn-active"
+          [text]="isLoggingIn ? 'Create one' : 'Back to Login'"
+          (tap)="toggleAuthMode()"
+          [isEnabled]="!loading"
+        ></Button>
       </StackLayout>
     </StackLayout>
   </StackLayout>

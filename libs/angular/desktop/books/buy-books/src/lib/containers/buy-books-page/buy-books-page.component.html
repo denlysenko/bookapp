@@ -4,12 +4,13 @@
     <span>Browse Books To Buy</span>
   </mat-toolbar-row>
   <mat-toolbar-row class="mobile-height-auto">
-    <bookapp-books-filter [filter]="filter$ | async"
-                          (sortChanged)="sort($event)"
-                          (searchChanged)="search($event)"></bookapp-books-filter>
+    <bookapp-books-filter
+      [filter]="filter$ | async"
+      (sortChanged)="sort($event)"
+      (searchChanged)="search($event)"
+    ></bookapp-books-filter>
   </mat-toolbar-row>
 </mat-toolbar>
 <div class="view-content">
-  <bookapp-books-list [books]="books$ | async"
-                      (bookRated)="rate($event)"></bookapp-books-list>
+  <bookapp-books-list [books]="books$ | async" (bookRated)="rate($event)"></bookapp-books-list>
 </div>

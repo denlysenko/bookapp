@@ -1,50 +1,51 @@
-<mat-nav-list *ngIf="isAdmin$ | async"
-              class="add">
-  <a mat-list-item
-     [routerLink]="['/books/add']"
-     color="accent"
-     routerLinkActive="active">
+<mat-nav-list *ngIf="isAdmin$ | async" class="add">
+  <a mat-list-item [routerLink]="['/books/add']" color="accent" routerLinkActive="active">
     <i class="material-icons">
       add_circle
-    </i> Add Book</a>
+    </i>
+    Add Book</a
+  >
 </mat-nav-list>
 <div class="divider"></div>
 <mat-nav-list class="nav">
-  <a mat-list-item
-     *ngFor="let link of navMenu"
-     [routerLink]="'/' + link.path"
-     routerLinkActive="active">
+  <a
+    mat-list-item
+    *ngFor="let link of navMenu"
+    [routerLink]="'/' + link.path"
+    routerLinkActive="active"
+  >
     <i class="material-icons">
       {{ link.icon }}
-    </i> {{ link.label }}</a>
+    </i>
+    {{ link.label }}</a
+  >
 </mat-nav-list>
 <div class="divider"></div>
 <mat-nav-list class="categories">
-  <a mat-list-item
-     *ngFor="let link of categoryMenu"
-     [routerLink]="'/' + link.path"
-     routerLinkActive="active">
-    <i class="material-icons"
-       [style.color]="link.color">
+  <a
+    mat-list-item
+    *ngFor="let link of categoryMenu"
+    [routerLink]="'/' + link.path"
+    routerLinkActive="active"
+  >
+    <i class="material-icons" [style.color]="link.color">
       {{ link.icon }}
-    </i> {{ link.label }}</a>
+    </i>
+    {{ link.label }}</a
+  >
 </mat-nav-list>
 <div class="divider"></div>
 <mat-list class="logs">
   <mat-list-item *ngFor="let log of logs">
-    <i class="material-icons"
-       matListIcon>
+    <i class="material-icons" matListIcon>
       access_time
     </i>
-    <p matLine
-       class="action">{{ actions[log.action] }}</p>
-    <p matLine
-       class="footnote">
+    <p matLine class="action">{{ actions[log.action] }}</p>
+    <p matLine class="footnote">
       <span>{{ log.book.title }}</span>
-      <br>
+      <br />
       <span> by {{ log.book.author }}</span>
     </p>
-    <p matLine
-       class="footnote">{{ log.createdAt | date: 'dd.MM.yyyy' }}</p>
+    <p matLine class="footnote">{{ log.createdAt | date: 'dd.MM.yyyy' }}</p>
   </mat-list-item>
 </mat-list>

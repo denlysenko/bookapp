@@ -3,7 +3,9 @@
   <span>{{ title$ | async }}</span>
 </mat-toolbar>
 <div class="view-content">
-  <bookapp-books-list [books]="books$ | async"
-                      (loadMore)="loadMore()"
-                      (bookRated)="rate($event)"></bookapp-books-list>
+  <bookapp-books-list
+    [books]="books$ | async"
+    (loadMore)="loadMore()"
+    (bookRated)="rate($event)"
+  ></bookapp-books-list>
 </div>

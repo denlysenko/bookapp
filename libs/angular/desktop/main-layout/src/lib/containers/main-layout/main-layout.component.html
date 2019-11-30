@@ -1,19 +1,21 @@
-<ng-container *ngIf="(user$ | async) as user">
-  <div class="layout"
-       [class.is-mobile]="mobileQuery.matches">
-    <bookapp-header [isMobile]="mobileQuery.matches"
-                    [user]="user"
-                    (toggleSidenav)="snav.toggle()"
-                    (logout)="logout()"></bookapp-header>
+<ng-container *ngIf="user$ | async as user">
+  <div class="layout" [class.is-mobile]="mobileQuery.matches">
+    <bookapp-header
+      [isMobile]="mobileQuery.matches"
+      [user]="user"
+      (toggleSidenav)="snav.toggle()"
+      (logout)="logout()"
+    ></bookapp-header>
     <mat-sidenav-container class="content">
-      <mat-sidenav #snav
-                   [mode]="mobileQuery.matches ? 'over' : 'side'"
-                   [opened]="!mobileQuery.matches"
-                   [fixedInViewport]="mobileQuery.matches"
-                   fixedTopGap="56"
-                   fixedBottomGap="56">
-        <bookapp-nav [user]="user"
-                     [logs]="logs$ | async"></bookapp-nav>
+      <mat-sidenav
+        #snav
+        [mode]="mobileQuery.matches ? 'over' : 'side'"
+        [opened]="!mobileQuery.matches"
+        [fixedInViewport]="mobileQuery.matches"
+        fixedTopGap="56"
+        fixedBottomGap="56"
+      >
+        <bookapp-nav [user]="user" [logs]="logs$ | async"></bookapp-nav>
       </mat-sidenav>
       <mat-sidenav-content>
         <router-outlet class="router-flex"></router-outlet>

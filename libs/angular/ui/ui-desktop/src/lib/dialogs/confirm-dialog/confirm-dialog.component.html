@@ -3,11 +3,8 @@
 <mat-dialog-content>{{ data.text }}</mat-dialog-content>
 <mat-divider></mat-divider>
 <mat-dialog-actions>
-  <button id="cancel-btn"
-          mat-raised-button
-          (click)="dialogRef.close(false)">CANCEL</button>
-  <button id="confirm-btn"
-          mat-raised-button
-          color="primary"
-          (click)="dialogRef.close(true)">CONFIRM</button>
+  <button id="cancel-btn" mat-raised-button (click)="dialogRef.close(false)">CANCEL</button>
+  <button id="confirm-btn" mat-raised-button color="primary" (click)="dialogRef.close(true)">
+    CONFIRM
+  </button>
 </mat-dialog-actions>

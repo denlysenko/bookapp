@@ -1,21 +1,22 @@
-<span (mouseleave)="reset()"
-      tabindex="0"
-      role="slider"
-      aria-valuemin="0"
-      [attr.aria-valuemax]="range.length"
-      [attr.aria-valuenow]="value">
-  <ng-template ngFor
-               let-r
-               [ngForOf]="range"
-               let-index="index">
+<span
+  (mouseleave)="reset()"
+  tabindex="0"
+  role="slider"
+  aria-valuemin="0"
+  [attr.aria-valuemax]="range.length"
+  [attr.aria-valuenow]="value"
+>
+  <ng-template ngFor let-r [ngForOf]="range" let-index="index">
     <span class="sr-only">({{ index < value ? '*' : ' ' }})</span>
-    <span class="rating-star"
-          (mouseenter)="enter(index + 1)"
-          (click)="rate(index + 1)"
-          [class.active]="index < value">
-          <i class="material-icons">
-            {{ index < value ? 'star' : 'star_border' }}
-          </i>
+    <span
+      class="rating-star"
+      (mouseenter)="enter(index + 1)"
+      (click)="rate(index + 1)"
+      [class.active]="index < value"
+    >
+      <i class="material-icons">
+        {{ index < value ? 'star' : 'star_border' }}
+      </i>
     </span>
   </ng-template>
 </span>

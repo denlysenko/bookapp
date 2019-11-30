@@ -1,39 +1,34 @@
 <div class="form">
-  <form [formGroup]="form"
-        (submit)="submit()"
-        novalidate>
+  <form [formGroup]="form" (submit)="submit()" novalidate>
     <mat-form-field appearance="outline">
       <mat-label>First Name</mat-label>
-      <input matInput
-             placeholder="First Name"
-             formControlName="firstName">
-      <mat-error *ngIf="form.get('firstName').hasError('required')">This field is required</mat-error>
-      <mat-error *ngIf="form.get('firstName').hasError('serverError')">{{ errors['firstName'] }}</mat-error>
+      <input matInput placeholder="First Name" formControlName="firstName" />
+      <mat-error *ngIf="form.get('firstName').hasError('required')"
+        >This field is required</mat-error
+      >
+      <mat-error *ngIf="form.get('firstName').hasError('serverError')">{{
+        errors['firstName']
+      }}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Last Name</mat-label>
-      <input matInput
-             placeholder="Last Name"
-             formControlName="lastName">
-      <mat-error *ngIf="form.get('lastName').hasError('required')">This field is required</mat-error>
-      <mat-error *ngIf="form.get('lastName').hasError('serverError')">{{ errors['lastName'] }}</mat-error>
+      <input matInput placeholder="Last Name" formControlName="lastName" />
+      <mat-error *ngIf="form.get('lastName').hasError('required')"
+        >This field is required</mat-error
+      >
+      <mat-error *ngIf="form.get('lastName').hasError('serverError')">{{
+        errors['lastName']
+      }}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Email</mat-label>
-      <input type="email"
-             matInput
-             placeholder="Email"
-             formControlName="email">
+      <input type="email" matInput placeholder="Email" formControlName="email" />
       <mat-error *ngIf="form.get('email').hasError('required')">This field is required</mat-error>
       <mat-error *ngIf="form.get('email').hasError('email')">Not a valid email</mat-error>
       <mat-error *ngIf="form.get('email').hasError('serverError')">{{ errors['email'] }}</mat-error>
     </mat-form-field>
     <mat-card-actions>
-      <button type="submit"
-              mat-raised-button
-              color="accent"
-              [disabled]="loading">SAVE
-      </button>
+      <button type="submit" mat-raised-button color="accent" [disabled]="loading">SAVE</button>
     </mat-card-actions>
   </form>
 </div>
