@@ -1,11 +1,7 @@
 // tslint:disable: no-big-function
 // tslint:disable: no-duplicate-string
 import { AuthModule, AuthService } from '@bookapp/api/auth';
-import {
-  BOOK_VALIDATION_ERRORS,
-  BooksModule,
-  BooksService
-} from '@bookapp/api/books';
+import { BOOK_VALIDATION_ERRORS, BooksModule, BooksService } from '@bookapp/api/books';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
@@ -20,16 +16,8 @@ import {
   user
 } from '@bookapp/testing';
 
-import {
-  HttpStatus,
-  INestApplication,
-  NotFoundException
-} from '@nestjs/common';
-import {
-  getConnectionToken,
-  getModelToken,
-  MongooseModule
-} from '@nestjs/mongoose';
+import { HttpStatus, INestApplication, NotFoundException } from '@nestjs/common';
+import { getConnectionToken, getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
 import * as jwt from 'jsonwebtoken';
@@ -628,9 +616,7 @@ describe('BooksModule', () => {
       jest
         .spyOn(booksService, 'rateBook')
         .mockImplementationOnce(() =>
-          Promise.reject(
-            new NotFoundException(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR)
-          )
+          Promise.reject(new NotFoundException(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR))
         );
 
       const res = await request(app.getHttpServer())

@@ -18,22 +18,13 @@ interface ExtendedNavigationExtras extends NavigationExtras {
 
 @Injectable()
 export class RouterExtensions {
-  constructor(
-    public router: Router,
-    private locationStrategy: LocationStrategy
-  ) {}
+  constructor(public router: Router, private locationStrategy: LocationStrategy) {}
 
-  navigate(
-    commands: any[],
-    extras?: ExtendedNavigationExtras
-  ): Promise<boolean> {
+  navigate(commands: any[], extras?: ExtendedNavigationExtras): Promise<boolean> {
     return this.router.navigate(commands, extras);
   }
 
-  navigateByUrl(
-    url: string | UrlTree,
-    options?: ExtendedNavigationExtras
-  ): Promise<boolean> {
+  navigateByUrl(url: string | UrlTree, options?: ExtendedNavigationExtras): Promise<boolean> {
     return this.router.navigateByUrl(url, options);
   }
 

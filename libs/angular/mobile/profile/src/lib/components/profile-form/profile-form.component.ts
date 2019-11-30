@@ -1,16 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { NsBaseForm } from '@bookapp/angular/base';
-import {
-  FeedbackPlatformService,
-  UploadPlatformService
-} from '@bookapp/angular/core';
+import { FeedbackPlatformService, UploadPlatformService } from '@bookapp/angular/core';
 import { ProfileForm, User } from '@bookapp/shared';
 
 import { requestPermissions, takePicture } from 'nativescript-camera';
@@ -166,10 +157,7 @@ export class ProfileFormComponent extends NsBaseForm {
   }
 
   onDrawerButtonTap() {
-    const sideDrawer = getViewById(
-      app.getRootView(),
-      'drawer'
-    ) as RadSideDrawer;
+    const sideDrawer = getViewById(app.getRootView(), 'drawer') as RadSideDrawer;
     sideDrawer.toggleDrawerState();
   }
 
@@ -182,10 +170,7 @@ export class ProfileFormComponent extends NsBaseForm {
 
     if (isIOS) {
       const folder = knownFolders.documents();
-      const filePath = path.join(
-        folder.path,
-        `avatar_for_ba_${new Date().getTime()}.png`
-      );
+      const filePath = path.join(folder.path, `avatar_for_ba_${new Date().getTime()}.png`);
       image.saveToFile(filePath, 'png');
 
       localPath = filePath;

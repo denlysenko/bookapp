@@ -3,16 +3,10 @@ import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { BooksPageBase } from '@bookapp/angular/base';
 import { RouterExtensions, StoreService } from '@bookapp/angular/core';
 import { BooksService } from '@bookapp/angular/data-access';
-import {
-  BookSearchComponent,
-  BooksListComponent
-} from '@bookapp/angular/ui-mobile';
+import { BookSearchComponent, BooksListComponent } from '@bookapp/angular/ui-mobile';
 import { Book, BooksFilter } from '@bookapp/shared';
 
-import {
-  ModalDialogOptions,
-  ModalDialogService
-} from 'nativescript-angular/modal-dialog';
+import { ModalDialogOptions, ModalDialogService } from 'nativescript-angular/modal-dialog';
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 
 import { BehaviorSubject } from 'rxjs';
@@ -76,10 +70,7 @@ export class BuyBooksPageComponent extends BooksPageBase {
   }
 
   onDrawerButtonTap() {
-    const sideDrawer = getViewById(
-      app.getRootView(),
-      'drawer'
-    ) as RadSideDrawer;
+    const sideDrawer = getViewById(app.getRootView(), 'drawer') as RadSideDrawer;
     sideDrawer.toggleDrawerState();
   }
 
@@ -101,10 +92,7 @@ export class BuyBooksPageComponent extends BooksPageBase {
       viewContainerRef: this.viewContainerRef
     };
 
-    const book: Book = await this.modalService.showModal(
-      BookSearchComponent,
-      options
-    );
+    const book: Book = await this.modalService.showModal(BookSearchComponent, options);
 
     if (book) {
       // wait when modal close
@@ -123,9 +111,7 @@ export class BuyBooksPageComponent extends BooksPageBase {
 
     if (filter) {
       const { sortValue } = filter;
-      const index = this.sortOptions.findIndex(
-        option => option.value === sortValue
-      );
+      const index = this.sortOptions.findIndex(option => option.value === sortValue);
       this.selectedOption.next(index !== -1 ? index : 0);
     }
   }

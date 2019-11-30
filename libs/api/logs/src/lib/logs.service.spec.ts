@@ -1,12 +1,7 @@
 import { ConfigService } from '@bookapp/api/config';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
-import {
-  log,
-  MockConfigService,
-  MockModel,
-  MockMongooseModel
-} from '@bookapp/testing';
+import { log, MockConfigService, MockModel, MockMongooseModel } from '@bookapp/testing';
 
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
@@ -47,9 +42,7 @@ describe('LogsService', () => {
     logModel = module.get(getModelToken(ModelNames.LOG));
     pubSub = module.get<PubSub>(PUB_SUB);
 
-    jest
-      .spyOn(logModel, 'exec')
-      .mockImplementation(() => Promise.resolve(MockMongooseModel));
+    jest.spyOn(logModel, 'exec').mockImplementation(() => Promise.resolve(MockMongooseModel));
   });
 
   afterEach(() => {
@@ -113,9 +106,7 @@ describe('LogsService', () => {
     it('should reject log creation', async () => {
       const error = { message: 'error' };
 
-      jest
-        .spyOn(logModel, 'save')
-        .mockImplementationOnce(() => Promise.reject(error));
+      jest.spyOn(logModel, 'save').mockImplementationOnce(() => Promise.reject(error));
 
       try {
         await logsService.create(log);

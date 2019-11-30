@@ -55,9 +55,8 @@ describe('ProfileFormComponent', () => {
 
       beforeEach(() => {
         firstNameField = component.form.get('firstName');
-        input = fixture.debugElement.query(
-          By.css('input[formcontrolname=firstName]')
-        ).nativeElement;
+        input = fixture.debugElement.query(By.css('input[formcontrolname=firstName]'))
+          .nativeElement;
       });
 
       it('should have required error', () => {
@@ -81,9 +80,7 @@ describe('ProfileFormComponent', () => {
 
       beforeEach(() => {
         lastNameField = component.form.get('lastName');
-        input = fixture.debugElement.query(
-          By.css('input[formcontrolname=lastName]')
-        ).nativeElement;
+        input = fixture.debugElement.query(By.css('input[formcontrolname=lastName]')).nativeElement;
       });
 
       it('should have required error', () => {
@@ -107,9 +104,7 @@ describe('ProfileFormComponent', () => {
 
       beforeEach(() => {
         emailNameField = component.form.get('email');
-        input = fixture.debugElement.query(
-          By.css('input[formcontrolname=email]')
-        ).nativeElement;
+        input = fixture.debugElement.query(By.css('input[formcontrolname=email]')).nativeElement;
       });
 
       it('should have required error', () => {

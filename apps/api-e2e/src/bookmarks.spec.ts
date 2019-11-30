@@ -1,23 +1,13 @@
 // tslint:disable: no-big-function
 // tslint:disable: no-duplicate-string
 import { AuthModule } from '@bookapp/api/auth';
-import {
-  BOOKMARK_ERRORS,
-  BookmarksModule,
-  BookmarksService
-} from '@bookapp/api/bookmarks';
+import { BOOKMARK_ERRORS, BookmarksModule, BookmarksService } from '@bookapp/api/bookmarks';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
 import { BOOKMARKS } from '@bookapp/shared';
-import {
-  bookmark,
-  MockConfigService,
-  mockConnection,
-  MockModel,
-  user
-} from '@bookapp/testing';
+import { bookmark, MockConfigService, mockConnection, MockModel, user } from '@bookapp/testing';
 
 import {
   BadRequestException,
@@ -25,11 +15,7 @@ import {
   INestApplication,
   NotFoundException
 } from '@nestjs/common';
-import {
-  getConnectionToken,
-  getModelToken,
-  MongooseModule
-} from '@nestjs/mongoose';
+import { getConnectionToken, getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
 import * as jwt from 'jsonwebtoken';
@@ -243,9 +229,7 @@ describe('BookmarksModule', () => {
       jest
         .spyOn(bookmarksService, 'addToBookmarks')
         .mockImplementationOnce(() =>
-          Promise.reject(
-            new BadRequestException(BOOKMARK_ERRORS.BOOKMARK_UNIQUE_ERR)
-          )
+          Promise.reject(new BadRequestException(BOOKMARK_ERRORS.BOOKMARK_UNIQUE_ERR))
         );
 
       const res = await request(app.getHttpServer())
@@ -313,9 +297,7 @@ describe('BookmarksModule', () => {
       jest
         .spyOn(bookmarksService, 'removeFromBookmarks')
         .mockImplementationOnce(() =>
-          Promise.reject(
-            new NotFoundException(BOOKMARK_ERRORS.BOOKMARK_NOT_FOUND_ERR)
-          )
+          Promise.reject(new NotFoundException(BOOKMARK_ERRORS.BOOKMARK_NOT_FOUND_ERR))
         );
 
       const res = await request(app.getHttpServer())

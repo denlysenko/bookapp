@@ -18,11 +18,7 @@ import { ViewBookRoutingModule } from './view-book-routing.module';
     ViewBookRoutingModule,
     NgShadowModule
   ],
-  declarations: [
-    ViewBookPageComponent,
-    BookDetailsComponent,
-    BookCommentsComponent
-  ],
+  declarations: [ViewBookPageComponent, BookDetailsComponent, BookCommentsComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class ViewBookModule {}

@@ -70,9 +70,7 @@ describe('BooksService', () => {
     filesService = module.get<FilesService>(FilesService);
     pubSub = module.get<PubSub>(PUB_SUB);
 
-    jest
-      .spyOn(bookModel, 'exec')
-      .mockImplementation(() => Promise.resolve(MockMongooseModel));
+    jest.spyOn(bookModel, 'exec').mockImplementation(() => Promise.resolve(MockMongooseModel));
   });
 
   afterEach(() => {
@@ -81,9 +79,7 @@ describe('BooksService', () => {
 
   describe('findAll()', () => {
     beforeEach(() => {
-      jest
-        .spyOn(bookModel, 'exec')
-        .mockImplementation(() => Promise.resolve(1));
+      jest.spyOn(bookModel, 'exec').mockImplementation(() => Promise.resolve(1));
     });
 
     it('should count books', async () => {
@@ -97,9 +93,7 @@ describe('BooksService', () => {
     });
 
     it('should find books with filter', async () => {
-      await booksService.findAll(
-        new ApiQuery({ test: new RegExp('search', 'i') })
-      );
+      await booksService.findAll(new ApiQuery({ test: new RegExp('search', 'i') }));
       expect(bookModel.find).toHaveBeenCalledWith({ test: /search/i });
     });
 
@@ -140,10 +134,7 @@ describe('BooksService', () => {
     it('should find book by slug and increment views by one', async () => {
       const slug = 'slug';
       await booksService.findBySlug(slug);
-      expect(bookModel.findOneAndUpdate).toHaveBeenCalledWith(
-        { slug },
-        { $inc: { views: 1 } }
-      );
+      expect(bookModel.findOneAndUpdate).toHaveBeenCalledWith({ slug }, { $inc: { views: 1 } });
     });
   });
 
@@ -157,9 +148,7 @@ describe('BooksService', () => {
 
   describe('findBestBooks()', () => {
     beforeEach(() => {
-      jest
-        .spyOn(bookModel, 'exec')
-        .mockImplementation(() => Promise.resolve(1));
+      jest.spyOn(bookModel, 'exec').mockImplementation(() => Promise.resolve(1));
     });
 
     it('should count best books', async () => {
@@ -208,9 +197,7 @@ describe('BooksService', () => {
     it('should reject book creation', async () => {
       const error = { message: 'error' };
 
-      jest
-        .spyOn(bookModel, 'save')
-        .mockImplementationOnce(() => Promise.reject(error));
+      jest.spyOn(bookModel, 'save').mockImplementationOnce(() => Promise.reject(error));
 
       try {
         await booksService.create(book, userId);
@@ -227,16 +214,12 @@ describe('BooksService', () => {
     });
 
     it('should throw error if book is not found', async () => {
-      jest
-        .spyOn(bookModel, 'exec')
-        .mockImplementationOnce(() => Promise.resolve(null));
+      jest.spyOn(bookModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
       try {
         await booksService.update(book._id, { ...book }, userId);
       } catch (err) {
-        expect(err.message.message).toEqual(
-          BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR
-        );
+        expect(err.message.message).toEqual(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR);
       }
     });
 
@@ -306,9 +289,7 @@ describe('BooksService', () => {
     it('should reject book update', async () => {
       const error = { message: 'error' };
 
-      jest
-        .spyOn(bookModel, 'save')
-        .mockImplementationOnce(() => Promise.reject(error));
+      jest.spyOn(bookModel, 'save').mockImplementationOnce(() => Promise.reject(error));
 
       try {
         await booksService.update(book._id, { ...book }, userId);
@@ -325,16 +306,12 @@ describe('BooksService', () => {
     });
 
     it('should throw error if book is not found', async () => {
-      jest
-        .spyOn(bookModel, 'exec')
-        .mockImplementationOnce(() => Promise.resolve(null));
+      jest.spyOn(bookModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
       try {
         await booksService.rateBook(book._id, 5, userId);
       } catch (err) {
-        expect(err.message.message).toEqual(
-          BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR
-        );
+        expect(err.message.message).toEqual(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR);
       }
     });
 

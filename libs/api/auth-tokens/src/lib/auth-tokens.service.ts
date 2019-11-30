@@ -52,10 +52,7 @@ export class AuthTokensService {
     let payload: JwtPayload;
 
     try {
-      payload = verify(
-        token,
-        this.configService.get('REFRESH_TOKEN_SECRET')
-      ) as JwtPayload;
+      payload = verify(token, this.configService.get('REFRESH_TOKEN_SECRET')) as JwtPayload;
     } catch (err) {
       throw new UnauthorizedException(AUTH_ERRORS.UNAUTHORIZED_ERR);
     }

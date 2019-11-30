@@ -32,9 +32,7 @@ export class CommentsService {
     });
 
     await newComment.save();
-    await this.logsService.create(
-      new LogDto(authorId, UserActions.COMMENT_ADDED, bookId)
-    );
+    await this.logsService.create(new LogDto(authorId, UserActions.COMMENT_ADDED, bookId));
     this.pubSub.publish('commentAdded', { commentAdded: newComment });
 
     return newComment;

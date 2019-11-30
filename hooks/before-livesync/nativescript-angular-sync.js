@@ -1,1 +1,1 @@
-module.exports = require("nativescript-angular/hooks/before-livesync");
+module.exports = require('nativescript-angular/hooks/before-livesync');

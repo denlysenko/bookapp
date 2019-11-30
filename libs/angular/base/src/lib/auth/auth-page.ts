@@ -23,9 +23,7 @@ export abstract class AuthPageBase {
   }
 
   submit({ isLoggingIn, credentials }) {
-    isLoggingIn
-      ? this.login(credentials.email, credentials.password)
-      : this.signup(credentials);
+    isLoggingIn ? this.login(credentials.email, credentials.password) : this.signup(credentials);
   }
 
   private login(email: string, password: string) {

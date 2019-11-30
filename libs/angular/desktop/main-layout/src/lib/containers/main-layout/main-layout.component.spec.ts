@@ -3,12 +3,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AuthService, LogsService } from '@bookapp/angular/data-access';
-import {
-  log,
-  MockAngularAuthService,
-  MockAngularLogsService,
-  user
-} from '@bookapp/testing';
+import { log, MockAngularAuthService, MockAngularLogsService, user } from '@bookapp/testing';
 
 import { MainLayoutModule } from '../../main-layout.module';
 import { MainLayoutComponent } from './main-layout.component';

@@ -8,12 +8,6 @@ export interface UserModel extends User, Document {
   resetPasswordExpires?: number;
   avatar?: string;
   authenticate: (password: string) => boolean;
-  makeSalt: (
-    byteSize: number,
-    callback: (err: any, salt: string) => void
-  ) => void;
-  encryptPassword: (
-    password: string,
-    callback: (err: any, hashedPassword: string) => void
-  ) => void;
+  makeSalt: (byteSize: number, callback: (err: any, salt: string) => void) => void;
+  encryptPassword: (password: string, callback: (err: any, hashedPassword: string) => void) => void;
 }

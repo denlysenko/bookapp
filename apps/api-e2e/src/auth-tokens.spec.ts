@@ -9,11 +9,7 @@ import {
   refreshToken
 } from '@bookapp/testing';
 
-import {
-  HttpStatus,
-  INestApplication,
-  UnauthorizedException
-} from '@nestjs/common';
+import { HttpStatus, INestApplication, UnauthorizedException } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 

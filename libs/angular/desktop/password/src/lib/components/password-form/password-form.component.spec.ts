@@ -50,9 +50,8 @@ describe('PasswordFormComponent', () => {
 
       beforeEach(() => {
         oldPasswordField = component.form.get('oldPassword');
-        input = fixture.debugElement.query(
-          By.css('input[formcontrolname=oldPassword]')
-        ).nativeElement;
+        input = fixture.debugElement.query(By.css('input[formcontrolname=oldPassword]'))
+          .nativeElement;
       });
 
       it('should have required error', () => {
@@ -73,9 +72,7 @@ describe('PasswordFormComponent', () => {
 
       beforeEach(() => {
         passwordField = component.form.get('password');
-        input = fixture.debugElement.query(
-          By.css('input[formcontrolname=password]')
-        ).nativeElement;
+        input = fixture.debugElement.query(By.css('input[formcontrolname=password]')).nativeElement;
       });
 
       it('should have required error', () => {

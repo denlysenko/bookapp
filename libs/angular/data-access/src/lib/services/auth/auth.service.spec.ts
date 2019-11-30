@@ -6,12 +6,7 @@ import {
   StoragePlatformService,
   StoreService
 } from '@bookapp/angular/core';
-import {
-  LOGIN_MUTATION,
-  LOGOUT_MUTATION,
-  ME_QUERY,
-  SIGNUP_MUTATION
-} from '@bookapp/shared';
+import { LOGIN_MUTATION, LOGOUT_MUTATION, ME_QUERY, SIGNUP_MUTATION } from '@bookapp/shared';
 import {
   authPayload,
   MockRouterExtensions,
@@ -101,15 +96,9 @@ describe('AuthService', () => {
 
       const op = controller.expectOne(LOGIN_MUTATION);
 
-      expect(storageService.setItem).toHaveBeenCalledWith(
-        AUTH_TOKEN,
-        authPayload.refreshToken
-      );
+      expect(storageService.setItem).toHaveBeenCalledWith(AUTH_TOKEN, authPayload.refreshToken);
 
-      expect(storeService.set).toHaveBeenCalledWith(
-        AUTH_TOKEN,
-        authPayload.accessToken
-      );
+      expect(storeService.set).toHaveBeenCalledWith(AUTH_TOKEN, authPayload.accessToken);
 
       op.flush({
         data: {
@@ -153,15 +142,9 @@ describe('AuthService', () => {
 
       const op = controller.expectOne(SIGNUP_MUTATION);
 
-      expect(storageService.setItem).toHaveBeenCalledWith(
-        AUTH_TOKEN,
-        authPayload.refreshToken
-      );
+      expect(storageService.setItem).toHaveBeenCalledWith(AUTH_TOKEN, authPayload.refreshToken);
 
-      expect(storeService.set).toHaveBeenCalledWith(
-        AUTH_TOKEN,
-        authPayload.accessToken
-      );
+      expect(storeService.set).toHaveBeenCalledWith(AUTH_TOKEN, authPayload.accessToken);
 
       op.flush({
         data: {

@@ -1,24 +1,12 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { MainLayoutBase } from '@bookapp/angular/base';
 import { AuthService, LogsService } from '@bookapp/angular/data-access';
 
-import {
-  DrawerTransitionBase,
-  SlideInOnTopTransition
-} from 'nativescript-ui-sidedrawer';
-import {
-  RadSideDrawerComponent,
-  SideDrawerType
-} from 'nativescript-ui-sidedrawer/angular';
+import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
+import { RadSideDrawerComponent, SideDrawerType } from 'nativescript-ui-sidedrawer/angular';
 
 import { takeUntil } from 'rxjs/operators';
 
@@ -35,8 +23,7 @@ import { takeUntil } from 'rxjs/operators';
     ])
   ]
 })
-export class MainLayoutComponent extends MainLayoutBase
-  implements AfterViewInit {
+export class MainLayoutComponent extends MainLayoutBase implements AfterViewInit {
   isUserMenuOpen = false;
 
   @ViewChild('drawer', { static: false })
@@ -45,11 +32,7 @@ export class MainLayoutComponent extends MainLayoutBase
   private _sideDrawerTransition: DrawerTransitionBase;
   private drawer: SideDrawerType;
 
-  constructor(
-    authService: AuthService,
-    logsService: LogsService,
-    private readonly router: Router
-  ) {
+  constructor(authService: AuthService, logsService: LogsService, private readonly router: Router) {
     super(authService, logsService);
     this._sideDrawerTransition = new SlideInOnTopTransition();
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe(e => {

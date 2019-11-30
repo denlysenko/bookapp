@@ -3,11 +3,7 @@ import { LogDto, LogsService } from '@bookapp/api/logs';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { ApiResponse, BOOKMARKS, UserActions } from '@bookapp/shared';
 
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
@@ -44,14 +40,8 @@ export class BookmarksService {
     return this.bookmarkModel.find({ userId, bookId }).exec();
   }
 
-  async addToBookmarks(
-    type: string,
-    userId: string,
-    bookId: string
-  ): Promise<BookmarkModel> {
-    const bookmark = await this.bookmarkModel
-      .findOne({ type, bookId, userId })
-      .exec();
+  async addToBookmarks(type: string, userId: string, bookId: string): Promise<BookmarkModel> {
+    const bookmark = await this.bookmarkModel.findOne({ type, bookId, userId }).exec();
 
     if (bookmark) {
       throw new BadRequestException(BOOKMARK_ERRORS.BOOKMARK_UNIQUE_ERR);
@@ -62,20 +52,14 @@ export class BookmarksService {
     await newBookmark.save();
 
     await this.logsService.create(
-      new LogDto(
-        userId,
-        UserActions[`BOOK_ADDED_TO_${BOOKMARKS[type]}`],
-        bookId
-      )
+      new LogDto(userId, UserActions[`BOOK_ADDED_TO_${BOOKMARKS[type]}`], bookId)
     );
 
     return newBookmark;
   }
 
   async removeFromBookmarks(type: string, userId: string, bookId: string) {
-    const bookmark = await this.bookmarkModel
-      .findOne({ type, bookId, userId })
-      .exec();
+    const bookmark = await this.bookmarkModel.findOne({ type, bookId, userId }).exec();
 
     if (!bookmark) {
       throw new NotFoundException(BOOKMARK_ERRORS.BOOKMARK_NOT_FOUND_ERR);
@@ -84,11 +68,7 @@ export class BookmarksService {
     // BOOK_REMOVED_FROM_MUSTREAD
     await bookmark.remove();
     await this.logsService.create(
-      new LogDto(
-        userId,
-        UserActions[`BOOK_REMOVED_FROM_${BOOKMARKS[type]}`],
-        bookId
-      )
+      new LogDto(userId, UserActions[`BOOK_REMOVED_FROM_${BOOKMARKS[type]}`], bookId)
     );
 
     return bookmark;

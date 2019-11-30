@@ -7,13 +7,7 @@ import { Book } from '@bookapp/shared';
 import { ModalDialogParams } from 'nativescript-angular/modal-dialog';
 
 import { BehaviorSubject, Subject } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  switchMap,
-  takeUntil
-} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
 
 import * as application from 'tns-core-modules/application';
 import { ObservableArray } from 'tns-core-modules/data/observable-array/observable-array';

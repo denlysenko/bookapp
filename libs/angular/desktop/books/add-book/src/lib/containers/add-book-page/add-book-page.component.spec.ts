@@ -5,10 +5,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import {
-  FeedbackPlatformService,
-  UploadPlatformService
-} from '@bookapp/angular/core';
+import { FeedbackPlatformService, UploadPlatformService } from '@bookapp/angular/core';
 import { BooksService } from '@bookapp/angular/data-access';
 import {
   book,
@@ -101,9 +98,7 @@ describe('AddBookPageComponent', () => {
 
     it('should propagate error', done => {
       const error: any = { message: 'Error message' };
-      jest
-        .spyOn(booksService, 'create')
-        .mockImplementationOnce(() => of({ errors: [error] }));
+      jest.spyOn(booksService, 'create').mockImplementationOnce(() => of({ errors: [error] }));
 
       component.save(formValue);
       component.error$.subscribe(err => {

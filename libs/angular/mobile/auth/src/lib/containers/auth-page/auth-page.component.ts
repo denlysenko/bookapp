@@ -13,11 +13,7 @@ import { Page } from 'tns-core-modules/ui/page';
   styleUrls: ['./auth-page.component.scss']
 })
 export class AuthPageComponent extends AuthPageBase {
-  constructor(
-    public page: Page,
-    authService: AuthService,
-    routerExtensions: RouterExtensions
-  ) {
+  constructor(public page: Page, authService: AuthService, routerExtensions: RouterExtensions) {
     super(authService, routerExtensions);
     page.actionBarHidden = true;
   }

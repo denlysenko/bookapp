@@ -8,13 +8,7 @@ import { RatingModule } from '../rating/rating.module';
 import { BooksListComponent } from './books-list.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    MatCardModule,
-    RatingModule
-  ],
+  imports: [CommonModule, RouterModule, FormsModule, MatCardModule, RatingModule],
   declarations: [BooksListComponent],
   exports: [BooksListComponent]
 })

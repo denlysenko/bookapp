@@ -23,9 +23,7 @@ describe('RatingComponent', () => {
   });
 
   it('should rate', () => {
-    const starEl = fixture.debugElement.nativeElement.querySelectorAll(
-      '.rating-star'
-    )[2];
+    const starEl = fixture.debugElement.nativeElement.querySelectorAll('.rating-star')[2];
     starEl.click();
     fixture.detectChanges();
     expect(component.value).toEqual(3);

@@ -6,11 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import {
-  AuthService,
-  BookmarksService,
-  BooksService
-} from '@bookapp/angular/data-access';
+import { AuthService, BookmarksService, BooksService } from '@bookapp/angular/data-access';
 import { RatingModule } from '@bookapp/angular/ui-desktop';
 import { BOOKMARKS } from '@bookapp/shared';
 import {
@@ -31,13 +27,7 @@ describe('ViewBookPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CommonModule,
-        FormsModule,
-        RatingModule,
-        MatIconModule,
-        RouterTestingModule
-      ],
+      imports: [CommonModule, FormsModule, RatingModule, MatIconModule, RouterTestingModule],
       declarations: [ViewBookPageComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [

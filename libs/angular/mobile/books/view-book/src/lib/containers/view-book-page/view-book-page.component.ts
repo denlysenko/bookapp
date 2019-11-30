@@ -25,7 +25,6 @@ export class ViewBookPageComponent extends ViewBookPageBase {
 
   onIndexChanged(args: any) {
     const tabView = args.object as TabView;
-    this.selectedIndex =
-      tabView.selectedIndex === -1 ? 0 : tabView.selectedIndex;
+    this.selectedIndex = tabView.selectedIndex === -1 ? 0 : tabView.selectedIndex;
   }
 }

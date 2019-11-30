@@ -10,17 +10,13 @@ import { map, pluck } from 'rxjs/operators';
 export abstract class HistoryPageBase {
   readonly logsQueryRef = this.logsService.getLogs();
 
-  logs$: Observable<Log[]> = this.logsQueryRef.valueChanges.pipe(
-    map(({ data }) => data.logs.rows)
-  );
+  logs$: Observable<Log[]> = this.logsQueryRef.valueChanges.pipe(map(({ data }) => data.logs.rows));
 
   count$: Observable<number> = this.logsQueryRef.valueChanges.pipe(
     map(({ data }) => data.logs.count)
   );
 
-  loading$: Observable<boolean> = this.logsQueryRef.valueChanges.pipe(
-    pluck('loading')
-  );
+  loading$: Observable<boolean> = this.logsQueryRef.valueChanges.pipe(pluck('loading'));
 
   constructor(private readonly logsService: LogsService) {}
 

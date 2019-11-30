@@ -12,12 +12,7 @@ import { AuthFormComponent } from './components/auth-form/auth-form.component';
 import { AuthPageComponent } from './containers/auth-page/auth-page.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    NativeScriptFormsModule,
-    ReactiveFormsModule,
-    NgShadowModule
-  ],
+  imports: [CommonModule, NativeScriptFormsModule, ReactiveFormsModule, NgShadowModule],
   declarations: [AuthPageComponent, AuthFormComponent],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [

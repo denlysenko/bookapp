@@ -4,12 +4,7 @@ import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { FILE_ERRORS, FilesModule, FilesService } from '@bookapp/api/files';
 import { ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
-import {
-  MockAuthTokensService,
-  MockConfigService,
-  MockModel,
-  user
-} from '@bookapp/testing';
+import { MockAuthTokensService, MockConfigService, MockModel, user } from '@bookapp/testing';
 
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
@@ -24,9 +19,7 @@ const publicUrl = 'public_url';
 const filesPath = resolve(`${__dirname}`, '../test-files');
 
 const MockFilesService = {
-  uploadToBucket: jest
-    .fn()
-    .mockImplementation(() => Promise.resolve({ publicUrl })),
+  uploadToBucket: jest.fn().mockImplementation(() => Promise.resolve({ publicUrl })),
   deleteFromBucket: jest.fn().mockImplementation(() => Promise.resolve())
 };
 

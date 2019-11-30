@@ -34,9 +34,8 @@ describe('HeaderComponent', () => {
 
   describe('toggle sidenav', () => {
     beforeEach(() => {
-      const button: HTMLButtonElement = fixture.debugElement.query(
-        By.css('.menu-toggler')
-      ).nativeElement;
+      const button: HTMLButtonElement = fixture.debugElement.query(By.css('.menu-toggler'))
+        .nativeElement;
 
       jest.spyOn(component.toggleSidenav, 'emit');
 
@@ -51,14 +50,11 @@ describe('HeaderComponent', () => {
   describe('logout', () => {
     beforeEach(() => {
       // open menu
-      const button: HTMLButtonElement = fixture.debugElement.query(
-        By.css('#user-menu-toggler')
-      ).nativeElement;
+      const button: HTMLButtonElement = fixture.debugElement.query(By.css('#user-menu-toggler'))
+        .nativeElement;
       button.click();
 
-      const anchor: HTMLAnchorElement = fixture.debugElement.query(
-        By.css('#logout')
-      ).nativeElement;
+      const anchor: HTMLAnchorElement = fixture.debugElement.query(By.css('#logout')).nativeElement;
 
       jest.spyOn(component.logout, 'emit');
 

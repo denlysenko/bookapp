@@ -34,9 +34,7 @@ describe('BooksListComponent', () => {
   it('should emit bookRated event', () => {
     jest.spyOn(component.bookRated, 'emit');
 
-    const starEl = fixture.debugElement.nativeElement.querySelectorAll(
-      '.rating-star'
-    )[2];
+    const starEl = fixture.debugElement.nativeElement.querySelectorAll('.rating-star')[2];
 
     starEl.click();
     fixture.detectChanges();

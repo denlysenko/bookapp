@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanLoad,
-  Route
-} from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route } from '@angular/router';
 
 import { RouterExtensions } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';

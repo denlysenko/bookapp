@@ -2,11 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ViewBookPageBase } from '@bookapp/angular/base';
-import {
-  AuthService,
-  BookmarksService,
-  BooksService
-} from '@bookapp/angular/data-access';
+import { AuthService, BookmarksService, BooksService } from '@bookapp/angular/data-access';
 
 import { map } from 'rxjs/operators';
 

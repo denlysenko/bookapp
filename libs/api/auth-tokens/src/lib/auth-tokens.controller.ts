@@ -1,12 +1,6 @@
 import { REFRESH_TOKEN_HEADER } from '@bookapp/shared';
 
-import {
-  Controller,
-  Headers,
-  HttpCode,
-  HttpStatus,
-  Post
-} from '@nestjs/common';
+import { Controller, Headers, HttpCode, HttpStatus, Post } from '@nestjs/common';
 
 import { AuthTokensService } from './auth-tokens.service';
 

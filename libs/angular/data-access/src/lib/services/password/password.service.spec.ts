@@ -2,10 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { CHANGE_PASSWORD_MUTATION } from '@bookapp/shared';
 
-import {
-  ApolloTestingController,
-  ApolloTestingModule
-} from 'apollo-angular/testing';
+import { ApolloTestingController, ApolloTestingModule } from 'apollo-angular/testing';
 
 import { PasswordService } from './password.service';
 
@@ -36,12 +33,10 @@ describe('PasswordService', () => {
 
   describe('changePassword()', () => {
     it('should change password', done => {
-      service
-        .changePassword(newPassword, oldPassword)
-        .subscribe(({ data: { changePassword } }) => {
-          expect(changePassword).toEqual(true);
-          done();
-        });
+      service.changePassword(newPassword, oldPassword).subscribe(({ data: { changePassword } }) => {
+        expect(changePassword).toEqual(true);
+        done();
+      });
 
       const op = controller.expectOne(CHANGE_PASSWORD_MUTATION);
 

@@ -1,9 +1,4 @@
-import {
-  HttpErrorResponse,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest
-} from '@angular/common/http';
+import { HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { FeedbackPlatformService, HTTP_STATUS } from '@bookapp/angular/core';
@@ -22,10 +17,7 @@ export class AuthErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler) {
     return next.handle(request).pipe(
       catchError(error => {
-        if (
-          error instanceof HttpErrorResponse &&
-          error.status === HTTP_STATUS.UNAUTHORIZED
-        ) {
+        if (error instanceof HttpErrorResponse && error.status === HTTP_STATUS.UNAUTHORIZED) {
           this.feedbackService.error(error.error.message);
           this.authService.logout().subscribe();
         }

@@ -26,12 +26,7 @@ import { MainLayoutComponent } from './containers/main-layout/main-layout.compon
     MatListModule,
     MatSidenavModule
   ],
-  declarations: [
-    FooterComponent,
-    HeaderComponent,
-    NavComponent,
-    MainLayoutComponent
-  ],
+  declarations: [FooterComponent, HeaderComponent, NavComponent, MainLayoutComponent],
   exports: [MainLayoutComponent]
 })
 export class MainLayoutModule {}

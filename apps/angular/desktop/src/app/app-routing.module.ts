@@ -34,36 +34,28 @@ import { BOOKMARKS, ROLES } from '@bookapp/shared';
             {
               path: 'books/browse/:author/:slug',
               loadChildren: () =>
-                import('@bookapp/angular/desktop/books/view-book').then(
-                  m => m.ViewBookModule
-                ),
+                import('@bookapp/angular/desktop/books/view-book').then(m => m.ViewBookModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard]
             },
             {
               path: 'books/buy',
               loadChildren: () =>
-                import('@bookapp/angular/desktop/books/buy-books').then(
-                  m => m.BuyBooksModule
-                ),
+                import('@bookapp/angular/desktop/books/buy-books').then(m => m.BuyBooksModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard]
             },
             {
               path: 'books/buy/:author/:slug',
               loadChildren: () =>
-                import('@bookapp/angular/desktop/books/view-book').then(
-                  m => m.ViewBookModule
-                ),
+                import('@bookapp/angular/desktop/books/view-book').then(m => m.ViewBookModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard]
             },
             {
               path: 'books/add',
               loadChildren: () =>
-                import('@bookapp/angular/desktop/books/add-book').then(
-                  m => m.AddBookModule
-                ),
+                import('@bookapp/angular/desktop/books/add-book').then(m => m.AddBookModule),
               canLoad: [AuthGuard, RolesGuard],
               canActivate: [AuthGuard, RolesGuard],
               data: {
@@ -73,18 +65,14 @@ import { BOOKMARKS, ROLES } from '@bookapp/shared';
             {
               path: 'books/best',
               loadChildren: () =>
-                import('@bookapp/angular/desktop/books/best-books').then(
-                  m => m.BestBooksModule
-                ),
+                import('@bookapp/angular/desktop/books/best-books').then(m => m.BestBooksModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard]
             },
             {
               path: 'bookmarks/favorites',
               loadChildren: () =>
-                import('@bookapp/angular/desktop/bookmarks').then(
-                  m => m.BookmarksModule
-                ),
+                import('@bookapp/angular/desktop/bookmarks').then(m => m.BookmarksModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard],
               data: {
@@ -95,9 +83,7 @@ import { BOOKMARKS, ROLES } from '@bookapp/shared';
             {
               path: 'bookmarks/mustread',
               loadChildren: () =>
-                import('@bookapp/angular/desktop/bookmarks').then(
-                  m => m.BookmarksModule
-                ),
+                import('@bookapp/angular/desktop/bookmarks').then(m => m.BookmarksModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard],
               data: {
@@ -108,9 +94,7 @@ import { BOOKMARKS, ROLES } from '@bookapp/shared';
             {
               path: 'bookmarks/wishlist',
               loadChildren: () =>
-                import('@bookapp/angular/desktop/bookmarks').then(
-                  m => m.BookmarksModule
-                ),
+                import('@bookapp/angular/desktop/bookmarks').then(m => m.BookmarksModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard],
               data: {
@@ -121,27 +105,21 @@ import { BOOKMARKS, ROLES } from '@bookapp/shared';
             {
               path: 'history',
               loadChildren: () =>
-                import('@bookapp/angular/desktop/history').then(
-                  m => m.HistoryModule
-                ),
+                import('@bookapp/angular/desktop/history').then(m => m.HistoryModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard]
             },
             {
               path: 'password',
               loadChildren: () =>
-                import('@bookapp/angular/desktop/password').then(
-                  m => m.PasswordModule
-                ),
+                import('@bookapp/angular/desktop/password').then(m => m.PasswordModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard]
             },
             {
               path: 'profile',
               loadChildren: () =>
-                import('@bookapp/angular/desktop/profile').then(
-                  m => m.ProfileModule
-                ),
+                import('@bookapp/angular/desktop/profile').then(m => m.ProfileModule),
               canLoad: [AuthGuard],
               canActivate: [AuthGuard]
             }

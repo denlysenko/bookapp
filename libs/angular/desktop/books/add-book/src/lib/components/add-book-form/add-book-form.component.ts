@@ -10,14 +10,8 @@ import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 import { BaseForm } from '@bookapp/angular/base';
-import {
-  FeedbackPlatformService,
-  UploadPlatformService
-} from '@bookapp/angular/core';
-import {
-  FileSelectorComponent,
-  ImageSelectorComponent
-} from '@bookapp/angular/ui-desktop';
+import { FeedbackPlatformService, UploadPlatformService } from '@bookapp/angular/core';
+import { FileSelectorComponent, ImageSelectorComponent } from '@bookapp/angular/ui-desktop';
 import { Book } from '@bookapp/shared';
 import { extractFileKey } from '@bookapp/utils';
 
@@ -147,15 +141,11 @@ export class AddBookFormComponent extends BaseForm {
     const observables = [];
 
     if (this.coverUrl !== this.initialFormValue.coverUrl) {
-      observables.push(
-        this.uploadService.deleteFile(extractFileKey(this.coverUrl))
-      );
+      observables.push(this.uploadService.deleteFile(extractFileKey(this.coverUrl)));
     }
 
     if (this.epubUrl !== this.initialFormValue.epubUrl) {
-      observables.push(
-        this.uploadService.deleteFile(extractFileKey(this.epubUrl))
-      );
+      observables.push(this.uploadService.deleteFile(extractFileKey(this.epubUrl)));
     }
 
     if (observables.length) {

@@ -49,9 +49,7 @@ describe('UsersService', () => {
         {
           provide: FilesService,
           useValue: {
-            deleteFromBucket: jest
-              .fn()
-              .mockImplementation(() => Promise.resolve())
+            deleteFromBucket: jest.fn().mockImplementation(() => Promise.resolve())
           }
         }
       ]
@@ -63,12 +61,8 @@ describe('UsersService', () => {
     userModel = module.get(getModelToken(ModelNames.USER));
     authTokensService = module.get<AuthTokensService>(AuthTokensService);
 
-    jest
-      .spyOn(userModel, 'exec')
-      .mockImplementation(() => Promise.resolve(MockMongooseModel));
-    jest
-      .spyOn(userModel, 'save')
-      .mockImplementation(() => Promise.resolve(user));
+    jest.spyOn(userModel, 'exec').mockImplementation(() => Promise.resolve(MockMongooseModel));
+    jest.spyOn(userModel, 'save').mockImplementation(() => Promise.resolve(user));
   });
 
   afterEach(() => {
@@ -77,9 +71,7 @@ describe('UsersService', () => {
 
   describe('findAll()', () => {
     beforeEach(() => {
-      jest
-        .spyOn(userModel, 'exec')
-        .mockImplementation(() => Promise.resolve(1));
+      jest.spyOn(userModel, 'exec').mockImplementation(() => Promise.resolve(1));
     });
 
     it('should count users', async () => {
@@ -93,13 +85,8 @@ describe('UsersService', () => {
     });
 
     it('should find users with filter', async () => {
-      await usersService.findAll(
-        new ApiQuery({ test: new RegExp('search', 'i') })
-      );
-      expect(userModel.find).toHaveBeenCalledWith(
-        { test: /search/i },
-        EXCLUDED_FIELDS
-      );
+      await usersService.findAll(new ApiQuery({ test: new RegExp('search', 'i') }));
+      expect(userModel.find).toHaveBeenCalledWith({ test: /search/i }, EXCLUDED_FIELDS);
     });
 
     it('should skip with default value', async () => {
@@ -159,9 +146,7 @@ describe('UsersService', () => {
     it('should reject user creation', async () => {
       const error = { message: 'error' };
 
-      jest
-        .spyOn(userModel, 'save')
-        .mockImplementationOnce(() => Promise.reject(error));
+      jest.spyOn(userModel, 'save').mockImplementationOnce(() => Promise.reject(error));
 
       try {
         await usersService.create(user);
@@ -174,23 +159,16 @@ describe('UsersService', () => {
   describe('update()', () => {
     it('should find user by id', async () => {
       await usersService.update(user._id, { ...user });
-      expect(userModel.findById).toHaveBeenCalledWith(
-        user._id,
-        EXCLUDED_FIELDS
-      );
+      expect(userModel.findById).toHaveBeenCalledWith(user._id, EXCLUDED_FIELDS);
     });
 
     it('should throw error if user is not found', async () => {
-      jest
-        .spyOn(userModel, 'exec')
-        .mockImplementationOnce(() => Promise.resolve(null));
+      jest.spyOn(userModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
       try {
         await usersService.update(user._id, { ...user });
       } catch (err) {
-        expect(err.message.message).toEqual(
-          USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR
-        );
+        expect(err.message.message).toEqual(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
       }
     });
 
@@ -199,9 +177,7 @@ describe('UsersService', () => {
 
       jest
         .spyOn(userModel, 'exec')
-        .mockImplementationOnce(() =>
-          Promise.resolve({ ...MockMongooseModel, avatar })
-        );
+        .mockImplementationOnce(() => Promise.resolve({ ...MockMongooseModel, avatar }));
 
       await usersService.update(user._id, { ...user, avatar });
       expect(filesService.deleteFromBucket).not.toHaveBeenCalled();
@@ -228,9 +204,7 @@ describe('UsersService', () => {
     it('should reject user update', async () => {
       const error = { message: 'error' };
 
-      jest
-        .spyOn(userModel, 'save')
-        .mockImplementationOnce(() => Promise.reject(error));
+      jest.spyOn(userModel, 'save').mockImplementationOnce(() => Promise.reject(error));
 
       try {
         await usersService.update(user._id, { ...user });
@@ -255,20 +229,12 @@ describe('UsersService', () => {
     });
 
     it('should throw error if user is not found', async () => {
-      jest
-        .spyOn(userModel, 'exec')
-        .mockImplementationOnce(() => Promise.resolve(null));
+      jest.spyOn(userModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
       try {
-        await usersService.changePassword(
-          user._id,
-          'oldPassword',
-          'newPassword'
-        );
+        await usersService.changePassword(user._id, 'oldPassword', 'newPassword');
       } catch (err) {
-        expect(err.message.message).toEqual(
-          USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR
-        );
+        expect(err.message.message).toEqual(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
       }
     });
 
@@ -280,26 +246,16 @@ describe('UsersService', () => {
         );
 
       try {
-        await usersService.changePassword(
-          user._id,
-          'oldPassword',
-          'newPassword'
-        );
+        await usersService.changePassword(user._id, 'oldPassword', 'newPassword');
       } catch (err) {
-        expect(err.message.message).toEqual(
-          USER_VALIDATION_ERRORS.OLD_PASSWORD_MATCH_ERR
-        );
+        expect(err.message.message).toEqual(USER_VALIDATION_ERRORS.OLD_PASSWORD_MATCH_ERR);
       }
     });
 
     it('should update password and return new pair of tokens', async () => {
-      expect(
-        await usersService.changePassword(
-          user._id,
-          'oldPassword',
-          'newPassword'
-        )
-      ).toEqual(authPayload);
+      expect(await usersService.changePassword(user._id, 'oldPassword', 'newPassword')).toEqual(
+        authPayload
+      );
     });
 
     it('should revoke user tokens', async () => {
@@ -310,16 +266,10 @@ describe('UsersService', () => {
     it('should reject password update', async () => {
       const error = { message: 'error' };
 
-      jest
-        .spyOn(userModel, 'save')
-        .mockImplementationOnce(() => Promise.reject(error));
+      jest.spyOn(userModel, 'save').mockImplementationOnce(() => Promise.reject(error));
 
       try {
-        await usersService.changePassword(
-          user._id,
-          'oldPassword',
-          'newPassword'
-        );
+        await usersService.changePassword(user._id, 'oldPassword', 'newPassword');
       } catch (err) {
         expect(err).toEqual(error);
       }
@@ -331,23 +281,16 @@ describe('UsersService', () => {
 
     it('should find user by email', async () => {
       await usersService.requestResetPassword(email);
-      expect(userModel.findOne).toHaveBeenCalledWith(
-        { email },
-        EXCLUDED_FIELDS
-      );
+      expect(userModel.findOne).toHaveBeenCalledWith({ email }, EXCLUDED_FIELDS);
     });
 
     it('should throw error if user is not found', async () => {
-      jest
-        .spyOn(userModel, 'exec')
-        .mockImplementationOnce(() => Promise.resolve(null));
+      jest.spyOn(userModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
       try {
         await usersService.requestResetPassword(email);
       } catch (err) {
-        expect(err.message.message).toEqual(
-          USER_VALIDATION_ERRORS.EMAIL_NOT_FOUND_ERR
-        );
+        expect(err.message.message).toEqual(USER_VALIDATION_ERRORS.EMAIL_NOT_FOUND_ERR);
       }
     });
 
@@ -360,9 +303,7 @@ describe('UsersService', () => {
     it('should reject without token', async () => {
       const error = { message: 'error' };
 
-      jest
-        .spyOn(userModel, 'save')
-        .mockImplementationOnce(() => Promise.reject(error));
+      jest.spyOn(userModel, 'save').mockImplementationOnce(() => Promise.reject(error));
 
       try {
         await usersService.requestResetPassword(email);
@@ -388,31 +329,23 @@ describe('UsersService', () => {
     });
 
     it('should throw error if user with provided token is not found', async () => {
-      jest
-        .spyOn(userModel, 'exec')
-        .mockImplementationOnce(() => Promise.resolve(null));
+      jest.spyOn(userModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
       try {
         await usersService.resetPassword('token', 'password');
       } catch (err) {
-        expect(err.message.message).toEqual(
-          USER_VALIDATION_ERRORS.TOKEN_NOT_FOUND_ERR
-        );
+        expect(err.message.message).toEqual(USER_VALIDATION_ERRORS.TOKEN_NOT_FOUND_ERR);
       }
     });
 
     it('should return true when success', async () => {
-      expect(await usersService.resetPassword('token', 'password')).toEqual(
-        true
-      );
+      expect(await usersService.resetPassword('token', 'password')).toEqual(true);
     });
 
     it('should reject without token', async () => {
       const error = { message: 'error' };
 
-      jest
-        .spyOn(userModel, 'save')
-        .mockImplementationOnce(() => Promise.reject(error));
+      jest.spyOn(userModel, 'save').mockImplementationOnce(() => Promise.reject(error));
 
       try {
         await usersService.resetPassword('token', 'password');
@@ -425,23 +358,16 @@ describe('UsersService', () => {
   describe('remove()', () => {
     it('should find user by id', async () => {
       await usersService.remove(user._id);
-      expect(userModel.findById).toHaveBeenCalledWith(
-        user._id,
-        EXCLUDED_FIELDS
-      );
+      expect(userModel.findById).toHaveBeenCalledWith(user._id, EXCLUDED_FIELDS);
     });
 
     it('should throw error if user is not found', async () => {
-      jest
-        .spyOn(userModel, 'exec')
-        .mockImplementationOnce(() => Promise.resolve(null));
+      jest.spyOn(userModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
       try {
         await usersService.remove(user._id);
       } catch (err) {
-        expect(err.message.message).toEqual(
-          USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR
-        );
+        expect(err.message.message).toEqual(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
       }
     });
 
@@ -469,9 +395,7 @@ describe('UsersService', () => {
     it('should reject user remove', async () => {
       const error = { message: 'error' };
 
-      jest
-        .spyOn(userModel, 'save')
-        .mockImplementationOnce(() => Promise.reject(error));
+      jest.spyOn(userModel, 'save').mockImplementationOnce(() => Promise.reject(error));
 
       try {
         await usersService.update(user._id, user);

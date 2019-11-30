@@ -5,11 +5,7 @@ import { AuthTokensService } from '@bookapp/api/auth-tokens';
 import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
-import {
-  USER_VALIDATION_ERRORS,
-  UsersModule,
-  UsersService
-} from '@bookapp/api/users';
+import { USER_VALIDATION_ERRORS, UsersModule, UsersService } from '@bookapp/api/users';
 import { ROLES } from '@bookapp/shared';
 import {
   authPayload,
@@ -444,11 +440,7 @@ describe('UsersModule', () => {
       jest
         .spyOn(usersService, 'changePassword')
         .mockImplementationOnce(() =>
-          Promise.reject(
-            new BadRequestException(
-              USER_VALIDATION_ERRORS.OLD_PASSWORD_MATCH_ERR
-            )
-          )
+          Promise.reject(new BadRequestException(USER_VALIDATION_ERRORS.OLD_PASSWORD_MATCH_ERR))
         );
 
       const res = await request(app.getHttpServer())
@@ -508,18 +500,14 @@ describe('UsersModule', () => {
           }
         });
 
-      expect(usersService.requestResetPassword).toHaveBeenCalledWith(
-        'test@test.com'
-      );
+      expect(usersService.requestResetPassword).toHaveBeenCalledWith('test@test.com');
     });
 
     it('should not return token if there are errors', async () => {
       jest
         .spyOn(usersService, 'requestResetPassword')
         .mockImplementation(() =>
-          Promise.reject(
-            new NotFoundException(USER_VALIDATION_ERRORS.EMAIL_NOT_FOUND_ERR)
-          )
+          Promise.reject(new NotFoundException(USER_VALIDATION_ERRORS.EMAIL_NOT_FOUND_ERR))
         );
 
       const res = await request(app.getHttpServer())
@@ -555,19 +543,14 @@ describe('UsersModule', () => {
           }
         });
 
-      expect(usersService.resetPassword).toHaveBeenCalledWith(
-        'token',
-        'password'
-      );
+      expect(usersService.resetPassword).toHaveBeenCalledWith('token', 'password');
     });
 
     it('should return errors', async () => {
       jest
         .spyOn(usersService, 'resetPassword')
         .mockImplementation(() =>
-          Promise.reject(
-            new NotFoundException(USER_VALIDATION_ERRORS.TOKEN_NOT_FOUND_ERR)
-          )
+          Promise.reject(new NotFoundException(USER_VALIDATION_ERRORS.TOKEN_NOT_FOUND_ERR))
         );
 
       const res = await request(app.getHttpServer())
@@ -615,9 +598,7 @@ describe('UsersModule', () => {
       jest
         .spyOn(usersService, 'remove')
         .mockImplementationOnce(() =>
-          Promise.reject(
-            new NotFoundException(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR)
-          )
+          Promise.reject(new NotFoundException(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR))
         );
 
       const res = await request(app.getHttpServer())

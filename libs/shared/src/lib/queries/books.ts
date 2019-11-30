@@ -42,13 +42,7 @@ export const FREE_BOOKS_QUERY = gql`
     $first: Int
     $orderBy: BookOrderByInput
   ) {
-    books(
-      paid: $paid
-      filter: $filter
-      skip: $skip
-      first: $first
-      orderBy: $orderBy
-    ) {
+    books(paid: $paid, filter: $filter, skip: $skip, first: $first, orderBy: $orderBy) {
       count
       rows {
         ...FreeBooks
@@ -66,13 +60,7 @@ export const PAID_BOOKS_QUERY = gql`
     $first: Int
     $orderBy: BookOrderByInput
   ) {
-    books(
-      paid: $paid
-      filter: $filter
-      skip: $skip
-      first: $first
-      orderBy: $orderBy
-    ) {
+    books(paid: $paid, filter: $filter, skip: $skip, first: $first, orderBy: $orderBy) {
       count
       rows {
         ...PaidBooks

@@ -1,9 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import {
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
-  MatSnackBarModule
-} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -20,11 +17,7 @@ import { AuthModule } from '@bookapp/angular/desktop/auth';
 import { BrowseBooksModule } from '@bookapp/angular/desktop/books/browse-books';
 import { MainLayoutModule } from '@bookapp/angular/desktop/main-layout';
 import { GraphQLModule } from '@bookapp/angular/graphql';
-import {
-  AuthGuard,
-  CanDeactivateGuard,
-  RolesGuard
-} from '@bookapp/angular/shared';
+import { AuthGuard, CanDeactivateGuard, RolesGuard } from '@bookapp/angular/shared';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';

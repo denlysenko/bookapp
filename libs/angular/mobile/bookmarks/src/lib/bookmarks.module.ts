@@ -9,12 +9,7 @@ import { BookmarksRoutingModule } from './bookmarks-routing.module';
 import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-page.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    NativeScriptCommonModule,
-    BookmarksRoutingModule,
-    BooksListModule
-  ],
+  imports: [CommonModule, NativeScriptCommonModule, BookmarksRoutingModule, BooksListModule],
   declarations: [BookmarksPageComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })

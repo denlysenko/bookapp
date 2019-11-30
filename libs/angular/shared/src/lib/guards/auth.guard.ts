@@ -15,14 +15,7 @@ import { AuthPayload, REFRESH_TOKEN_HEADER } from '@bookapp/shared';
 
 import { isNil } from 'lodash';
 import { Observable, of } from 'rxjs';
-import {
-  catchError,
-  filter,
-  mapTo,
-  switchMapTo,
-  take,
-  tap
-} from 'rxjs/operators';
+import { catchError, filter, mapTo, switchMapTo, take, tap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad {
@@ -59,10 +52,7 @@ export class AuthGuard implements CanActivate, CanLoad {
         .pipe(
           tap(payload => {
             this.storeService.set(AUTH_TOKEN, payload.accessToken);
-            this.storagePlatformService.setItem(
-              AUTH_TOKEN,
-              payload.refreshToken
-            );
+            this.storagePlatformService.setItem(AUTH_TOKEN, payload.refreshToken);
           }),
           switchMapTo(this.waitForUser()),
           catchError(() => of(false))

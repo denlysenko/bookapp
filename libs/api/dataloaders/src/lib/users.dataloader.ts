@@ -16,9 +16,7 @@ export class UsersDataLoader implements IDataLoader<string, User> {
 
     const dataloader = new DataLoader(
       async (userIds: string[]) => {
-        const users = await userModel
-          .find({ _id: { $in: userIds } }, EXCLUDED_FIELDS)
-          .exec();
+        const users = await userModel.find({ _id: { $in: userIds } }, EXCLUDED_FIELDS).exec();
 
         const data = {};
 

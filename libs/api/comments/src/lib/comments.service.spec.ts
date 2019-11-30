@@ -3,12 +3,7 @@ import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogsService } from '@bookapp/api/logs';
 import { ModelNames } from '@bookapp/api/shared';
 import { UserActions } from '@bookapp/shared';
-import {
-  MockConfigService,
-  MockLogsService,
-  MockModel,
-  MockMongooseModel
-} from '@bookapp/testing';
+import { MockConfigService, MockLogsService, MockModel, MockMongooseModel } from '@bookapp/testing';
 
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
@@ -59,9 +54,7 @@ describe('CommentsService', () => {
     commentModel = module.get(getModelToken(ModelNames.COMMENT));
     pubSub = module.get<PubSub>(PUB_SUB);
 
-    jest
-      .spyOn(commentModel, 'exec')
-      .mockImplementation(() => Promise.resolve(MockMongooseModel));
+    jest.spyOn(commentModel, 'exec').mockImplementation(() => Promise.resolve(MockMongooseModel));
   });
 
   afterEach(() => {

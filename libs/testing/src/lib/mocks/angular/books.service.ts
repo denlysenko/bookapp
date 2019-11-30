@@ -15,8 +15,6 @@ export const MockAngularBooksService = {
     fetchMore: jest.fn()
   })),
   rateBook: jest.fn().mockImplementation(() => of({})),
-  getBook: jest
-    .fn()
-    .mockImplementation(() => ({ valueChanges: of({ data: { book } }) })),
+  getBook: jest.fn().mockImplementation(() => ({ valueChanges: of({ data: { book } }) })),
   addComment: jest.fn().mockImplementation(() => of({}))
 };

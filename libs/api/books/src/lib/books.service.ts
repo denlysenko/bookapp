@@ -6,12 +6,7 @@ import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { ApiResponse, UserActions } from '@bookapp/shared';
 import { extractFileKey } from '@bookapp/utils';
 
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { PubSub } from 'graphql-subscriptions';
@@ -50,9 +45,7 @@ export class BooksService {
   }
 
   findBySlug(slug: string): Promise<BookModel> {
-    return this.bookModel
-      .findOneAndUpdate({ slug }, { $inc: { views: 1 } })
-      .exec();
+    return this.bookModel.findOneAndUpdate({ slug }, { $inc: { views: 1 } }).exec();
   }
 
   findById(id: string): Promise<BookModel> {
@@ -79,18 +72,12 @@ export class BooksService {
     const newBook = new this.bookModel(book);
 
     await newBook.save();
-    await this.logsService.create(
-      new LogDto(userId, UserActions.BOOK_CREATED, newBook._id)
-    );
+    await this.logsService.create(new LogDto(userId, UserActions.BOOK_CREATED, newBook._id));
 
     return newBook;
   }
 
-  async update(
-    id: string,
-    updatedBook: BookDto,
-    userId: string
-  ): Promise<BookModel> {
+  async update(id: string, updatedBook: BookDto, userId: string): Promise<BookModel> {
     const book = await this.bookModel.findById(id).exec();
 
     if (!book) {
@@ -99,24 +86,12 @@ export class BooksService {
 
     const filePromises = [];
     // remove old files from bucket first if new ones are adding
-    if (
-      book.coverUrl &&
-      updatedBook.coverUrl &&
-      book.coverUrl !== updatedBook.coverUrl
-    ) {
-      filePromises.push(
-        this.filesService.deleteFromBucket(extractFileKey(book.coverUrl))
-      );
+    if (book.coverUrl && updatedBook.coverUrl && book.coverUrl !== updatedBook.coverUrl) {
+      filePromises.push(this.filesService.deleteFromBucket(extractFileKey(book.coverUrl)));
     }
 
-    if (
-      book.epubUrl &&
-      updatedBook.epubUrl &&
-      book.epubUrl !== updatedBook.epubUrl
-    ) {
-      filePromises.push(
-        this.filesService.deleteFromBucket(extractFileKey(book.epubUrl))
-      );
+    if (book.epubUrl && updatedBook.epubUrl && book.epubUrl !== updatedBook.epubUrl) {
+      filePromises.push(this.filesService.deleteFromBucket(extractFileKey(book.epubUrl)));
     }
 
     if (filePromises.length) {
@@ -130,18 +105,12 @@ export class BooksService {
     extend(book, updatedBook);
 
     await book.save();
-    await this.logsService.create(
-      new LogDto(userId, UserActions.BOOK_UPDATED, book._id)
-    );
+    await this.logsService.create(new LogDto(userId, UserActions.BOOK_UPDATED, book._id));
 
     return book;
   }
 
-  async rateBook(
-    id: string,
-    newRate: number,
-    userId: string
-  ): Promise<BookModel> {
+  async rateBook(id: string, newRate: number, userId: string): Promise<BookModel> {
     const book = await this.bookModel.findById(id).exec();
 
     if (!book) {
@@ -157,9 +126,7 @@ export class BooksService {
     book.rating = rating;
 
     await book.save();
-    await this.logsService.create(
-      new LogDto(userId, UserActions.BOOK_RATED, book._id)
-    );
+    await this.logsService.create(new LogDto(userId, UserActions.BOOK_RATED, book._id));
     this.pubSub.publish('bookRated', { bookRated: book });
 
     return book;

@@ -191,28 +191,17 @@ UserSchema.methods = {
     const salt = Buffer.from(this.salt, 'base64');
 
     if (!callback) {
-      return pbkdf2Sync(
-        password,
-        salt,
-        defaultIterations,
-        defaultKeyLength,
-        'sha512'
-      ).toString('base64');
+      return pbkdf2Sync(password, salt, defaultIterations, defaultKeyLength, 'sha512').toString(
+        'base64'
+      );
     }
 
-    return pbkdf2(
-      password,
-      salt,
-      defaultIterations,
-      defaultKeyLength,
-      'sha512',
-      (err, key) => {
-        if (err) {
-          return callback(err);
-        } else {
-          return callback(null, key.toString('base64'));
-        }
+    return pbkdf2(password, salt, defaultIterations, defaultKeyLength, 'sha512', (err, key) => {
+      if (err) {
+        return callback(err);
+      } else {
+        return callback(null, key.toString('base64'));
       }
-    );
+    });
   }
 };

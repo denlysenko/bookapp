@@ -7,15 +7,8 @@ import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 
-import {
-  FeedbackPlatformService,
-  UploadPlatformService
-} from '@bookapp/angular/core';
-import {
-  book,
-  clickOnBtn,
-  MockFeedbackPlatformService
-} from '@bookapp/testing';
+import { FeedbackPlatformService, UploadPlatformService } from '@bookapp/angular/core';
+import { book, clickOnBtn, MockFeedbackPlatformService } from '@bookapp/testing';
 
 import { of } from 'rxjs';
 
@@ -104,17 +97,13 @@ describe('AddBookFormComponent', () => {
     const paidCheckbox = fixture.debugElement.query(By.directive(MatCheckbox));
 
     expect(component.paidControl.value).toEqual(false);
-    expect(
-      fixture.debugElement.query(By.css('[formcontrolname=price]'))
-    ).toBeNull();
+    expect(fixture.debugElement.query(By.css('[formcontrolname=price]'))).toBeNull();
 
     paidCheckbox.nativeElement.querySelector('input').click();
     fixture.detectChanges();
 
     expect(component.paidControl.value).toEqual(true);
-    expect(
-      fixture.debugElement.query(By.css('[formcontrolname=price]'))
-    ).not.toBeNull();
+    expect(fixture.debugElement.query(By.css('[formcontrolname=price]'))).not.toBeNull();
   });
 
   describe('Validations', () => {
@@ -124,9 +113,7 @@ describe('AddBookFormComponent', () => {
 
       beforeEach(() => {
         titleField = component.form.get('title');
-        input = fixture.debugElement.query(
-          By.css('input[formcontrolname=title]')
-        ).nativeElement;
+        input = fixture.debugElement.query(By.css('input[formcontrolname=title]')).nativeElement;
       });
 
       it('should have required error', () => {
@@ -150,9 +137,7 @@ describe('AddBookFormComponent', () => {
 
       beforeEach(() => {
         authorField = component.form.get('author');
-        input = fixture.debugElement.query(
-          By.css('input[formcontrolname=author]')
-        ).nativeElement;
+        input = fixture.debugElement.query(By.css('input[formcontrolname=author]')).nativeElement;
       });
 
       it('should have required error', () => {
@@ -176,9 +161,7 @@ describe('AddBookFormComponent', () => {
 
       beforeEach(() => {
         descField = component.form.get('description');
-        input = fixture.debugElement.query(
-          By.css('[formcontrolname=description]')
-        ).nativeElement;
+        input = fixture.debugElement.query(By.css('[formcontrolname=description]')).nativeElement;
       });
 
       it('should have required error', () => {
@@ -207,8 +190,7 @@ describe('AddBookFormComponent', () => {
           .click();
         fixture.detectChanges();
         priceField = component.form.get('price');
-        input = fixture.debugElement.query(By.css('[formcontrolname=price]'))
-          .nativeElement;
+        input = fixture.debugElement.query(By.css('[formcontrolname=price]')).nativeElement;
       });
 
       it('should have required error', () => {

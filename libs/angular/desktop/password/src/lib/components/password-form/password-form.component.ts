@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
 import { BaseForm } from '@bookapp/angular/base';
@@ -34,10 +28,7 @@ export class PasswordFormComponent extends BaseForm {
 
   @Output() formSubmitted = new EventEmitter<PasswordForm>();
 
-  constructor(
-    feedbackService: FeedbackPlatformService,
-    private readonly fb: FormBuilder
-  ) {
+  constructor(feedbackService: FeedbackPlatformService, private readonly fb: FormBuilder) {
     super(feedbackService);
   }
 

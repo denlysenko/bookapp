@@ -57,15 +57,11 @@ describe('BookmarksService', () => {
         .getBookmarksByBook(book._id)
         .valueChanges.subscribe(({ data: { userBookmarksByBook } }) => {
           expect(userBookmarksByBook.length).toEqual(1);
-          expect(userBookmarksByBook[0].type).toEqual(
-            bookmarkWithTypename.type
-          );
+          expect(userBookmarksByBook[0].type).toEqual(bookmarkWithTypename.type);
           done();
         });
 
-      const op = controller.expectOne(
-        addTypenameToDocument(BOOKMARKS_BY_USER_AND_BOOK_QUERY)
-      );
+      const op = controller.expectOne(addTypenameToDocument(BOOKMARKS_BY_USER_AND_BOOK_QUERY));
 
       expect(op.operation.variables.bookId).toEqual(book._id);
 
@@ -122,13 +118,11 @@ describe('BookmarksService', () => {
         })
         .subscribe();
 
-      controller
-        .expectOne(addTypenameToDocument(BOOKMARKS_BY_USER_AND_BOOK_QUERY))
-        .flush({
-          data: {
-            userBookmarksByBook: []
-          }
-        });
+      controller.expectOne(addTypenameToDocument(BOOKMARKS_BY_USER_AND_BOOK_QUERY)).flush({
+        data: {
+          userBookmarksByBook: []
+        }
+      });
     });
 
     it('should call ADD_TO_BOOKMARKS_MUTATION', done => {
@@ -139,9 +133,7 @@ describe('BookmarksService', () => {
           done();
         });
 
-      const op = controller.expectOne(
-        addTypenameToDocument(ADD_TO_BOOKMARKS_MUTATION)
-      );
+      const op = controller.expectOne(addTypenameToDocument(ADD_TO_BOOKMARKS_MUTATION));
 
       expect(op.operation.variables.bookId).toEqual(book._id);
       expect(op.operation.variables.type).toEqual(BOOKMARKS.FAVORITES);
@@ -156,30 +148,26 @@ describe('BookmarksService', () => {
     });
 
     it('should add new bookmark in bookmarks list in store', done => {
-      service
-        .addToBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id })
-        .subscribe(() => {
-          apollo
-            .query<{ userBookmarksByBook: Array<{ type: number }> }>({
-              query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
-              variables: {
-                bookId: book._id
-              }
-            })
-            .subscribe(({ data: { userBookmarksByBook } }) => {
-              expect(userBookmarksByBook.length).toEqual(1);
-              expect(userBookmarksByBook[0].type).toEqual(bookmark.type);
-              done();
-            });
-        });
+      service.addToBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id }).subscribe(() => {
+        apollo
+          .query<{ userBookmarksByBook: Array<{ type: number }> }>({
+            query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
+            variables: {
+              bookId: book._id
+            }
+          })
+          .subscribe(({ data: { userBookmarksByBook } }) => {
+            expect(userBookmarksByBook.length).toEqual(1);
+            expect(userBookmarksByBook[0].type).toEqual(bookmark.type);
+            done();
+          });
+      });
 
-      controller
-        .expectOne(addTypenameToDocument(ADD_TO_BOOKMARKS_MUTATION))
-        .flush({
-          data: {
-            addToBookmarks: bookmarkWithTypename
-          }
-        });
+      controller.expectOne(addTypenameToDocument(ADD_TO_BOOKMARKS_MUTATION)).flush({
+        data: {
+          addToBookmarks: bookmarkWithTypename
+        }
+      });
 
       controller.verify();
     });
@@ -200,13 +188,11 @@ describe('BookmarksService', () => {
         })
         .subscribe();
 
-      controller
-        .expectOne(addTypenameToDocument(BOOKMARKS_BY_USER_AND_BOOK_QUERY))
-        .flush({
-          data: {
-            userBookmarksByBook: [bookmarkWithTypename]
-          }
-        });
+      controller.expectOne(addTypenameToDocument(BOOKMARKS_BY_USER_AND_BOOK_QUERY)).flush({
+        data: {
+          userBookmarksByBook: [bookmarkWithTypename]
+        }
+      });
     });
 
     it('should call REMOVE_FROM_BOOKMARKS_MUTATION', done => {
@@ -217,9 +203,7 @@ describe('BookmarksService', () => {
           done();
         });
 
-      const op = controller.expectOne(
-        addTypenameToDocument(REMOVE_FROM_BOOKMARKS_MUTATION)
-      );
+      const op = controller.expectOne(addTypenameToDocument(REMOVE_FROM_BOOKMARKS_MUTATION));
 
       expect(op.operation.variables.bookId).toEqual(book._id);
       expect(op.operation.variables.type).toEqual(BOOKMARKS.FAVORITES);
@@ -234,29 +218,25 @@ describe('BookmarksService', () => {
     });
 
     it('should remove bookmark from bookmarks list in store', done => {
-      service
-        .removeFromBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id })
-        .subscribe(() => {
-          apollo
-            .query<{ userBookmarksByBook: Array<{ type: number }> }>({
-              query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
-              variables: {
-                bookId: book._id
-              }
-            })
-            .subscribe(({ data: { userBookmarksByBook } }) => {
-              expect(userBookmarksByBook.length).toEqual(0);
-              done();
-            });
-        });
+      service.removeFromBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id }).subscribe(() => {
+        apollo
+          .query<{ userBookmarksByBook: Array<{ type: number }> }>({
+            query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
+            variables: {
+              bookId: book._id
+            }
+          })
+          .subscribe(({ data: { userBookmarksByBook } }) => {
+            expect(userBookmarksByBook.length).toEqual(0);
+            done();
+          });
+      });
 
-      controller
-        .expectOne(addTypenameToDocument(REMOVE_FROM_BOOKMARKS_MUTATION))
-        .flush({
-          data: {
-            removeFromBookmarks: bookmarkWithTypename
-          }
-        });
+      controller.expectOne(addTypenameToDocument(REMOVE_FROM_BOOKMARKS_MUTATION)).flush({
+        data: {
+          removeFromBookmarks: bookmarkWithTypename
+        }
+      });
 
       controller.verify();
     });

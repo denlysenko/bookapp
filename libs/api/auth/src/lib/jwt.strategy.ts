@@ -10,10 +10,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    configService: ConfigService,
-    private readonly usersService: UsersService
-  ) {
+  constructor(configService: ConfigService, private readonly usersService: UsersService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: configService.get('ACCESS_TOKEN_SECRET')
@@ -24,10 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const user = await this.usersService.findById(payload.id);
 
     if (!user) {
-      return done(
-        new UnauthorizedException(AUTH_ERRORS.UNAUTHORIZED_ERR),
-        false
-      );
+      return done(new UnauthorizedException(AUTH_ERRORS.UNAUTHORIZED_ERR), false);
     }
 
     done(null, user);

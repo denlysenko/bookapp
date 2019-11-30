@@ -53,8 +53,7 @@ describe('ConfirmDialogComponent', () => {
   });
 
   it('should have text', () => {
-    const content = fixture.debugElement.query(By.directive(MatDialogContent))
-      .nativeElement;
+    const content = fixture.debugElement.query(By.directive(MatDialogContent)).nativeElement;
     expect(content.textContent).toEqual(text);
   });
 

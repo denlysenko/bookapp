@@ -1,12 +1,6 @@
 import { CommentsService } from '@bookapp/api/comments';
 import { PUB_SUB } from '@bookapp/api/graphql';
-import {
-  ApiQuery,
-  GqlAuthGuard,
-  RequestWithUser,
-  Roles,
-  RolesGuard
-} from '@bookapp/api/shared';
+import { ApiQuery, GqlAuthGuard, RequestWithUser, Roles, RolesGuard } from '@bookapp/api/shared';
 import { Book, ROLES } from '@bookapp/shared';
 import { convertToMongoSortQuery } from '@bookapp/utils';
 
@@ -74,10 +68,7 @@ export class BooksResolvers {
   @Mutation()
   @UseGuards(GqlAuthGuard, RolesGuard)
   @Roles(ROLES.ADMIN)
-  async createBook(
-    @Args('book') book: BookDto,
-    @Context('req') req: RequestWithUser
-  ) {
+  async createBook(@Args('book') book: BookDto, @Context('req') req: RequestWithUser) {
     const userId = req.user._id;
     return this.booksService.create(book, userId);
   }

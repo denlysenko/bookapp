@@ -4,11 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { StoreService } from '@bookapp/angular/core';
 import { BooksService, DEFAULT_SORT_VALUE } from '@bookapp/angular/data-access';
-import {
-  book,
-  MockAngularBooksService,
-  MockStoreService
-} from '@bookapp/testing';
+import { book, MockAngularBooksService, MockStoreService } from '@bookapp/testing';
 
 import { of } from 'rxjs';
 

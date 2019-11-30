@@ -73,10 +73,7 @@ export class UsersResolver {
   }
 
   @Mutation()
-  resetPassword(
-    @Args('token') token: string,
-    @Args('newPassword') newPassword: string
-  ) {
+  resetPassword(@Args('token') token: string, @Args('newPassword') newPassword: string) {
     return this.usersService.resetPassword(token, newPassword);
   }
 

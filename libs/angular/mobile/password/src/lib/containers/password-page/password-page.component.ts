@@ -10,10 +10,7 @@ import { PasswordService } from '@bookapp/angular/data-access';
   styleUrls: ['./password-page.component.scss']
 })
 export class PasswordPageComponent extends PasswordPageBase {
-  constructor(
-    passwordService: PasswordService,
-    feedbackService: FeedbackPlatformService
-  ) {
+  constructor(passwordService: PasswordService, feedbackService: FeedbackPlatformService) {
     super(passwordService, feedbackService);
   }
 }

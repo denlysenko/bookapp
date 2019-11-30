@@ -1,11 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 
-import {
-  AUTH_TOKEN,
-  EnvConfig,
-  Environment,
-  StoreService
-} from '@bookapp/angular/core';
+import { AUTH_TOKEN, EnvConfig, Environment, StoreService } from '@bookapp/angular/core';
 
 import {
   ErrorEventData,

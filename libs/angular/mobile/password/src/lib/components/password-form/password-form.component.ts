@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { NsBaseForm } from '@bookapp/angular/base';
 import { FeedbackPlatformService } from '@bookapp/angular/core';
@@ -50,10 +44,7 @@ export class PasswordFormComponent extends NsBaseForm {
   }
 
   onDrawerButtonTap() {
-    const sideDrawer = getViewById(
-      app.getRootView(),
-      'drawer'
-    ) as RadSideDrawer;
+    const sideDrawer = getViewById(app.getRootView(), 'drawer') as RadSideDrawer;
     sideDrawer.toggleDrawerState();
   }
 }

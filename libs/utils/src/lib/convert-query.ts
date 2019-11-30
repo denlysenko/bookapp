@@ -1,6 +1,4 @@
-export function convertToMongoSortQuery(
-  orderString
-): { [key: string]: number } {
+export function convertToMongoSortQuery(orderString): { [key: string]: number } {
   // ex. id_asc or id_desc
   // desc: -1 { id: -1 }
   const parts = orderString.split('_');

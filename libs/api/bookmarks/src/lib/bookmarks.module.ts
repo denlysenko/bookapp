@@ -11,9 +11,7 @@ import { BookmarkSchema } from './schemas/bookmark';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: ModelNames.BOOKMARK, schema: BookmarkSchema }
-    ]),
+    MongooseModule.forFeature([{ name: ModelNames.BOOKMARK, schema: BookmarkSchema }]),
     LogsModule,
     DataLoadersModule
   ],

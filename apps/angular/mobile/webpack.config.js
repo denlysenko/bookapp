@@ -9,21 +9,13 @@ const {
 const {
   nsReplaceLazyLoader
 } = require('nativescript-dev-webpack/transformers/ns-replace-lazy-loader');
-const {
-  nsSupportHmrNg
-} = require('nativescript-dev-webpack/transformers/ns-support-hmr-ng');
-const {
-  getMainModulePath
-} = require('nativescript-dev-webpack/utils/ast-utils');
-const {
-  getNoEmitOnErrorFromTSConfig
-} = require('nativescript-dev-webpack/utils/tsconfig-utils');
+const { nsSupportHmrNg } = require('nativescript-dev-webpack/transformers/ns-support-hmr-ng');
+const { getMainModulePath } = require('nativescript-dev-webpack/utils/ast-utils');
+const { getNoEmitOnErrorFromTSConfig } = require('nativescript-dev-webpack/utils/tsconfig-utils');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const {
-  NativeScriptWorkerPlugin
-} = require('nativescript-worker-loader/NativeScriptWorkerPlugin');
+const { NativeScriptWorkerPlugin } = require('nativescript-worker-loader/NativeScriptWorkerPlugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const {
   getAngularCompilerPlugin
@@ -32,10 +24,7 @@ const hashSalt = Date.now().toString();
 
 module.exports = env => {
   // Add your custom Activities, Services and other Android app components here.
-  const appComponents = [
-    'tns-core-modules/ui/frame',
-    'tns-core-modules/ui/frame/activity'
-  ];
+  const appComponents = ['tns-core-modules/ui/frame', 'tns-core-modules/ui/frame/activity'];
 
   const platform = env && ((env.android && 'android') || (env.ios && 'ios'));
   if (!platform) {
@@ -46,10 +35,7 @@ module.exports = env => {
   const projectRoot = __dirname;
 
   // Default destination inside platforms/<platform>/...
-  const dist = resolve(
-    projectRoot,
-    nsWebpack.getAppPath(platform, projectRoot)
-  );
+  const dist = resolve(projectRoot, nsWebpack.getAppPath(platform, projectRoot));
 
   const {
     // The 'appPath' and 'appResourcesPath' values are fetched from
@@ -83,11 +69,9 @@ module.exports = env => {
   const entryPath = `.${sep}${entryModule}`;
   const entries = { bundle: entryPath };
   const areCoreModulesExternal =
-    Array.isArray(env.externals) &&
-    env.externals.some(e => e.indexOf('tns-core-modules') > -1);
+    Array.isArray(env.externals) && env.externals.some(e => e.indexOf('tns-core-modules') > -1);
   if (platform === 'ios' && !areCoreModulesExternal) {
-    entries['tns_modules/tns-core-modules/inspector_modules'] =
-      'inspector_modules';
+    entries['tns_modules/tns-core-modules/inspector_modules'] = 'inspector_modules';
   }
 
   const ngCompilerTransformers = [];
@@ -109,9 +93,7 @@ module.exports = env => {
       tsConfigName
     );
     if (appModuleRelativePath) {
-      const appModuleFolderPath = dirname(
-        resolve(appFullPath, appModuleRelativePath)
-      );
+      const appModuleFolderPath = dirname(resolve(appFullPath, appModuleRelativePath));
       // include the lazy loader inside app module
       ngCompilerTransformers.push(nsReplaceLazyLoader);
       // include the new lazy loader path in the allowed ones
@@ -131,25 +113,12 @@ module.exports = env => {
     additionalLazyModuleResources: additionalLazyModuleResources
   });
 
-  let sourceMapFilename = nsWebpack.getSourceMapFilename(
-    hiddenSourceMap,
-    __dirname,
-    dist
-  );
+  let sourceMapFilename = nsWebpack.getSourceMapFilename(hiddenSourceMap, __dirname, dist);
 
   const itemsToClean = [`${dist}/**/*`];
   if (platform === 'android') {
     itemsToClean.push(
-      `${join(
-        projectRoot,
-        'platforms',
-        'android',
-        'app',
-        'src',
-        'main',
-        'assets',
-        'snapshots'
-      )}`
+      `${join(projectRoot, 'platforms', 'android', 'app', 'src', 'main', 'assets', 'snapshots')}`
     );
     itemsToClean.push(
       `${join(
@@ -164,9 +133,7 @@ module.exports = env => {
     );
   }
 
-  const noEmitOnErrorFromTSConfig = getNoEmitOnErrorFromTSConfig(
-    join(projectRoot, tsConfigName)
-  );
+  const noEmitOnErrorFromTSConfig = getNoEmitOnErrorFromTSConfig(join(projectRoot, tsConfigName));
 
   nsWebpack.processAppComponents(appComponents, platform);
   const config = {
@@ -216,11 +183,7 @@ module.exports = env => {
       fs: 'empty',
       __dirname: false
     },
-    devtool: hiddenSourceMap
-      ? 'hidden-source-map'
-      : sourceMap
-      ? 'inline-source-map'
-      : 'none',
+    devtool: hiddenSourceMap ? 'hidden-source-map' : sourceMap ? 'inline-source-map' : 'none',
     optimization: {
       runtimeChunk: 'single',
       noEmitOnErrors: noEmitOnErrorFromTSConfig,
@@ -230,9 +193,7 @@ module.exports = env => {
             name: 'vendor',
             chunks: 'all',
             test: (module, chunks) => {
-              const moduleName = module.nameForCondition
-                ? module.nameForCondition()
-                : '';
+              const moduleName = module.nameForCondition ? module.nameForCondition() : '';
               return (
                 /[\\/]node_modules[\\/]/.test(moduleName) ||
                 appComponents.some(comp => comp === moduleName)

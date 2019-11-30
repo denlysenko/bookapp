@@ -44,13 +44,11 @@ describe('LogsService', () => {
 
   describe('getLastLogs()', () => {
     it('should get last logs', done => {
-      service
-        .getLastLogs()
-        .valueChanges.subscribe(({ data: { logs: { rows } } }) => {
-          const [l] = rows;
-          expect(l.action).toEqual(log.action);
-          done();
-        });
+      service.getLastLogs().valueChanges.subscribe(({ data: { logs: { rows } } }) => {
+        const [l] = rows;
+        expect(l.action).toEqual(log.action);
+        done();
+      });
 
       controller.expectOne(addTypenameToDocument(LAST_LOGS_QUERY)).flush({
         data: {

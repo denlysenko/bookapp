@@ -7,12 +7,7 @@ import { BookSearchModule, BooksListModule } from '@bookapp/angular/ui-mobile';
 import { BrowseBooksPageComponent } from './containers/browse-books-page/browse-books-page.component';
 
 @NgModule({
-  imports: [
-    NativeScriptCommonModule,
-    CommonModule,
-    BookSearchModule,
-    BooksListModule
-  ],
+  imports: [NativeScriptCommonModule, CommonModule, BookSearchModule, BooksListModule],
   declarations: [BrowseBooksPageComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })

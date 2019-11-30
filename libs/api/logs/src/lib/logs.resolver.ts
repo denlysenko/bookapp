@@ -1,11 +1,6 @@
 import { BooksDataLoader } from '@bookapp/api/dataloaders';
 import { PUB_SUB } from '@bookapp/api/graphql';
-import {
-  ApiQuery,
-  FilterInput,
-  GqlAuthGuard,
-  RequestWithUser
-} from '@bookapp/api/shared';
+import { ApiQuery, FilterInput, GqlAuthGuard, RequestWithUser } from '@bookapp/api/shared';
 import { Log } from '@bookapp/shared';
 import { convertToMongoSortQuery } from '@bookapp/utils';
 
@@ -39,14 +34,11 @@ export class LogsResolver {
     const { skip, first, orderBy } = args;
     const order = (orderBy && convertToMongoSortQuery(orderBy)) || null;
 
-    return this.logsService.findAll(
-      new ApiQuery({ userId }, first, skip, order)
-    );
+    return this.logsService.findAll(new ApiQuery({ userId }, first, skip, order));
   }
 
   @Subscription('logCreated', {
-    filter: (payload, variables) =>
-      payload.logCreated.userId.equals(variables.userId)
+    filter: (payload, variables) => payload.logCreated.userId.equals(variables.userId)
   })
   logCreated() {
     return this.pubSub.asyncIterator('logCreated');

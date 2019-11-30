@@ -2,11 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-import {
-  BooksFilterModule,
-  BooksListModule,
-  PreloaderModule
-} from '@bookapp/angular/ui-desktop';
+import { BooksFilterModule, BooksListModule, PreloaderModule } from '@bookapp/angular/ui-desktop';
 
 import { BuyBooksRoutingModule } from './buy-books-routing.module';
 import { BuyBooksPageComponent } from './containers/buy-books-page/buy-books-page.component';

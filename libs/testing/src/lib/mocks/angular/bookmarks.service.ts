@@ -22,10 +22,6 @@ export const MockAngularBookmarksService = {
     refetch: jest.fn(),
     fetchMore: jest.fn()
   })),
-  addToBookmarks: jest
-    .fn()
-    .mockImplementation(() => of({ addToBookmarks: bookmark })),
-  removeFromBookmarks: jest
-    .fn()
-    .mockImplementation(() => of({ addToBookmarks: bookmark }))
+  addToBookmarks: jest.fn().mockImplementation(() => of({ addToBookmarks: bookmark })),
+  removeFromBookmarks: jest.fn().mockImplementation(() => of({ addToBookmarks: bookmark }))
 };

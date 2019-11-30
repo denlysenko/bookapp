@@ -1,11 +1,7 @@
 // tslint:disable: no-identical-functions
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-  MatDialogRef
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { UploadPlatformService } from '@bookapp/angular/core';
 import { dataUriImage } from '@bookapp/testing';
@@ -32,9 +28,7 @@ describe('ImageSelectorComponent', () => {
         {
           provide: UploadPlatformService,
           useValue: {
-            upload: jest
-              .fn()
-              .mockImplementation(() => of(JSON.stringify({ publicUrl })))
+            upload: jest.fn().mockImplementation(() => of(JSON.stringify({ publicUrl })))
           }
         },
         {
@@ -169,9 +163,7 @@ describe('ImageSelectorComponent', () => {
     });
 
     it('should propagate false to cropperReady$ if error', done => {
-      jest
-        .spyOn(uploadService, 'upload')
-        .mockImplementationOnce(() => throwError({}));
+      jest.spyOn(uploadService, 'upload').mockImplementationOnce(() => throwError({}));
 
       component.imageCropped(dataUriImage);
       component.save();

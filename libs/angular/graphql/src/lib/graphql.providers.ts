@@ -66,10 +66,7 @@ export function createApolloFactory(
 
   const auth = new ApolloLink((operation, forward) => {
     operation.setContext({
-      headers: new HttpHeaders().set(
-        'Authorization',
-        `Bearer ${storeService.get(AUTH_TOKEN)}`
-      )
+      headers: new HttpHeaders().set('Authorization', `Bearer ${storeService.get(AUTH_TOKEN)}`)
     });
 
     return forward(operation);
@@ -116,8 +113,7 @@ export function createApolloFactory(
         error.extensions &&
         error.extensions.exception &&
         error.extensions.exception.response &&
-        error.extensions.exception.response.statusCode ===
-          HTTP_STATUS.UNAUTHORIZED
+        error.extensions.exception.response.statusCode === HTTP_STATUS.UNAUTHORIZED
       ) {
         const authService = injector.get(AuthService);
 
@@ -171,10 +167,7 @@ export function createApolloFactory(
     fetchAccessToken: () => {
       return httpClient
         .post<Response>(environment.refreshTokenUrl, null, {
-          headers: new HttpHeaders().set(
-            REFRESH_TOKEN_HEADER,
-            storageService.getItem(AUTH_TOKEN)
-          )
+          headers: new HttpHeaders().set(REFRESH_TOKEN_HEADER, storageService.getItem(AUTH_TOKEN))
         })
         .toPromise();
     },

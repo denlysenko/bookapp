@@ -63,9 +63,7 @@ export class AddBookPageComponent {
       return dialogRef.afterClosed().pipe(
         switchMap((result: boolean) => {
           if (result) {
-            return this.bookFormComponent
-              .removeUploadedFiles()
-              .pipe(switchMapTo(of(true)));
+            return this.bookFormComponent.removeUploadedFiles().pipe(switchMapTo(of(true)));
           }
 
           return of(false);

@@ -7,8 +7,7 @@ import { map, tap } from 'rxjs/operators';
 
 import { BaseComponent } from '../core/base-component';
 
-export abstract class MainLayoutBase extends BaseComponent
-  implements OnDestroy {
+export abstract class MainLayoutBase extends BaseComponent implements OnDestroy {
   user$ = this.authService.me().valueChanges.pipe(
     map(({ data }) => data.me),
     tap(user => {
@@ -20,9 +19,7 @@ export abstract class MainLayoutBase extends BaseComponent
 
   logsQueryRef = this.logsService.getLastLogs();
 
-  logs$ = this.logsQueryRef.valueChanges.pipe(
-    map(({ data }) => data.logs.rows)
-  );
+  logs$ = this.logsQueryRef.valueChanges.pipe(map(({ data }) => data.logs.rows));
 
   private unsubscribeFromNewLogs: () => void | null = null;
 

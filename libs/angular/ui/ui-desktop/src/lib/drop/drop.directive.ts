@@ -32,10 +32,7 @@ export class DropDirective implements OnInit, OnDestroy {
           event.preventDefault();
         };
 
-        this.elemRef.nativeElement.addEventListener(
-          'dragover',
-          this.dragOverHandler
-        );
+        this.elemRef.nativeElement.addEventListener('dragover', this.dragOverHandler);
       });
     }
   }
@@ -60,10 +57,7 @@ export class DropDirective implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.dragOverHandler) {
       this.zone.runOutsideAngular(() => {
-        this.elemRef.nativeElement.removeEventListener(
-          'dragover',
-          this.dragOverHandler
-        );
+        this.elemRef.nativeElement.removeEventListener('dragover', this.dragOverHandler);
         this.dragOverHandler = null;
       });
     }

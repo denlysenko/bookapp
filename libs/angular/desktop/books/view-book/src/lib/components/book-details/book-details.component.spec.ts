@@ -17,13 +17,7 @@ describe('BookDetailsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CommonModule,
-        FormsModule,
-        RatingModule,
-        MatIconModule,
-        RouterTestingModule
-      ],
+      imports: [CommonModule, FormsModule, RatingModule, MatIconModule, RouterTestingModule],
       declarations: [BookDetailsComponent],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -81,9 +75,7 @@ describe('BookDetailsComponent', () => {
     it('should emit bookRated event', () => {
       jest.spyOn(component.bookRated, 'emit');
 
-      const starEl = fixture.debugElement.nativeElement.querySelectorAll(
-        '.rating-star'
-      )[2];
+      const starEl = fixture.debugElement.nativeElement.querySelectorAll('.rating-star')[2];
 
       starEl.click();
       fixture.detectChanges();

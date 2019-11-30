@@ -9,9 +9,7 @@ import { map, pluck, tap } from 'rxjs/operators';
 
 export abstract class BookmarksPageBase {
   readonly type: string = this.route.snapshot.data.type;
-  readonly bookmarksQueryRef = this.bookmarksService.getBookmarksByType(
-    this.type
-  );
+  readonly bookmarksQueryRef = this.bookmarksService.getBookmarksByType(this.type);
 
   books$: Observable<Book[]> = this.bookmarksQueryRef.valueChanges.pipe(
     tap(({ data: { bookmarks: { rows, count } } }) => {
@@ -90,9 +88,7 @@ export abstract class BookmarksPageBase {
           variables
         });
 
-        const updatedBookmark = data.bookmarks.rows.find(
-          ({ book }) => book._id === event.bookId
-        );
+        const updatedBookmark = data.bookmarks.rows.find(({ book }) => book._id === event.bookId);
         updatedBookmark.book.rating = rateBook.rating;
         updatedBookmark.book.total_rates = rateBook.total_rates;
         updatedBookmark.book.total_rating = rateBook.total_rating;

@@ -72,9 +72,7 @@ describe('AuthFormComponent', () => {
 
       beforeEach(() => {
         emailField = component.form.get('email');
-        input = fixture.debugElement.query(
-          By.css('input[formcontrolname=email]')
-        ).nativeElement;
+        input = fixture.debugElement.query(By.css('input[formcontrolname=email]')).nativeElement;
       });
 
       it('should have required error', () => {
@@ -109,9 +107,7 @@ describe('AuthFormComponent', () => {
 
       beforeEach(() => {
         passwordField = component.form.get('password');
-        input = fixture.debugElement.query(
-          By.css('input[formcontrolname=password]')
-        ).nativeElement;
+        input = fixture.debugElement.query(By.css('input[formcontrolname=password]')).nativeElement;
       });
 
       it('should have required error', () => {
@@ -134,9 +130,8 @@ describe('AuthFormComponent', () => {
         component.toggleAuthMode();
         fixture.detectChanges();
         firstNameField = component.form.get('firstName');
-        input = fixture.debugElement.query(
-          By.css('input[formcontrolname=firstName]')
-        ).nativeElement;
+        input = fixture.debugElement.query(By.css('input[formcontrolname=firstName]'))
+          .nativeElement;
       });
 
       it('should have required error', () => {
@@ -159,9 +154,7 @@ describe('AuthFormComponent', () => {
         component.toggleAuthMode();
         fixture.detectChanges();
         lastNameField = component.form.get('lastName');
-        input = fixture.debugElement.query(
-          By.css('input[formcontrolname=lastName]')
-        ).nativeElement;
+        input = fixture.debugElement.query(By.css('input[formcontrolname=lastName]')).nativeElement;
       });
 
       it('should have required error', () => {

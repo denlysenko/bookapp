@@ -54,10 +54,7 @@ describe('PasswordPageComponent', () => {
   describe('changePassword()', () => {
     it('should change password', () => {
       component.changePassword({ oldPassword, password });
-      expect(passwordService.changePassword).toHaveBeenCalledWith(
-        password,
-        oldPassword
-      );
+      expect(passwordService.changePassword).toHaveBeenCalledWith(password, oldPassword);
     });
 
     it('should propagate error', done => {

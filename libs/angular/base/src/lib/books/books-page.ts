@@ -20,9 +20,7 @@ const FILTER_KEYS = {
 
 export abstract class BooksPageBase extends BaseComponent {
   filter = new BehaviorSubject<BooksFilter>(
-    this.storeService.get(
-      FILTER_KEYS[this.paid ? 'BUY_BOOKS' : 'BROWSE_BOOKS']
-    ) || {
+    this.storeService.get(FILTER_KEYS[this.paid ? 'BUY_BOOKS' : 'BROWSE_BOOKS']) || {
       searchQuery: '',
       sortValue: DEFAULT_SORT_VALUE
     }
@@ -153,9 +151,7 @@ export abstract class BooksPageBase extends BaseComponent {
           variables
         });
 
-        const updatedBook = data.books.rows.find(
-          ({ _id }) => _id === event.bookId
-        );
+        const updatedBook = data.books.rows.find(({ _id }) => _id === event.bookId);
         updatedBook.rating = rateBook.rating;
         updatedBook.total_rates = rateBook.total_rates;
         updatedBook.total_rating = rateBook.total_rating;

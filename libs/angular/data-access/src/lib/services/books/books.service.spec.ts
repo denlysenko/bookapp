@@ -123,12 +123,10 @@ describe('BooksService', () => {
         coverUrl: 'uploads/new_cover.png'
       };
 
-      service
-        .update(book._id, updatedBook)
-        .subscribe(({ data: { updateBook } }) => {
-          expect(updateBook).toEqual(bookWithTypename);
-          done();
-        });
+      service.update(book._id, updatedBook).subscribe(({ data: { updateBook } }) => {
+        expect(updateBook).toEqual(bookWithTypename);
+        done();
+      });
 
       const op = controller.expectOne(UPDATE_BOOK_MUTATION);
 
@@ -147,13 +145,11 @@ describe('BooksService', () => {
 
   describe('getBooks()', () => {
     it('should get paid books', done => {
-      service
-        .getBooks(true)
-        .valueChanges.subscribe(({ data: { books: { rows } } }) => {
-          const [b] = rows;
-          expect(b._id).toEqual(book._id);
-          done();
-        });
+      service.getBooks(true).valueChanges.subscribe(({ data: { books: { rows } } }) => {
+        const [b] = rows;
+        expect(b._id).toEqual(book._id);
+        done();
+      });
 
       const op = controller.expectOne(addTypenameToDocument(PAID_BOOKS_QUERY));
 
@@ -179,13 +175,11 @@ describe('BooksService', () => {
     });
 
     it('should get free books', done => {
-      service
-        .getBooks(false)
-        .valueChanges.subscribe(({ data: { books: { rows } } }) => {
-          const [b] = rows;
-          expect(b._id).toEqual(book._id);
-          done();
-        });
+      service.getBooks(false).valueChanges.subscribe(({ data: { books: { rows } } }) => {
+        const [b] = rows;
+        expect(b._id).toEqual(book._id);
+        done();
+      });
 
       const op = controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY));
 
@@ -416,9 +410,7 @@ describe('BooksService', () => {
           done();
         });
 
-      const op = controller.expectOne(
-        addTypenameToDocument(RATE_BOOK_MUTATION)
-      );
+      const op = controller.expectOne(addTypenameToDocument(RATE_BOOK_MUTATION));
 
       expect(op.operation.variables.bookId).toEqual(book._id);
       expect(op.operation.variables.rate).toEqual(5);
@@ -504,16 +496,12 @@ describe('BooksService', () => {
     });
 
     it('should call ADD_COMMENT_MUTATION', done => {
-      service
-        .addComment(book._id, comment.text, update)
-        .subscribe(({ data: { addComment } }) => {
-          expect(addComment.text).toEqual(comment.text);
-          done();
-        });
+      service.addComment(book._id, comment.text, update).subscribe(({ data: { addComment } }) => {
+        expect(addComment.text).toEqual(comment.text);
+        done();
+      });
 
-      const op = controller.expectOne(
-        addTypenameToDocument(ADD_COMMENT_MUTATION)
-      );
+      const op = controller.expectOne(addTypenameToDocument(ADD_COMMENT_MUTATION));
 
       expect(op.operation.variables.bookId).toEqual(book._id);
       expect(op.operation.variables.text).toEqual(comment.text);

@@ -3,11 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { AuthService, ProfileService } from '@bookapp/angular/data-access';
-import {
-  MockAngularAuthService,
-  MockFeedbackPlatformService,
-  user
-} from '@bookapp/testing';
+import { MockAngularAuthService, MockFeedbackPlatformService, user } from '@bookapp/testing';
 
 import { of } from 'rxjs';
 
@@ -36,9 +32,7 @@ describe('ProfilePageComponent', () => {
         {
           provide: ProfileService,
           useValue: {
-            update: jest
-              .fn()
-              .mockImplementation(() => of({ data: { updateProfile: user } }))
+            update: jest.fn().mockImplementation(() => of({ data: { updateProfile: user } }))
           }
         }
       ]
@@ -67,9 +61,7 @@ describe('ProfilePageComponent', () => {
     it('should propagate error', done => {
       const error: any = { message: 'Error' };
 
-      jest
-        .spyOn(profileService, 'update')
-        .mockImplementationOnce(() => of({ errors: [error] }));
+      jest.spyOn(profileService, 'update').mockImplementationOnce(() => of({ errors: [error] }));
 
       let result: any;
 

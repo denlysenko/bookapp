@@ -27,9 +27,7 @@ describe('FileSelectorComponent', () => {
         {
           provide: UploadPlatformService,
           useValue: {
-            upload: jest
-              .fn()
-              .mockImplementation(() => of(JSON.stringify({ publicUrl })))
+            upload: jest.fn().mockImplementation(() => of(JSON.stringify({ publicUrl })))
           }
         },
         {
@@ -115,9 +113,7 @@ describe('FileSelectorComponent', () => {
     });
 
     it('should propagate null to imageChangedEvent$ if error', done => {
-      jest
-        .spyOn(uploadService, 'upload')
-        .mockImplementationOnce(() => throwError({}));
+      jest.spyOn(uploadService, 'upload').mockImplementationOnce(() => throwError({}));
 
       component.onFileChange(imageEvent);
       component.save();

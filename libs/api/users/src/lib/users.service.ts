@@ -5,11 +5,7 @@ import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { ApiResponse, AuthPayload } from '@bookapp/shared';
 import { extractFileKey } from '@bookapp/utils';
 
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { randomBytes } from 'crypto';
@@ -70,11 +66,7 @@ export class UsersService {
     }
 
     // remove old avatar from bucket first if new one is adding
-    if (
-      updatedUser.avatar &&
-      user.avatar &&
-      user.avatar !== updatedUser.avatar
-    ) {
+    if (updatedUser.avatar && user.avatar && user.avatar !== updatedUser.avatar) {
       try {
         await this.filesService.deleteFromBucket(extractFileKey(user.avatar));
       } catch (err) {
@@ -87,11 +79,7 @@ export class UsersService {
     return user.save();
   }
 
-  async changePassword(
-    id: string,
-    oldPassword: string,
-    newPassword: string
-  ): Promise<AuthPayload> {
+  async changePassword(id: string, oldPassword: string, newPassword: string): Promise<AuthPayload> {
     const user = await this.userModel.findById(id).exec();
 
     if (!user) {
@@ -99,9 +87,7 @@ export class UsersService {
     }
 
     if (!user.authenticate(oldPassword)) {
-      throw new BadRequestException(
-        USER_VALIDATION_ERRORS.OLD_PASSWORD_MATCH_ERR
-      );
+      throw new BadRequestException(USER_VALIDATION_ERRORS.OLD_PASSWORD_MATCH_ERR);
     }
 
     user.password = newPassword;
@@ -118,9 +104,7 @@ export class UsersService {
   async requestResetPassword(email: string): Promise<string> {
     let token: string;
 
-    const user = await this.userModel
-      .findOne({ email }, EXCLUDED_FIELDS)
-      .exec();
+    const user = await this.userModel.findOne({ email }, EXCLUDED_FIELDS).exec();
 
     if (!user) {
       throw new NotFoundException(USER_VALIDATION_ERRORS.EMAIL_NOT_FOUND_ERR);
@@ -131,8 +115,7 @@ export class UsersService {
     token = buffer.toString('hex');
     user.resetPasswordToken = token;
     user.resetPasswordExpires =
-      Date.now() +
-      parseInt(this.configService.get('REQUEST_TOKEN_EXPIRATION_TIME'), 10);
+      Date.now() + parseInt(this.configService.get('REQUEST_TOKEN_EXPIRATION_TIME'), 10);
 
     await user.save();
 

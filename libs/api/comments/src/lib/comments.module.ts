@@ -11,9 +11,7 @@ import { CommentSchema } from './schemas/comment';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: ModelNames.COMMENT, schema: CommentSchema }
-    ]),
+    MongooseModule.forFeature([{ name: ModelNames.COMMENT, schema: CommentSchema }]),
     LogsModule,
     DataLoadersModule
   ],

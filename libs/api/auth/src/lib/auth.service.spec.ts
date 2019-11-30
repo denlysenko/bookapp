@@ -52,17 +52,13 @@ describe('AuthService', () => {
     it('should return tokens', async () => {
       jest
         .spyOn(usersService, 'findByEmail')
-        .mockImplementation(() =>
-          Promise.resolve({ ...user, authenticate: () => true } as any)
-        );
+        .mockImplementation(() => Promise.resolve({ ...user, authenticate: () => true } as any));
 
       expect(await authService.login(email, password)).toEqual(authPayload);
     });
 
     it('should return INCORRECT_EMAIL_ERR', async () => {
-      jest
-        .spyOn(usersService, 'findByEmail')
-        .mockImplementation(() => Promise.resolve(null));
+      jest.spyOn(usersService, 'findByEmail').mockImplementation(() => Promise.resolve(null));
 
       try {
         await authService.login(email, password);
@@ -74,16 +70,12 @@ describe('AuthService', () => {
     it('should return INCORRECT_PASSWORD_ERR', async () => {
       jest
         .spyOn(usersService, 'findByEmail')
-        .mockImplementation(() =>
-          Promise.resolve({ ...user, authenticate: () => false } as any)
-        );
+        .mockImplementation(() => Promise.resolve({ ...user, authenticate: () => false } as any));
 
       try {
         await authService.login(email, password);
       } catch (error) {
-        expect(error.message.message).toEqual(
-          AUTH_ERRORS.INCORRECT_PASSWORD_ERR
-        );
+        expect(error.message.message).toEqual(AUTH_ERRORS.INCORRECT_PASSWORD_ERR);
       }
     });
   });
@@ -116,9 +108,7 @@ describe('AuthService', () => {
   describe('logout()', () => {
     it('should remove refresh token', async () => {
       await authService.logout(refreshToken);
-      expect(authTokensService.removeRefreshToken).toHaveBeenCalledWith(
-        refreshToken
-      );
+      expect(authTokensService.removeRefreshToken).toHaveBeenCalledWith(refreshToken);
     });
   });
 });

@@ -34,10 +34,6 @@ import { ViewBookRoutingModule } from './view-book-routing.module';
     MatFormFieldModule,
     MatInputModule
   ],
-  declarations: [
-    ViewBookPageComponent,
-    BookDetailsComponent,
-    BookCommentsComponent
-  ]
+  declarations: [ViewBookPageComponent, BookDetailsComponent, BookCommentsComponent]
 })
 export class ViewBookModule {}

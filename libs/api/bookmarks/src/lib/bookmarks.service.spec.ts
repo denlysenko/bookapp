@@ -50,9 +50,7 @@ describe('BookmarksService', () => {
     bookmarkModel = module.get(getModelToken(ModelNames.BOOKMARK));
     logsService = module.get<LogsService>(LogsService);
 
-    jest
-      .spyOn(bookmarkModel, 'exec')
-      .mockImplementation(() => Promise.resolve(MockMongooseModel));
+    jest.spyOn(bookmarkModel, 'exec').mockImplementation(() => Promise.resolve(MockMongooseModel));
   });
 
   afterEach(() => {
@@ -61,9 +59,7 @@ describe('BookmarksService', () => {
 
   describe('getByType()', () => {
     beforeEach(() => {
-      jest
-        .spyOn(bookmarkModel, 'exec')
-        .mockImplementation(() => Promise.resolve(1));
+      jest.spyOn(bookmarkModel, 'exec').mockImplementation(() => Promise.resolve(1));
     });
 
     it('should count bookmarks by type for particular user', async () => {
@@ -123,15 +119,9 @@ describe('BookmarksService', () => {
 
   describe('addToBookmarks()', () => {
     it('should try to find bookmark', async () => {
-      jest
-        .spyOn(bookmarkModel, 'exec')
-        .mockImplementationOnce(() => Promise.resolve(null));
+      jest.spyOn(bookmarkModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
-      await bookmarksService.addToBookmarks(
-        BOOKMARKS.FAVORITES,
-        user._id,
-        bookId
-      );
+      await bookmarksService.addToBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
       expect(bookmarkModel.findOne).toHaveBeenCalledWith({
         type: BOOKMARKS.FAVORITES,
         bookId,
@@ -141,11 +131,7 @@ describe('BookmarksService', () => {
 
     it('should throw error if bookmark was found', async () => {
       try {
-        await bookmarksService.addToBookmarks(
-          BOOKMARKS.FAVORITES,
-          user._id,
-          bookId
-        );
+        await bookmarksService.addToBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
       } catch (err) {
         expect(err.message).toEqual({
           statusCode: HttpStatus.BAD_REQUEST,
@@ -156,28 +142,16 @@ describe('BookmarksService', () => {
     });
 
     it('should save if bookmark was not found', async () => {
-      jest
-        .spyOn(bookmarkModel, 'exec')
-        .mockImplementationOnce(() => Promise.resolve(null));
+      jest.spyOn(bookmarkModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
-      await bookmarksService.addToBookmarks(
-        BOOKMARKS.FAVORITES,
-        user._id,
-        bookId
-      );
+      await bookmarksService.addToBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
       expect(bookmarkModel.save).toHaveBeenCalled();
     });
 
     it('should create Log', async () => {
-      jest
-        .spyOn(bookmarkModel, 'exec')
-        .mockImplementationOnce(() => Promise.resolve(null));
+      jest.spyOn(bookmarkModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
-      await bookmarksService.addToBookmarks(
-        BOOKMARKS.FAVORITES,
-        user._id,
-        bookId
-      );
+      await bookmarksService.addToBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
       expect(logsService.create).toHaveBeenCalledWith({
         action: UserActions.BOOK_ADDED_TO_FAVORITES,
         bookId,
@@ -188,11 +162,7 @@ describe('BookmarksService', () => {
 
   describe('removeFromBookmarks()', () => {
     it('should try to find bookmark', async () => {
-      await bookmarksService.removeFromBookmarks(
-        BOOKMARKS.FAVORITES,
-        user._id,
-        bookId
-      );
+      await bookmarksService.removeFromBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
       expect(bookmarkModel.findOne).toHaveBeenCalledWith({
         type: BOOKMARKS.FAVORITES,
         bookId,
@@ -201,16 +171,10 @@ describe('BookmarksService', () => {
     });
 
     it('should throw error if bookmark was not found', async () => {
-      jest
-        .spyOn(bookmarkModel, 'exec')
-        .mockImplementationOnce(() => Promise.resolve(null));
+      jest.spyOn(bookmarkModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
       try {
-        await bookmarksService.removeFromBookmarks(
-          BOOKMARKS.FAVORITES,
-          user._id,
-          bookId
-        );
+        await bookmarksService.removeFromBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
       } catch (err) {
         expect(err.message).toEqual({
           statusCode: HttpStatus.NOT_FOUND,
@@ -221,20 +185,12 @@ describe('BookmarksService', () => {
     });
 
     it('should remove if bookmark was found', async () => {
-      await bookmarksService.removeFromBookmarks(
-        BOOKMARKS.FAVORITES,
-        user._id,
-        bookId
-      );
+      await bookmarksService.removeFromBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
       expect(bookmarkModel.remove).toHaveBeenCalled();
     });
 
     it('should create Log', async () => {
-      await bookmarksService.removeFromBookmarks(
-        BOOKMARKS.FAVORITES,
-        user._id,
-        bookId
-      );
+      await bookmarksService.removeFromBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
       expect(logsService.create).toHaveBeenCalledWith({
         action: UserActions.BOOK_REMOVED_FROM_FAVORITES,
         bookId,

@@ -27,12 +27,8 @@ describe('AuthPageComponent', () => {
         {
           provide: AuthService,
           useValue: {
-            login: jest
-              .fn()
-              .mockImplementation(() => of({ data: authPayload })),
-            signup: jest
-              .fn()
-              .mockImplementation(() => of({ data: authPayload }))
+            login: jest.fn().mockImplementation(() => of({ data: authPayload })),
+            signup: jest.fn().mockImplementation(() => of({ data: authPayload }))
           }
         },
         {
@@ -60,10 +56,7 @@ describe('AuthPageComponent', () => {
     it('should login', () => {
       const credentials = { email, password };
       component.submit({ isLoggingIn: true, credentials });
-      expect(authService.login).toHaveBeenCalledWith(
-        credentials.email,
-        credentials.password
-      );
+      expect(authService.login).toHaveBeenCalledWith(credentials.email, credentials.password);
     });
 
     it('should signup', () => {
@@ -86,9 +79,7 @@ describe('AuthPageComponent', () => {
     it('should propagate error', done => {
       const error: any = { message: 'Error' };
 
-      jest
-        .spyOn(authService, 'login')
-        .mockImplementationOnce(() => of({ errors: [error] }));
+      jest.spyOn(authService, 'login').mockImplementationOnce(() => of({ errors: [error] }));
 
       let result: any;
 

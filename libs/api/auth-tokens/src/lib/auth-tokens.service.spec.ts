@@ -48,13 +48,9 @@ describe('AuthTokensService', () => {
     tokenModel = module.get(getModelToken(ModelNames.AUTH_TOKEN));
     userModel = module.get(getConnectionToken()).model();
 
-    jest
-      .spyOn(tokenModel, 'exec')
-      .mockImplementation(() => Promise.resolve(refreshToken));
+    jest.spyOn(tokenModel, 'exec').mockImplementation(() => Promise.resolve(refreshToken));
 
-    jest
-      .spyOn(userModel, 'exec')
-      .mockImplementation(() => Promise.resolve(user));
+    jest.spyOn(userModel, 'exec').mockImplementation(() => Promise.resolve(user));
 
     jest.spyOn(jwt, 'verify').mockImplementation(() => ({
       id: user._id
@@ -67,9 +63,7 @@ describe('AuthTokensService', () => {
     });
 
     it('should create access token', () => {
-      expect(authTokensService.createAccessToken(user._id)).toEqual(
-        accessToken
-      );
+      expect(authTokensService.createAccessToken(user._id)).toEqual(accessToken);
     });
   });
 
@@ -79,9 +73,7 @@ describe('AuthTokensService', () => {
     });
 
     it('should create refresh token', async () => {
-      expect(await authTokensService.createRefreshToken(user._id)).toEqual(
-        refreshToken
-      );
+      expect(await authTokensService.createRefreshToken(user._id)).toEqual(refreshToken);
     });
 
     it('should save refresh token into DB', async () => {
@@ -95,9 +87,7 @@ describe('AuthTokensService', () => {
 
   describe('refreshTokens()', () => {
     beforeEach(() => {
-      jest
-        .spyOn(authTokensService, 'createAccessToken')
-        .mockImplementationOnce(() => accessToken);
+      jest.spyOn(authTokensService, 'createAccessToken').mockImplementationOnce(() => accessToken);
       jest.spyOn(jwt, 'sign').mockImplementationOnce(() => refreshToken);
     });
 
@@ -114,9 +104,7 @@ describe('AuthTokensService', () => {
     });
 
     it('should return UNAUTHORIZED error if token is not found in DB', async () => {
-      jest
-        .spyOn(tokenModel, 'exec')
-        .mockImplementationOnce(() => Promise.resolve(null));
+      jest.spyOn(tokenModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
       try {
         await authTokensService.refreshTokens(refreshToken);
@@ -146,9 +134,7 @@ describe('AuthTokensService', () => {
     });
 
     it('should return UNAUTHORIZED error if user is not found', async () => {
-      jest
-        .spyOn(userModel, 'exec')
-        .mockImplementation(() => Promise.resolve(null));
+      jest.spyOn(userModel, 'exec').mockImplementation(() => Promise.resolve(null));
 
       try {
         await authTokensService.refreshTokens(refreshToken);
@@ -169,9 +155,7 @@ describe('AuthTokensService', () => {
     });
 
     it('should return new pair of tokens', async () => {
-      expect(await authTokensService.refreshTokens(refreshToken)).toEqual(
-        authPayload
-      );
+      expect(await authTokensService.refreshTokens(refreshToken)).toEqual(authPayload);
     });
   });
 

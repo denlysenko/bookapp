@@ -8,11 +8,7 @@ import { AuthTokensService } from './auth-tokens.service';
 import { AuthTokenSchema } from './schemas/auth-token';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      { name: ModelNames.AUTH_TOKEN, schema: AuthTokenSchema }
-    ])
-  ],
+  imports: [MongooseModule.forFeature([{ name: ModelNames.AUTH_TOKEN, schema: AuthTokenSchema }])],
   controllers: [AuthTokensController],
   providers: [AuthTokensService],
   exports: [AuthTokensService]

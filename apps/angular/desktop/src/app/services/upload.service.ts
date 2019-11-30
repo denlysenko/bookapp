@@ -46,10 +46,7 @@ export class UploadService {
         if (xhr.readyState === 4) {
           this.progress.next(0);
 
-          if (
-            xhr.status === HTTP_STATUS.OK ||
-            xhr.status === HTTP_STATUS.CREATED
-          ) {
+          if (xhr.status === HTTP_STATUS.OK || xhr.status === HTTP_STATUS.CREATED) {
             observer.next(xhr.response);
             observer.complete();
           } else {
@@ -71,10 +68,7 @@ export class UploadService {
       const xhr = new XMLHttpRequest();
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
-          if (
-            xhr.status === HTTP_STATUS.OK ||
-            xhr.status === HTTP_STATUS.CREATED
-          ) {
+          if (xhr.status === HTTP_STATUS.OK || xhr.status === HTTP_STATUS.CREATED) {
             observer.next(xhr.response);
             observer.complete();
           } else {

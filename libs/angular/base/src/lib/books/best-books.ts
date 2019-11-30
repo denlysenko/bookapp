@@ -9,17 +9,11 @@ export abstract class BestBooksBase {
   booksQueryRef = this.booksService.getBestBooks();
 
   books$: Observable<Book[]> = this.booksQueryRef.valueChanges.pipe(
-    tap(
-      ({
-        data: {
-          bestBooks: { rows, count }
-        }
-      }) => {
-        if (rows.length === count) {
-          this.hasMoreItems.next(false);
-        }
+    tap(({ data: { bestBooks: { rows, count } } }) => {
+      if (rows.length === count) {
+        this.hasMoreItems.next(false);
       }
-    ),
+    }),
     map(({ data }) => data.bestBooks.rows)
   );
 

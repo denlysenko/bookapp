@@ -80,9 +80,7 @@ describe('AuthModule', () => {
     });
 
     it('should not login if email is not found', async () => {
-      jest
-        .spyOn(usersService, 'findByEmail')
-        .mockImplementationOnce(() => Promise.resolve(null));
+      jest.spyOn(usersService, 'findByEmail').mockImplementationOnce(() => Promise.resolve(null));
 
       const res = await request(app.getHttpServer())
         .post('/graphql')
@@ -102,9 +100,7 @@ describe('AuthModule', () => {
     it('should not login if password is incorrect', async () => {
       jest
         .spyOn(usersService, 'findByEmail')
-        .mockImplementationOnce(() =>
-          Promise.resolve({ authenticate: () => false } as any)
-        );
+        .mockImplementationOnce(() => Promise.resolve({ authenticate: () => false } as any));
 
       const res = await request(app.getHttpServer())
         .post('/graphql')

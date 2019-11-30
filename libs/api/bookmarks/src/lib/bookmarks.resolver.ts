@@ -3,15 +3,7 @@ import { ApiQuery, GqlAuthGuard, RequestWithUser } from '@bookapp/api/shared';
 import { Bookmark } from '@bookapp/shared';
 
 import { UseGuards } from '@nestjs/common';
-import {
-  Args,
-  Context,
-  Mutation,
-  Parent,
-  Query,
-  ResolveProperty,
-  Resolver
-} from '@nestjs/graphql';
+import { Args, Context, Mutation, Parent, Query, ResolveProperty, Resolver } from '@nestjs/graphql';
 
 import { BookmarksService } from './bookmarks.service';
 
@@ -37,17 +29,12 @@ export class BookmarksResolver {
     @Context('req') req: RequestWithUser
   ) {
     const userId = req.user._id;
-    return this.bookmarksService.getByType(
-      new ApiQuery({ type, userId }, first, skip)
-    );
+    return this.bookmarksService.getByType(new ApiQuery({ type, userId }, first, skip));
   }
 
   @Query('userBookmarksByBook')
   @UseGuards(GqlAuthGuard)
-  getUserBookmarksByBook(
-    @Args('bookId') bookId: string,
-    @Context('req') req: RequestWithUser
-  ) {
+  getUserBookmarksByBook(@Args('bookId') bookId: string, @Context('req') req: RequestWithUser) {
     const userId = req.user._id;
     return this.bookmarksService.getByUserAndBook(userId, bookId);
   }
