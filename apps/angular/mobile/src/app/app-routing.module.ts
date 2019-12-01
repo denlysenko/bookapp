@@ -94,6 +94,13 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
               }
             },
             {
+              path: 'history',
+              loadChildren: () =>
+                import('@bookapp/angular/mobile/history').then(m => m.HistoryModule),
+              canLoad: [AuthGuard],
+              canActivate: [AuthGuard]
+            },
+            {
               path: 'password',
               loadChildren: () =>
                 import('@bookapp/angular/mobile/password').then(m => m.PasswordModule),
