@@ -1,1 +1,24 @@
-<p>history-page works!</p>
+<ActionBar class="action-bar" flat="true">
+  <NavigationButton
+    ios:visibility="collapsed"
+    icon="res://menu"
+    (tap)="onDrawerButtonTap()"
+  ></NavigationButton>
+  <ActionItem
+    icon="res://menu"
+    android:visibility="collapsed"
+    ios.position="left"
+    (tap)="onDrawerButtonTap()"
+  >
+  </ActionItem>
+  <ActionItem
+    ios.position="right"
+    icon="res://filter"
+    android.position="actionBar"
+    (tap)="onFilterTap()"
+  ></ActionItem>
+  <Label class="action-bar-title" text="History"></Label>
+</ActionBar>
+<GridLayout>
+  <bookapp-history-list [logs]="logs$ | async" (onLoadMore)="loadMore()"></bookapp-history-list>
+</GridLayout>
