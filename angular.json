@@ -1298,6 +1298,26 @@
           "styleext": "scss"
         }
       }
+    },
+    "angular-mobile-history": {
+      "projectType": "library",
+      "root": "libs/angular/mobile/history",
+      "sourceRoot": "libs/angular/mobile/history/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/angular/mobile/history/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/mobile/history/**"]
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {
