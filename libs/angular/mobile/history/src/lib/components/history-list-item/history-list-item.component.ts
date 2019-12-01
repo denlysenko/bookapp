@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
+import { Log, UserActionsDesc } from '@bookapp/shared';
 
 @Component({
   selector: 'bookapp-history-list-item',
@@ -6,11 +8,9 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['./history-list-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HistoryListItemComponent implements OnInit {
+export class HistoryListItemComponent {
+  readonly actions = UserActionsDesc;
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  @Input()
+  log: Log;
 }

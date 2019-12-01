@@ -5,6 +5,7 @@ import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import { LogsService } from '@bookapp/angular/data-access';
 
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
+
 import * as app from 'tns-core-modules/application';
 import { action } from 'tns-core-modules/ui/dialogs';
 import { getViewById } from 'tns-core-modules/ui/page/page';
@@ -88,6 +89,6 @@ export class HistoryPageComponent extends HistoryPageBase {
       skip: this.skip,
       orderBy: `createdAt_${direction}`
     });
-    // this.historyListView.scrollToIndex(0);
+    this.historyListView.scrollToIndex(0);
   }
 }

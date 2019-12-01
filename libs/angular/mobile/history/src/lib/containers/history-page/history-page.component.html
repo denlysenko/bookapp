@@ -20,5 +20,9 @@
   <Label class="action-bar-title" text="History"></Label>
 </ActionBar>
 <GridLayout>
-  <bookapp-history-list [logs]="logs$ | async" (onLoadMore)="loadMore()"></bookapp-history-list>
+  <bookapp-history-list
+    [logs]="logs$ | async"
+    [hasMoreItems]="hasMoreItems$ | async"
+    (loadMore)="loadMore()"
+  ></bookapp-history-list>
 </GridLayout>

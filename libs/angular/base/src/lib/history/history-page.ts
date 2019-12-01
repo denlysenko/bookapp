@@ -7,14 +7,16 @@ import { map, pluck, tap } from 'rxjs/operators';
 export abstract class HistoryPageBase {
   readonly logsQueryRef = this.logsService.getLogs();
 
-  logs$: Observable<Log[]> = this.logsQueryRef.valueChanges.pipe(map(({ data }) => data.logs.rows));
-
-  count$: Observable<number> = this.logsQueryRef.valueChanges.pipe(
+  logs$: Observable<Log[]> = this.logsQueryRef.valueChanges.pipe(
     tap(({ data: { logs: { rows, count } } }) => {
       if (rows.length === count) {
         this.hasMoreItems.next(false);
       }
     }),
+    map(({ data }) => data.logs.rows)
+  );
+
+  count$: Observable<number> = this.logsQueryRef.valueChanges.pipe(
     map(({ data }) => data.logs.count)
   );
 
