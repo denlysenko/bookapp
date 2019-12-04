@@ -1,28 +1,30 @@
-<div *ngFor="let book of books" class="list-item-wrapper">
-  <mat-card class="list-item">
-    <div class="cover">
+<bookapp-infinite-scroll (scrolled)="handleScrollChange()">
+  <div *ngFor="let book of books" class="list-item-wrapper">
+    <mat-card class="list-item">
+      <div class="cover">
+        <a
+          routerLink="{{ book.paid ? '/books/buy/' + book.url : '/books/browse/' + book.url }}"
+          [queryParams]="{ bookId: book._id }"
+        >
+          <img
+            [src]="book.coverUrl ? book.coverUrl : '/assets/images/nocover.svg'"
+            [alt]="book.title"
+          />
+        </a>
+      </div>
       <a
+        class="title"
         routerLink="{{ book.paid ? '/books/buy/' + book.url : '/books/browse/' + book.url }}"
         [queryParams]="{ bookId: book._id }"
       >
-        <img
-          [src]="book.coverUrl ? book.coverUrl : '/assets/images/nocover.svg'"
-          [alt]="book.title"
-        />
+        {{ book.title }}
       </a>
-    </div>
-    <a
-      class="title"
-      routerLink="{{ book.paid ? '/books/buy/' + book.url : '/books/browse/' + book.url }}"
-      [queryParams]="{ bookId: book._id }"
-    >
-      {{ book.title }}
-    </a>
-    <span class="author">by {{ book.author }}</span>
-    <div *ngIf="book.paid">{{ book.price | currency: 'USD':'symbol-narrow' }}</div>
-    <bookapp-rating
-      [ngModel]="book.rating"
-      (ngModelChange)="bookRated.emit({ bookId: book._id, rate: $event })"
-    ></bookapp-rating>
-  </mat-card>
-</div>
+      <span class="author">by {{ book.author }}</span>
+      <div *ngIf="book.paid">{{ book.price | currency: 'USD':'symbol-narrow' }}</div>
+      <bookapp-rating
+        [ngModel]="book.rating"
+        (ngModelChange)="bookRated.emit({ bookId: book._id, rate: $event })"
+      ></bookapp-rating>
+    </mat-card>
+  </div>
+</bookapp-infinite-scroll>

@@ -3,5 +3,10 @@
   <span>List Of The Best</span>
 </mat-toolbar>
 <div class="view-content">
-  <bookapp-books-list [books]="books$ | async" (bookRated)="rate($event)"></bookapp-books-list>
+  <bookapp-books-list
+    [books]="books$ | async"
+    [hasMoreItems]="hasMoreItems$ | async"
+    (loadMore)="loadMore()"
+    (bookRated)="rate($event)"
+  ></bookapp-books-list>
 </div>

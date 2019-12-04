@@ -4,11 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 
+import { InfiniteScrollModule } from '../infinite-scroll/infinite-scroll.module';
 import { RatingModule } from '../rating/rating.module';
 import { BooksListComponent } from './books-list.component';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, FormsModule, MatCardModule, RatingModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    InfiniteScrollModule,
+    MatCardModule,
+    RatingModule
+  ],
   declarations: [BooksListComponent],
   exports: [BooksListComponent]
 })

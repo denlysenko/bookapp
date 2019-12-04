@@ -10,5 +10,16 @@ import { Book } from '@bookapp/shared';
 })
 export class BooksListComponent {
   @Input() books: Book[];
+  @Input() hasMoreItems: boolean;
+
   @Output() bookRated = new EventEmitter<{ bookId: string; rate: number }>();
+  @Output() loadMore = new EventEmitter<void>();
+
+  handleScrollChange() {
+    if (!this.hasMoreItems) {
+      return;
+    }
+
+    this.loadMore.emit();
+  }
 }

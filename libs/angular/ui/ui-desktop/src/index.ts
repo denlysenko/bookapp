@@ -16,3 +16,5 @@ export * from './lib/books-filter/books-filter.module';
 export * from './lib/books-list/books-list.module';
 
 export * from './lib/rating/rating.module';
+
+export * from './lib/infinite-scroll/infinite-scroll.module';
