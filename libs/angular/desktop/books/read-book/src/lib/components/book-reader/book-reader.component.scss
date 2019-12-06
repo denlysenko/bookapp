@@ -1,0 +1,28 @@
+* {
+  box-sizing: content-box;
+}
+
+@media only screen and (max-width: 550px) {
+  .arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 56px);
+    top: 45px;
+    width: 10%;
+    margin-top: 0;
+    text-indent: 0;
+  }
+}
+
+@media only screen and (max-device-width: 375px) and (orientation: portrait) {
+  #viewer {
+    height: 400px;
+  }
+}
+
+@media only screen and (max-device-width: 320px) and (orientation: portrait) {
+  #viewer {
+    height: 315px;
+  }
+}

@@ -1,1 +1,5 @@
-<p>read-book-page works!</p>
+<bookapp-book-reader
+  [src]="epubUrl"
+  [bookmark]="bookmark"
+  (locationChanged)="currentLocation = $event"
+></bookapp-book-reader>

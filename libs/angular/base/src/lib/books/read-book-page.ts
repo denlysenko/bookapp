@@ -6,8 +6,8 @@ import { ProfileService } from '@bookapp/angular/data-access';
 export abstract class ReadBookBase implements OnDestroy {
   currentLocation: string;
 
-  readonly epubUrl: string = this.route.snapshot.data.epubUrl;
-  readonly bookmark: string = this.route.snapshot.data.bookmark;
+  readonly epubUrl: string = this.route.snapshot.data.reading.epubUrl;
+  readonly bookmark: string = this.route.snapshot.data.reading.bookmark;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -21,6 +21,6 @@ export abstract class ReadBookBase implements OnDestroy {
   }
 
   private get userId(): string {
-    return this.route.snapshot.data.userId;
+    return this.route.snapshot.data.reading.userId;
   }
 }
