@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 
 import { InfiniteScrollModule } from '../infinite-scroll/infinite-scroll.module';
+import { LazyImageModule } from '../lazy-image/lazy-image.module';
 import { RatingModule } from '../rating/rating.module';
 import { BooksListComponent } from './books-list.component';
 
@@ -15,7 +16,8 @@ import { BooksListComponent } from './books-list.component';
     FormsModule,
     InfiniteScrollModule,
     MatCardModule,
-    RatingModule
+    RatingModule,
+    LazyImageModule
   ],
   declarations: [BooksListComponent],
   exports: [BooksListComponent]

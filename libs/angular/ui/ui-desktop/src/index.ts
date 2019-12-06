@@ -18,3 +18,5 @@ export * from './lib/books-list/books-list.module';
 export * from './lib/rating/rating.module';
 
 export * from './lib/infinite-scroll/infinite-scroll.module';
+
+export * from './lib/lazy-image/lazy-image.module';

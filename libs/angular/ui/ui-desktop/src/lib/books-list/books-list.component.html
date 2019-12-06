@@ -7,7 +7,8 @@
           [queryParams]="{ bookId: book._id }"
         >
           <img
-            [src]="book.coverUrl ? book.coverUrl : '/assets/images/nocover.svg'"
+            src="/assets/images/nocover.svg"
+            [bookappLazyImage]="book.coverUrl ? book.coverUrl : '/assets/images/nocover.svg'"
             [alt]="book.title"
           />
         </a>
