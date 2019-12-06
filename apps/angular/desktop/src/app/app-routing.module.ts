@@ -70,6 +70,20 @@ import { BOOKMARKS, ROLES } from '@bookapp/shared';
               canActivate: [AuthGuard]
             },
             {
+              path: 'books/read/:author/:slug',
+              loadChildren: () =>
+                import('@bookapp/angular/desktop/books/read-book').then(m => m.ReadBookModule),
+              canActivate: [AuthGuard],
+              canLoad: [AuthGuard]
+            },
+            {
+              path: 'books/read',
+              loadChildren: () =>
+                import('@bookapp/angular/desktop/books/read-book').then(m => m.ReadBookModule),
+              canActivate: [AuthGuard],
+              canLoad: [AuthGuard]
+            },
+            {
               path: 'bookmarks/favorites',
               loadChildren: () =>
                 import('@bookapp/angular/desktop/bookmarks').then(m => m.BookmarksModule),

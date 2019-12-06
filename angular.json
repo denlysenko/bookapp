@@ -1325,6 +1325,26 @@
           "styleext": "scss"
         }
       }
+    },
+    "angular-desktop-books-read-book": {
+      "projectType": "library",
+      "root": "libs/angular/desktop/books/read-book",
+      "sourceRoot": "libs/angular/desktop/books/read-book/src",
+      "prefix": "bookapp",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/angular/desktop/books/read-book/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/desktop/books/read-book/**"]
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

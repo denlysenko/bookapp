@@ -77,7 +77,10 @@
       "@bookapp/angular/mobile/books/best-books": [
         "libs/angular/mobile/books/best-books/src/index.ts"
       ],
-      "@bookapp/angular/mobile/history": ["libs/angular/mobile/history/src/index.ts"]
+      "@bookapp/angular/mobile/history": ["libs/angular/mobile/history/src/index.ts"],
+      "@bookapp/angular/desktop/books/read-book": [
+        "libs/angular/desktop/books/read-book/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
