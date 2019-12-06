@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { UPDATE_USER_MUTATION, User } from '@bookapp/shared';
+import { ME_QUERY, Reading, UPDATE_USER_MUTATION, User } from '@bookapp/shared';
 
 import { Apollo } from 'apollo-angular';
 
@@ -14,6 +14,28 @@ export class ProfileService {
       variables: {
         id,
         user
+      }
+    });
+  }
+
+  saveReading(id: string, reading: Reading) {
+    return this.apollo.mutate<{ updateUser: User }>({
+      mutation: UPDATE_USER_MUTATION,
+      variables: {
+        id,
+        user: { reading }
+      },
+      update: (store, { data: { updateUser } }) => {
+        const data: { me: User } = store.readQuery({
+          query: ME_QUERY
+        });
+
+        data.me.reading = updateUser.reading;
+
+        store.writeQuery({
+          query: ME_QUERY,
+          data
+        });
       }
     });
   }

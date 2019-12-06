@@ -1,10 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UPDATE_USER_MUTATION } from '@bookapp/shared';
-import { user } from '@bookapp/testing';
+import { RouterExtensions, StoragePlatformService, StoreService } from '@bookapp/angular/core';
+import { ME_QUERY, UPDATE_USER_MUTATION } from '@bookapp/shared';
+import {
+  MockRouterExtensions,
+  MockStoragePlatformService,
+  MockStoreService,
+  user
+} from '@bookapp/testing';
 
-import { ApolloTestingController, ApolloTestingModule } from 'apollo-angular/testing';
+import {
+  APOLLO_TESTING_CACHE,
+  ApolloTestingController,
+  ApolloTestingModule
+} from 'apollo-angular/testing';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { addTypenameToDocument } from 'apollo-utilities';
 
+import { AuthService } from '../auth/auth.service';
 import { ProfileService } from './profile.service';
 
 const userWithTypename = { ...user, __typename: 'User' };
@@ -48,6 +61,81 @@ describe('ProfileService', () => {
       op.flush({
         data: {
           updateUser: userWithTypename
+        }
+      });
+
+      controller.verify();
+    });
+  });
+
+  describe('saveReading()', () => {
+    beforeEach(() => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [ApolloTestingModule],
+        providers: [
+          ProfileService,
+          AuthService,
+          {
+            provide: StoragePlatformService,
+            useValue: MockStoragePlatformService
+          },
+          {
+            provide: RouterExtensions,
+            useValue: MockRouterExtensions
+          },
+          {
+            provide: StoreService,
+            useValue: MockStoreService
+          },
+          {
+            provide: APOLLO_TESTING_CACHE,
+            useValue: new InMemoryCache({ addTypename: true })
+          }
+        ]
+      });
+
+      controller = TestBed.get(ApolloTestingController);
+      service = TestBed.get(ProfileService);
+    });
+
+    it('should save reading', done => {
+      const authService: AuthService = TestBed.get(AuthService);
+      const reading = { bookmark: 'bookmark', epubUrl: 'epubUrl' };
+
+      authService.me().valueChanges.subscribe();
+
+      service.saveReading(user._id, reading).subscribe(({ data: { updateUser } }) => {
+        expect(updateUser).toEqual({
+          ...user,
+          __typename: 'User',
+          reading: { ...user.reading, __typename: 'Reading' }
+        });
+        done();
+      });
+
+      controller.expectOne(addTypenameToDocument(ME_QUERY)).flush({
+        data: {
+          me: {
+            ...user,
+            __typename: 'User',
+            reading: { ...user.reading, __typename: 'Reading' }
+          }
+        }
+      });
+
+      const op = controller.expectOne(addTypenameToDocument(UPDATE_USER_MUTATION));
+
+      expect(op.operation.variables.id).toEqual(user._id);
+      expect(op.operation.variables.user).toEqual({ reading });
+
+      op.flush({
+        data: {
+          updateUser: {
+            ...user,
+            __typename: 'User',
+            reading: { ...user.reading, __typename: 'Reading' }
+          }
         }
       });
 
