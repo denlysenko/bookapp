@@ -1,39 +1,44 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 
-import { Book, BOOK_QUERY, ME_QUERY, Reading, User } from '@bookapp/shared';
+import { combineLatest } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
-import { Apollo } from 'apollo-angular';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { AuthService } from '../services/auth/auth.service';
+import { BooksService } from '../services/books/books.service';
 
 @Injectable()
-export class ReadBookResolver implements Resolve<Reading> {
-  constructor(private readonly apollo: Apollo) {}
+export class ReadBookResolver
+  implements Resolve<{ epubUrl: string; bookmark: string; userId: string }> {
+  constructor(
+    private readonly booksService: BooksService,
+    private readonly authService: AuthService
+  ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<Reading> {
+  resolve(route: ActivatedRouteSnapshot) {
     const slug = route.paramMap.get('slug');
 
     if (slug) {
-      return this.apollo
-        .query<{ book: Book }>({
-          query: BOOK_QUERY,
-          variables: {
-            slug
-          }
-        })
-        .pipe(
-          map(({ data: { book } }) => ({
-            epubUrl: book.epubUrl,
-            bookmark: null
-          }))
-        );
+      return combineLatest([
+        this.booksService.getBook(slug).valueChanges,
+        this.authService.me().valueChanges
+      ]).pipe(
+        map(([book, user]) => ({
+          epubUrl: book.data.book.epubUrl,
+          bookmark: null,
+          userId: user.data.me._id
+        })),
+        take(1)
+      );
     }
 
-    return this.apollo
-      .query<{ me: User }>({
-        query: ME_QUERY
-      })
-      .pipe(map(({ data: { me } }) => me.reading));
+    return this.authService.me().valueChanges.pipe(
+      map(({ data: { me } }) => ({
+        epubUrl: me.reading.epubUrl,
+        bookmark: me.reading.bookmark,
+        userId: me._id
+      })),
+      take(1)
+    );
   }
 }
