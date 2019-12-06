@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
+import { DateToPeriodPipe } from '@bookapp/angular/shared';
+
 import { NativeScriptCommonModule } from 'nativescript-angular/common';
 import { NativeScriptRouterModule } from 'nativescript-angular/router';
 import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
@@ -20,7 +22,7 @@ import { MainLayoutComponent } from './containers/main-layout/main-layout.compon
     NgShadowModule,
     TNSFontIconModule
   ],
-  declarations: [AppMenuComponent, UserMenuComponent, MainLayoutComponent],
+  declarations: [AppMenuComponent, UserMenuComponent, MainLayoutComponent, DateToPeriodPipe],
   exports: [MainLayoutComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })

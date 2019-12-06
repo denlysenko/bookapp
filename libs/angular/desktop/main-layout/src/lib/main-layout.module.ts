@@ -9,6 +9,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 
+import { DateToPeriodPipe } from '@bookapp/angular/shared';
+
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NavComponent } from './components/nav/nav.component';
@@ -26,7 +28,13 @@ import { MainLayoutComponent } from './containers/main-layout/main-layout.compon
     MatListModule,
     MatSidenavModule
   ],
-  declarations: [FooterComponent, HeaderComponent, NavComponent, MainLayoutComponent],
+  declarations: [
+    FooterComponent,
+    HeaderComponent,
+    NavComponent,
+    MainLayoutComponent,
+    DateToPeriodPipe
+  ],
   exports: [MainLayoutComponent]
 })
 export class MainLayoutModule {}

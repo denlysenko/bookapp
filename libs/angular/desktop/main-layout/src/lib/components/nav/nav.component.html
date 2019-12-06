@@ -46,6 +46,6 @@
       <br />
       <span> by {{ log.book.author }}</span>
     </p>
-    <p matLine class="footnote">{{ log.createdAt | date: 'dd.MM.yyyy' }}</p>
+    <p matLine class="footnote">{{ log.createdAt | dateToPeriod }}</p>
   </mat-list-item>
 </mat-list>
