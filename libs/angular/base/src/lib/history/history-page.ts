@@ -9,9 +9,7 @@ export abstract class HistoryPageBase {
 
   logs$: Observable<Log[]> = this.logsQueryRef.valueChanges.pipe(
     tap(({ data: { logs: { rows, count } } }) => {
-      if (rows.length === count) {
-        this.hasMoreItems.next(false);
-      }
+      this.hasMoreItems.next(rows.length !== count);
     }),
     map(({ data }) => data.logs.rows)
   );
@@ -28,7 +26,7 @@ export abstract class HistoryPageBase {
   );
 
   protected pending = false;
-  protected hasMoreItems = new BehaviorSubject<boolean>(true);
+  protected hasMoreItems = new BehaviorSubject<boolean>(false);
 
   constructor(private readonly logsService: LogsService) {}
 }

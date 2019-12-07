@@ -13,9 +13,7 @@ export abstract class BookmarksPageBase {
 
   books$: Observable<Book[]> = this.bookmarksQueryRef.valueChanges.pipe(
     tap(({ data: { bookmarks: { rows, count } } }) => {
-      if (rows.length === count) {
-        this.hasMoreItems.next(false);
-      }
+      this.hasMoreItems.next(rows.length !== count);
     }),
     map(({ data }) => data.bookmarks.rows.map(bookmark => bookmark.book))
   );
@@ -29,7 +27,7 @@ export abstract class BookmarksPageBase {
 
   title$: Observable<string> = this.route.data.pipe(pluck('title'));
 
-  private hasMoreItems = new BehaviorSubject<boolean>(true);
+  private hasMoreItems = new BehaviorSubject<boolean>(false);
   private skip = 0;
   private pending = false;
 

@@ -10,9 +10,7 @@ export abstract class BestBooksBase {
 
   books$: Observable<Book[]> = this.booksQueryRef.valueChanges.pipe(
     tap(({ data: { bestBooks: { rows, count } } }) => {
-      if (rows.length === count) {
-        this.hasMoreItems.next(false);
-      }
+      this.hasMoreItems.next(rows.length !== count);
     }),
     map(({ data }) => data.bestBooks.rows)
   );
@@ -26,7 +24,7 @@ export abstract class BestBooksBase {
 
   constructor(private readonly booksService: BooksService) {}
 
-  private hasMoreItems = new BehaviorSubject<boolean>(true);
+  private hasMoreItems = new BehaviorSubject<boolean>(false);
   private skip = 0;
   private pending = false;
 

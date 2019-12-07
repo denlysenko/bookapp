@@ -32,9 +32,7 @@ export abstract class BooksPageBase extends BaseComponent {
 
   books$: Observable<Book[]> = this.booksQueryRef.valueChanges.pipe(
     tap(({ data: { books: { rows, count } } }) => {
-      if (rows.length === count) {
-        this.hasMoreItems.next(false);
-      }
+      this.hasMoreItems.next(rows.length !== count);
     }),
     map(({ data }) => data.books.rows)
   );
@@ -54,7 +52,7 @@ export abstract class BooksPageBase extends BaseComponent {
     super();
   }
 
-  private hasMoreItems = new BehaviorSubject<boolean>(true);
+  private hasMoreItems = new BehaviorSubject<boolean>(false);
   private skip = 0;
   private pending = false;
 
