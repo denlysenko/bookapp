@@ -27,10 +27,6 @@ export class HistoryPageComponent extends HistoryPageBase {
     super(logsService);
   }
 
-  get hasMoreItems$() {
-    return this.hasMoreItems.asObservable();
-  }
-
   onDrawerButtonTap() {
     const sideDrawer = getViewById(app.getRootView(), 'drawer') as RadSideDrawer;
     sideDrawer.toggleDrawerState();
@@ -57,7 +53,7 @@ export class HistoryPageComponent extends HistoryPageBase {
       return;
     }
 
-    if (this.hasMoreItems.getValue()) {
+    if (this.hasMoreItems) {
       this.skip += DEFAULT_LIMIT;
 
       this.logsQueryRef.fetchMore({

@@ -22,7 +22,7 @@
 <GridLayout>
   <bookapp-history-list
     [logs]="logs$ | async"
-    [hasMoreItems]="hasMoreItems$ | async"
+    [hasMoreItems]="hasMoreItems"
     (loadMore)="loadMore()"
   ></bookapp-history-list>
 </GridLayout>

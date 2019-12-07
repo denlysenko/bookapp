@@ -16,7 +16,7 @@
 <GridLayout>
   <bookapp-books-list
     [books]="books$ | async"
-    [hasMoreItems]="hasMoreItems$ | async"
+    [hasMoreItems]="hasMoreItems"
     (loadMore)="loadMore()"
     (rate)="rate($event)"
   ></bookapp-books-list>

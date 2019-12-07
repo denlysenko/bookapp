@@ -27,12 +27,13 @@ export abstract class BooksPageBase extends BaseComponent {
   );
 
   filterInput = { field: 'title', search: this.filter.getValue().searchQuery };
+  hasMoreItems = false;
 
   booksQueryRef = this.booksService.getBooks(this.paid, this.filterInput);
 
   books$: Observable<Book[]> = this.booksQueryRef.valueChanges.pipe(
     tap(({ data: { books: { rows, count } } }) => {
-      this.hasMoreItems.next(rows.length !== count);
+      this.hasMoreItems = rows.length !== count;
     }),
     map(({ data }) => data.books.rows)
   );
@@ -52,16 +53,11 @@ export abstract class BooksPageBase extends BaseComponent {
     super();
   }
 
-  private hasMoreItems = new BehaviorSubject<boolean>(false);
   private skip = 0;
   private pending = false;
 
   get filter$(): Observable<BooksFilter> {
     return this.filter.asObservable();
-  }
-
-  get hasMoreItems$() {
-    return this.hasMoreItems.asObservable();
   }
 
   sort(sortValue: BooksFilter['sortValue']) {
@@ -106,7 +102,7 @@ export abstract class BooksPageBase extends BaseComponent {
       return;
     }
 
-    if (this.hasMoreItems.getValue()) {
+    if (this.hasMoreItems) {
       this.skip += DEFAULT_LIMIT;
 
       this.booksQueryRef.fetchMore({

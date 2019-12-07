@@ -6,10 +6,11 @@ import { map, pluck, tap } from 'rxjs/operators';
 
 export abstract class HistoryPageBase {
   readonly logsQueryRef = this.logsService.getLogs();
+  hasMoreItems = false;
 
   logs$: Observable<Log[]> = this.logsQueryRef.valueChanges.pipe(
     tap(({ data: { logs: { rows, count } } }) => {
-      this.hasMoreItems.next(rows.length !== count);
+      this.hasMoreItems = rows.length !== count;
     }),
     map(({ data }) => data.logs.rows)
   );
@@ -26,7 +27,6 @@ export abstract class HistoryPageBase {
   );
 
   protected pending = false;
-  protected hasMoreItems = new BehaviorSubject<boolean>(false);
 
   constructor(private readonly logsService: LogsService) {}
 }

@@ -2,15 +2,16 @@ import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import { BooksService } from '@bookapp/angular/data-access';
 import { ApiResponse, BEST_BOOKS_QUERY, Book } from '@bookapp/shared';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, pluck, tap } from 'rxjs/operators';
 
 export abstract class BestBooksBase {
+  hasMoreItems = false;
   booksQueryRef = this.booksService.getBestBooks();
 
   books$: Observable<Book[]> = this.booksQueryRef.valueChanges.pipe(
     tap(({ data: { bestBooks: { rows, count } } }) => {
-      this.hasMoreItems.next(rows.length !== count);
+      this.hasMoreItems = rows.length !== count;
     }),
     map(({ data }) => data.bestBooks.rows)
   );
@@ -24,20 +25,15 @@ export abstract class BestBooksBase {
 
   constructor(private readonly booksService: BooksService) {}
 
-  private hasMoreItems = new BehaviorSubject<boolean>(false);
   private skip = 0;
   private pending = false;
-
-  get hasMoreItems$() {
-    return this.hasMoreItems.asObservable();
-  }
 
   loadMore() {
     if (this.pending) {
       return;
     }
 
-    if (this.hasMoreItems.getValue()) {
+    if (this.hasMoreItems) {
       this.skip += DEFAULT_LIMIT;
 
       this.booksQueryRef.fetchMore({

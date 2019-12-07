@@ -4,16 +4,18 @@ import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import { BookmarksService, BooksService } from '@bookapp/angular/data-access';
 import { ApiResponse, Book, Bookmark, BOOKMARKS_QUERY } from '@bookapp/shared';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, pluck, tap } from 'rxjs/operators';
 
 export abstract class BookmarksPageBase {
   readonly type: string = this.route.snapshot.data.type;
   readonly bookmarksQueryRef = this.bookmarksService.getBookmarksByType(this.type);
 
+  hasMoreItems = false;
+
   books$: Observable<Book[]> = this.bookmarksQueryRef.valueChanges.pipe(
     tap(({ data: { bookmarks: { rows, count } } }) => {
-      this.hasMoreItems.next(rows.length !== count);
+      this.hasMoreItems = rows.length !== count;
     }),
     map(({ data }) => data.bookmarks.rows.map(bookmark => bookmark.book))
   );
@@ -27,7 +29,6 @@ export abstract class BookmarksPageBase {
 
   title$: Observable<string> = this.route.data.pipe(pluck('title'));
 
-  private hasMoreItems = new BehaviorSubject<boolean>(false);
   private skip = 0;
   private pending = false;
 
@@ -37,16 +38,12 @@ export abstract class BookmarksPageBase {
     private readonly bookmarksService: BookmarksService
   ) {}
 
-  get hasMoreItems$() {
-    return this.hasMoreItems.asObservable();
-  }
-
   loadMore() {
     if (this.pending) {
       return;
     }
 
-    if (this.hasMoreItems.getValue()) {
+    if (this.hasMoreItems) {
       this.skip += DEFAULT_LIMIT;
 
       this.bookmarksQueryRef.fetchMore({
