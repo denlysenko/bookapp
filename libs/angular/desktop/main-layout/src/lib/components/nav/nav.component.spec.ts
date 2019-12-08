@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatListModule } from '@angular/material/list';
 import { By } from '@angular/platform-browser';
 
+import { DateToPeriodPipe } from '@bookapp/angular/shared';
 import { user } from '@bookapp/testing';
 
 import { NavComponent } from './nav.component';
@@ -14,7 +15,7 @@ describe('NavComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MatListModule],
-      declarations: [NavComponent],
+      declarations: [NavComponent, DateToPeriodPipe],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));

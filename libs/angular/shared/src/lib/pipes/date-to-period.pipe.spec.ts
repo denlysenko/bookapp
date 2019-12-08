@@ -1,5 +1,9 @@
 import { DateToPeriodPipe } from './date-to-period.pipe';
 
+const timestamp = 1573381988808;
+
+Date.now = jest.fn(() => timestamp + 24 * 60 * 60 * 1000);
+
 describe('DateToPeriodPipe', () => {
   let pipe: DateToPeriodPipe;
 
@@ -12,6 +16,6 @@ describe('DateToPeriodPipe', () => {
   });
 
   it('should transform', () => {
-    expect(pipe.transform('1573381988808')).toEqual('26 days ago');
+    expect(pipe.transform(timestamp.toString())).toEqual('1 days ago');
   });
 });

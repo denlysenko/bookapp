@@ -15,6 +15,13 @@ describe('BestBooksPageComponent', () => {
   let fixture: ComponentFixture<BestBooksPageComponent>;
   let booksService: BooksService;
 
+  beforeAll(() => {
+    (window as any).IntersectionObserver = jest.fn(() => ({
+      observe: () => null,
+      disconnect: () => null
+    }));
+  });
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, RouterTestingModule, BestBooksModule],

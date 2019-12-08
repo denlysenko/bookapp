@@ -17,6 +17,13 @@ describe('BrowseBooksPageComponent', () => {
   let storeService: StoreService;
   let booksService: BooksService;
 
+  beforeAll(() => {
+    (window as any).IntersectionObserver = jest.fn(() => ({
+      observe: () => null,
+      disconnect: () => null
+    }));
+  });
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, RouterTestingModule, BrowseBooksModule],
