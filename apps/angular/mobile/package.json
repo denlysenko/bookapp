@@ -38,6 +38,7 @@
     "nativescript-ui-listview": "^8.0.1",
     "nativescript-ui-sidedrawer": "^8.0.0",
     "nativescript-websockets": "^1.5.5",
+    "nativescript-webview-interface": "file:../../../node_modules/nativescript-webview-interface",
     "reflect-metadata": "file:../../../node_modules/reflect-metadata",
     "rxjs": "file:../../../node_modules/rxjs",
     "subscriptions-transport-ws": "^0.9.16",

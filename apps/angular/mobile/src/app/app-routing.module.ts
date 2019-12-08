@@ -61,6 +61,20 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
               canActivate: [AuthGuard]
             },
             {
+              path: 'books/read/:author/:slug',
+              loadChildren: () =>
+                import('@bookapp/angular/mobile/books/read-book').then(m => m.ReadBookModule),
+              canActivate: [AuthGuard],
+              canLoad: [AuthGuard]
+            },
+            {
+              path: 'books/read',
+              loadChildren: () =>
+                import('@bookapp/angular/mobile/books/read-book').then(m => m.ReadBookModule),
+              canActivate: [AuthGuard],
+              canLoad: [AuthGuard]
+            },
+            {
               path: 'bookmarks/favorites',
               loadChildren: () =>
                 import('@bookapp/angular/mobile/bookmarks').then(m => m.BookmarksModule),

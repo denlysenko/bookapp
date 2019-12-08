@@ -80,6 +80,9 @@
       "@bookapp/angular/mobile/history": ["libs/angular/mobile/history/src/index.ts"],
       "@bookapp/angular/desktop/books/read-book": [
         "libs/angular/desktop/books/read-book/src/index.ts"
+      ],
+      "@bookapp/angular/mobile/books/read-book": [
+        "libs/angular/mobile/books/read-book/src/index.ts"
       ]
     }
   },

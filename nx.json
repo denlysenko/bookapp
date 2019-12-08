@@ -163,6 +163,9 @@
     },
     "angular-desktop-books-read-book": {
       "tags": []
+    },
+    "angular-mobile-books-read-book": {
+      "tags": []
     }
   }
 }
