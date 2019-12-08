@@ -408,9 +408,8 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "linter": "tslint",
             "tsConfig": ["apps/api-e2e/tsconfig.spec.json"],
             "exclude": ["**/node_modules/**", "!apps/api-e2e/**"]
           }
@@ -431,9 +430,8 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "linter": "tslint",
             "tsConfig": ["libs/api/files/tsconfig.lib.json"],
             "exclude": ["**/node_modules/**", "!libs/api/files/**"]
           }
@@ -447,9 +445,8 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "linter": "tslint",
             "tsConfig": ["libs/api/logs/tsconfig.lib.json", "libs/api/logs/tsconfig.spec.json"],
             "exclude": ["**/node_modules/**", "!libs/api/logs/**"]
           }
@@ -470,9 +467,8 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "linter": "tslint",
             "tsConfig": [
               "libs/api/bookmarks/tsconfig.lib.json",
               "libs/api/bookmarks/tsconfig.spec.json"
@@ -496,9 +492,8 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "linter": "tslint",
             "tsConfig": ["libs/api/books/tsconfig.lib.json", "libs/api/books/tsconfig.spec.json"],
             "exclude": ["**/node_modules/**", "!libs/api/books/**"]
           }
@@ -519,9 +514,8 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "linter": "tslint",
             "tsConfig": [
               "libs/api/comments/tsconfig.lib.json",
               "libs/api/comments/tsconfig.spec.json"
@@ -545,9 +539,8 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "linter": "tslint",
             "tsConfig": ["libs/api/dataloaders/tsconfig.lib.json"],
             "exclude": ["**/node_modules/**", "!libs/api/dataloaders/**"]
           }
