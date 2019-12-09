@@ -249,6 +249,12 @@
             "tsConfig": "apps/angular/desktop/tsconfig.spec.json",
             "setupFile": "apps/angular/desktop/src/test-setup.ts"
           }
+        },
+        "deploy": {
+          "builder": "@netlify-builder/deploy:deploy",
+          "options": {
+            "outputPath": "dist/apps/angular/desktop"
+          }
         }
       }
     },

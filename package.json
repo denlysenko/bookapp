@@ -107,6 +107,7 @@
     "@angular/language-service": "^8.2.14",
     "@nestjs/schematics": "^6.7.5",
     "@nestjs/testing": "^6.10.7",
+    "@netlify-builder/deploy": "^2.0.3",
     "@nrwl/angular": "^8.9.0",
     "@nrwl/cypress": "8.9.0",
     "@nrwl/jest": "8.9.0",
