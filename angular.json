@@ -166,7 +166,10 @@
             "main": "apps/angular/desktop/src/main.ts",
             "polyfills": "apps/angular/desktop/src/polyfills.ts",
             "tsConfig": "apps/angular/desktop/tsconfig.app.json",
-            "assets": ["apps/angular/desktop/src/favicon.ico", "apps/angular/desktop/src/assets"],
+            "assets": [
+              "apps/angular/desktop/src/assets",
+              "apps/angular/desktop/src/manifest.webmanifest"
+            ],
             "styles": [
               "node_modules/epubjs-reader/reader/css/main.css",
               "node_modules/epubjs-reader/reader/css/popup.css",
@@ -206,7 +209,9 @@
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "apps/angular/desktop/ngsw-config.json"
             }
           }
         },

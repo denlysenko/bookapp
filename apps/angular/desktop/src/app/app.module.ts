@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import {
   CoreModule,
@@ -39,7 +40,8 @@ import { UploadService } from './services/upload.service';
     DataAccessModule,
     AuthModule,
     MainLayoutModule,
-    BrowseBooksModule
+    BrowseBooksModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     AuthGuard,
