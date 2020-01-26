@@ -5,6 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:server:dev": "ng serve api",
+    "start:server:testing": "ENV=testing ng serve api",
     "build": "ng build",
     "test": "ng test",
     "lint": "nx lint && ng lint",
@@ -66,7 +68,6 @@
     "core-js": "^3.6.4",
     "dataloader": "^2.0.0",
     "document-register-element": "1.14.3",
-    "dotenv": "8.2.0",
     "epubjs-reader": "github:futurepress/epubjs-reader",
     "graphql": "^14.5.8",
     "graphql-subscriptions": "^1.1.0",

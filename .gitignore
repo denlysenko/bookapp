@@ -44,6 +44,6 @@ deploy
 netlify
 
 # Environments
-.env
+.env.development
 .env.production
 .env.testing
