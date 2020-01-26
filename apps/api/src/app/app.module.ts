@@ -11,11 +11,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 const envFilePath =
-  process.env.NODE_ENV === 'production'
+  process.env.ENV === 'production'
     ? '.env.production'
-    : process.env.NODE_ENV === 'testing'
+    : process.env.ENV === 'testing'
     ? '.env.testing'
-    : '.env';
+    : '.env.development';
 
 @Module({
   imports: [
