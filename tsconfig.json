@@ -18,7 +18,6 @@
     "paths": {
       "@bookapp/api/graphql": ["libs/api/graphql/src/index.ts"],
       "@bookapp/api/auth": ["libs/api/auth/src/index.ts"],
-      "@bookapp/api/config": ["libs/api/config/src/index.ts"],
       "@bookapp/api/users": ["libs/api/users/src/index.ts"],
       "@bookapp/api/shared": ["libs/api/shared/src/index.ts"],
       "@bookapp/api/database": ["libs/api/database/src/index.ts"],

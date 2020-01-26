@@ -1,8 +1,8 @@
-import { ConfigService } from '@bookapp/api/config';
 import { AUTH_ERRORS, ModelNames } from '@bookapp/api/shared';
 import { AuthPayload, JwtPayload, User } from '@bookapp/shared';
 
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { getConnectionToken, InjectModel } from '@nestjs/mongoose';
 
 import { sign, verify } from 'jsonwebtoken';

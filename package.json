@@ -47,6 +47,7 @@
     "@angular/service-worker": "^8.2.14",
     "@google-cloud/storage": "^4.3.0",
     "@nestjs/common": "^6.11.1",
+    "@nestjs/config": "^0.1.0",
     "@nestjs/core": "^6.11.1",
     "@nestjs/graphql": "^6.5.3",
     "@nestjs/mongoose": "^6.2.1",

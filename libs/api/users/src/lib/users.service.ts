@@ -1,11 +1,11 @@
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
-import { ConfigService } from '@bookapp/api/config';
 import { FilesService } from '@bookapp/api/files';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { ApiResponse, AuthPayload } from '@bookapp/shared';
 import { extractFileKey } from '@bookapp/utils';
 
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { randomBytes } from 'crypto';

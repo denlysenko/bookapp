@@ -1,9 +1,9 @@
-import { ConfigService } from '@bookapp/api/config';
 import { AUTH_ERRORS } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
 import { JwtPayload } from '@bookapp/shared';
 
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 
 import { ExtractJwt, Strategy } from 'passport-jwt';

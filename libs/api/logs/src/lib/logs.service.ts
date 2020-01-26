@@ -1,9 +1,9 @@
-import { ConfigService } from '@bookapp/api/config';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { ApiResponse } from '@bookapp/shared';
 
 import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { PubSub } from 'graphql-subscriptions';

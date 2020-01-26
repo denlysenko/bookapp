@@ -42,3 +42,8 @@ bookapp-adminsdk.json
 cors.json
 deploy
 netlify
+
+# Environments
+.env
+.env.production
+.env.testing

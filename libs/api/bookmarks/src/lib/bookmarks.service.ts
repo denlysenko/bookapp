@@ -1,9 +1,9 @@
-import { ConfigService } from '@bookapp/api/config';
 import { LogDto, LogsService } from '@bookapp/api/logs';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { ApiResponse, BOOKMARKS, UserActions } from '@bookapp/shared';
 
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';

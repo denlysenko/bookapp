@@ -1,9 +1,9 @@
-import { ConfigService } from '@bookapp/api/config';
 import { UploadResponse } from '@bookapp/shared';
 
 import { Bucket, Storage } from '@google-cloud/storage';
 
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 import { format } from 'util';
 

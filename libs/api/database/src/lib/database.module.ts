@@ -1,6 +1,5 @@
-import { ConfigService } from '@bookapp/api/config';
-
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import * as mongoose from 'mongoose';

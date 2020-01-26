@@ -1,4 +1,3 @@
-import { ConfigService } from '@bookapp/api/config';
 import { FilesService } from '@bookapp/api/files';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogDto, LogsService } from '@bookapp/api/logs';
@@ -7,6 +6,7 @@ import { ApiResponse, UserActions } from '@bookapp/shared';
 import { extractFileKey } from '@bookapp/utils';
 
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { PubSub } from 'graphql-subscriptions';
