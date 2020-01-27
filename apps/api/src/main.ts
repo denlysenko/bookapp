@@ -7,6 +7,10 @@ async function bootstrap() {
 
   app.enableCors();
 
+  app.use('/ping', (_: unknown, res: any) => {
+    res.send('ok');
+  });
+
   await app.listen(port, () => {
     console.log('Listening at http://localhost:' + port);
   });

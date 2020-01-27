@@ -212,6 +212,14 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "apps/angular/desktop/ngsw-config.json"
+            },
+            "testing": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/angular/desktop/src/environments/environment.ts",
+                  "with": "apps/angular/desktop/src/environments/environment.testing.ts"
+                }
+              ]
             }
           }
         },
@@ -223,6 +231,9 @@
           "configurations": {
             "production": {
               "browserTarget": "angular-desktop:build:production"
+            },
+            "testing": {
+              "browserTarget": "angular-desktop:build:testing"
             }
           }
         },
@@ -268,7 +279,7 @@
           "options": {
             "cypressConfig": "apps/angular/desktop-e2e/cypress.json",
             "tsConfig": "apps/angular/desktop-e2e/tsconfig.e2e.json",
-            "devServerTarget": "angular-desktop:serve"
+            "devServerTarget": "angular-desktop:serve:testing"
           },
           "configurations": {
             "production": {
