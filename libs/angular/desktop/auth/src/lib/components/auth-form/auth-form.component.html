@@ -8,7 +8,12 @@
         <div *ngIf="!isLoggingIn">
           <mat-form-field appearance="outline">
             <mat-label>First Name</mat-label>
-            <input matInput placeholder="First Name" formControlName="firstName" />
+            <input
+              matInput
+              placeholder="First Name"
+              formControlName="firstName"
+              data-test="firstName"
+            />
             <mat-error *ngIf="form.get('firstName').hasError('required')"
               >This field is required</mat-error
             >
@@ -20,7 +25,12 @@
         <div *ngIf="!isLoggingIn">
           <mat-form-field appearance="outline">
             <mat-label>Last Name</mat-label>
-            <input matInput placeholder="Last Name" formControlName="lastName" />
+            <input
+              matInput
+              placeholder="Last Name"
+              formControlName="lastName"
+              data-test="lastName"
+            />
             <mat-error *ngIf="form.get('lastName').hasError('required')"
               >This field is required</mat-error
             >
@@ -32,7 +42,13 @@
         <div>
           <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>
-            <input type="email" matInput placeholder="Email" formControlName="email" />
+            <input
+              type="email"
+              matInput
+              placeholder="Email"
+              formControlName="email"
+              data-test="email"
+            />
             <mat-error *ngIf="form.get('email').hasError('required')"
               >This field is required</mat-error
             >
@@ -45,7 +61,13 @@
         <div>
           <mat-form-field appearance="outline">
             <mat-label>Password</mat-label>
-            <input type="password" matInput placeholder="Password" formControlName="password" />
+            <input
+              type="password"
+              matInput
+              placeholder="Password"
+              formControlName="password"
+              data-test="password"
+            />
             <mat-error *ngIf="form.get('password').hasError('required')"
               >This field is required</mat-error
             >
@@ -58,11 +80,16 @@
       <mat-card-actions>
         <span
           >{{ isLoggingIn ? "Don't have an account?" : 'Already have an account?' }}
-          <a mat-button href="javascript:void(0)" (click)="toggleAuthMode()" [disabled]="loading">{{
-            isLoggingIn ? 'Create one' : 'Back to Login'
-          }}</a>
+          <a
+            mat-button
+            href="javascript:void(0)"
+            (click)="toggleAuthMode()"
+            [disabled]="loading"
+            data-test="toggle"
+            >{{ isLoggingIn ? 'Create one' : 'Back to Login' }}</a
+          >
         </span>
-        <button mat-raised-button color="primary" [disabled]="loading">
+        <button mat-raised-button color="primary" data-test="submit" [disabled]="loading">
           {{ isLoggingIn ? 'Login' : 'Create' }}
         </button>
       </mat-card-actions>
