@@ -1,7 +1,6 @@
 // tslint:disable: no-identical-functions
 // tslint:disable: no-big-function
 // tslint:disable: no-duplicate-string
-import { ConfigService } from '@bookapp/api/config';
 import { FilesService } from '@bookapp/api/files';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogsService } from '@bookapp/api/logs';
@@ -14,6 +13,7 @@ import {
   MockMongooseModel
 } from '@bookapp/testing';
 
+import { ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 

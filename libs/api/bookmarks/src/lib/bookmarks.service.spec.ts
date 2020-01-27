@@ -1,5 +1,4 @@
 // tslint:disable: no-big-function
-import { ConfigService } from '@bookapp/api/config';
 import { LogsService } from '@bookapp/api/logs';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { BOOKMARKS, UserActions } from '@bookapp/shared';
@@ -12,6 +11,7 @@ import {
 } from '@bookapp/testing';
 
 import { HttpStatus } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 

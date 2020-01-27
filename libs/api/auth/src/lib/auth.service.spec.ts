@@ -1,5 +1,4 @@
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
-import { ConfigService } from '@bookapp/api/config';
 import { AUTH_ERRORS } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
 import {
@@ -11,6 +10,7 @@ import {
   user
 } from '@bookapp/testing';
 
+import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 
 import { AuthService } from './auth.service';

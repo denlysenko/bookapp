@@ -1,12 +1,12 @@
 import { AuthModule } from '@bookapp/api/auth';
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
-import { ConfigModule, ConfigService } from '@bookapp/api/config';
-import { FILE_ERRORS, FilesModule, FilesService } from '@bookapp/api/files';
+import { FilesModule, FilesService, FILE_ERRORS } from '@bookapp/api/files';
 import { ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
 import { MockAuthTokensService, MockConfigService, MockModel, user } from '@bookapp/testing';
 
 import { HttpStatus, INestApplication } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
@@ -30,7 +30,13 @@ describe('FilesModule', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [ConfigModule, AuthModule, FilesModule]
+      imports: [
+        ConfigModule.forRoot({
+          isGlobal: true
+        }),
+        AuthModule,
+        FilesModule
+      ]
     })
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)

@@ -1,8 +1,8 @@
-import { ConfigService } from '@bookapp/api/config';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { log, MockConfigService, MockModel, MockMongooseModel } from '@bookapp/testing';
 
+import { ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 

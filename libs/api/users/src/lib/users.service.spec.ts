@@ -2,7 +2,6 @@
 // tslint:disable: no-duplicate-string
 // tslint:disable: no-identical-functions
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
-import { ConfigService } from '@bookapp/api/config';
 import { FilesService } from '@bookapp/api/files';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
@@ -15,6 +14,7 @@ import {
   user
 } from '@bookapp/testing';
 
+import { ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 

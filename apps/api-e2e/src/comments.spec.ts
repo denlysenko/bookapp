@@ -1,12 +1,12 @@
-import { AuthModule, AuthService } from '@bookapp/api/auth';
+import { AuthModule } from '@bookapp/api/auth';
 import { CommentsModule, CommentsService } from '@bookapp/api/comments';
-import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
 import { comment, MockConfigService, mockConnection, MockModel, user } from '@bookapp/testing';
 
 import { HttpStatus, INestApplication } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getConnectionToken, getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
@@ -27,7 +27,9 @@ describe('CommentsModule', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        ConfigModule,
+        ConfigModule.forRoot({
+          isGlobal: true
+        }),
         AuthModule,
         GraphqlModule,
         CommentsModule,

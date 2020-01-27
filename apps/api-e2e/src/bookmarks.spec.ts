@@ -1,8 +1,7 @@
 // tslint:disable: no-big-function
 // tslint:disable: no-duplicate-string
 import { AuthModule } from '@bookapp/api/auth';
-import { BOOKMARK_ERRORS, BookmarksModule, BookmarksService } from '@bookapp/api/bookmarks';
-import { ConfigModule, ConfigService } from '@bookapp/api/config';
+import { BookmarksModule, BookmarksService, BOOKMARK_ERRORS } from '@bookapp/api/bookmarks';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
@@ -15,6 +14,7 @@ import {
   INestApplication,
   NotFoundException
 } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getConnectionToken, getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
@@ -38,7 +38,9 @@ describe('BookmarksModule', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        ConfigModule,
+        ConfigModule.forRoot({
+          isGlobal: true
+        }),
         AuthModule,
         GraphqlModule,
         BookmarksModule,

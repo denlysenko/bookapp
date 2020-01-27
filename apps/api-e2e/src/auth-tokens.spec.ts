@@ -1,5 +1,4 @@
 import { AuthTokensModule, AuthTokensService } from '@bookapp/api/auth-tokens';
-import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { AUTH_ERRORS, ModelNames } from '@bookapp/api/shared';
 import {
   authPayload,
@@ -10,6 +9,7 @@ import {
 } from '@bookapp/testing';
 
 import { HttpStatus, INestApplication, UnauthorizedException } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
@@ -21,7 +21,12 @@ describe('AuthTokenModule', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [ConfigModule, AuthTokensModule]
+      imports: [
+        ConfigModule.forRoot({
+          isGlobal: true
+        }),
+        AuthTokensModule
+      ]
     })
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)

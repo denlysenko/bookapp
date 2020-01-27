@@ -1,10 +1,10 @@
-import { ConfigService } from '@bookapp/api/config';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogsService } from '@bookapp/api/logs';
 import { ModelNames } from '@bookapp/api/shared';
 import { UserActions } from '@bookapp/shared';
 import { MockConfigService, MockLogsService, MockModel, MockMongooseModel } from '@bookapp/testing';
 
+import { ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 

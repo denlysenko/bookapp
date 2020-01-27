@@ -1,4 +1,3 @@
-import { ConfigService } from '@bookapp/api/config';
 import { AUTH_ERRORS, ModelNames } from '@bookapp/api/shared';
 import {
   accessToken,
@@ -11,6 +10,7 @@ import {
 } from '@bookapp/testing';
 
 import { HttpStatus } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 

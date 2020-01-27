@@ -1,5 +1,4 @@
 import { AuthModule } from '@bookapp/api/auth';
-import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { LogsModule, LogsService } from '@bookapp/api/logs';
 import { ModelNames } from '@bookapp/api/shared';
@@ -14,6 +13,7 @@ import {
 } from '@bookapp/testing';
 
 import { HttpStatus, INestApplication } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getConnectionToken, getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
@@ -29,7 +29,15 @@ describe('LogsModule', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [ConfigModule, LogsModule, AuthModule, GraphqlModule, MongooseModule.forRoot('test')]
+      imports: [
+        ConfigModule.forRoot({
+          isGlobal: true
+        }),
+        LogsModule,
+        AuthModule,
+        GraphqlModule,
+        MongooseModule.forRoot('test')
+      ]
     })
       .overrideProvider(getConnectionToken())
       .useValue(mockConnection)

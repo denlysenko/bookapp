@@ -1,8 +1,7 @@
 // tslint:disable: no-big-function
 // tslint:disable: no-duplicate-string
-import { AuthModule, AuthService } from '@bookapp/api/auth';
-import { BOOK_VALIDATION_ERRORS, BooksModule, BooksService } from '@bookapp/api/books';
-import { ConfigModule, ConfigService } from '@bookapp/api/config';
+import { AuthModule } from '@bookapp/api/auth';
+import { BooksModule, BooksService, BOOK_VALIDATION_ERRORS } from '@bookapp/api/books';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
@@ -17,6 +16,7 @@ import {
 } from '@bookapp/testing';
 
 import { HttpStatus, INestApplication, NotFoundException } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getConnectionToken, getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
@@ -44,7 +44,9 @@ describe('BooksModule', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        ConfigModule,
+        ConfigModule.forRoot({
+          isGlobal: true
+        }),
         AuthModule,
         GraphqlModule,
         BooksModule,

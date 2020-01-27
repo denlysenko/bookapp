@@ -1,11 +1,10 @@
 // tslint:disable: no-big-function
 // tslint:disable: no-duplicate-string
-import { AuthModule, AuthService } from '@bookapp/api/auth';
+import { AuthModule } from '@bookapp/api/auth';
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
-import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
-import { USER_VALIDATION_ERRORS, UsersModule, UsersService } from '@bookapp/api/users';
+import { UsersModule, UsersService, USER_VALIDATION_ERRORS } from '@bookapp/api/users';
 import { ROLES } from '@bookapp/shared';
 import {
   authPayload,
@@ -22,6 +21,7 @@ import {
   INestApplication,
   NotFoundException
 } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
@@ -44,7 +44,14 @@ describe('UsersModule', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [ConfigModule, UsersModule, AuthModule, GraphqlModule]
+      imports: [
+        ConfigModule.forRoot({
+          isGlobal: true
+        }),
+        UsersModule,
+        AuthModule,
+        GraphqlModule
+      ]
     })
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)

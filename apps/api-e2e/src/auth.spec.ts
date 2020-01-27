@@ -1,9 +1,8 @@
 import { AuthModule, AuthService } from '@bookapp/api/auth';
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
-import { ConfigModule, ConfigService } from '@bookapp/api/config';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { AUTH_ERRORS, ModelNames } from '@bookapp/api/shared';
-import { USER_VALIDATION_ERRORS, UsersService } from '@bookapp/api/users';
+import { UsersService, USER_VALIDATION_ERRORS } from '@bookapp/api/users';
 import {
   authPayload,
   MockAuthTokensService,
@@ -13,6 +12,7 @@ import {
 } from '@bookapp/testing';
 
 import { INestApplication } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
@@ -39,7 +39,13 @@ describe('AuthModule', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [ConfigModule, AuthModule, GraphqlModule]
+      imports: [
+        ConfigModule.forRoot({
+          isGlobal: true
+        }),
+        AuthModule,
+        GraphqlModule
+      ]
     })
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)

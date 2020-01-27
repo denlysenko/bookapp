@@ -140,7 +140,7 @@
     "codelyzer": "~5.2.1",
     "cypress": "^3.8.3",
     "jest": "25.1.0",
-    "jest-preset-angular": "^8.0.0",
+    "jest-preset-angular": "^7.0.1",
     "mongo-seeding-cli": "^3.4.0-alpha.1",
     "node-sass": "^4.13.1",
     "prettier": "1.19.1",
