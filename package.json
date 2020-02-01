@@ -139,6 +139,7 @@
     "@types/uuidv4": "^5.0.0",
     "codelyzer": "~5.2.1",
     "cypress": "^3.8.3",
+    "cypress-file-upload": "^3.5.3",
     "jest": "25.1.0",
     "jest-preset-angular": "^7.0.1",
     "mongo-seeding-cli": "^3.4.0-alpha.1",

@@ -1,18 +1,19 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
+declare namespace Cypress {
+  interface Chainable {
+    login(email: string, password: string): Chainable;
+  }
+}
+
+// login through the UI because the token is stored in the application memory,
+// and I could not find a way to access the ng service, which stores the token in memory
+Cypress.Commands.add('login', (email, password) => {
+  cy.visit('/auth');
+  cy.get('[data-test=email]').type(email);
+  cy.get('[data-test=password]')
+    .type(password)
+    .type('{enter}');
+});
+
 // -- This is a child command --
 // Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
 //

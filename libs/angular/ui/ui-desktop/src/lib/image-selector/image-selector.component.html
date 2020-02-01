@@ -10,7 +10,7 @@
     class="dropzone"
     (dropped)="onFileDrop($event)"
   >
-    <input type="file" id="file" (change)="onFileChange($event)" />
+    <input type="file" id="file" (change)="onFileChange($event)" data-test="file-input" />
     <label class="mat-button" for="file">Click to select</label>
     <i class="material-icons">
       add_photo_alternate
@@ -22,20 +22,27 @@
     [style.display]="(cropperReady$ | async) ? null : 'none'"
     [imageChangedEvent]="imageChangedEvent$ | async"
     [maintainAspectRatio]="maintainAspectRatio"
-    (imageCroppedBase64)="imageCropped($event)"
+    (imageCropped)="imageCropped($event)"
     (imageLoaded)="onCropperReady()"
     (loadImageFailed)="onLoadImageFail()"
   ></image-cropper>
 </mat-dialog-content>
 <mat-divider></mat-divider>
 <mat-dialog-actions>
-  <button type="button" mat-raised-button mat-dialog-close [disabled]="loading$ | async">
+  <button
+    type="button"
+    mat-raised-button
+    mat-dialog-close
+    [disabled]="loading$ | async"
+    data-test="cancel"
+  >
     CANCEL
   </button>
   <button
     type="button"
     mat-raised-button
     color="accent"
+    data-test="upload"
     (click)="save()"
     [disabled]="loading$ | async"
   >

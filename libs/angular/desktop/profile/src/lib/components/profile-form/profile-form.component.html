@@ -2,7 +2,7 @@
   <form [formGroup]="form" (submit)="submit()" novalidate>
     <mat-form-field appearance="outline">
       <mat-label>First Name</mat-label>
-      <input matInput placeholder="First Name" formControlName="firstName" />
+      <input matInput placeholder="First Name" formControlName="firstName" data-test="firstName" />
       <mat-error *ngIf="form.get('firstName').hasError('required')"
         >This field is required</mat-error
       >
@@ -12,7 +12,7 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Last Name</mat-label>
-      <input matInput placeholder="Last Name" formControlName="lastName" />
+      <input matInput placeholder="Last Name" formControlName="lastName" data-test="lastName" />
       <mat-error *ngIf="form.get('lastName').hasError('required')"
         >This field is required</mat-error
       >
@@ -22,13 +22,21 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Email</mat-label>
-      <input type="email" matInput placeholder="Email" formControlName="email" />
+      <input type="email" matInput placeholder="Email" formControlName="email" data-test="email" />
       <mat-error *ngIf="form.get('email').hasError('required')">This field is required</mat-error>
       <mat-error *ngIf="form.get('email').hasError('email')">Not a valid email</mat-error>
       <mat-error *ngIf="form.get('email').hasError('serverError')">{{ errors['email'] }}</mat-error>
     </mat-form-field>
     <mat-card-actions>
-      <button type="submit" mat-raised-button color="accent" [disabled]="loading">SAVE</button>
+      <button
+        type="submit"
+        mat-raised-button
+        color="accent"
+        [disabled]="loading"
+        data-test="submit"
+      >
+        SAVE
+      </button>
     </mat-card-actions>
   </form>
 </div>

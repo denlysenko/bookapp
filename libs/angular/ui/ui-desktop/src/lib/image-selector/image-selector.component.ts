@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileSelectorBase } from '@bookapp/angular/base';
 import { UploadPlatformService } from '@bookapp/angular/core';
 import { dataURIToBlob } from '@bookapp/utils';
+
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
@@ -46,8 +47,8 @@ export class ImageSelectorComponent extends FileSelectorBase {
     this.imageChangedEvent.next(null);
   }
 
-  imageCropped(image: string) {
-    this.croppedImage = image;
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
   }
 
   save() {

@@ -4,12 +4,12 @@
 
 // tslint:disable: no-identical-functions
 
-const emailField = '[data-test=email]';
-const passwordField = '[data-test=password]';
-const firstNameField = '[data-test=firstName]';
-const lastNameField = '[data-test=lastName]';
-
 describe('Auth page', () => {
+  const emailField = '[data-test=email]';
+  const passwordField = '[data-test=password]';
+  const firstNameField = '[data-test=firstName]';
+  const lastNameField = '[data-test=lastName]';
+
   beforeEach(() => {
     cy.visit('/auth');
   });
@@ -23,7 +23,6 @@ describe('Auth page', () => {
       it('should display required errors', () => {
         cy.get('[data-test=submit]').click();
         cy.get('mat-error')
-
           .should('have.length', 2)
           .and('contain', 'This field is required');
       });
