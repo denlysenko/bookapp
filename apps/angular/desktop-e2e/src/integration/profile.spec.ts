@@ -3,7 +3,6 @@ describe('Profile page', () => {
   const firstNameField = '[data-test=firstName]';
   const lastNameField = '[data-test=lastName]';
   const submitBtn = '[data-test=submit]';
-  const uploadUrl = 'http://localhost:3333/files';
   const publicUrl = '/assets/icons/icon-512x512.png';
 
   const clearFields = () => {
@@ -97,10 +96,7 @@ describe('Profile page', () => {
     });
 
     it('should upload avatar', () => {
-      cy.server();
-      cy.route('POST', uploadUrl, {
-        publicUrl
-      });
+      cy.uploadOnServer({ publicUrl });
 
       cy.fixture('icon.png', 'base64').then(fileContent => {
         cy.get('[data-test="file-input"]').upload(

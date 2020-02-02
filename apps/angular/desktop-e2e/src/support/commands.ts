@@ -1,6 +1,7 @@
 declare namespace Cypress {
   interface Chainable {
     login(email: string, password: string): Chainable;
+    uploadOnServer(response: any): Chainable;
   }
 }
 
@@ -12,6 +13,11 @@ Cypress.Commands.add('login', (email, password) => {
   cy.get('[data-test=password]')
     .type(password)
     .type('{enter}');
+});
+
+Cypress.Commands.add('uploadOnServer', response => {
+  cy.server();
+  cy.route('POST', 'http://localhost:3333/files', response);
 });
 
 // -- This is a child command --
