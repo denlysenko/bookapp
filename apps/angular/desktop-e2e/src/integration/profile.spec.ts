@@ -41,9 +41,22 @@ describe('Profile page', () => {
   });
 
   context('valid form', () => {
-    it('should update profile', () => {
+    beforeEach(() => {
       clearFields();
+    });
 
+    it('should show server error', () => {
+      cy.get(firstNameField).type('User 1');
+      cy.get(lastNameField).type('Test 1');
+      cy.get(emailField).type('admin@test.com');
+      cy.get(submitBtn).click();
+
+      cy.get('mat-error')
+        .should('have.length', 1)
+        .and('contain', 'EMAIL_IN_USE_ERR');
+    });
+
+    it('should update profile', () => {
       cy.get(firstNameField).type('User 1');
       cy.get(lastNameField).type('Test 1');
       cy.get(emailField).type('user1@test.com');
