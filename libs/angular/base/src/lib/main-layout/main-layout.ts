@@ -53,7 +53,10 @@ export abstract class MainLayoutBase extends BaseComponent implements OnDestroy 
         }
 
         const newLogs = [subscriptionData.data.logCreated, ...prev.logs.rows];
-        newLogs.pop();
+
+        if (newLogs.length > 3) {
+          newLogs.pop();
+        }
 
         return {
           logs: {
