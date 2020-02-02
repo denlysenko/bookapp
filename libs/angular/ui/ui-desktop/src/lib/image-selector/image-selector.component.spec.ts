@@ -12,6 +12,7 @@ import { ImageSelectorComponent } from './image-selector.component';
 
 const publicUrl = '/uploads/publicUrl';
 const imageEvent = { image: 'test' };
+const croppedEvent: any = { base64: dataUriImage };
 
 describe('ImageSelectorComponent', () => {
   let component: ImageSelectorComponent;
@@ -97,7 +98,7 @@ describe('ImageSelectorComponent', () => {
 
   describe('imageCropped()', () => {
     it('should save image', () => {
-      component.imageCropped(dataUriImage);
+      component.imageCropped(croppedEvent);
       expect(component['croppedImage']).toEqual(dataUriImage);
     });
   });
@@ -151,13 +152,13 @@ describe('ImageSelectorComponent', () => {
     });
 
     it('should upload image', () => {
-      component.imageCropped(dataUriImage);
+      component.imageCropped(croppedEvent);
       component.save();
       expect(uploadService.upload).toHaveBeenCalled();
     });
 
     it('should close dialog with publicUrl', () => {
-      component.imageCropped(dataUriImage);
+      component.imageCropped(croppedEvent);
       component.save();
       expect(dialog.close).toHaveBeenCalledWith(publicUrl);
     });
@@ -165,7 +166,7 @@ describe('ImageSelectorComponent', () => {
     it('should propagate false to cropperReady$ if error', done => {
       jest.spyOn(uploadService, 'upload').mockImplementationOnce(() => throwError({}));
 
-      component.imageCropped(dataUriImage);
+      component.imageCropped(croppedEvent);
       component.save();
 
       component.cropperReady$.subscribe(ready => {
