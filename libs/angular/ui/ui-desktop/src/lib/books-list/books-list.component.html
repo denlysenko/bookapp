@@ -1,5 +1,5 @@
 <bookapp-infinite-scroll (scrolled)="handleScrollChange()">
-  <div *ngFor="let book of books" class="list-item-wrapper">
+  <div *ngFor="let book of books" class="list-item-wrapper" data-test="list-item">
     <mat-card class="list-item">
       <div class="cover">
         <a
