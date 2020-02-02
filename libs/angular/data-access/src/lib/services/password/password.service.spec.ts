@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
+import { AUTH_TOKEN, StoragePlatformService, StoreService } from '@bookapp/angular/core';
 import { CHANGE_PASSWORD_MUTATION } from '@bookapp/shared';
+import { authPayload, MockStoragePlatformService, MockStoreService } from '@bookapp/testing';
 
 import { ApolloTestingController, ApolloTestingModule } from 'apollo-angular/testing';
 
@@ -12,15 +14,29 @@ const newPassword = 'new_pass';
 describe('PasswordService', () => {
   let controller: ApolloTestingController;
   let service: PasswordService;
+  let storageService: StoragePlatformService;
+  let storeService: StoreService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ApolloTestingModule],
-      providers: [PasswordService]
+      providers: [
+        PasswordService,
+        {
+          provide: StoragePlatformService,
+          useValue: MockStoragePlatformService
+        },
+        {
+          provide: StoreService,
+          useValue: MockStoreService
+        }
+      ]
     });
 
     controller = TestBed.get(ApolloTestingController);
     service = TestBed.get(PasswordService);
+    storageService = TestBed.get(StoragePlatformService);
+    storeService = TestBed.get(StoreService);
   });
 
   afterEach(() => {
@@ -34,7 +50,7 @@ describe('PasswordService', () => {
   describe('changePassword()', () => {
     it('should change password', done => {
       service.changePassword(newPassword, oldPassword).subscribe(({ data: { changePassword } }) => {
-        expect(changePassword).toEqual(true);
+        expect(changePassword).toEqual(authPayload);
         done();
       });
 
@@ -45,9 +61,26 @@ describe('PasswordService', () => {
 
       op.flush({
         data: {
-          changePassword: true
+          changePassword: authPayload
         }
       });
+
+      controller.verify();
+    });
+
+    it('should save tokens to storages', () => {
+      service.changePassword(newPassword, oldPassword).subscribe();
+
+      const op = controller.expectOne(CHANGE_PASSWORD_MUTATION);
+
+      op.flush({
+        data: {
+          changePassword: authPayload
+        }
+      });
+
+      expect(storageService.setItem).toHaveBeenCalledWith(AUTH_TOKEN, authPayload.refreshToken);
+      expect(storeService.set).toHaveBeenCalledWith(AUTH_TOKEN, authPayload.accessToken);
 
       controller.verify();
     });
