@@ -90,9 +90,9 @@
     "createdAt": "2019-08-13T14:23:52.721+00:00"
   },
   {
-    "total_rating": 0,
-    "total_rates": 0,
-    "rating": 0,
+    "total_rating": 5,
+    "total_rates": 1,
+    "rating": 5,
     "views": 0,
     "paid": false,
     "price": 0,
