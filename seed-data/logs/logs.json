@@ -1,0 +1,114 @@
+[
+  {
+    "_id": { "$oid": "5d826afd7c6091142aad4a75" },
+    "userId": { "$oid": "5d40204985489b4165690f73" },
+    "action": "BOOK_CREATED",
+    "bookId": { "$oid": "5d826afd7c6091142aad4a74" },
+    "createdAt": { "$date": { "$numberLong": "1568828157534" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "5d83786a047dec039810963e" },
+    "userId": { "$oid": "5d40204985489b4165690f73" },
+    "action": "BOOK_UPDATED",
+    "bookId": { "$oid": "5d8374f7047dec0398109637" },
+    "createdAt": { "$date": { "$numberLong": "1568897130418" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "5d84dca8047dec0398109641" },
+    "userId": { "$oid": "5d40204985489b4165690f73" },
+    "action": "BOOK_RATED",
+    "bookId": { "$oid": "5d826afd7c6091142aad4a74" },
+    "createdAt": { "$date": { "$numberLong": "1568988328338" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "5d84e820047dec0398109642" },
+    "userId": { "$oid": "5d40204985489b4165690f73" },
+    "action": "BOOK_RATED",
+    "bookId": { "$oid": "5d52c811cc531e30860474a4" },
+    "createdAt": { "$date": { "$numberLong": "1568991264112" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "5d86438d047dec0398109643" },
+    "userId": { "$oid": "5d40204985489b4165690f73" },
+    "action": "BOOK_RATED",
+    "bookId": { "$oid": "5d8374f7047dec0398109637" },
+    "createdAt": { "$date": { "$numberLong": "1569080205221" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "5d8677adec516f4d0b61a23b" },
+    "userId": { "$oid": "5d40204985489b4165690f73" },
+    "action": "BOOK_CREATED",
+    "bookId": { "$oid": "5d8677adec516f4d0b61a23a" },
+    "createdAt": { "$date": { "$numberLong": "1569093549875" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "5d9743678ed4eb04f34e5471" },
+    "userId": { "$oid": "5d40204985489b4165690f73" },
+    "action": "BOOK_RATED",
+    "bookId": { "$oid": "5d52c7f8cc531e30860474a1" },
+    "createdAt": { "$date": { "$numberLong": "1570194279643" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "5d9a34b9136c7a5a20a26e3e" },
+    "userId": { "$oid": "5d40204985489b4165690f73" },
+    "action": "BOOK_ADDED_TO_FAVORITES",
+    "bookId": { "$oid": "5d52c7f8cc531e30860474a1" },
+    "createdAt": { "$date": { "$numberLong": "1570387129962" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "5d9a34c7136c7a5a20a26e40" },
+    "userId": { "$oid": "5d40204985489b4165690f73" },
+    "action": "BOOK_ADDED_TO_MUSTREAD",
+    "bookId": { "$oid": "5d52c811cc531e30860474a4" },
+    "createdAt": { "$date": { "$numberLong": "1570387143315" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "5d9a34d3136c7a5a20a26e42" },
+    "userId": { "$oid": "5d40204985489b4165690f73" },
+    "action": "BOOK_ADDED_TO_WISHLIST",
+    "bookId": { "$oid": "5d8374f7047dec0398109637" },
+    "createdAt": { "$date": { "$numberLong": "1570387155555" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "5d9b892460b3476547d5f683" },
+    "userId": { "$oid": "5d40204985489b4165690f73" },
+    "action": "COMMENT_ADDED",
+    "bookId": { "$oid": "5d826afd7c6091142aad4a74" },
+    "createdAt": { "$date": { "$numberLong": "1570474276043" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "5da4a7fe77bd6d76319a70b8" },
+    "userId": { "$oid": "5d40204985489b4165690f73" },
+    "action": "COMMENT_ADDED",
+    "bookId": { "$oid": "5d826afd7c6091142aad4a74" },
+    "createdAt": { "$date": { "$numberLong": "1571071998839" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "5da4bfad77bd6d76319a70cf" },
+    "userId": { "$oid": "5d40204985489b4165690f73" },
+    "action": "BOOK_ADDED_TO_FAVORITES",
+    "bookId": { "$oid": "5d826afd7c6091142aad4a74" },
+    "createdAt": { "$date": { "$numberLong": "1571078061022" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "5da4c15a77bd6d76319a70d0" },
+    "userId": { "$oid": "5d40204985489b4165690f73" },
+    "action": "BOOK_REMOVED_FROM_FAVORITES",
+    "bookId": { "$oid": "5d826afd7c6091142aad4a74" },
+    "createdAt": { "$date": { "$numberLong": "1571078490762" } },
+    "__v": { "$numberInt": "0" }
+  }
+]
