@@ -2,6 +2,9 @@ declare namespace Cypress {
   interface Chainable {
     login(email: string, password: string): Chainable;
     uploadOnServer(response: any): Chainable;
+    searchBooks(query: string): Chainable;
+    filterBooks(filter: 'all' | 'recent' | 'popular'): Chainable;
+    rateBook(bookIndex: number, rate: number): Chainable;
   }
 }
 
@@ -20,13 +23,20 @@ Cypress.Commands.add('uploadOnServer', response => {
   cy.route('POST', 'http://localhost:3333/files', response);
 });
 
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+Cypress.Commands.add('searchBooks', query => {
+  cy.get('[data-test=search-book]').type(query);
+});
+
+Cypress.Commands.add('filterBooks', filter => {
+  cy.get(`[data-test=${filter}]`).click();
+});
+
+Cypress.Commands.add('rateBook', (bookIndex, rate) => {
+  cy.get('[data-test=list-item]').then($books => {
+    cy.wrap($books[bookIndex])
+      .find('.rating-star')
+      .then($stars => {
+        cy.wrap($stars[rate - 1]).click();
+      });
+  });
+});

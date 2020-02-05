@@ -1,17 +1,23 @@
 <div class="mat-toolbar-row">
   <mat-button-toggle-group (change)="sort($event)" [value]="sortValue">
-    <mat-button-toggle value="rating_desc">
+    <mat-button-toggle value="rating_desc" data-test="all">
       <span>All books</span>
     </mat-button-toggle>
-    <mat-button-toggle value="createdAt_desc">
+    <mat-button-toggle value="createdAt_desc" data-test="recent">
       <span>Most recent</span>
     </mat-button-toggle>
-    <mat-button-toggle value="views_desc">
+    <mat-button-toggle value="views_desc" data-test="popular">
       <span>Most popular</span>
     </mat-button-toggle>
   </mat-button-toggle-group>
   <mat-form-field>
-    <input autocomplete="off" matInput placeholder="Enter Book Title" [formControl]="searchQuery" />
+    <input
+      autocomplete="off"
+      matInput
+      placeholder="Enter Book Title"
+      [formControl]="searchQuery"
+      data-test="search-book"
+    />
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
 </div>
