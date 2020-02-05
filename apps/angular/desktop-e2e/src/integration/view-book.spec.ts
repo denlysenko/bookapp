@@ -17,8 +17,8 @@ describe('View Book Page', () => {
     });
 
     cy.get('.logs .mat-list-item')
-      .should('have.length', 1)
-      .and('contain', 'You rated a Book');
+      .first()
+      .should('contain', 'You rated a Book');
   });
 
   it('should send a comment', () => {
@@ -26,15 +26,15 @@ describe('View Book Page', () => {
     cy.get('[data-test=submit-comment]').click();
     cy.get('.comments .mat-list-item').should('have.length', 1);
     cy.get('.logs .mat-list-item')
-      .should('have.length', 1)
-      .and('contain', 'You commented a Book');
+      .first()
+      .should('contain', 'You commented a Book');
   });
 
   it('should add book to favorites', () => {
     cy.get('[data-test=favorites]').click();
     cy.get('.logs .mat-list-item')
-      .should('have.length', 1)
-      .and('contain', 'You added a Book to Favourites');
+      .first()
+      .should('contain', 'You added a Book to Favourites');
 
     cy.contains('Favorite').click();
     cy.get('[data-test=list-item]')
@@ -57,8 +57,8 @@ describe('View Book Page', () => {
   it('should add book to mustread', () => {
     cy.get('[data-test=mustread]').click();
     cy.get('.logs .mat-list-item')
-      .should('have.length', 1)
-      .and('contain', 'You added a Book to Must Read Titles');
+      .first()
+      .should('contain', 'You added a Book to Must Read Titles');
 
     cy.contains('Must Read Titles').click();
     cy.get('[data-test=list-item]')
@@ -112,7 +112,7 @@ describe('View Book Page', () => {
     cy.get('[data-test=list-item]').should('not.exist');
   });
 
-  it('should open books reader', () => {
+  it('should open book reader', () => {
     cy.get('[data-test=read]').click();
 
     cy.url().should('include', '/books/read');

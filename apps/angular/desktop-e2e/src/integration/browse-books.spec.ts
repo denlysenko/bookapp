@@ -34,8 +34,8 @@ describe('Browse Books Page', () => {
   it('should rate a book', () => {
     cy.rateBook(3, 5);
     cy.get('.logs .mat-list-item')
-      .should('have.length', 1)
-      .and('contain', 'You rated a Book');
+      .first()
+      .should('contain', 'You rated a Book');
   });
 
   it('should open book view page', () => {

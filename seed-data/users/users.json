@@ -8,10 +8,10 @@
     "password": "jxaTF6On5bLF7Bq1K13x+nGNTG92Nog1svIE5tLN+uS7EJ9ZKH/neOmC+CcVPzgo/oe2Gn4rsf+TJgMt8O/wlA==",
     "roles": ["user"],
     "email": "user@test.com",
-    "displayName": "Test Test",
+    "displayName": "User Test",
     "salt": "+G+cpQanSTOB0JbY5vNwmw==",
     "__v": { "$numberInt": "0" },
-    "firstName": "Test",
+    "firstName": "User",
     "lastName": "Test",
     "avatar": ""
   },
