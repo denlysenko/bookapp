@@ -10,6 +10,7 @@
         mat-icon-button
         matTooltip="Read book"
         color="accent"
+        data-test="read"
       >
         <mat-icon>book</mat-icon>
       </a>
@@ -22,6 +23,7 @@
         mat-icon-button
         [matTooltip]="inFavorites ? 'Remove from Favorites' : 'Add To Favorites'"
         color="accent"
+        data-test="favorites"
         (click)="
           (inFavorites ? bookmarkRemoved : bookmarkAdded).emit({
             type: BOOKMARKS.FAVORITES,
@@ -38,6 +40,7 @@
         mat-icon-button
         [matTooltip]="inWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'"
         color="accent"
+        data-test="wishlist"
         (click)="
           (inWishlist ? bookmarkRemoved : bookmarkAdded).emit({
             type: BOOKMARKS.WISHLIST,
@@ -53,6 +56,7 @@
         mat-icon-button
         [matTooltip]="inMustread ? 'Remove from must read' : 'Add to must read'"
         color="accent"
+        data-test="mustread"
         (click)="
           (inMustread ? bookmarkRemoved : bookmarkAdded).emit({
             type: BOOKMARKS.MUSTREAD,

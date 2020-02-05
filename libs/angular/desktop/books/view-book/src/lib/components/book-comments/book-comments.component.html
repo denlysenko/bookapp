@@ -1,6 +1,6 @@
 <div class="book-comments">
   <h4>Comments</h4>
-  <mat-list *ngIf="comments.length" #list>
+  <mat-list *ngIf="comments.length" #list class="comments">
     <mat-list-item *ngFor="let comment of comments">
       <div mat-line>
         <span class="author">{{ comment.author.displayName }}</span>
@@ -21,6 +21,7 @@
       [(ngModel)]="text"
       cdkAutosizeMinRows="4"
       cdkTextareaAutosize
+      data-test="comment"
     ></textarea>
   </mat-form-field>
   <mat-card-actions>
@@ -30,6 +31,7 @@
       color="accent"
       [disabled]="loading"
       (click)="commentAdded.emit(text)"
+      data-test="submit-comment"
     >
       SUBMIT COMMENT
     </button>
