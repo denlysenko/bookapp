@@ -1,3 +1,5 @@
+// tslint:disable: no-big-function
+// tslint:disable: no-duplicate-string
 describe('Add Book Page', () => {
   const titleField = '[data-test=title]';
   const authorField = '[data-test=author]';
@@ -35,6 +37,7 @@ describe('Add Book Page', () => {
       it('should toggle price field', () => {
         cy.get(priceField).should('not.be.visible');
         cy.get(paidCheckbox).click();
+
         cy.get(priceField).should('be.visible');
       });
 

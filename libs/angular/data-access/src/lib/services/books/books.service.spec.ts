@@ -145,11 +145,17 @@ describe('BooksService', () => {
 
   describe('getBooks()', () => {
     it('should get paid books', done => {
-      service.getBooks(true).valueChanges.subscribe(({ data: { books: { rows } } }) => {
-        const [b] = rows;
-        expect(b._id).toEqual(book._id);
-        done();
-      });
+      service.getBooks(true).valueChanges.subscribe(
+        ({
+          data: {
+            books: { rows }
+          }
+        }) => {
+          const [b] = rows;
+          expect(b._id).toEqual(book._id);
+          done();
+        }
+      );
 
       const op = controller.expectOne(addTypenameToDocument(PAID_BOOKS_QUERY));
 
@@ -175,11 +181,17 @@ describe('BooksService', () => {
     });
 
     it('should get free books', done => {
-      service.getBooks(false).valueChanges.subscribe(({ data: { books: { rows } } }) => {
-        const [b] = rows;
-        expect(b._id).toEqual(book._id);
-        done();
-      });
+      service.getBooks(false).valueChanges.subscribe(
+        ({
+          data: {
+            books: { rows }
+          }
+        }) => {
+          const [b] = rows;
+          expect(b._id).toEqual(book._id);
+          done();
+        }
+      );
 
       const op = controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY));
 
@@ -203,13 +215,17 @@ describe('BooksService', () => {
     });
 
     it('should filter books', done => {
-      service
-        .getBooks(false, { field: 'field', search: 'search' })
-        .valueChanges.subscribe(({ data: { books: { rows } } }) => {
+      service.getBooks(false, { field: 'field', search: 'search' }).valueChanges.subscribe(
+        ({
+          data: {
+            books: { rows }
+          }
+        }) => {
           const [b] = rows;
           expect(b._id).toEqual(book._id);
           done();
-        });
+        }
+      );
 
       const op = controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY));
 
@@ -236,13 +252,17 @@ describe('BooksService', () => {
     });
 
     it('should skip books', done => {
-      service
-        .getBooks(false, undefined, undefined, 10)
-        .valueChanges.subscribe(({ data: { books: { rows } } }) => {
+      service.getBooks(false, undefined, undefined, 10).valueChanges.subscribe(
+        ({
+          data: {
+            books: { rows }
+          }
+        }) => {
           const [b] = rows;
           expect(b._id).toEqual(book._id);
           done();
-        });
+        }
+      );
 
       const op = controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY));
 
@@ -266,13 +286,17 @@ describe('BooksService', () => {
     });
 
     it('should limit books', done => {
-      service
-        .getBooks(false, undefined, undefined, undefined, 20)
-        .valueChanges.subscribe(({ data: { books: { rows } } }) => {
+      service.getBooks(false, undefined, undefined, undefined, 20).valueChanges.subscribe(
+        ({
+          data: {
+            books: { rows }
+          }
+        }) => {
           const [b] = rows;
           expect(b._id).toEqual(book._id);
           done();
-        });
+        }
+      );
 
       const op = controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY));
 
@@ -296,13 +320,17 @@ describe('BooksService', () => {
     });
 
     it('should order books', done => {
-      service
-        .getBooks(false, undefined, 'title_desc')
-        .valueChanges.subscribe(({ data: { books: { rows } } }) => {
+      service.getBooks(false, undefined, 'title_desc').valueChanges.subscribe(
+        ({
+          data: {
+            books: { rows }
+          }
+        }) => {
           const [b] = rows;
           expect(b._id).toEqual(book._id);
           done();
-        });
+        }
+      );
 
       const op = controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY));
 

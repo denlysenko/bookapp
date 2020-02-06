@@ -1,3 +1,6 @@
+// tslint:disable: no-identical-functions
+
+// tslint:disable: no-duplicate-string
 describe('View Book Page', () => {
   beforeEach(() => {
     cy.exec('npm run seed:db');

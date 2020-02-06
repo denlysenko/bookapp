@@ -45,11 +45,7 @@ export class BooksFilterComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     this.searchQuery.valueChanges
-      .pipe(
-        debounceTime(500),
-        distinctUntilChanged(),
-        takeUntil(this.destroy$)
-      )
+      .pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe(val => this.searchChanged.emit(val));
   }
 

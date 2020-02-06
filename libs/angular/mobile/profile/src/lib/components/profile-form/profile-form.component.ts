@@ -112,7 +112,7 @@ export class ProfileFormComponent extends NsBaseForm {
     let imageSource = null;
 
     try {
-      imageSource = await new ImageSource().fromAsset(imageAsset);
+      imageSource = await ImageSource.fromAsset(imageAsset);
     } catch (err) {}
 
     if (!imageSource) {

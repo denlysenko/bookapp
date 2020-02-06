@@ -1,3 +1,4 @@
+// tslint:disable: no-duplicate-string
 describe('History Page', () => {
   beforeEach(() => {
     cy.exec('npm run seed:db');

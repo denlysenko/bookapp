@@ -32,9 +32,15 @@ export abstract class BooksPageBase extends BaseComponent {
   booksQueryRef = this.booksService.getBooks(this.paid, this.filterInput);
 
   books$: Observable<Book[]> = this.booksQueryRef.valueChanges.pipe(
-    tap(({ data: { books: { rows, count } } }) => {
-      this.hasMoreItems = rows.length !== count;
-    }),
+    tap(
+      ({
+        data: {
+          books: { rows, count }
+        }
+      }) => {
+        this.hasMoreItems = rows.length !== count;
+      }
+    ),
     map(({ data }) => data.books.rows)
   );
 

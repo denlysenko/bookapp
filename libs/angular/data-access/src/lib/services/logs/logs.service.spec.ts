@@ -14,6 +14,7 @@ import { addTypenameToDocument } from 'apollo-utilities';
 
 import { DEFAULT_ORDER_BY, LogsService } from './logs.service';
 
+// tslint:disable: no-identical-functions
 describe('LogsService', () => {
   let controller: ApolloTestingController;
   let service: LogsService;
@@ -44,11 +45,17 @@ describe('LogsService', () => {
 
   describe('getLastLogs()', () => {
     it('should get last logs', done => {
-      service.getLastLogs().valueChanges.subscribe(({ data: { logs: { rows } } }) => {
-        const [l] = rows;
-        expect(l.action).toEqual(log.action);
-        done();
-      });
+      service.getLastLogs().valueChanges.subscribe(
+        ({
+          data: {
+            logs: { rows }
+          }
+        }) => {
+          const [l] = rows;
+          expect(l.action).toEqual(log.action);
+          done();
+        }
+      );
 
       controller.expectOne(addTypenameToDocument(LAST_LOGS_QUERY)).flush({
         data: {
@@ -78,12 +85,18 @@ describe('LogsService', () => {
     it('should get logs', done => {
       service
         .getLogs()
-        // tslint:disable-next-line: no-identical-functions
-        .valueChanges.subscribe(({ data: { logs: { rows } } }) => {
-          const [l] = rows;
-          expect(l.action).toEqual(log.action);
-          done();
-        });
+
+        .valueChanges.subscribe(
+          ({
+            data: {
+              logs: { rows }
+            }
+          }) => {
+            const [l] = rows;
+            expect(l.action).toEqual(log.action);
+            done();
+          }
+        );
 
       const op = controller.expectOne(addTypenameToDocument(LOGS_QUERY));
 

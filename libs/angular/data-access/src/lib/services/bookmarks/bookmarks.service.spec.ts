@@ -150,7 +150,7 @@ describe('BookmarksService', () => {
     it('should add new bookmark in bookmarks list in store', done => {
       service.addToBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id }).subscribe(() => {
         apollo
-          .query<{ userBookmarksByBook: Array<{ type: number }> }>({
+          .query<{ userBookmarksByBook: { type: number }[] }>({
             query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
             variables: {
               bookId: book._id
@@ -220,7 +220,7 @@ describe('BookmarksService', () => {
     it('should remove bookmark from bookmarks list in store', done => {
       service.removeFromBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id }).subscribe(() => {
         apollo
-          .query<{ userBookmarksByBook: Array<{ type: number }> }>({
+          .query<{ userBookmarksByBook: { type: number }[] }>({
             query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
             variables: {
               bookId: book._id

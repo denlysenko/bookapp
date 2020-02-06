@@ -9,9 +9,15 @@ export abstract class HistoryPageBase {
   hasMoreItems = false;
 
   logs$: Observable<Log[]> = this.logsQueryRef.valueChanges.pipe(
-    tap(({ data: { logs: { rows, count } } }) => {
-      this.hasMoreItems = rows.length !== count;
-    }),
+    tap(
+      ({
+        data: {
+          logs: { rows, count }
+        }
+      }) => {
+        this.hasMoreItems = rows.length !== count;
+      }
+    ),
     map(({ data }) => data.logs.rows)
   );
 

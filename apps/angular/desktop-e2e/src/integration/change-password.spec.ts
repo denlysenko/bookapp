@@ -1,3 +1,7 @@
+// tslint:disable: no-identical-functions
+
+// tslint:disable: no-hardcoded-credentials
+
 describe('Change Password Page', () => {
   const oldPasswordField = '[data-test=oldPassword]';
   const passwordField = '[data-test=password]';

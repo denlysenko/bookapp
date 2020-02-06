@@ -32,9 +32,6 @@
     "api-auth": {
       "tags": ["scope:api", "type:feature", "platform:server"]
     },
-    "api-config": {
-      "tags": ["scope:api", "type:feature", "platform:server"]
-    },
     "api-users": {
       "tags": ["scope:api", "type:feature", "platform:server"]
     },

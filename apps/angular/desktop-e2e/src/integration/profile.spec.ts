@@ -1,3 +1,4 @@
+// tslint:disable: no-duplicate-string
 describe('Profile page', () => {
   const emailField = '[data-test=email]';
   const firstNameField = '[data-test=firstName]';

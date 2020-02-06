@@ -18,7 +18,7 @@ export class BookmarksService {
 
   getBookmarksByBook(bookId: string) {
     return this.apollo.watchQuery<{
-      userBookmarksByBook: Array<{ type: string }>;
+      userBookmarksByBook: { type: string }[];
     }>({
       query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
       variables: {
@@ -49,7 +49,7 @@ export class BookmarksService {
       },
       update: (store, { data: { addToBookmarks } }) => {
         const data: {
-          userBookmarksByBook: Array<{ type: string }>;
+          userBookmarksByBook: { type: string }[];
         } = store.readQuery({
           query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
           variables: {
@@ -79,7 +79,7 @@ export class BookmarksService {
       },
       update: (store, { data: { removeFromBookmarks } }) => {
         const data: {
-          userBookmarksByBook: Array<{ type: string }>;
+          userBookmarksByBook: { type: string }[];
         } = store.readQuery({
           query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
           variables: {

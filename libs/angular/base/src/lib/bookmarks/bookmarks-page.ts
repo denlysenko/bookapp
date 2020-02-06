@@ -14,9 +14,15 @@ export abstract class BookmarksPageBase {
   hasMoreItems = false;
 
   books$: Observable<Book[]> = this.bookmarksQueryRef.valueChanges.pipe(
-    tap(({ data: { bookmarks: { rows, count } } }) => {
-      this.hasMoreItems = rows.length !== count;
-    }),
+    tap(
+      ({
+        data: {
+          bookmarks: { rows, count }
+        }
+      }) => {
+        this.hasMoreItems = rows.length !== count;
+      }
+    ),
     map(({ data }) => data.bookmarks.rows.map(bookmark => bookmark.book))
   );
 
