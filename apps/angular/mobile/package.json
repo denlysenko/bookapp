@@ -2,11 +2,11 @@
   "name": "mobile",
   "nativescript": {
     "id": "org.nativescript.bookapp",
-    "tns-android": {
-      "version": "6.2.0"
-    },
     "tns-ios": {
-      "version": "6.2.0"
+      "version": "6.3.0"
+    },
+    "tns-android": {
+      "version": "6.3.1"
     }
   },
   "description": "NativeScript Application",
@@ -47,8 +47,8 @@
   },
   "devDependencies": {
     "@angular/compiler-cli": "~8.2.14",
-    "@ngtools/webpack": "~8.3.19",
-    "nativescript-dev-webpack": "~1.3.0",
+    "@ngtools/webpack": "~8.3.25",
+    "nativescript-dev-webpack": "~1.4.1",
     "node-sass": "file:../../../node_modules/node-sass",
     "typescript": "file:../../../node_modules/typescript"
   }
