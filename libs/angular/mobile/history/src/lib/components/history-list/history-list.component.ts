@@ -28,7 +28,9 @@ export class HistoryListComponent {
   set logs(logs: Log[]) {
     if (logs) {
       this._logs.next(new ObservableArray(logs));
-      this.listViewComponent.listView.notifyLoadOnDemandFinished();
+      try {
+        this.listViewComponent.listView.notifyLoadOnDemandFinished();
+      } catch {}
     }
   }
 

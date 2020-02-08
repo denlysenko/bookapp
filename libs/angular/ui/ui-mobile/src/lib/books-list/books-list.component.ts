@@ -44,9 +44,9 @@ export class BooksListComponent {
      * this might be fixed in next versions
      * for now use try/catch
      */
-    // try {
-    this.listViewComponent.listView.notifyLoadOnDemandFinished();
-    // } catch (e) {}
+    try {
+      this.listViewComponent.listView.notifyLoadOnDemandFinished();
+    } catch (e) {}
   }
 
   @Output()

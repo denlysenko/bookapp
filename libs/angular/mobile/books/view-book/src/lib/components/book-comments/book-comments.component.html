@@ -1,8 +1,8 @@
-<StackLayout>
+<GridLayout>
   <StackLayout class="m-10" [shadow]="2">
     <FlexboxLayout flexDirection="column" height="100%">
-      <StackLayout class="mat-card" flexGrow="1">
-        <Label *ngIf="!comments.length" row="0" text="No comments yet" marginBottom="10"></Label>
+      <GridLayout class="mat-card" flexGrow="1" rows="*, auto">
+        <Label *ngIf="!comments.length" row="0" text="No comments yet" height="100%"></Label>
         <ListView *ngIf="comments.length" #listView [items]="comments" row="0" class="list-group">
           <ng-template let-comment="item">
             <StackLayout class="list-group-item">
@@ -14,7 +14,7 @@
             </StackLayout>
           </ng-template>
         </ListView>
-        <GridLayout height="13%" class="form" row="1" columns="*, auto">
+        <GridLayout height="80" class="form" row="1" columns="*, auto">
           <TextView
             #textView
             col="0"
@@ -28,7 +28,7 @@
             </FormattedString>
           </Button>
         </GridLayout>
-      </StackLayout>
+      </GridLayout>
     </FlexboxLayout>
   </StackLayout>
-</StackLayout>
+</GridLayout>

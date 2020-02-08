@@ -88,6 +88,8 @@ export class AuthService {
       .pipe(
         tap(async ({ data }) => {
           if (data.logout) {
+            await this.apollo.getClient().clearStore();
+
             this.storagePlatformService.removeItem(AUTH_TOKEN);
             this.storeService.remove(AUTH_TOKEN);
             this.routerExtensions.navigate(['auth'], {
@@ -99,8 +101,6 @@ export class AuthService {
                 curve: 'linear'
               }
             });
-
-            await this.apollo.getClient().clearStore();
           }
         })
       );

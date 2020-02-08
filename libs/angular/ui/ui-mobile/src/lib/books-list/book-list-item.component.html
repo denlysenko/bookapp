@@ -14,7 +14,7 @@
       [queryParams]="{ bookId: book._id }"
     >
       <Label class="title" textWrap="true" [text]="book.title"> </Label>
-      <Label class="author" [text]="'by ' + book.author"></Label>
+      <Label class="author" [text]="'by ' + book.author" textWrap="true"></Label>
       <Label
         *ngIf="book.paid"
         class="price"
@@ -29,6 +29,9 @@
       filledColor="#ffab00"
       max="5"
       isindicator="false"
+      android:scaleX=".5"
+      android:scaleY=".5"
+      android:style="width: 240"
     ></StarRating>
   </FlexboxLayout>
 </StackLayout>

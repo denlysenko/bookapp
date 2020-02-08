@@ -20,9 +20,10 @@
   <Label class="action-bar-title" text="Buy Books"></Label>
 </ActionBar>
 <GridLayout rows="auto, *">
-  <StackLayout row="0" class="sort">
+  <StackLayout row="0" class="sort" android:style="padding-bottom: 1;">
     <SegmentedBar
       class="segmented-bar"
+      ios:style="border-width: 1; border-color: #9ca5b9;"
       [items]="sortItems"
       [selectedIndex]="selectedOption$ | async"
       (selectedIndexChange)="onSelectedIndexChange($event)"

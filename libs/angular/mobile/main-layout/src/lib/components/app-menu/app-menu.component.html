@@ -27,7 +27,11 @@
     <Label col="0" text="access_time" class="mdi"></Label>
     <StackLayout col="1" class="p-r-10">
       <Label [text]="actions[log.action]" textWrap="true"></Label>
-      <Label [text]="log.book.title + ' by ' + log.book.author" class="note"></Label>
+      <Label
+        [text]="log.book.title + ' by ' + log.book.author"
+        class="note"
+        textWrap="true"
+      ></Label>
       <Label [text]="log.createdAt | dateToPeriod" class="note"></Label>
     </StackLayout>
   </GridLayout>

@@ -11,9 +11,9 @@
       tkListViewLayout
       scrollDirection="Vertical"
       spanCount="2"
-      itemHeight="330"
+      ios:itemHeight="330"
     ></ListViewGridLayout>
-    <ng-template tkListItemTemplate let-book="item">
+    <ng-template tkListItemTemplate android:height="330" let-book="item">
       <StackLayout class="list-item">
         <bookapp-book-list-item [book]="book" (rate)="rate.emit($event)"></bookapp-book-list-item>
       </StackLayout>

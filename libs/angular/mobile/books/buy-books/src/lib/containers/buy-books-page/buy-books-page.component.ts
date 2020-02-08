@@ -86,7 +86,7 @@ export class BuyBooksPageComponent extends BooksPageBase {
 
   async onSearchButtonTap() {
     const options: ModalDialogOptions = {
-      context: { paid: false },
+      context: { paid: true },
       fullscreen: true,
       animated: false,
       viewContainerRef: this.viewContainerRef
@@ -99,8 +99,8 @@ export class BuyBooksPageComponent extends BooksPageBase {
       setTimeout(() => {
         this.routerExtensions.navigateByUrl(
           book.paid
-            ? `/buy/${book.url}?bookId=${book._id}`
-            : `/browse/${book.url}?bookId=${book._id}`
+            ? `/books/buy/${book.url}?bookId=${book._id}`
+            : `/books/browse/${book.url}?bookId=${book._id}`
         );
       });
     }

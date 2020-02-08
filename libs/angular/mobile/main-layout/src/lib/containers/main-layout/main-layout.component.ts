@@ -10,6 +10,8 @@ import { RadSideDrawerComponent, SideDrawerType } from 'nativescript-ui-sidedraw
 
 import { takeUntil } from 'rxjs/operators';
 
+import { Page } from 'tns-core-modules/ui/page';
+
 @Component({
   moduleId: module.id,
   selector: 'bookapp-main-layout',
@@ -32,8 +34,14 @@ export class MainLayoutComponent extends MainLayoutBase implements AfterViewInit
   private _sideDrawerTransition: DrawerTransitionBase;
   private drawer: SideDrawerType;
 
-  constructor(authService: AuthService, logsService: LogsService, private readonly router: Router) {
+  constructor(
+    authService: AuthService,
+    logsService: LogsService,
+    private readonly router: Router,
+    private readonly page: Page
+  ) {
     super(authService, logsService);
+    this.page.actionBarHidden = true;
     this._sideDrawerTransition = new SlideInOnTopTransition();
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe(e => {
       if (e instanceof NavigationEnd && this.drawer) {

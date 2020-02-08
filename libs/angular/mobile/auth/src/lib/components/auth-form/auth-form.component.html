@@ -116,6 +116,7 @@
           [text]="isLoggingIn ? 'Don\'t have an account?' : 'Already have an account?'"
         ></Label>
         <Button
+          android:style="z-index: -1"
           class="btn btn-outline btn-active"
           [text]="isLoggingIn ? 'Create one' : 'Back to Login'"
           (tap)="toggleAuthMode()"

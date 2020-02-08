@@ -98,8 +98,8 @@ export class BrowseBooksPageComponent extends BooksPageBase {
       setTimeout(() => {
         this.routerExtensions.navigateByUrl(
           book.paid
-            ? `/buy/${book.url}?bookId=${book._id}`
-            : `/browse/${book.url}?bookId=${book._id}`
+            ? `/books/buy/${book.url}?bookId=${book._id}`
+            : `/books/browse/${book.url}?bookId=${book._id}`
         );
       });
     }

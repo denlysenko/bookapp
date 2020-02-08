@@ -4,10 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { ReadBookBase } from '@bookapp/angular/base';
 import { ProfileService } from '@bookapp/angular/data-access';
 
+import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { WebViewInterface } from 'nativescript-webview-interface';
 
 import * as application from 'tns-core-modules/application';
-import { EventData } from 'tns-core-modules/ui/page/page';
+import { EventData, getViewById } from 'tns-core-modules/ui/page/page';
 import { WebView } from 'tns-core-modules/ui/web-view';
 
 @Component({
@@ -61,6 +62,11 @@ export class ReadBookPageComponent extends ReadBookBase implements OnDestroy {
         super.ngOnDestroy();
       });
     });
+  }
+
+  onDrawerButtonTap() {
+    const sideDrawer = getViewById(application.getRootView(), 'drawer') as RadSideDrawer;
+    sideDrawer.toggleDrawerState();
   }
 
   ngOnDestroy() {
