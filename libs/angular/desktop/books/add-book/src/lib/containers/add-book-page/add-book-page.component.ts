@@ -25,7 +25,7 @@ const UNSAVED_CHANGES_WARNING =
 export class AddBookPageComponent {
   book$: Observable<Book> = this.route.data.pipe(pluck('book'));
 
-  @ViewChild(AddBookFormComponent, { static: false })
+  @ViewChild(AddBookFormComponent)
   private readonly bookFormComponent: AddBookFormComponent;
 
   private loading = new BehaviorSubject<boolean>(false);

@@ -1,7 +1,8 @@
-import { EventEmitter, Input, Output } from '@angular/core';
+import { EventEmitter, Input, Output, Directive } from '@angular/core';
 
 import { Comment } from '@bookapp/shared';
 
+@Directive()
 export abstract class BookCommentsBase {
   text = '';
 

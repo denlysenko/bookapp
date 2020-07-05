@@ -1,7 +1,8 @@
-import { EventEmitter, Input, Output } from '@angular/core';
+import { EventEmitter, Input, Output, Directive } from '@angular/core';
 
 import { Book, BookmarkEvent, BOOKMARKS } from '@bookapp/shared';
 
+@Directive()
 export abstract class BookDetailsBase {
   readonly BOOKMARKS = BOOKMARKS;
 

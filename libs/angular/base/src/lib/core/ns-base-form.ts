@@ -1,11 +1,12 @@
-import { ViewChild } from '@angular/core';
+import { ViewChild, Directive } from '@angular/core';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 
+@Directive()
 export abstract class NsBaseForm {
   constructor(protected readonly feedbackService: FeedbackPlatformService) {}
 
-  @ViewChild('dataForm', { static: false })
+  @ViewChild('dataForm')
   // use any for now because of jest transform error
   dataForm: any;
 

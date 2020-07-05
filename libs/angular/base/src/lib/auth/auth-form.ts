@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, EventEmitter, Input, OnInit, Output, Directive } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
@@ -6,6 +6,7 @@ import { SignupCredentials } from '@bookapp/shared';
 
 import { BaseForm } from '../core/base-form';
 
+@Directive()
 export abstract class AuthFormBase extends BaseForm implements OnInit {
   isLoggingIn = true;
 
