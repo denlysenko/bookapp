@@ -1,8 +1,9 @@
-import { OnDestroy } from '@angular/core';
+import { Directive, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ProfileService } from '@bookapp/angular/data-access';
 
+@Directive()
 export abstract class ReadBookBase implements OnDestroy {
   currentLocation: string;
 

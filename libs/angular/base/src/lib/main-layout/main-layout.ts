@@ -1,4 +1,4 @@
-import { OnDestroy } from '@angular/core';
+import { Directive, OnDestroy } from '@angular/core';
 
 import { AuthService, LogsService } from '@bookapp/angular/data-access';
 import { LOG_CREATED_SUBSCRIPTION } from '@bookapp/shared';
@@ -7,6 +7,7 @@ import { map, tap } from 'rxjs/operators';
 
 import { BaseComponent } from '../core/base-component';
 
+@Directive()
 export abstract class MainLayoutBase extends BaseComponent implements OnDestroy {
   user$ = this.authService.me().valueChanges.pipe(
     map(({ data }) => data.me),
