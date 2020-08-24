@@ -58,8 +58,8 @@ export abstract class AuthPageBase {
         transition: {
           name: 'flip',
           duration: 300,
-          curve: 'linear'
-        }
+          curve: 'linear',
+        },
       });
     }
 

@@ -6,6 +6,6 @@ import { DropDirective } from './drop.directive';
 @NgModule({
   declarations: [DropDirective],
   imports: [CommonModule],
-  exports: [DropDirective]
+  exports: [DropDirective],
 })
 export class DropModule {}

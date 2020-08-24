@@ -14,8 +14,8 @@ import { BuyBooksPageComponent } from './containers/buy-books-page/buy-books-pag
     MatToolbarModule,
     PreloaderModule,
     BooksFilterModule,
-    BooksListModule
+    BooksListModule,
   ],
-  declarations: [BuyBooksPageComponent]
+  declarations: [BuyBooksPageComponent],
 })
 export class BuyBooksModule {}

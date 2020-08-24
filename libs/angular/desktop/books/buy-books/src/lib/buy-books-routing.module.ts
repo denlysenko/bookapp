@@ -8,10 +8,10 @@ import { BuyBooksPageComponent } from './containers/buy-books-page/buy-books-pag
     RouterModule.forChild([
       {
         path: '',
-        component: BuyBooksPageComponent
-      }
-    ])
+        component: BuyBooksPageComponent,
+      },
+    ]),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class BuyBooksRoutingModule {}

@@ -7,7 +7,7 @@ import {
   Bookmark,
   BOOKMARKS_BY_USER_AND_BOOK_QUERY,
   BOOKMARKS_QUERY,
-  REMOVE_FROM_BOOKMARKS_MUTATION
+  REMOVE_FROM_BOOKMARKS_MUTATION,
 } from '@bookapp/shared';
 
 import { Apollo } from 'apollo-angular';
@@ -22,8 +22,8 @@ export class BookmarksService {
     }>({
       query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
       variables: {
-        bookId
-      }
+        bookId,
+      },
     });
   }
 
@@ -33,10 +33,10 @@ export class BookmarksService {
       variables: {
         type,
         skip,
-        first
+        first,
       },
       fetchPolicy: 'network-only',
-      notifyOnNetworkStatusChange: true
+      notifyOnNetworkStatusChange: true,
     });
   }
 
@@ -45,7 +45,7 @@ export class BookmarksService {
       mutation: ADD_TO_BOOKMARKS_MUTATION,
       variables: {
         type,
-        bookId
+        bookId,
       },
       update: (store, { data: { addToBookmarks } }) => {
         const data: {
@@ -53,20 +53,21 @@ export class BookmarksService {
         } = store.readQuery({
           query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
           variables: {
-            bookId
-          }
+            bookId,
+          },
         });
-
-        data.userBookmarksByBook.push(addToBookmarks);
 
         store.writeQuery({
           query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
           variables: {
-            bookId
+            bookId,
           },
-          data
+          data: {
+            ...data,
+            userBookmarksByBook: [...data.userBookmarksByBook, addToBookmarks],
+          },
         });
-      }
+      },
     });
   }
 
@@ -75,7 +76,7 @@ export class BookmarksService {
       mutation: REMOVE_FROM_BOOKMARKS_MUTATION,
       variables: {
         type,
-        bookId
+        bookId,
       },
       update: (store, { data: { removeFromBookmarks } }) => {
         const data: {
@@ -83,22 +84,23 @@ export class BookmarksService {
         } = store.readQuery({
           query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
           variables: {
-            bookId
-          }
+            bookId,
+          },
         });
-
-        data.userBookmarksByBook = data.userBookmarksByBook.filter(
-          bookmark => bookmark.type !== removeFromBookmarks.type
-        );
 
         store.writeQuery({
           query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
           variables: {
-            bookId
+            bookId,
           },
-          data
+          data: {
+            ...data,
+            userBookmarksByBook: data.userBookmarksByBook.filter(
+              (bookmark) => bookmark.type !== removeFromBookmarks.type
+            ),
+          },
         });
-      }
+      },
     });
   }
 }

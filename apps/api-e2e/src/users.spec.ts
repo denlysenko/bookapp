@@ -12,14 +12,14 @@ import {
   MockConfigService,
   MockModel,
   MockUsersService,
-  user
+  user,
 } from '@bookapp/testing';
 
 import {
   BadRequestException,
   HttpStatus,
   INestApplication,
-  NotFoundException
+  NotFoundException,
 } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
@@ -34,8 +34,8 @@ const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
 const validationError = new ValidationError();
 validationError.errors = {
   email: {
-    message: USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR
-  }
+    message: USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR,
+  },
 };
 
 describe('UsersModule', () => {
@@ -46,12 +46,12 @@ describe('UsersModule', () => {
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
-          isGlobal: true
+          isGlobal: true,
         }),
         UsersModule,
         AuthModule,
-        GraphqlModule
-      ]
+        GraphqlModule,
+      ],
     })
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
@@ -69,7 +69,7 @@ describe('UsersModule', () => {
 
     jest.spyOn(usersService, 'findById').mockResolvedValue({
       ...user,
-      roles: [ROLES.ADMIN]
+      roles: [ROLES.ADMIN],
     } as any);
 
     app = module.createNestApplication();
@@ -88,18 +88,18 @@ describe('UsersModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             users: {
               rows: [
                 {
-                  _id: user._id
-                }
-              ]
-            }
-          }
+                  _id: user._id,
+                },
+              ],
+            },
+          },
         });
     });
 
@@ -114,14 +114,14 @@ describe('UsersModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         });
 
       expect(usersService.findAll).toHaveBeenCalledWith({
         filter: { test: /query/i },
         first: null,
         order: null,
-        skip: null
+        skip: null,
       });
     });
 
@@ -136,14 +136,14 @@ describe('UsersModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         });
 
       expect(usersService.findAll).toHaveBeenCalledWith({
         filter: null,
         first: null,
         order: null,
-        skip: 10
+        skip: 10,
       });
     });
 
@@ -158,14 +158,14 @@ describe('UsersModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         });
 
       expect(usersService.findAll).toHaveBeenCalledWith({
         filter: null,
         first: 10,
         order: null,
-        skip: null
+        skip: null,
       });
     });
 
@@ -180,35 +180,33 @@ describe('UsersModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         });
 
       expect(usersService.findAll).toHaveBeenCalledWith({
         filter: null,
         first: null,
         order: { email: 1 },
-        skip: null
+        skip: null,
       });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `query {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `query {
             users {
               rows {
                 _id
               }
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
 
@@ -227,15 +225,15 @@ describe('UsersModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         error: 'Forbidden',
         message: 'Forbidden resource',
-        statusCode: HttpStatus.FORBIDDEN
+        statusCode: HttpStatus.FORBIDDEN,
       });
     });
   });
@@ -250,35 +248,33 @@ describe('UsersModule', () => {
             user(id: "user_1") {
               email
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             user: {
-              email: user.email
-            }
-          }
+              email: user.email,
+            },
+          },
         });
 
       expect(usersService.findById).toHaveBeenCalledWith('user_1');
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `query {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `query {
             user(id: "user_1") {
               email
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
 
@@ -295,15 +291,15 @@ describe('UsersModule', () => {
             user(id: "user_1") {
               email
             }
-          }`
+          }`,
         });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         error: 'Forbidden',
         message: 'Forbidden resource',
-        statusCode: HttpStatus.FORBIDDEN
+        statusCode: HttpStatus.FORBIDDEN,
       });
     });
   });
@@ -318,33 +314,31 @@ describe('UsersModule', () => {
             me {
               email
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             me: {
-              email: user.email
-            }
-          }
+              email: user.email,
+            },
+          },
         });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `query {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `query {
             me {
               email
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
   });
@@ -359,18 +353,18 @@ describe('UsersModule', () => {
             updateUser(id: "user_1", user: { email: "test2@test.com" }) {
               email
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             updateUser: {
-              email: user.email
-            }
-          }
+              email: user.email,
+            },
+          },
         });
 
       expect(usersService.update).toHaveBeenCalledWith('user_1', {
-        email: 'test2@test.com'
+        email: 'test2@test.com',
       });
     });
 
@@ -387,32 +381,30 @@ describe('UsersModule', () => {
             updateUser(id: "user_1", user: { email: "test2@test.com" }) {
               email
             }
-          }`
+          }`,
         });
 
       const [error] = res.body.errors;
 
       expect(error).toEqual({
-        email: { message: USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR }
+        email: { message: USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR },
       });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `mutation {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `mutation {
             updateUser(id: "user_1", user: { email: "test2@test.com" }) {
               email
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
   });
@@ -428,12 +420,12 @@ describe('UsersModule', () => {
               accessToken
               refreshToken
             }
-          }`
+          }`,
         })
         .expect({
           data: {
-            changePassword: authPayload
-          }
+            changePassword: authPayload,
+          },
         });
 
       expect(usersService.changePassword).toHaveBeenCalledWith(
@@ -459,35 +451,33 @@ describe('UsersModule', () => {
               accessToken
               refreshToken
             }
-          }`
+          }`,
         });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         error: 'Bad Request',
         message: USER_VALIDATION_ERRORS.OLD_PASSWORD_MATCH_ERR,
-        statusCode: HttpStatus.BAD_REQUEST
+        statusCode: HttpStatus.BAD_REQUEST,
       });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `mutation {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `mutation {
             changePassword(password: "newPassword", oldPassword: "oldPassword") {
               accessToken
               refreshToken
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
   });
@@ -499,12 +489,12 @@ describe('UsersModule', () => {
         .send({
           query: `mutation {
             requestResetPassword(email: "test@test.com")
-          }`
+          }`,
         })
         .expect({
           data: {
-            requestResetPassword: 'token'
-          }
+            requestResetPassword: 'token',
+          },
         });
 
       expect(usersService.requestResetPassword).toHaveBeenCalledWith('test@test.com');
@@ -517,20 +507,18 @@ describe('UsersModule', () => {
           Promise.reject(new NotFoundException(USER_VALIDATION_ERRORS.EMAIL_NOT_FOUND_ERR))
         );
 
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `mutation {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `mutation {
             requestResetPassword(email: "test@test.com")
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         error: 'Not Found',
         message: USER_VALIDATION_ERRORS.EMAIL_NOT_FOUND_ERR,
-        statusCode: HttpStatus.NOT_FOUND
+        statusCode: HttpStatus.NOT_FOUND,
       });
     });
   });
@@ -542,12 +530,12 @@ describe('UsersModule', () => {
         .send({
           query: `mutation {
             resetPassword(token: "token", newPassword: "password")
-          }`
+          }`,
         })
         .expect({
           data: {
-            resetPassword: true
-          }
+            resetPassword: true,
+          },
         });
 
       expect(usersService.resetPassword).toHaveBeenCalledWith('token', 'password');
@@ -560,20 +548,18 @@ describe('UsersModule', () => {
           Promise.reject(new NotFoundException(USER_VALIDATION_ERRORS.TOKEN_NOT_FOUND_ERR))
         );
 
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `mutation {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `mutation {
             resetPassword(token: "token", newPassword: "password")
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         error: 'Not Found',
         message: USER_VALIDATION_ERRORS.TOKEN_NOT_FOUND_ERR,
-        statusCode: HttpStatus.NOT_FOUND
+        statusCode: HttpStatus.NOT_FOUND,
       });
     });
   });
@@ -588,14 +574,14 @@ describe('UsersModule', () => {
             deleteUser(id: "user_1") {
               _id
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             deleteUser: {
-              _id: user._id
-            }
-          }
+              _id: user._id,
+            },
+          },
         });
 
       expect(usersService.remove).toHaveBeenCalledWith('user_1');
@@ -616,34 +602,32 @@ describe('UsersModule', () => {
             deleteUser(id: "user_1") {
               _id
             }
-          }`
+          }`,
         });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         error: 'Not Found',
         message: USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR,
-        statusCode: HttpStatus.NOT_FOUND
+        statusCode: HttpStatus.NOT_FOUND,
       });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `mutation {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `mutation {
             deleteUser(id: "user_1") {
               _id
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
 
@@ -660,15 +644,15 @@ describe('UsersModule', () => {
             deleteUser(id: "user_1") {
               _id
             }
-          }`
+          }`,
         });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         error: 'Forbidden',
         message: 'Forbidden resource',
-        statusCode: HttpStatus.FORBIDDEN
+        statusCode: HttpStatus.FORBIDDEN,
       });
     });
   });

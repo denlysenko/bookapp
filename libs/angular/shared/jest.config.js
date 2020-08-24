@@ -1,9 +1,14 @@
 module.exports = {
   name: 'angular-shared',
   preset: '../../../jest.config.js',
+  globals: {
+    'ts-jest': {
+      tsConfig: '<rootDir>/tsconfig.spec.json',
+    },
+  },
   transform: {
-    '^.+\\.[tj]sx?$': 'ts-jest'
+    '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html'],
-  coverageDirectory: '../../../coverage/libs/angular/shared'
+  coverageDirectory: '../../../coverage/libs/angular/shared',
 };

@@ -14,38 +14,26 @@ describe('Browse Books Page', () => {
 
   it('should search a book', () => {
     cy.searchBooks('Twelv');
-    cy.get('[data-test=list-item]')
-      .should('have.length', 1)
-      .and('contain', 'Twelve Men');
+    cy.get('[data-test=list-item]').should('have.length', 1).and('contain', 'Twelve Men');
   });
 
   it('should filter books by most recent', () => {
     cy.filterBooks('recent');
-    cy.get('[data-test=list-item]')
-      .first()
-      .find('.title')
-      .should('contain', 'Pride and Prejudice');
+    cy.get('[data-test=list-item]').first().find('.title').should('contain', 'Pride and Prejudice');
   });
 
   it('should filter books by most popular', () => {
     cy.filterBooks('popular');
-    cy.get('[data-test=list-item]')
-      .first()
-      .find('.title')
-      .should('contain', 'Tender is the Night');
+    cy.get('[data-test=list-item]').first().find('.title').should('contain', 'Tender is the Night');
   });
 
   it('should rate a book', () => {
     cy.rateBook(3, 5);
-    cy.get('.logs .mat-list-item')
-      .first()
-      .should('contain', 'You rated a Book');
+    cy.get('.logs .mat-list-item').first().should('contain', 'You rated a Book');
   });
 
   it('should open book view page', () => {
-    cy.get('[data-test=list-item]')
-      .first()
-      .click();
+    cy.get('[data-test=list-item]').first().click();
 
     cy.url().should('contain', 'pride-and-prejudice');
   });

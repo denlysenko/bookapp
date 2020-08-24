@@ -9,7 +9,7 @@ import { FeedbackPlatformService } from '@bookapp/angular/core';
   selector: 'bookapp-auth-form',
   templateUrl: './auth-form.component.html',
   styleUrls: ['./auth-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthFormComponent extends AuthFormBase {
   submitting = false;

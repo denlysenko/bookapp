@@ -21,7 +21,7 @@ const envFilePath =
   imports: [
     ConfigModule.forRoot({
       envFilePath,
-      isGlobal: true
+      isGlobal: true,
     }),
     DatabaseModule,
     GraphqlModule,
@@ -30,7 +30,7 @@ const envFilePath =
     LogsModule,
     BookmarksModule,
     BooksModule,
-    CommentsModule
-  ]
+    CommentsModule,
+  ],
 })
 export class AppModule {}

@@ -4,7 +4,7 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 
 import { Log } from '@bookapp/shared';
@@ -21,7 +21,7 @@ import { Color, isIOS } from 'tns-core-modules/ui/page/page';
   selector: 'bookapp-history-list',
   templateUrl: './history-list.component.html',
   styleUrls: ['./history-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HistoryListComponent {
   @Input()

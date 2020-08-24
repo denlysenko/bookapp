@@ -6,7 +6,7 @@ import { userMenu } from '@bookapp/angular/shared';
   selector: 'bookapp-user-menu',
   templateUrl: './user-menu.component.html',
   styleUrls: ['./user-menu.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserMenuComponent {
   readonly userMenu = userMenu;

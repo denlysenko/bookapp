@@ -6,6 +6,6 @@ import { InfiniteScrollComponent } from './infinite-scroll.component';
 @NgModule({
   declarations: [InfiniteScrollComponent],
   imports: [CommonModule],
-  exports: [InfiniteScrollComponent]
+  exports: [InfiniteScrollComponent],
 })
 export class InfiniteScrollModule {}

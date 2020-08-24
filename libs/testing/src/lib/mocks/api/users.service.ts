@@ -12,5 +12,5 @@ export const MockUsersService = {
   changePassword: jest.fn().mockImplementation(() => Promise.resolve(authPayload)),
   requestResetPassword: jest.fn().mockImplementation(() => Promise.resolve('token')),
   resetPassword: jest.fn().mockImplementation(() => Promise.resolve(true)),
-  remove: jest.fn().mockImplementation(() => Promise.resolve(user))
+  remove: jest.fn().mockImplementation(() => Promise.resolve(user)),
 };

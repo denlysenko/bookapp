@@ -4,6 +4,6 @@ import { RouterExtensions } from './services/router-extensions.service';
 import { StoreService } from './services/store.service';
 
 @NgModule({
-  providers: [RouterExtensions, StoreService]
+  providers: [RouterExtensions, StoreService],
 })
 export class CoreModule {}

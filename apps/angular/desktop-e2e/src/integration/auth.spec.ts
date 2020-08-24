@@ -22,16 +22,12 @@ describe('Auth page', () => {
     context('not valid form', () => {
       it('should display required errors', () => {
         cy.get('[data-test=submit]').click();
-        cy.get('mat-error')
-          .should('have.length', 2)
-          .and('contain', 'This field is required');
+        cy.get('mat-error').should('have.length', 2).and('contain', 'This field is required');
       });
 
       it('should display incorrect email error', () => {
         cy.get(emailField).type('incorrect-email{enter}');
-        cy.get('mat-error')
-          .should('have.length', 2)
-          .and('contain', 'Not a valid email');
+        cy.get('mat-error').should('have.length', 2).and('contain', 'Not a valid email');
       });
     });
 
@@ -45,22 +41,18 @@ describe('Auth page', () => {
           {
             email: 'user2@test.com',
             password: 'password{enter}',
-            expectedError: 'INCORRECT_EMAIL_ERR'
+            expectedError: 'INCORRECT_EMAIL_ERR',
           },
           {
             email: 'user@test.com',
             password: 'password2{enter}',
-            expectedError: 'INCORRECT_PASSWORD_ERR'
-          }
+            expectedError: 'INCORRECT_PASSWORD_ERR',
+          },
         ];
 
         cy.wrap(logins).each((login: any) => {
-          cy.get(emailField)
-            .clear()
-            .type(login.email);
-          cy.get(passwordField)
-            .clear()
-            .type(login.password);
+          cy.get(emailField).clear().type(login.email);
+          cy.get(passwordField).clear().type(login.password);
 
           cy.get('.mat-snack-bar-container')
             .should('be.visible')
@@ -90,16 +82,12 @@ describe('Auth page', () => {
     context('not valid form', () => {
       it('should display required errors', () => {
         cy.get('[data-test=submit]').click();
-        cy.get('mat-error')
-          .should('have.length', 4)
-          .and('contain', 'This field is required');
+        cy.get('mat-error').should('have.length', 4).and('contain', 'This field is required');
       });
 
       it('should display incorrect email error', () => {
         cy.get(emailField).type('incorrect-email{enter}');
-        cy.get('mat-error')
-          .should('have.length', 4)
-          .and('contain', 'Not a valid email');
+        cy.get('mat-error').should('have.length', 4).and('contain', 'Not a valid email');
       });
     });
 
@@ -114,9 +102,7 @@ describe('Auth page', () => {
         cy.get(emailField).type('user@test.com');
         cy.get(passwordField).type('password{enter}');
 
-        cy.get('mat-error')
-          .should('have.length', 1)
-          .and('contain', 'EMAIL_IN_USE_ERR');
+        cy.get('mat-error').should('have.length', 1).and('contain', 'EMAIL_IN_USE_ERR');
       });
 
       it('should register and redirect', () => {

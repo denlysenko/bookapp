@@ -21,9 +21,9 @@ import { Page } from 'tns-core-modules/ui/page';
     trigger('state', [
       state('in', style({ opacity: 1, transform: 'translateY(0)' })),
       state('out', style({ opacity: 0, transform: 'translateY(-100%)' })),
-      transition('in <=> out', [animate('300ms ease-out')])
-    ])
-  ]
+      transition('in <=> out', [animate('300ms ease-out')]),
+    ]),
+  ],
 })
 export class MainLayoutComponent extends MainLayoutBase implements AfterViewInit {
   isUserMenuOpen = false;
@@ -43,7 +43,7 @@ export class MainLayoutComponent extends MainLayoutBase implements AfterViewInit
     super(authService, logsService);
     this.page.actionBarHidden = true;
     this._sideDrawerTransition = new SlideInOnTopTransition();
-    this.router.events.pipe(takeUntil(this.destroy$)).subscribe(e => {
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((e) => {
       if (e instanceof NavigationEnd && this.drawer) {
         this.drawer.closeDrawer();
       }

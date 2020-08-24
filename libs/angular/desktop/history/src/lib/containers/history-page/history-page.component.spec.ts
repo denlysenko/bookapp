@@ -19,13 +19,13 @@ describe('HistoryPageComponent', () => {
       providers: [
         {
           provide: LogsService,
-          useValue: MockAngularLogsService
+          useValue: MockAngularLogsService,
         },
         {
           provide: HAMMER_LOADER,
-          useValue: () => new Promise(() => {})
-        }
-      ]
+          useValue: () => new Promise(() => {}),
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -39,16 +39,16 @@ describe('HistoryPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have logs', done => {
-    component.logs$.subscribe(logs => {
+  it('should have logs', (done) => {
+    component.logs$.subscribe((logs) => {
       const [l] = logs;
       expect(l.action).toEqual(log.action);
       done();
     });
   });
 
-  it('should have count', done => {
-    component.count$.subscribe(count => {
+  it('should have count', (done) => {
+    component.count$.subscribe((count) => {
       expect(count).toEqual(1);
       done();
     });
@@ -58,7 +58,7 @@ describe('HistoryPageComponent', () => {
     it('should refetch logs', () => {
       component.sort({ active: 'id', direction: 'desc' });
       expect(component.logsQueryRef.refetch).toHaveBeenCalledWith({
-        orderBy: 'id_desc'
+        orderBy: 'id_desc',
       });
     });
   });
@@ -68,7 +68,7 @@ describe('HistoryPageComponent', () => {
       component.paginate({ pageIndex: 2, pageSize: 10, length: 10 });
       expect(component.logsQueryRef.refetch).toHaveBeenCalledWith({
         skip: 20,
-        first: 10
+        first: 10,
       });
     });
   });

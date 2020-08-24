@@ -16,9 +16,9 @@ describe('HistoryListComponent', () => {
       providers: [
         {
           provide: HAMMER_LOADER,
-          useValue: () => new Promise(() => {})
-        }
-      ]
+          useValue: () => new Promise(() => {}),
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -37,7 +37,7 @@ describe('HistoryListComponent', () => {
       jest.spyOn(component.sortChanged, 'emit');
 
       const sortHeader = fixture.debugElement.nativeElement.querySelector(
-        '.mat-sort-header-button'
+        '.mat-sort-header-container'
       );
       sortHeader.click();
     });

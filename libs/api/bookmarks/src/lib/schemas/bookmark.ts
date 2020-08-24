@@ -7,6 +7,6 @@ export const BookmarkSchema = new Schema({
   userId: Schema.Types.ObjectId,
   type: {
     type: String,
-    enum: [BOOKMARKS.MUSTREAD, BOOKMARKS.WISHLIST, BOOKMARKS.FAVORITES]
-  }
+    enum: [BOOKMARKS.MUSTREAD, BOOKMARKS.WISHLIST, BOOKMARKS.FAVORITES],
+  },
 });

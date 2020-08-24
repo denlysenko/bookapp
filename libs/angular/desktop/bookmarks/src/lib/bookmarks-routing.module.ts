@@ -8,10 +8,10 @@ import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-pa
     RouterModule.forChild([
       {
         path: '',
-        component: BookmarksPageComponent
-      }
-    ])
+        component: BookmarksPageComponent,
+      },
+    ]),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class BookmarksRoutingModule {}

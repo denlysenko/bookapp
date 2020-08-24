@@ -24,9 +24,9 @@ describe('AuthFormComponent', () => {
       providers: [
         {
           provide: FeedbackPlatformService,
-          useValue: MockFeedbackPlatformService
-        }
-      ]
+          useValue: MockFeedbackPlatformService,
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -186,7 +186,7 @@ describe('AuthFormComponent', () => {
       component.submit();
       expect(component.formSubmitted.emit).toHaveBeenCalledWith({
         isLoggingIn: true,
-        credentials: formValue
+        credentials: formValue,
       });
     });
   });

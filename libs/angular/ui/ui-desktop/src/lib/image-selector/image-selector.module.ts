@@ -18,10 +18,10 @@ import { ImageSelectorComponent } from './image-selector.component';
     MatProgressBarModule,
     MatButtonModule,
     ImageCropperModule,
-    DropModule
+    DropModule,
   ],
   declarations: [ImageSelectorComponent],
   exports: [ImageSelectorComponent],
-  entryComponents: [ImageSelectorComponent]
+  entryComponents: [ImageSelectorComponent],
 })
 export class ImageSelectorModule {}

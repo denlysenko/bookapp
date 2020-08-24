@@ -11,6 +11,6 @@ import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-pa
 @NgModule({
   imports: [CommonModule, NativeScriptCommonModule, BookmarksRoutingModule, BooksListModule],
   declarations: [BookmarksPageComponent],
-  schemas: [NO_ERRORS_SCHEMA]
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class BookmarksModule {}

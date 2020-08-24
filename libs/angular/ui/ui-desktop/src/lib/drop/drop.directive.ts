@@ -7,11 +7,11 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  Renderer2
+  Renderer2,
 } from '@angular/core';
 
 @Directive({
-  selector: '[bookappDrop]'
+  selector: '[bookappDrop]',
 })
 export class DropDirective implements OnInit, OnDestroy {
   @Output() dropped = new EventEmitter<any>();
@@ -28,7 +28,7 @@ export class DropDirective implements OnInit, OnDestroy {
   ngOnInit() {
     if (!this.dragOverHandler) {
       this.zone.runOutsideAngular(() => {
-        this.dragOverHandler = event => {
+        this.dragOverHandler = (event) => {
           event.preventDefault();
         };
 

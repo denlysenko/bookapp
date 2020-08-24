@@ -4,7 +4,7 @@ import {
   AUTH_TOKEN,
   RouterExtensions,
   StoragePlatformService,
-  StoreService
+  StoreService,
 } from '@bookapp/angular/core';
 import {
   AuthPayload,
@@ -13,7 +13,7 @@ import {
   ME_QUERY,
   SIGNUP_MUTATION,
   SignupCredentials,
-  User
+  User,
 } from '@bookapp/shared';
 
 import { Apollo } from 'apollo-angular';
@@ -34,14 +34,14 @@ export class AuthService {
         mutation: LOGIN_MUTATION,
         variables: {
           email,
-          password
-        }
+          password,
+        },
       })
       .pipe(
         tap(({ data }) => {
           if (data) {
             const {
-              login: { accessToken, refreshToken }
+              login: { accessToken, refreshToken },
             } = data;
             this.storagePlatformService.setItem(AUTH_TOKEN, refreshToken);
             this.storeService.set(AUTH_TOKEN, accessToken);
@@ -55,14 +55,14 @@ export class AuthService {
       .mutate<{ signup: AuthPayload }>({
         mutation: SIGNUP_MUTATION,
         variables: {
-          user
-        }
+          user,
+        },
       })
       .pipe(
         tap(({ data }) => {
           if (data) {
             const {
-              signup: { accessToken, refreshToken }
+              signup: { accessToken, refreshToken },
             } = data;
             this.storagePlatformService.setItem(AUTH_TOKEN, refreshToken);
             this.storeService.set(AUTH_TOKEN, accessToken);
@@ -73,7 +73,7 @@ export class AuthService {
 
   me() {
     return this.apollo.watchQuery<{ me: User }>({
-      query: ME_QUERY
+      query: ME_QUERY,
     });
   }
 
@@ -82,13 +82,13 @@ export class AuthService {
       .mutate<{ logout: boolean }>({
         mutation: LOGOUT_MUTATION,
         variables: {
-          refreshToken: this.storagePlatformService.getItem(AUTH_TOKEN)
-        }
+          refreshToken: this.storagePlatformService.getItem(AUTH_TOKEN),
+        },
       })
       .pipe(
         tap(async ({ data }) => {
           if (data.logout) {
-            await this.apollo.getClient().clearStore();
+            await this.apollo.client.clearStore();
 
             this.storagePlatformService.removeItem(AUTH_TOKEN);
             this.storeService.remove(AUTH_TOKEN);
@@ -98,8 +98,8 @@ export class AuthService {
               transition: {
                 name: 'flip',
                 duration: 300,
-                curve: 'linear'
-              }
+                curve: 'linear',
+              },
             });
           }
         })

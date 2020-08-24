@@ -9,33 +9,33 @@ export const navs: MenuItem[] = [
   {
     label: 'Now Reading',
     path: 'books/read',
-    icon: 'book'
+    icon: 'book',
   },
   {
     label: 'Browse Books',
     path: 'books/browse',
-    icon: 'language'
+    icon: 'language',
   },
   {
     label: 'Buy Books',
     path: 'books/buy',
-    icon: 'shopping_cart'
+    icon: 'shopping_cart',
   },
   {
     label: 'Favorite',
     path: 'bookmarks/favorites',
-    icon: 'star'
+    icon: 'star',
   },
   {
     label: 'Wishlist',
     path: 'bookmarks/wishlist',
-    icon: 'list'
+    icon: 'list',
   },
   {
     label: 'History',
     path: 'history',
-    icon: 'schedule'
-  }
+    icon: 'schedule',
+  },
 ];
 
 export const categories: MenuItem[] = [
@@ -43,25 +43,25 @@ export const categories: MenuItem[] = [
     label: 'Must Read Titles',
     path: 'bookmarks/mustread',
     icon: 'fiber_manual_record',
-    color: '#e64c66'
+    color: '#e64c66',
   },
   {
     label: 'List of the Best',
     path: 'books/best',
     icon: 'fiber_manual_record',
-    color: '#ffab00'
-  }
+    color: '#ffab00',
+  },
 ];
 
 export const userMenu: MenuItem[] = [
   {
     label: 'Edit Profile',
     path: 'profile',
-    icon: 'account_circle'
+    icon: 'account_circle',
   },
   {
     label: 'Change Password',
     path: 'password',
-    icon: 'security'
-  }
+    icon: 'security',
+  },
 ];

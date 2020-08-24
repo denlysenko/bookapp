@@ -13,8 +13,8 @@ import { BestBooksPageComponent } from './containers/best-books-page/best-books-
     BestBooksRoutingModule,
     MatToolbarModule,
     PreloaderModule,
-    BooksListModule
+    BooksListModule,
   ],
-  declarations: [BestBooksPageComponent]
+  declarations: [BestBooksPageComponent],
 })
 export class BestBooksModule {}

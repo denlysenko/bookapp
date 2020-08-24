@@ -11,6 +11,6 @@ import { AuthTokenSchema } from './schemas/auth-token';
   imports: [MongooseModule.forFeature([{ name: ModelNames.AUTH_TOKEN, schema: AuthTokenSchema }])],
   controllers: [AuthTokensController],
   providers: [AuthTokensService],
-  exports: [AuthTokensService]
+  exports: [AuthTokensService],
 })
 export class AuthTokensModule {}

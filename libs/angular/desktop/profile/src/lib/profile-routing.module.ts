@@ -8,10 +8,10 @@ import { ProfilePageComponent } from './containers/profile-page/profile-page.com
     RouterModule.forChild([
       {
         path: '',
-        component: ProfilePageComponent
-      }
-    ])
+        component: ProfilePageComponent,
+      },
+    ]),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class ProfileRoutingModule {}

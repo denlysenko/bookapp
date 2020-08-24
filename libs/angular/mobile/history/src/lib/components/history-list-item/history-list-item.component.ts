@@ -6,7 +6,7 @@ import { Log, UserActionsDesc } from '@bookapp/shared';
   selector: 'bookapp-history-list-item',
   templateUrl: './history-list-item.component.html',
   styleUrls: ['./history-list-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HistoryListItemComponent {
   readonly actions = UserActionsDesc;

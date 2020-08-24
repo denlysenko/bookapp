@@ -20,7 +20,7 @@ const SEARCH_FIELD = 'title';
   selector: 'bookapp-book-search',
   templateUrl: './book-search.component.html',
   styleUrls: ['./book-search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookSearchComponent extends BaseComponent implements OnInit {
   private searchText$ = new Subject<string>();
@@ -43,16 +43,16 @@ export class BookSearchComponent extends BaseComponent implements OnInit {
         debounceTime(500),
         distinctUntilChanged(),
         switchMap(
-          searchValue =>
+          (searchValue) =>
             this.booksService.getBooks(this.params.context.paid, {
               field: SEARCH_FIELD,
-              search: searchValue
+              search: searchValue,
             }).valueChanges
         ),
         map(({ data: { books } }) => books.rows),
         takeUntil(this.destroy$)
       )
-      .subscribe(books => this.books.next(new ObservableArray<Book>(books)));
+      .subscribe((books) => this.books.next(new ObservableArray<Book>(books)));
   }
 
   onSearchLoaded(args: any) {

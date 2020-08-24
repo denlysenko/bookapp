@@ -13,10 +13,7 @@ export function dataURIToBlob(dataURI: string): Blob {
   }
 
   // separate out the mime component
-  const type = dataURI
-    .split(',')[0]
-    .split(':')[1]
-    .split(';')[0];
+  const type = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
   return new Blob([ia], { type });
 }

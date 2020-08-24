@@ -18,9 +18,9 @@ export class EditBookResolver implements Resolve<Book> {
       .query<{ book: Book }>({
         query: BOOK_FOR_EDIT_QUERY,
         variables: {
-          slug
-        }
+          slug,
+        },
       })
-      .pipe(map(res => res.data.book));
+      .pipe(map((res) => res.data.book));
   }
 }

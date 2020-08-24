@@ -7,7 +7,7 @@ import {
   MockLogsService,
   MockModel,
   MockMongooseModel,
-  user
+  user,
 } from '@bookapp/testing';
 
 import { HttpStatus } from '@nestjs/common';
@@ -32,17 +32,17 @@ describe('BookmarksService', () => {
         BookmarksService,
         {
           provide: ConfigService,
-          useValue: MockConfigService
+          useValue: MockConfigService,
         },
         {
           provide: getModelToken(ModelNames.BOOKMARK),
-          useValue: MockModel
+          useValue: MockModel,
         },
         {
           provide: LogsService,
-          useValue: MockLogsService
-        }
-      ]
+          useValue: MockLogsService,
+        },
+      ],
     }).compile();
 
     bookmarksService = module.get<BookmarksService>(BookmarksService);
@@ -73,7 +73,7 @@ describe('BookmarksService', () => {
       );
       expect(bookmarkModel.find).toHaveBeenCalledWith({
         type: BOOKMARKS.FAVORITES,
-        userId: user._id
+        userId: user._id,
       });
     });
 
@@ -112,7 +112,7 @@ describe('BookmarksService', () => {
       await bookmarksService.getByUserAndBook(user._id, bookId);
       expect(bookmarkModel.find).toHaveBeenCalledWith({
         userId: user._id,
-        bookId
+        bookId,
       });
     });
   });
@@ -125,7 +125,7 @@ describe('BookmarksService', () => {
       expect(bookmarkModel.findOne).toHaveBeenCalledWith({
         type: BOOKMARKS.FAVORITES,
         bookId,
-        userId: user._id
+        userId: user._id,
       });
     });
 
@@ -133,10 +133,10 @@ describe('BookmarksService', () => {
       try {
         await bookmarksService.addToBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
       } catch (err) {
-        expect(err.message).toEqual({
+        expect(err.response).toEqual({
           statusCode: HttpStatus.BAD_REQUEST,
           error: 'Bad Request',
-          message: BOOKMARK_ERRORS.BOOKMARK_UNIQUE_ERR
+          message: BOOKMARK_ERRORS.BOOKMARK_UNIQUE_ERR,
         });
       }
     });
@@ -155,7 +155,7 @@ describe('BookmarksService', () => {
       expect(logsService.create).toHaveBeenCalledWith({
         action: UserActions.BOOK_ADDED_TO_FAVORITES,
         bookId,
-        userId: user._id
+        userId: user._id,
       });
     });
   });
@@ -166,7 +166,7 @@ describe('BookmarksService', () => {
       expect(bookmarkModel.findOne).toHaveBeenCalledWith({
         type: BOOKMARKS.FAVORITES,
         bookId,
-        userId: user._id
+        userId: user._id,
       });
     });
 
@@ -176,10 +176,10 @@ describe('BookmarksService', () => {
       try {
         await bookmarksService.removeFromBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
       } catch (err) {
-        expect(err.message).toEqual({
+        expect(err.response).toEqual({
           statusCode: HttpStatus.NOT_FOUND,
           error: 'Not Found',
-          message: BOOKMARK_ERRORS.BOOKMARK_NOT_FOUND_ERR
+          message: BOOKMARK_ERRORS.BOOKMARK_NOT_FOUND_ERR,
         });
       }
     });
@@ -194,7 +194,7 @@ describe('BookmarksService', () => {
       expect(logsService.create).toHaveBeenCalledWith({
         action: UserActions.BOOK_REMOVED_FROM_FAVORITES,
         bookId,
-        userId: user._id
+        userId: user._id,
       });
     });
   });

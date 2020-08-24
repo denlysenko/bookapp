@@ -10,12 +10,12 @@ export const BookSchema = new Schema({
   title: {
     type: String,
     required: BOOK_VALIDATION_ERRORS.TITLE_REQUIRED_ERR,
-    trim: true
+    trim: true,
   },
   author: {
     type: String,
     required: BOOK_VALIDATION_ERRORS.AUTHOR_REQUIRED_ERR,
-    trim: true
+    trim: true,
   },
   coverUrl: String,
   epubUrl: String,
@@ -23,41 +23,41 @@ export const BookSchema = new Schema({
   slug: String,
   total_rating: {
     type: Number,
-    default: 0
+    default: 0,
   },
   total_rates: {
     type: Number,
-    default: 0
+    default: 0,
   },
   rating: {
     type: Number,
-    default: 0
+    default: 0,
   },
   views: {
     type: Number,
-    default: 0
+    default: 0,
   },
   paid: {
     type: Boolean,
-    default: false
+    default: false,
   },
   price: {
     type: Number,
-    default: 0
+    default: 0,
   },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 // makes slug for book before saving
-BookSchema.pre<BookModel>('save', function(next) {
+BookSchema.pre<BookModel>('save', function (next) {
   this.slug = slugify(this.title);
   next();
 });
 
-BookSchema.virtual('url').get(function() {
+BookSchema.virtual('url').get(function () {
   return slugify(this.author) + '/' + this.slug;
 });
 

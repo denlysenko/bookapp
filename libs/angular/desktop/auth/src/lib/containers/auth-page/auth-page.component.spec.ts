@@ -28,18 +28,18 @@ describe('AuthPageComponent', () => {
           provide: AuthService,
           useValue: {
             login: jest.fn().mockImplementation(() => of({ data: authPayload })),
-            signup: jest.fn().mockImplementation(() => of({ data: authPayload }))
-          }
+            signup: jest.fn().mockImplementation(() => of({ data: authPayload })),
+          },
         },
         {
           provide: RouterExtensions,
-          useValue: MockRouterExtensions
-        }
-      ]
+          useValue: MockRouterExtensions,
+        },
+      ],
     }).compileComponents();
 
-    authService = TestBed.get(AuthService);
-    router = TestBed.get(RouterExtensions);
+    authService = TestBed.inject(AuthService);
+    router = TestBed.inject(RouterExtensions);
   }));
 
   beforeEach(() => {
@@ -64,7 +64,7 @@ describe('AuthPageComponent', () => {
         email,
         password,
         firstName: 'First Name',
-        lastName: 'Last Name'
+        lastName: 'Last Name',
       };
       component.submit({ isLoggingIn: false, credentials });
       expect(authService.signup).toHaveBeenCalledWith(credentials);
@@ -76,21 +76,21 @@ describe('AuthPageComponent', () => {
       expect(router.navigate).toHaveBeenCalled();
     });
 
-    it('should propagate error', done => {
+    it('should propagate error', (done) => {
       const error: any = { message: 'Error' };
 
       jest.spyOn(authService, 'login').mockImplementationOnce(() => of({ errors: [error] }));
 
       let result: any;
 
-      component.error$.subscribe(err => {
+      component.error$.subscribe((err) => {
         result = err;
         done();
       });
 
       component.submit({
         isLoggingIn: true,
-        credentials: { email, password }
+        credentials: { email, password },
       });
 
       expect(result).toEqual(error);

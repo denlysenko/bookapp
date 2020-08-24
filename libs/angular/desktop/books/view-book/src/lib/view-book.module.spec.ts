@@ -4,7 +4,7 @@ import { ViewBookModule } from './view-book.module';
 describe('ViewBookModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ViewBookModule]
+      imports: [ViewBookModule],
     }).compileComponents();
   }));
 

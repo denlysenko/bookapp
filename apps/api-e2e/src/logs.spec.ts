@@ -9,7 +9,7 @@ import {
   mockConnection,
   MockLogsService,
   MockModel,
-  user
+  user,
 } from '@bookapp/testing';
 
 import { HttpStatus, INestApplication } from '@nestjs/common';
@@ -31,13 +31,13 @@ describe('LogsModule', () => {
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
-          isGlobal: true
+          isGlobal: true,
         }),
         LogsModule,
         AuthModule,
         GraphqlModule,
-        MongooseModule.forRoot('test')
-      ]
+        MongooseModule.forRoot('test'),
+      ],
     })
       .overrideProvider(getConnectionToken())
       .useValue(mockConnection)
@@ -72,18 +72,18 @@ describe('LogsModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             logs: {
               rows: [
                 {
-                  _id: log._id
-                }
-              ]
-            }
-          }
+                  _id: log._id,
+                },
+              ],
+            },
+          },
         });
     });
 
@@ -98,14 +98,14 @@ describe('LogsModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         });
 
       expect(logsService.findAll).toHaveBeenCalledWith({
         filter: { userId: 'id' },
         first: null,
         order: null,
-        skip: 10
+        skip: 10,
       });
     });
 
@@ -120,14 +120,14 @@ describe('LogsModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         });
 
       expect(logsService.findAll).toHaveBeenCalledWith({
         filter: { userId: 'id' },
         first: 10,
         order: null,
-        skip: null
+        skip: null,
       });
     });
 
@@ -142,35 +142,33 @@ describe('LogsModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         });
 
       expect(logsService.findAll).toHaveBeenCalledWith({
         filter: { userId: 'id' },
         first: null,
         order: { createdAt: 1 },
-        skip: null
+        skip: null,
       });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `query {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `query {
             logs {
               rows {
                 _id
               }
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
   });

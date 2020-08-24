@@ -4,13 +4,14 @@ import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import { LAST_LOGS_QUERY, LOGS_QUERY } from '@bookapp/shared';
 import { book, log } from '@bookapp/testing';
 
+import { InMemoryCache } from '@apollo/client/core';
+import { addTypenameToDocument } from '@apollo/client/utilities';
+
 import {
   APOLLO_TESTING_CACHE,
   ApolloTestingController,
-  ApolloTestingModule
+  ApolloTestingModule,
 } from 'apollo-angular/testing';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { addTypenameToDocument } from 'apollo-utilities';
 
 import { DEFAULT_ORDER_BY, LogsService } from './logs.service';
 
@@ -26,13 +27,13 @@ describe('LogsService', () => {
         LogsService,
         {
           provide: APOLLO_TESTING_CACHE,
-          useValue: new InMemoryCache({ addTypename: true })
-        }
-      ]
+          useValue: new InMemoryCache({ addTypename: true }),
+        },
+      ],
     });
 
-    controller = TestBed.get(ApolloTestingController);
-    service = TestBed.get(LogsService);
+    controller = TestBed.inject(ApolloTestingController);
+    service = TestBed.inject(LogsService);
   });
 
   afterEach(() => {
@@ -44,12 +45,12 @@ describe('LogsService', () => {
   });
 
   describe('getLastLogs()', () => {
-    it('should get last logs', done => {
+    it('should get last logs', (done) => {
       service.getLastLogs().valueChanges.subscribe(
         ({
           data: {
-            logs: { rows }
-          }
+            logs: { rows },
+          },
         }) => {
           const [l] = rows;
           expect(l.action).toEqual(log.action);
@@ -68,13 +69,13 @@ describe('LogsService', () => {
                 book: {
                   title: book.title,
                   author: book.author,
-                  __typename: 'Book'
-                }
-              }
+                  __typename: 'Book',
+                },
+              },
             ],
-            __typename: 'LogsResponse'
-          }
-        }
+            __typename: 'LogsResponse',
+          },
+        },
       });
 
       controller.verify();
@@ -82,15 +83,15 @@ describe('LogsService', () => {
   });
 
   describe('getLogs()', () => {
-    it('should get logs', done => {
+    it('should get logs', (done) => {
       service
         .getLogs()
 
         .valueChanges.subscribe(
           ({
             data: {
-              logs: { rows }
-            }
+              logs: { rows },
+            },
           }) => {
             const [l] = rows;
             expect(l.action).toEqual(log.action);
@@ -117,14 +118,14 @@ describe('LogsService', () => {
                   author: book.author,
                   url: book.url,
                   paid: book.paid,
-                  __typename: 'Book'
-                }
-              }
+                  __typename: 'Book',
+                },
+              },
             ],
             count: 1,
-            __typename: 'LogsResponse'
-          }
-        }
+            __typename: 'LogsResponse',
+          },
+        },
       });
 
       controller.verify();

@@ -4,7 +4,7 @@ import {
   EventEmitter,
   Input,
   OnInit,
-  Output
+  Output,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
@@ -19,7 +19,7 @@ import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
   selector: 'bookapp-books-filter',
   templateUrl: './books-filter.component.html',
   styleUrls: ['./books-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BooksFilterComponent extends BaseComponent implements OnInit {
   searchQuery = new FormControl(null);
@@ -46,7 +46,7 @@ export class BooksFilterComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     this.searchQuery.valueChanges
       .pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe(val => this.searchChanged.emit(val));
+      .subscribe((val) => this.searchChanged.emit(val));
   }
 
   sort(e: MatButtonToggleChange) {

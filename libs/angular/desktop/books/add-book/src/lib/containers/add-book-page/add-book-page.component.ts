@@ -20,7 +20,7 @@ const UNSAVED_CHANGES_WARNING =
 @Component({
   selector: 'bookapp-add-book-page',
   templateUrl: './add-book-page.component.html',
-  styleUrls: ['./add-book-page.component.scss']
+  styleUrls: ['./add-book-page.component.scss'],
 })
 export class AddBookPageComponent {
   book$: Observable<Book> = this.route.data.pipe(pluck('book'));
@@ -56,8 +56,8 @@ export class AddBookPageComponent {
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
         width: '300px',
         data: {
-          text: UNSAVED_CHANGES_WARNING
-        }
+          text: UNSAVED_CHANGES_WARNING,
+        },
       });
 
       return dialogRef.afterClosed().pipe(

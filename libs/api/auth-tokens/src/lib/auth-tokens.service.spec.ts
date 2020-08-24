@@ -6,7 +6,7 @@ import {
   MockModel,
   MockMongooseModel,
   refreshToken,
-  user
+  user,
 } from '@bookapp/testing';
 
 import { HttpStatus } from '@nestjs/common';
@@ -29,19 +29,19 @@ describe('AuthTokensService', () => {
         AuthTokensService,
         {
           provide: ConfigService,
-          useValue: MockConfigService
+          useValue: MockConfigService,
         },
         {
           provide: getModelToken(ModelNames.AUTH_TOKEN),
-          useValue: MockModel
+          useValue: MockModel,
         },
         {
           provide: getConnectionToken(),
           useValue: {
-            model: jest.fn(() => MockMongooseModel)
-          }
-        }
-      ]
+            model: jest.fn(() => MockMongooseModel),
+          },
+        },
+      ],
     }).compile();
 
     authTokensService = module.get<AuthTokensService>(AuthTokensService);
@@ -53,7 +53,7 @@ describe('AuthTokensService', () => {
     jest.spyOn(userModel, 'exec').mockImplementation(() => Promise.resolve(user));
 
     jest.spyOn(jwt, 'verify').mockImplementation(() => ({
-      id: user._id
+      id: user._id,
     }));
   });
 
@@ -80,7 +80,7 @@ describe('AuthTokensService', () => {
       await authTokensService.createRefreshToken(user._id);
       expect(tokenModel.create).toHaveBeenCalledWith({
         token: refreshToken,
-        userId: user._id
+        userId: user._id,
       });
     });
   });
@@ -95,10 +95,10 @@ describe('AuthTokensService', () => {
       try {
         await authTokensService.refreshTokens(undefined);
       } catch (err) {
-        expect(err.message).toEqual({
+        expect(err.response).toEqual({
           statusCode: HttpStatus.UNAUTHORIZED,
           error: 'Unauthorized',
-          message: AUTH_ERRORS.UNAUTHORIZED_ERR
+          message: AUTH_ERRORS.UNAUTHORIZED_ERR,
         });
       }
     });
@@ -109,10 +109,10 @@ describe('AuthTokensService', () => {
       try {
         await authTokensService.refreshTokens(refreshToken);
       } catch (err) {
-        expect(err.message).toEqual({
+        expect(err.response).toEqual({
           statusCode: HttpStatus.UNAUTHORIZED,
           error: 'Unauthorized',
-          message: AUTH_ERRORS.UNAUTHORIZED_ERR
+          message: AUTH_ERRORS.UNAUTHORIZED_ERR,
         });
       }
     });
@@ -125,10 +125,10 @@ describe('AuthTokensService', () => {
       try {
         await authTokensService.refreshTokens(refreshToken);
       } catch (err) {
-        expect(err.message).toEqual({
+        expect(err.response).toEqual({
           statusCode: HttpStatus.UNAUTHORIZED,
           error: 'Unauthorized',
-          message: AUTH_ERRORS.UNAUTHORIZED_ERR
+          message: AUTH_ERRORS.UNAUTHORIZED_ERR,
         });
       }
     });
@@ -139,10 +139,10 @@ describe('AuthTokensService', () => {
       try {
         await authTokensService.refreshTokens(refreshToken);
       } catch (err) {
-        expect(err.message).toEqual({
+        expect(err.response).toEqual({
           statusCode: HttpStatus.UNAUTHORIZED,
           error: 'Unauthorized',
-          message: AUTH_ERRORS.UNAUTHORIZED_ERR
+          message: AUTH_ERRORS.UNAUTHORIZED_ERR,
         });
       }
     });
@@ -150,7 +150,7 @@ describe('AuthTokensService', () => {
     it('should remove old token from DB', async () => {
       await authTokensService.refreshTokens(refreshToken);
       expect(tokenModel.deleteOne).toHaveBeenCalledWith({
-        token: refreshToken
+        token: refreshToken,
       });
     });
 
@@ -170,7 +170,7 @@ describe('AuthTokensService', () => {
     it('should remove refresh tokens', async () => {
       await authTokensService.removeRefreshToken(refreshToken);
       expect(tokenModel.deleteOne).toHaveBeenCalledWith({
-        token: refreshToken
+        token: refreshToken,
       });
     });
   });

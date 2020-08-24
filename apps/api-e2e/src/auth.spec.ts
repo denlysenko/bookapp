@@ -8,7 +8,7 @@ import {
   MockAuthTokensService,
   MockConfigService,
   MockModel,
-  MockUsersService
+  MockUsersService,
 } from '@bookapp/testing';
 
 import { INestApplication } from '@nestjs/common';
@@ -22,14 +22,14 @@ import * as request from 'supertest';
 const validationError = new ValidationError();
 validationError.errors = {
   lastName: {
-    message: USER_VALIDATION_ERRORS.LAST_NAME_REQUIRED_ERR
+    message: USER_VALIDATION_ERRORS.LAST_NAME_REQUIRED_ERR,
   },
   firstName: {
-    message: USER_VALIDATION_ERRORS.FIRST_NAME_REQUIRED_ERR
+    message: USER_VALIDATION_ERRORS.FIRST_NAME_REQUIRED_ERR,
   },
   email: {
-    message: USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR
-  }
+    message: USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR,
+  },
 };
 
 describe('AuthModule', () => {
@@ -41,11 +41,11 @@ describe('AuthModule', () => {
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
-          isGlobal: true
+          isGlobal: true,
         }),
         AuthModule,
-        GraphqlModule
-      ]
+        GraphqlModule,
+      ],
     })
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
@@ -76,31 +76,29 @@ describe('AuthModule', () => {
               accessToken
               refreshToken
             }
-          }`
+          }`,
         })
         .expect({
           data: {
-            login: authPayload
-          }
+            login: authPayload,
+          },
         });
     });
 
     it('should not login if email is not found', async () => {
       jest.spyOn(usersService, 'findByEmail').mockImplementationOnce(() => Promise.resolve(null));
 
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `mutation { 
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `mutation { 
             login(email: "test@test.com", password: "password") { 
               accessToken
               refreshToken
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
-      expect(error.message.message).toEqual(AUTH_ERRORS.INCORRECT_EMAIL_ERR);
+      expect(error.message).toEqual(AUTH_ERRORS.INCORRECT_EMAIL_ERR);
     });
 
     it('should not login if password is incorrect', async () => {
@@ -108,19 +106,17 @@ describe('AuthModule', () => {
         .spyOn(usersService, 'findByEmail')
         .mockImplementationOnce(() => Promise.resolve({ authenticate: () => false } as any));
 
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `mutation { 
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `mutation { 
             login(email: "test@test.com", password: "password") { 
               accessToken
               refreshToken
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
-      expect(error.message.message).toEqual(AUTH_ERRORS.INCORRECT_PASSWORD_ERR);
+      expect(error.message).toEqual(AUTH_ERRORS.INCORRECT_PASSWORD_ERR);
     });
   });
 
@@ -139,12 +135,12 @@ describe('AuthModule', () => {
               accessToken
               refreshToken
             }
-          }`
+          }`,
         })
         .expect({
           data: {
-            signup: authPayload
-          }
+            signup: authPayload,
+          },
         });
     });
 
@@ -153,10 +149,8 @@ describe('AuthModule', () => {
         .spyOn(usersService, 'create')
         .mockImplementationOnce(() => Promise.reject(validationError));
 
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `mutation {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `mutation {
             signup(user: {
               firstName: "",
               lastName: "",
@@ -166,15 +160,15 @@ describe('AuthModule', () => {
               accessToken
               refreshToken
             }
-          }`
-        });
+          }`,
+      });
 
       const [errors] = res.body.errors;
 
       expect(errors).toEqual({
         lastName: { message: USER_VALIDATION_ERRORS.LAST_NAME_REQUIRED_ERR },
         firstName: { message: USER_VALIDATION_ERRORS.FIRST_NAME_REQUIRED_ERR },
-        email: { message: USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR }
+        email: { message: USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR },
       });
     });
   });
@@ -186,12 +180,12 @@ describe('AuthModule', () => {
         .send({
           query: `mutation {
             logout(refreshToken: "refreshToken")
-          }`
+          }`,
         })
         .expect({
           data: {
-            logout: true
-          }
+            logout: true,
+          },
         });
     });
   });

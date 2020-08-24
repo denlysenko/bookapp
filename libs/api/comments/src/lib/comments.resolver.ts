@@ -9,9 +9,9 @@ import {
   Context,
   Mutation,
   Parent,
-  ResolveProperty,
+  ResolveField,
   Resolver,
-  Subscription
+  Subscription,
 } from '@nestjs/graphql';
 
 import { PubSub } from 'graphql-subscriptions';
@@ -26,7 +26,7 @@ export class CommentsResolver {
     @Inject(PUB_SUB) private readonly pubSub: PubSub
   ) {}
 
-  @ResolveProperty('author')
+  @ResolveField('author')
   async getAuthor(@Parent() comment: Comment) {
     const { authorId } = comment;
     return this.usersDataLoader.load(authorId);

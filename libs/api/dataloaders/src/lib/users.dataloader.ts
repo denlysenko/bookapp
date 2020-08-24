@@ -20,13 +20,13 @@ export class UsersDataLoader implements IDataLoader<string, User> {
 
         const data = {};
 
-        users.forEach(user => {
+        users.forEach((user) => {
           data[user._id] = user;
         });
 
-        return userIds.map(id => data[id]);
+        return userIds.map((id) => data[id]);
       },
-      { cacheKeyFn: id => id.toString() }
+      { cacheKeyFn: (id) => id.toString() }
     );
 
     return new UsersDataLoader(dataloader);

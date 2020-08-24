@@ -20,7 +20,7 @@ describe('BuyBooksPageComponent', () => {
   beforeAll(() => {
     (window as any).IntersectionObserver = jest.fn(() => ({
       observe: () => null,
-      disconnect: () => null
+      disconnect: () => null,
     }));
   });
 
@@ -30,13 +30,13 @@ describe('BuyBooksPageComponent', () => {
       providers: [
         {
           provide: StoreService,
-          useValue: MockStoreService
+          useValue: MockStoreService,
         },
         {
           provide: BooksService,
-          useValue: MockAngularBooksService
-        }
-      ]
+          useValue: MockAngularBooksService,
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -44,8 +44,8 @@ describe('BuyBooksPageComponent', () => {
     fixture = TestBed.createComponent(BuyBooksPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    storeService = TestBed.get(StoreService);
-    booksService = TestBed.get(BooksService);
+    storeService = TestBed.inject(StoreService);
+    booksService = TestBed.inject(BooksService);
   });
 
   it('should create', () => {
@@ -53,20 +53,20 @@ describe('BuyBooksPageComponent', () => {
   });
 
   describe('filter$', () => {
-    it('should have default filter', done => {
-      component.filter$.subscribe(filter => {
+    it('should have default filter', (done) => {
+      component.filter$.subscribe((filter) => {
         expect(filter).toMatchObject({
           searchQuery: '',
-          sortValue: DEFAULT_SORT_VALUE
+          sortValue: DEFAULT_SORT_VALUE,
         });
         done();
       });
     });
 
-    it('should have filter from store', done => {
+    it('should have filter from store', (done) => {
       const filterInStore = {
         searchQuery: 'test',
-        sortValue: 'createdAt_desc'
+        sortValue: 'createdAt_desc',
       };
 
       TestBed.resetTestingModule();
@@ -76,21 +76,21 @@ describe('BuyBooksPageComponent', () => {
           {
             provide: StoreService,
             useValue: {
-              get: jest.fn().mockReturnValue(filterInStore)
-            }
+              get: jest.fn().mockReturnValue(filterInStore),
+            },
           },
           {
             provide: BooksService,
-            useValue: MockAngularBooksService
-          }
-        ]
+            useValue: MockAngularBooksService,
+          },
+        ],
       }).compileComponents();
 
       fixture = TestBed.createComponent(BuyBooksPageComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
 
-      component.filter$.subscribe(filter => {
+      component.filter$.subscribe((filter) => {
         expect(filter).toMatchObject(filterInStore);
         done();
       });
@@ -98,8 +98,8 @@ describe('BuyBooksPageComponent', () => {
   });
 
   describe('books$', () => {
-    it('should have books', done => {
-      component.books$.subscribe(books => {
+    it('should have books', (done) => {
+      component.books$.subscribe((books) => {
         expect(books).toEqual([book]);
         done();
       });
@@ -111,10 +111,10 @@ describe('BuyBooksPageComponent', () => {
       component.sort('title_asc');
     });
 
-    it('should update filter$', done => {
-      component.filter$.subscribe(filter => {
+    it('should update filter$', (done) => {
+      component.filter$.subscribe((filter) => {
         expect(filter).toMatchObject({
-          sortValue: 'title_asc'
+          sortValue: 'title_asc',
         });
         done();
       });
@@ -123,14 +123,14 @@ describe('BuyBooksPageComponent', () => {
     it('should update filter in store', () => {
       expect(storeService.set).toHaveBeenCalledWith('BUY_BOOKS', {
         searchQuery: '',
-        sortValue: 'title_asc'
+        sortValue: 'title_asc',
       });
     });
 
     it('should refetch books', () => {
       expect(component.booksQueryRef.refetch).toHaveBeenCalledWith({
         orderBy: 'title_asc',
-        skip: 0
+        skip: 0,
       });
     });
   });
@@ -140,11 +140,11 @@ describe('BuyBooksPageComponent', () => {
       component.search('title');
     });
 
-    it('should update filter$', done => {
-      component.filter$.subscribe(filter => {
+    it('should update filter$', (done) => {
+      component.filter$.subscribe((filter) => {
         expect(filter).toMatchObject({
           sortValue: DEFAULT_SORT_VALUE,
-          searchQuery: 'title'
+          searchQuery: 'title',
         });
         done();
       });
@@ -153,14 +153,14 @@ describe('BuyBooksPageComponent', () => {
     it('should update filter in store', () => {
       expect(storeService.set).toHaveBeenCalledWith('BUY_BOOKS', {
         searchQuery: 'title',
-        sortValue: DEFAULT_SORT_VALUE
+        sortValue: DEFAULT_SORT_VALUE,
       });
     });
 
     it('should refetch books', () => {
       expect(component.booksQueryRef.refetch).toHaveBeenCalledWith({
         filter: { field: 'title', search: 'title' },
-        skip: 0
+        skip: 0,
       });
     });
   });
@@ -178,7 +178,7 @@ describe('BuyBooksPageComponent', () => {
         providers: [
           {
             provide: StoreService,
-            useValue: MockStoreService
+            useValue: MockStoreService,
           },
           {
             provide: BooksService,
@@ -186,14 +186,14 @@ describe('BuyBooksPageComponent', () => {
               ...MockAngularBooksService,
               getBooks: jest.fn().mockImplementationOnce(() => ({
                 valueChanges: of({
-                  data: { books: { rows: [book], count: 3 } }
+                  data: { books: { rows: [book], count: 3 } },
                 }),
                 refetch: jest.fn(),
-                fetchMore: jest.fn()
-              }))
-            }
-          }
-        ]
+                fetchMore: jest.fn(),
+              })),
+            },
+          },
+        ],
       }).compileComponents();
 
       fixture = TestBed.createComponent(BuyBooksPageComponent);

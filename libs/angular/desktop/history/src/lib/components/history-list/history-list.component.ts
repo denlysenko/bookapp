@@ -9,7 +9,7 @@ import { Log, UserActionsDesc } from '@bookapp/shared';
   selector: 'bookapp-history-list',
   templateUrl: './history-list.component.html',
   styleUrls: ['./history-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HistoryListComponent {
   readonly displayedColumns = ['createdAt', 'action', 'book'];
@@ -17,7 +17,7 @@ export class HistoryListComponent {
   readonly actions = UserActionsDesc;
   readonly sorting = {
     active: 'createdAt',
-    direction: 'desc'
+    direction: 'desc',
   };
 
   @Input()

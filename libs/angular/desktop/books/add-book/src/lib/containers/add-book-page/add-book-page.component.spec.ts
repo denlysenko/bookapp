@@ -11,7 +11,7 @@ import {
   book,
   MockAngularBooksService,
   MockFeedbackPlatformService,
-  MockMatDialog
+  MockMatDialog,
 } from '@bookapp/testing';
 
 import { of } from 'rxjs';
@@ -25,7 +25,7 @@ const formValue = {
   description: book.description,
   paid: book.paid,
   coverUrl: book.coverUrl,
-  epubUrl: book.epubUrl
+  epubUrl: book.epubUrl,
 };
 
 describe('AddBookPageComponent', () => {
@@ -42,29 +42,29 @@ describe('AddBookPageComponent', () => {
       providers: [
         {
           provide: FeedbackPlatformService,
-          useValue: MockFeedbackPlatformService
+          useValue: MockFeedbackPlatformService,
         },
         {
           provide: MatDialog,
-          useValue: MockMatDialog
+          useValue: MockMatDialog,
         },
         {
           provide: BooksService,
-          useValue: MockAngularBooksService
+          useValue: MockAngularBooksService,
         },
         {
           provide: ActivatedRoute,
           useValue: {
-            data: of({ book: null })
-          }
+            data: of({ book: null }),
+          },
         },
         {
           provide: UploadPlatformService,
           useValue: {
-            deleteFile: jest.fn().mockImplementation(() => of(true))
-          }
-        }
-      ]
+            deleteFile: jest.fn().mockImplementation(() => of(true)),
+          },
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -72,8 +72,8 @@ describe('AddBookPageComponent', () => {
     fixture = TestBed.createComponent(AddBookPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    booksService = TestBed.get(BooksService);
-    feedbackService = TestBed.get(FeedbackPlatformService);
+    booksService = TestBed.inject(BooksService);
+    feedbackService = TestBed.inject(FeedbackPlatformService);
   });
 
   it('should create', () => {
@@ -96,12 +96,12 @@ describe('AddBookPageComponent', () => {
       expect(feedbackService.success).toHaveBeenCalled();
     });
 
-    it('should propagate error', done => {
+    it('should propagate error', (done) => {
       const error: any = { message: 'Error message' };
       jest.spyOn(booksService, 'create').mockImplementationOnce(() => of({ errors: [error] }));
 
       component.save(formValue);
-      component.error$.subscribe(err => {
+      component.error$.subscribe((err) => {
         expect(err).toEqual(error);
         done();
       });

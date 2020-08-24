@@ -28,7 +28,7 @@ export class CommentsService {
     const newComment = new this.commentModel({
       bookId,
       authorId,
-      text
+      text,
     });
 
     await newComment.save();

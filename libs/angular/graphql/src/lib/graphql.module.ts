@@ -5,15 +5,15 @@ import {
   Environment,
   StoragePlatformService,
   StoreService,
-  WebSocketImpl
+  WebSocketImpl,
 } from '@bookapp/angular/core';
 
-import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
-import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
+import { APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
+
 import { createApolloFactory } from './graphql.providers';
 
 @NgModule({
-  imports: [ApolloModule, HttpLinkModule],
   providers: [
     {
       provide: APOLLO_OPTIONS,
@@ -25,9 +25,9 @@ import { createApolloFactory } from './graphql.providers';
         WebSocketImpl,
         Environment,
         HttpClient,
-        Injector
-      ]
-    }
-  ]
+        Injector,
+      ],
+    },
+  ],
 })
 export class GraphQLModule {}

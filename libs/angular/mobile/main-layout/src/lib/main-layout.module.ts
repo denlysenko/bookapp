@@ -20,10 +20,10 @@ import { MainLayoutComponent } from './containers/main-layout/main-layout.compon
     NativeScriptUISideDrawerModule,
     CommonModule,
     NgShadowModule,
-    TNSFontIconModule
+    TNSFontIconModule,
   ],
   declarations: [AppMenuComponent, UserMenuComponent, MainLayoutComponent, DateToPeriodPipe],
   exports: [MainLayoutComponent],
-  schemas: [NO_ERRORS_SCHEMA]
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class MainLayoutModule {}

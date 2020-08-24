@@ -15,7 +15,7 @@ import { HistoryListComponent } from '../../components/history-list/history-list
 @Component({
   selector: 'bookapp-history-page',
   templateUrl: './history-page.component.html',
-  styleUrls: ['./history-page.component.scss']
+  styleUrls: ['./history-page.component.scss'],
 })
 export class HistoryPageComponent extends HistoryPageBase {
   @ViewChild(HistoryListComponent, { static: false })
@@ -36,7 +36,7 @@ export class HistoryPageComponent extends HistoryPageBase {
     const result = await action({
       message: 'Sort By Creation Date',
       cancelButtonText: 'Cancel',
-      actions: ['Ascending', 'Descending']
+      actions: ['Ascending', 'Descending'],
     });
 
     if (result === 'Ascending') {
@@ -58,7 +58,7 @@ export class HistoryPageComponent extends HistoryPageBase {
 
       this.logsQueryRef.fetchMore({
         variables: {
-          skip: this.skip
+          skip: this.skip,
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult) {
@@ -71,10 +71,10 @@ export class HistoryPageComponent extends HistoryPageBase {
             logs: {
               count,
               rows: [...previousResult.logs.rows, ...rows],
-              __typename: 'LogsResponse'
-            }
+              __typename: 'LogsResponse',
+            },
           };
-        }
+        },
       });
     }
   }
@@ -83,7 +83,7 @@ export class HistoryPageComponent extends HistoryPageBase {
     this.skip = 0;
     this.logsQueryRef.refetch({
       skip: this.skip,
-      orderBy: `createdAt_${direction}`
+      orderBy: `createdAt_${direction}`,
     });
     this.historyListView.scrollToIndex(0);
   }

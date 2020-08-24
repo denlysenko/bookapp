@@ -22,19 +22,19 @@ describe('LogsService', () => {
         LogsService,
         {
           provide: ConfigService,
-          useValue: MockConfigService
+          useValue: MockConfigService,
         },
         {
           provide: getModelToken(ModelNames.LOG),
-          useValue: MockModel
+          useValue: MockModel,
         },
         {
           provide: PUB_SUB,
           useValue: {
-            publish: jest.fn()
-          }
-        }
-      ]
+            publish: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     logsService = module.get<LogsService>(LogsService);

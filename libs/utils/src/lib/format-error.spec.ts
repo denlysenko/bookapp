@@ -10,27 +10,27 @@ describe('formatError', () => {
             {
               email: {
                 message: 'EMAIL_INVALID_ERR',
-                name: 'ValidatorError'
+                name: 'ValidatorError',
               },
               password: {
                 message: 'PASSWORD_LENGTH_ERR',
-                name: 'ValidatorError'
-              }
-            }
-          ]
-        }
+                name: 'ValidatorError',
+              },
+            },
+          ],
+        },
       })
     ).toEqual([
       {
         email: {
           message: 'EMAIL_INVALID_ERR',
-          name: 'ValidatorError'
+          name: 'ValidatorError',
         },
         password: {
           message: 'PASSWORD_LENGTH_ERR',
-          name: 'ValidatorError'
-        }
-      }
+          name: 'ValidatorError',
+        },
+      },
     ]);
   });
 

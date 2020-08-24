@@ -7,7 +7,7 @@ describe('Profile page', () => {
   const publicUrl = '/assets/icons/icon-512x512.png';
 
   const clearFields = () => {
-    [firstNameField, lastNameField, emailField].forEach(field => {
+    [firstNameField, lastNameField, emailField].forEach((field) => {
       cy.get(field).clear();
     });
   };
@@ -26,17 +26,13 @@ describe('Profile page', () => {
 
     it('should display required errors', () => {
       cy.get(submitBtn).click();
-      cy.get('mat-error')
-        .should('have.length', 3)
-        .and('contain', 'This field is required');
+      cy.get('mat-error').should('have.length', 3).and('contain', 'This field is required');
     });
 
     it('should display incorrect email error', () => {
       cy.get(emailField).type('incorrect-email');
       cy.get(submitBtn).click();
-      cy.get('mat-error')
-        .should('have.length', 3)
-        .and('contain', 'Not a valid email');
+      cy.get('mat-error').should('have.length', 3).and('contain', 'Not a valid email');
     });
   });
 
@@ -51,9 +47,7 @@ describe('Profile page', () => {
       cy.get(emailField).type('admin@test.com');
       cy.get(submitBtn).click();
 
-      cy.get('mat-error')
-        .should('have.length', 1)
-        .and('contain', 'EMAIL_IN_USE_ERR');
+      cy.get('mat-error').should('have.length', 1).and('contain', 'EMAIL_IN_USE_ERR');
     });
 
     it('should update profile', () => {
@@ -62,9 +56,7 @@ describe('Profile page', () => {
       cy.get(emailField).type('user1@test.com');
       cy.get(submitBtn).click();
 
-      cy.get('.mat-snack-bar-container')
-        .should('be.visible')
-        .and('contain', 'Profile updated');
+      cy.get('.mat-snack-bar-container').should('be.visible').and('contain', 'Profile updated');
 
       cy.get('.user-menu').should('contain', 'User 1 Test 1');
     });
@@ -85,32 +77,18 @@ describe('Profile page', () => {
     });
 
     it('should show error if mime type is invalid', () => {
-      cy.fixture('empty.pdf', 'base64').then(fileContent => {
-        cy.get('[data-test="file-input"]').upload(
-          { fileContent, fileName: 'empty.pdf', mimeType: 'application/pdf' },
-          { subjectType: 'input' }
-        );
-        cy.get('.mat-error')
-          .should('be.visible')
-          .and('contain', 'INVALID_IMG_ERR');
-      });
+      cy.get('[data-test="file-input"]').attachFile('empty.pdf', { subjectType: 'input' });
+      cy.get('.mat-error').should('be.visible').and('contain', 'INVALID_IMG_ERR');
     });
 
     it('should upload avatar', () => {
       cy.uploadOnServer({ publicUrl });
 
-      cy.fixture('icon.png', 'base64').then(fileContent => {
-        cy.get('[data-test="file-input"]').upload(
-          { fileContent, fileName: 'icon.png', mimeType: 'image/png' },
-          { subjectType: 'input' }
-        );
-        cy.get('[data-test=upload]').click();
-        cy.get('.mat-snack-bar-container')
-          .should('be.visible')
-          .and('contain', 'Profile updated');
-        cy.get('.avatar').should('have.attr', 'src', publicUrl);
-        cy.get('[data-test=avatar]').should('have.attr', 'src', publicUrl);
-      });
+      cy.get('[data-test="file-input"]').attachFile('icon.png', { subjectType: 'input' });
+      cy.get('[data-test=upload]').click();
+      cy.get('.mat-snack-bar-container').should('be.visible').and('contain', 'Profile updated');
+      cy.get('.avatar').should('have.attr', 'src', publicUrl);
+      cy.get('[data-test=avatar]').should('have.attr', 'src', publicUrl);
     });
   });
 });

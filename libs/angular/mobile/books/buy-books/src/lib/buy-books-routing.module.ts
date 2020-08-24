@@ -10,10 +10,10 @@ import { BuyBooksPageComponent } from './containers/buy-books-page/buy-books-pag
     NativeScriptRouterModule.forChild([
       {
         path: '',
-        component: BuyBooksPageComponent
-      }
-    ])
+        component: BuyBooksPageComponent,
+      },
+    ]),
   ],
-  exports: [NativeScriptRouterModule]
+  exports: [NativeScriptRouterModule],
 })
 export class BuyBooksRoutingModule {}

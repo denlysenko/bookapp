@@ -11,6 +11,6 @@ export const user = {
   updatedAt: null,
   reading: {
     bookmark: '',
-    epubUrl: ''
-  }
+    epubUrl: '',
+  },
 };

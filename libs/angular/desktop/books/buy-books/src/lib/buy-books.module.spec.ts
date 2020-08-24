@@ -5,7 +5,7 @@ import { BuyBooksModule } from './buy-books.module';
 describe('BuyBooksModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [BuyBooksModule]
+      imports: [BuyBooksModule],
     }).compileComponents();
   }));
 

@@ -10,10 +10,10 @@ import { PasswordPageComponent } from './containers/password-page/password-page.
     NativeScriptRouterModule.forChild([
       {
         path: '',
-        component: PasswordPageComponent
-      }
-    ])
+        component: PasswordPageComponent,
+      },
+    ]),
   ],
-  exports: [NativeScriptRouterModule]
+  exports: [NativeScriptRouterModule],
 })
 export class PasswordRoutingModule {}

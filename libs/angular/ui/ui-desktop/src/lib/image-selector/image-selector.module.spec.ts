@@ -4,7 +4,7 @@ import { ImageSelectorModule } from './image-selector.module';
 describe('ImageSelectorModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ImageSelectorModule]
+      imports: [ImageSelectorModule],
     }).compileComponents();
   }));
 

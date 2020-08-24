@@ -21,12 +21,12 @@ export class ReadBookResolver
     if (slug) {
       return combineLatest([
         this.booksService.getBook(slug).valueChanges,
-        this.authService.me().valueChanges
+        this.authService.me().valueChanges,
       ]).pipe(
         map(([book, user]) => ({
           epubUrl: book.data.book.epubUrl,
           bookmark: null,
-          userId: user.data.me._id
+          userId: user.data.me._id,
         })),
         take(1)
       );
@@ -36,7 +36,7 @@ export class ReadBookResolver
       map(({ data: { me } }) => ({
         epubUrl: me.reading.epubUrl,
         bookmark: me.reading.bookmark,
-        userId: me._id
+        userId: me._id,
       })),
       take(1)
     );

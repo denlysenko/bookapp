@@ -5,5 +5,5 @@ export const comment = {
   bookId: 'book_id',
   author: user,
   text: 'test comment',
-  createdAt: 1563132857195
+  createdAt: 1563132857195,
 };

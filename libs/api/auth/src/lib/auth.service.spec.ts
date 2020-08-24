@@ -7,7 +7,7 @@ import {
   MockConfigService,
   MockUsersService,
   refreshToken,
-  user
+  user,
 } from '@bookapp/testing';
 
 import { ConfigService } from '@nestjs/config';
@@ -30,17 +30,17 @@ describe('AuthService', () => {
         AuthService,
         {
           provide: UsersService,
-          useValue: MockUsersService
+          useValue: MockUsersService,
         },
         {
           provide: ConfigService,
-          useValue: MockConfigService
+          useValue: MockConfigService,
         },
         {
           provide: AuthTokensService,
-          useValue: MockAuthTokensService
-        }
-      ]
+          useValue: MockAuthTokensService,
+        },
+      ],
     }).compile();
 
     authService = module.get<AuthService>(AuthService);
@@ -63,7 +63,7 @@ describe('AuthService', () => {
       try {
         await authService.login(email, password);
       } catch (error) {
-        expect(error.message.message).toEqual(AUTH_ERRORS.INCORRECT_EMAIL_ERR);
+        expect(error.message).toEqual(AUTH_ERRORS.INCORRECT_EMAIL_ERR);
       }
     });
 
@@ -75,7 +75,7 @@ describe('AuthService', () => {
       try {
         await authService.login(email, password);
       } catch (error) {
-        expect(error.message.message).toEqual(AUTH_ERRORS.INCORRECT_PASSWORD_ERR);
+        expect(error.message).toEqual(AUTH_ERRORS.INCORRECT_PASSWORD_ERR);
       }
     });
   });
@@ -85,7 +85,7 @@ describe('AuthService', () => {
       email,
       password,
       firstName: '',
-      lastName: ''
+      lastName: '',
     };
 
     it('should return token', async () => {

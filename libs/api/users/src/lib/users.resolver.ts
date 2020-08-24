@@ -4,7 +4,7 @@ import {
   GqlAuthGuard,
   RequestWithUser,
   Roles,
-  RolesGuard
+  RolesGuard,
 } from '@bookapp/api/shared';
 import { ROLES } from '@bookapp/shared';
 import { convertToMongoSortQuery } from '@bookapp/utils';

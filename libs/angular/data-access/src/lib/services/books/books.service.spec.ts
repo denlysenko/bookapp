@@ -1,6 +1,6 @@
 // tslint:disable: no-identical-functions
 // tslint:disable: no-big-function
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import {
@@ -12,18 +12,20 @@ import {
   FREE_BOOKS_QUERY,
   PAID_BOOKS_QUERY,
   RATE_BOOK_MUTATION,
-  UPDATE_BOOK_MUTATION
+  UPDATE_BOOK_MUTATION,
+  RateBookResponse,
 } from '@bookapp/shared';
 import { book, user } from '@bookapp/testing';
+
+import { InMemoryCache, MutationUpdaterFn } from '@apollo/client/core';
+import { addTypenameToDocument } from '@apollo/client/utilities';
 
 import { Apollo } from 'apollo-angular';
 import {
   APOLLO_TESTING_CACHE,
   ApolloTestingController,
-  ApolloTestingModule
+  ApolloTestingModule,
 } from 'apollo-angular/testing';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { addTypenameToDocument } from 'apollo-utilities';
 
 import { BooksService, DEFAULT_SORT_VALUE } from './books.service';
 
@@ -40,13 +42,13 @@ describe('BooksService', () => {
         BooksService,
         {
           provide: APOLLO_TESTING_CACHE,
-          useValue: new InMemoryCache({ addTypename: true })
-        }
-      ]
+          useValue: new InMemoryCache({ addTypename: true }),
+        },
+      ],
     });
 
-    controller = TestBed.get(ApolloTestingController);
-    service = TestBed.get(BooksService);
+    controller = TestBed.inject(ApolloTestingController);
+    service = TestBed.inject(BooksService);
   });
 
   afterEach(() => {
@@ -66,11 +68,11 @@ describe('BooksService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         imports: [ApolloTestingModule],
-        providers: [BooksService]
+        providers: [BooksService],
       });
 
-      controller = TestBed.get(ApolloTestingController);
-      service = TestBed.get(BooksService);
+      controller = TestBed.inject(ApolloTestingController);
+      service = TestBed.inject(BooksService);
     });
 
     const newBook = {
@@ -79,10 +81,10 @@ describe('BooksService', () => {
       coverUrl: book.coverUrl,
       epubUrl: book.epubUrl,
       description: book.description,
-      paid: book.paid
+      paid: book.paid,
     };
 
-    it('should create book', done => {
+    it('should create book', (done) => {
       service.create(newBook).subscribe(({ data: { createBook } }) => {
         expect(createBook).toEqual(bookWithTypename);
         done();
@@ -94,8 +96,8 @@ describe('BooksService', () => {
 
       op.flush({
         data: {
-          createBook: bookWithTypename
-        }
+          createBook: bookWithTypename,
+        },
       });
 
       controller.verify();
@@ -111,16 +113,16 @@ describe('BooksService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         imports: [ApolloTestingModule],
-        providers: [BooksService]
+        providers: [BooksService],
       });
 
-      controller = TestBed.get(ApolloTestingController);
-      service = TestBed.get(BooksService);
+      controller = TestBed.inject(ApolloTestingController);
+      service = TestBed.inject(BooksService);
     });
 
-    it('should update book', done => {
+    it('should update book', (done) => {
       const updatedBook = {
-        coverUrl: 'uploads/new_cover.png'
+        coverUrl: 'uploads/new_cover.png',
       };
 
       service.update(book._id, updatedBook).subscribe(({ data: { updateBook } }) => {
@@ -135,8 +137,8 @@ describe('BooksService', () => {
 
       op.flush({
         data: {
-          updateBook: bookWithTypename
-        }
+          updateBook: bookWithTypename,
+        },
       });
 
       controller.verify();
@@ -144,12 +146,12 @@ describe('BooksService', () => {
   });
 
   describe('getBooks()', () => {
-    it('should get paid books', done => {
+    it('should get paid books', (done) => {
       service.getBooks(true).valueChanges.subscribe(
         ({
           data: {
-            books: { rows }
-          }
+            books: { rows },
+          },
         }) => {
           const [b] = rows;
           expect(b._id).toEqual(book._id);
@@ -169,23 +171,23 @@ describe('BooksService', () => {
         books: {
           rows: [bookWithTypename],
           count: 1,
-          __typename: 'Book'
-        }
+          __typename: 'Book',
+        },
       };
 
       op.flush({
-        data
+        data,
       });
 
       controller.verify();
     });
 
-    it('should get free books', done => {
+    it('should get free books', (done) => {
       service.getBooks(false).valueChanges.subscribe(
         ({
           data: {
-            books: { rows }
-          }
+            books: { rows },
+          },
         }) => {
           const [b] = rows;
           expect(b._id).toEqual(book._id);
@@ -206,20 +208,20 @@ describe('BooksService', () => {
           books: {
             rows: [bookWithTypename],
             count: 1,
-            __typename: 'Book'
-          }
-        }
+            __typename: 'Book',
+          },
+        },
       });
 
       controller.verify();
     });
 
-    it('should filter books', done => {
+    it('should filter books', (done) => {
       service.getBooks(false, { field: 'field', search: 'search' }).valueChanges.subscribe(
         ({
           data: {
-            books: { rows }
-          }
+            books: { rows },
+          },
         }) => {
           const [b] = rows;
           expect(b._id).toEqual(book._id);
@@ -232,7 +234,7 @@ describe('BooksService', () => {
       expect(op.operation.variables.paid).toEqual(false);
       expect(op.operation.variables.filter).toEqual({
         field: 'field',
-        search: 'search'
+        search: 'search',
       });
       expect(op.operation.variables.skip).toEqual(0);
       expect(op.operation.variables.first).toEqual(DEFAULT_LIMIT);
@@ -243,20 +245,20 @@ describe('BooksService', () => {
           books: {
             rows: [bookWithTypename],
             count: 1,
-            __typename: 'Book'
-          }
-        }
+            __typename: 'Book',
+          },
+        },
       });
 
       controller.verify();
     });
 
-    it('should skip books', done => {
+    it('should skip books', (done) => {
       service.getBooks(false, undefined, undefined, 10).valueChanges.subscribe(
         ({
           data: {
-            books: { rows }
-          }
+            books: { rows },
+          },
         }) => {
           const [b] = rows;
           expect(b._id).toEqual(book._id);
@@ -277,20 +279,20 @@ describe('BooksService', () => {
           books: {
             rows: [bookWithTypename],
             count: 1,
-            __typename: 'Book'
-          }
-        }
+            __typename: 'Book',
+          },
+        },
       });
 
       controller.verify();
     });
 
-    it('should limit books', done => {
+    it('should limit books', (done) => {
       service.getBooks(false, undefined, undefined, undefined, 20).valueChanges.subscribe(
         ({
           data: {
-            books: { rows }
-          }
+            books: { rows },
+          },
         }) => {
           const [b] = rows;
           expect(b._id).toEqual(book._id);
@@ -311,20 +313,20 @@ describe('BooksService', () => {
           books: {
             rows: [bookWithTypename],
             count: 1,
-            __typename: 'Book'
-          }
-        }
+            __typename: 'Book',
+          },
+        },
       });
 
       controller.verify();
     });
 
-    it('should order books', done => {
+    it('should order books', (done) => {
       service.getBooks(false, undefined, 'title_desc').valueChanges.subscribe(
         ({
           data: {
-            books: { rows }
-          }
+            books: { rows },
+          },
         }) => {
           const [b] = rows;
           expect(b._id).toEqual(book._id);
@@ -345,9 +347,9 @@ describe('BooksService', () => {
           books: {
             rows: [bookWithTypename],
             count: 1,
-            __typename: 'Book'
-          }
-        }
+            __typename: 'Book',
+          },
+        },
       });
 
       controller.verify();
@@ -355,7 +357,7 @@ describe('BooksService', () => {
   });
 
   describe('getBook()', () => {
-    it('should get book', done => {
+    it('should get book', (done) => {
       service.getBook(book.slug).valueChanges.subscribe(({ data }) => {
         expect(data.book._id).toEqual(book._id);
         done();
@@ -367,8 +369,8 @@ describe('BooksService', () => {
 
       op.flush({
         data: {
-          book: { ...bookWithTypename, comments: [] }
-        }
+          book: { ...bookWithTypename, comments: [] },
+        },
       });
 
       controller.verify();
@@ -376,7 +378,7 @@ describe('BooksService', () => {
   });
 
   describe('getBestBook()', () => {
-    it('should get best book', done => {
+    it('should get best book', (done) => {
       service.getBestBooks().valueChanges.subscribe(({ data }) => {
         const [b] = data.bestBooks.rows;
         expect(b._id).toEqual(book._id);
@@ -390,9 +392,9 @@ describe('BooksService', () => {
           bestBooks: {
             rows: [bookWithTypename],
             count: 1,
-            __typename: 'BestBooks'
-          }
-        }
+            __typename: 'BestBooks',
+          },
+        },
       });
 
       controller.verify();
@@ -400,24 +402,28 @@ describe('BooksService', () => {
   });
 
   describe('rateBook()', () => {
-    const update = (store, { data: { rateBook } }) => {
+    const update: MutationUpdaterFn<RateBookResponse> = (store, { data: { rateBook } }) => {
       const data: { book: Book } = store.readQuery({
         query: BOOK_QUERY,
         variables: {
-          slug: book.slug
-        }
+          slug: book.slug,
+        },
       });
-
-      data.book.rating = rateBook.rating;
-      data.book.total_rates = rateBook.total_rates;
-      data.book.total_rating = rateBook.total_rating;
 
       store.writeQuery({
         query: BOOK_QUERY,
         variables: {
-          slug: book.slug
+          slug: book.slug,
         },
-        data
+        data: {
+          ...data,
+          book: {
+            ...data.book,
+            rating: rateBook.rating,
+            total_rates: rateBook.total_rates,
+            total_rating: rateBook.total_rating,
+          },
+        },
       });
     };
 
@@ -425,12 +431,12 @@ describe('BooksService', () => {
       service.getBook(book.slug).valueChanges.subscribe();
       controller.expectOne(addTypenameToDocument(BOOK_QUERY)).flush({
         data: {
-          book: { ...bookWithTypename, comments: [] }
-        }
+          book: { ...bookWithTypename, comments: [] },
+        },
       });
     });
 
-    it('should call RATE_BOOK_MUTATION', done => {
+    it('should call RATE_BOOK_MUTATION', (done) => {
       service
         .rateBook({ bookId: book._id, rate: 5 }, update)
         .subscribe(({ data: { rateBook } }) => {
@@ -447,24 +453,25 @@ describe('BooksService', () => {
         data: {
           rateBook: {
             ...bookWithTypename,
-            total_rates: bookWithTypename.total_rates + 1
-          }
-        }
+            total_rates: bookWithTypename.total_rates + 1,
+          },
+        },
       });
 
+      controller.expectOne(addTypenameToDocument(BOOK_QUERY));
       controller.verify();
     });
 
-    it('should update book in store with new rating', done => {
-      const apollo: Apollo = TestBed.get(Apollo);
+    it('should update book in store with new rating', (done) => {
+      const apollo: Apollo = TestBed.inject(Apollo);
 
       service.rateBook({ bookId: book._id, rate: 5 }, update).subscribe(() => {
         apollo
           .query<{ book: Book }>({
             query: BOOK_QUERY,
             variables: {
-              slug: book.slug
-            }
+              slug: book.slug,
+            },
           })
           .subscribe(({ data: { book } }) => {
             expect(book.total_rates).toEqual(bookWithTypename.total_rates + 1);
@@ -476,11 +483,12 @@ describe('BooksService', () => {
         data: {
           rateBook: {
             ...bookWithTypename,
-            total_rates: bookWithTypename.total_rates + 1
-          }
-        }
+            total_rates: bookWithTypename.total_rates + 1,
+          },
+        },
       });
 
+      controller.expectOne(addTypenameToDocument(BOOK_QUERY));
       controller.verify();
     });
   });
@@ -492,25 +500,29 @@ describe('BooksService', () => {
       author: { ...user, __typename: 'User' },
       text: 'New comment',
       createdAt: 1563132857195,
-      __typename: 'Comment'
+      __typename: 'Comment',
     };
 
     const update = (store, { data: { addComment } }) => {
       const data: { book: Book } = store.readQuery({
         query: BOOK_QUERY,
         variables: {
-          slug: book.slug
-        }
+          slug: book.slug,
+        },
       });
-
-      data.book.comments.push(addComment);
 
       store.writeQuery({
         query: BOOK_QUERY,
         variables: {
-          slug: book.slug
+          slug: book.slug,
         },
-        data
+        data: {
+          ...data,
+          book: {
+            ...data.book,
+            comments: [...data.book.comments, addComment],
+          },
+        },
       });
     };
 
@@ -518,12 +530,12 @@ describe('BooksService', () => {
       service.getBook(book.slug).valueChanges.subscribe();
       controller.expectOne(addTypenameToDocument(BOOK_QUERY)).flush({
         data: {
-          book: { ...bookWithTypename, comments: [] }
-        }
+          book: { ...bookWithTypename, comments: [] },
+        },
       });
     });
 
-    it('should call ADD_COMMENT_MUTATION', done => {
+    it('should call ADD_COMMENT_MUTATION', (done) => {
       service.addComment(book._id, comment.text, update).subscribe(({ data: { addComment } }) => {
         expect(addComment.text).toEqual(comment.text);
         done();
@@ -536,23 +548,24 @@ describe('BooksService', () => {
 
       op.flush({
         data: {
-          addComment: comment
-        }
+          addComment: comment,
+        },
       });
 
+      controller.expectOne(addTypenameToDocument(BOOK_QUERY));
       controller.verify();
     });
 
-    it('should update book in store with new comment', done => {
-      const apollo: Apollo = TestBed.get(Apollo);
+    it('should update book in store with new comment', (done) => {
+      const apollo: Apollo = TestBed.inject(Apollo);
 
       service.addComment(book._id, comment.text, update).subscribe(() => {
         apollo
           .query<{ book: Book }>({
             query: BOOK_QUERY,
             variables: {
-              slug: book.slug
-            }
+              slug: book.slug,
+            },
           })
           .subscribe(({ data: { book } }) => {
             expect(book.comments.length).toEqual(1);
@@ -563,10 +576,11 @@ describe('BooksService', () => {
 
       controller.expectOne(addTypenameToDocument(ADD_COMMENT_MUTATION)).flush({
         data: {
-          addComment: comment
-        }
+          addComment: comment,
+        },
       });
 
+      controller.expectOne(addTypenameToDocument(BOOK_QUERY));
       controller.verify();
     });
   });

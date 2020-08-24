@@ -21,7 +21,7 @@ import { getViewById } from 'tns-core-modules/ui/page/page';
   selector: 'bookapp-profile-form',
   templateUrl: './profile-form.component.html',
   styleUrls: ['./profile-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileFormComponent extends NsBaseForm {
   progress$ = this.uploadService.progress$;
@@ -35,7 +35,7 @@ export class ProfileFormComponent extends NsBaseForm {
       this.source.next({
         firstName: user.firstName,
         lastName: user.lastName,
-        email: user.email
+        email: user.email,
       });
     }
   }
@@ -58,7 +58,7 @@ export class ProfileFormComponent extends NsBaseForm {
   private source = new BehaviorSubject<Partial<User>>({
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
   });
 
   constructor(
@@ -82,7 +82,7 @@ export class ProfileFormComponent extends NsBaseForm {
     if (valid) {
       this.formSubmitted.emit({
         id: this.user._id,
-        user: this.source.getValue()
+        user: this.source.getValue(),
       });
     }
   }
@@ -101,7 +101,7 @@ export class ProfileFormComponent extends NsBaseForm {
       imageAsset = await takePicture({
         width: 300,
         height: 300,
-        keepAspectRatio: true
+        keepAspectRatio: true,
       });
     } catch (err) {}
 
@@ -125,7 +125,7 @@ export class ProfileFormComponent extends NsBaseForm {
       cropped = await this.imageCropper.show(imageSource, {
         width: 300,
         height: 300,
-        lockSquare: true
+        lockSquare: true,
       });
     } catch (err) {}
 
@@ -139,13 +139,13 @@ export class ProfileFormComponent extends NsBaseForm {
       this.uploading.next(true);
       this.uploadService
         .upload(localPath)
-        .pipe(map(res => JSON.parse(res)))
+        .pipe(map((res) => JSON.parse(res)))
         .subscribe(
           ({ publicUrl }) => {
             this.uploading.next(false);
             this.formSubmitted.emit({
               id: this.user._id,
-              user: { avatar: publicUrl }
+              user: { avatar: publicUrl },
             });
           },
           ({ message }) => {

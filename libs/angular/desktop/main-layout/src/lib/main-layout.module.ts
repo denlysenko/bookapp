@@ -26,15 +26,15 @@ import { MainLayoutComponent } from './containers/main-layout/main-layout.compon
     MatMenuModule,
     MatDividerModule,
     MatListModule,
-    MatSidenavModule
+    MatSidenavModule,
   ],
   declarations: [
     FooterComponent,
     HeaderComponent,
     NavComponent,
     MainLayoutComponent,
-    DateToPeriodPipe
+    DateToPeriodPipe,
   ],
-  exports: [MainLayoutComponent]
+  exports: [MainLayoutComponent],
 })
 export class MainLayoutModule {}

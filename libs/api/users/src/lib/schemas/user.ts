@@ -10,7 +10,7 @@ import { UserModel } from '../interfaces/user';
 /**
  * A Validation function for password
  */
-const validatePassword = function(password) {
+const validatePassword = function (password) {
   return password && password.length > 6;
 };
 
@@ -20,65 +20,65 @@ export const UserSchema = new Schema({
   firstName: {
     type: String,
     trim: true,
-    required: [true, USER_VALIDATION_ERRORS.FIRST_NAME_REQUIRED_ERR]
+    required: [true, USER_VALIDATION_ERRORS.FIRST_NAME_REQUIRED_ERR],
   },
   lastName: {
     type: String,
     trim: true,
-    required: [true, USER_VALIDATION_ERRORS.LAST_NAME_REQUIRED_ERR]
+    required: [true, USER_VALIDATION_ERRORS.LAST_NAME_REQUIRED_ERR],
   },
   displayName: {
     type: String,
-    trim: true
+    trim: true,
   },
   email: {
     type: String,
     trim: true,
     required: [true, USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR],
-    match: [/.+\@.+\..+/, USER_VALIDATION_ERRORS.EMAIL_INVALID_ERR]
+    match: [/.+\@.+\..+/, USER_VALIDATION_ERRORS.EMAIL_INVALID_ERR],
   },
   password: {
     type: String,
     default: '',
-    validate: [validatePassword, USER_VALIDATION_ERRORS.PASSWORD_LENGTH_ERR]
+    validate: [validatePassword, USER_VALIDATION_ERRORS.PASSWORD_LENGTH_ERR],
   },
   salt: String,
   avatar: String,
   roles: {
     type: [{ type: String, enum: [ROLES.ADMIN, ROLES.USER] }],
-    default: [ROLES.USER]
+    default: [ROLES.USER],
   },
   updatedAt: Date,
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   reading: {
     epubUrl: {
       type: String,
-      default: ''
+      default: '',
     },
     bookmark: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   resetPasswordToken: String,
-  resetPasswordExpires: Date
+  resetPasswordExpires: Date,
 });
 
 // Validate email is not taken
-UserSchema.path('email').validate(function(value) {
+UserSchema.path('email').validate(function (value) {
   return this.constructor
     .findOne({ email: value })
     .exec()
-    .then(user => {
+    .then((user) => {
       if (user) {
         return this._id.equals(user._id);
       }
       return true;
     })
-    .catch(err => {
+    .catch((err) => {
       throw err;
     });
 }, USER_VALIDATION_ERRORS.EMAIL_IN_USE_ERR);
@@ -86,7 +86,7 @@ UserSchema.path('email').validate(function(value) {
 /**
  * Pre-save hook
  */
-UserSchema.pre<UserModel>('save', function(next) {
+UserSchema.pre<UserModel>('save', function (next) {
   // Handle new/update passwords
   if (!this.isModified('password')) {
     return next();
@@ -203,5 +203,5 @@ UserSchema.methods = {
         return callback(null, key.toString('base64'));
       }
     });
-  }
+  },
 };

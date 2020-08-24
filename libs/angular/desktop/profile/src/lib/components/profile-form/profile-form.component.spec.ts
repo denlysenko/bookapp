@@ -23,9 +23,9 @@ describe('ProfileFormComponent', () => {
       providers: [
         {
           provide: FeedbackPlatformService,
-          useValue: MockFeedbackPlatformService
-        }
-      ]
+          useValue: MockFeedbackPlatformService,
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -44,7 +44,7 @@ describe('ProfileFormComponent', () => {
     expect(component.form.value).toMatchObject({
       firstName: user.firstName,
       lastName: user.lastName,
-      email: user.email
+      email: user.email,
     });
   });
 
@@ -154,7 +154,7 @@ describe('ProfileFormComponent', () => {
 
       component.form.patchValue({
         firstName,
-        lastName
+        lastName,
       });
 
       component.submit();
@@ -164,8 +164,8 @@ describe('ProfileFormComponent', () => {
         user: {
           email: user.email,
           firstName,
-          lastName
-        }
+          lastName,
+        },
       });
     });
   });

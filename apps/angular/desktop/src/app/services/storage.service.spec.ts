@@ -14,10 +14,10 @@ describe('StorageService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [StorageService]
+      providers: [StorageService],
     });
 
-    service = TestBed.get(StorageService);
+    service = TestBed.inject(StorageService);
 
     getItemSpy = jest.spyOn(window.localStorage, 'getItem');
     setItemSpy = jest.spyOn(window.localStorage, 'setItem');

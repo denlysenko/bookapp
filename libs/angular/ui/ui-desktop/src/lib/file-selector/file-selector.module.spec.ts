@@ -4,7 +4,7 @@ import { FileSelectorModule } from './file-selector.module';
 describe('FileSelectorModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FileSelectorModule]
+      imports: [FileSelectorModule],
     }).compileComponents();
   }));
 

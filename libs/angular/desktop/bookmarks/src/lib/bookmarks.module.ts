@@ -13,8 +13,8 @@ import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-pa
     BookmarksRoutingModule,
     MatToolbarModule,
     PreloaderModule,
-    BooksListModule
+    BooksListModule,
   ],
-  declarations: [BookmarksPageComponent]
+  declarations: [BookmarksPageComponent],
 })
 export class BookmarksModule {}

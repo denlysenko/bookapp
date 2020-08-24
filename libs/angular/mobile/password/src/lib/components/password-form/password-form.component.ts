@@ -12,12 +12,12 @@ import { getViewById } from 'tns-core-modules/ui/page/page';
   selector: 'bookapp-password-form',
   templateUrl: './password-form.component.html',
   styleUrls: ['./password-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordFormComponent extends NsBaseForm {
   source = {
     oldPassword: '',
-    password: ''
+    password: '',
   };
 
   @Input() loading: boolean;

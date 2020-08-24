@@ -11,9 +11,9 @@ import {
   Mutation,
   Parent,
   Query,
-  ResolveProperty,
+  ResolveField,
   Resolver,
-  Subscription
+  Subscription,
 } from '@nestjs/graphql';
 
 import { PubSub } from 'graphql-subscriptions';
@@ -40,7 +40,7 @@ export class BooksResolvers {
     if (filter) {
       where = {
         ...where,
-        [filter.field]: new RegExp(`${filter.search}`, 'i')
+        [filter.field]: new RegExp(`${filter.search}`, 'i'),
       };
     }
 
@@ -59,7 +59,7 @@ export class BooksResolvers {
     return this.booksService.findBySlug(slug);
   }
 
-  @ResolveProperty('comments')
+  @ResolveField('comments')
   async getComments(@Parent() book: Book) {
     const { _id } = book;
     return this.commentsService.getAllForBook(_id);

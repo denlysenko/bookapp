@@ -5,7 +5,7 @@ import {
   EventEmitter,
   OnDestroy,
   Output,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 
 @Component({
@@ -13,7 +13,7 @@ import {
   template: `
     <ng-content></ng-content>
     <div #anchor></div>
-  `
+  `,
 })
 export class InfiniteScrollComponent implements AfterViewInit, OnDestroy {
   @Output() scrolled = new EventEmitter<void>();
@@ -24,7 +24,7 @@ export class InfiniteScrollComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     const options = {
-      root: null
+      root: null,
     };
 
     this.observer = new IntersectionObserver(([entry]) => {

@@ -3,5 +3,8 @@
   "rules": {
     "directive-selector": [true, "attribute", "bookapp", "camelCase"],
     "component-selector": [true, "element", "bookapp", "kebab-case"]
+  },
+  "linterOptions": {
+    "exclude": ["!**/*"]
   }
 }

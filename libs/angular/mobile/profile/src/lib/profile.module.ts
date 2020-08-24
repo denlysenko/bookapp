@@ -15,9 +15,9 @@ import { ProfileRoutingModule } from './profile-routing.module';
     CommonModule,
     ProfileRoutingModule,
     NativeScriptUIDataFormModule,
-    NgShadowModule
+    NgShadowModule,
   ],
   schemas: [NO_ERRORS_SCHEMA],
-  declarations: [ProfileFormComponent, ProfilePageComponent]
+  declarations: [ProfileFormComponent, ProfilePageComponent],
 })
 export class ProfileModule {}

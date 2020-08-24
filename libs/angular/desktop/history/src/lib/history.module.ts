@@ -19,8 +19,8 @@ import { HistoryRoutingModule } from './history-routing.module';
     MatSortModule,
     MatPaginatorModule,
     MatToolbarModule,
-    PreloaderModule
+    PreloaderModule,
   ],
-  declarations: [HistoryPageComponent, HistoryListComponent]
+  declarations: [HistoryPageComponent, HistoryListComponent],
 })
 export class HistoryModule {}

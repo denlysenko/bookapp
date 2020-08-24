@@ -6,8 +6,6 @@ describe('Buy Books Page', () => {
   });
 
   it('should display list of the best books', () => {
-    cy.get('[data-test=list-item]')
-      .should('have.length', 1)
-      .and('contain', 'Treasure Island');
+    cy.get('[data-test=list-item]').should('have.length', 1).and('contain', 'Treasure Island');
   });
 });

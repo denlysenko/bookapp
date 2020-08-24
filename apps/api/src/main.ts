@@ -6,7 +6,7 @@ async function bootstrap() {
   const port = process.env.PORT || 3333;
 
   app.enableCors({
-    origin: ['http://localhost:4200', 'https://bookapp-angular.netlify.com']
+    origin: ['http://localhost:4200', 'https://bookapp-angular.netlify.com'],
   });
 
   app.use('/ping', (_: unknown, res: any) => {

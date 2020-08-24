@@ -1,10 +1,10 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 import {
   BookFragment,
   CreatedBookFragment,
   FreeBooksFragment,
-  PaidBooksFragment
+  PaidBooksFragment,
 } from './fragments';
 
 export const CREATE_BOOK_MUTATION = gql`

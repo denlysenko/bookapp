@@ -8,6 +8,6 @@ import { BrowseBooksPageComponent } from './containers/browse-books-page/browse-
 
 @NgModule({
   imports: [CommonModule, MatToolbarModule, PreloaderModule, BooksFilterModule, BooksListModule],
-  declarations: [BrowseBooksPageComponent]
+  declarations: [BrowseBooksPageComponent],
 })
 export class BrowseBooksModule {}

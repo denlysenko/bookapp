@@ -13,12 +13,12 @@ export abstract class BaseForm extends BaseComponent {
   }
 
   protected handleError(err: any) {
-    if (err.message && err.message.message) {
-      this.feedbackService.error(err.message.message);
+    if (err.message) {
+      this.feedbackService.error(err.message);
       return;
     }
 
-    Object.keys(err).forEach(key => {
+    Object.keys(err).forEach((key) => {
       const formControl = this.form.get(key);
 
       if (formControl) {

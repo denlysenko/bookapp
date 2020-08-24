@@ -10,15 +10,15 @@ import { UsersDataLoader } from './users.dataloader';
       provide: UsersDataLoader,
       useFactory: UsersDataLoader.create,
       inject: [getConnectionToken()],
-      scope: Scope.REQUEST
+      scope: Scope.REQUEST,
     },
     {
       provide: BooksDataLoader,
       useFactory: BooksDataLoader.create,
       inject: [getConnectionToken()],
-      scope: Scope.REQUEST
-    }
+      scope: Scope.REQUEST,
+    },
   ],
-  exports: [UsersDataLoader, BooksDataLoader]
+  exports: [UsersDataLoader, BooksDataLoader],
 })
 export class DataLoadersModule {}

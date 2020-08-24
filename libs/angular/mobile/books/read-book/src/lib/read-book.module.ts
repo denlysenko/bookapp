@@ -9,6 +9,6 @@ import { ReadBookRoutingModule } from './read-book-routing.module';
 @NgModule({
   imports: [CommonModule, NativeScriptCommonModule, ReadBookRoutingModule],
   declarations: [ReadBookPageComponent],
-  schemas: [NO_ERRORS_SCHEMA]
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class ReadBookModule {}

@@ -24,11 +24,11 @@ describe('AvatarSelectorComponent', () => {
           provide: MatDialog,
           useValue: {
             open: jest.fn().mockImplementation(() => ({
-              afterClosed: jest.fn().mockReturnValue(of(avatarUrl))
-            }))
-          }
-        }
-      ]
+              afterClosed: jest.fn().mockReturnValue(of(avatarUrl)),
+            })),
+          },
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -37,7 +37,7 @@ describe('AvatarSelectorComponent', () => {
     component = fixture.componentInstance;
     component.user = user;
     fixture.detectChanges();
-    dialog = TestBed.get(MatDialog);
+    dialog = TestBed.inject(MatDialog);
   });
 
   it('should create', () => {
@@ -57,13 +57,13 @@ describe('AvatarSelectorComponent', () => {
       clickOnBtn(fixture);
       expect(component.avatarSaved.emit).toHaveBeenCalledWith({
         id: user._id,
-        user: { avatar: avatarUrl }
+        user: { avatar: avatarUrl },
       });
     });
 
     it('should not emit avatarSaved if no avatar', () => {
       dialog.open = jest.fn().mockImplementation(() => ({
-        afterClosed: jest.fn().mockReturnValue(of(null))
+        afterClosed: jest.fn().mockReturnValue(of(null)),
       }));
 
       clickOnBtn(fixture);

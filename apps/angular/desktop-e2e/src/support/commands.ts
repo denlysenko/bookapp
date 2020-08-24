@@ -14,29 +14,27 @@ declare namespace Cypress {
 Cypress.Commands.add('login', (email, password) => {
   cy.visit('/auth');
   cy.get('[data-test=email]').type(email);
-  cy.get('[data-test=password]')
-    .type(password)
-    .type('{enter}');
+  cy.get('[data-test=password]').type(password).type('{enter}');
 });
 
-Cypress.Commands.add('uploadOnServer', response => {
+Cypress.Commands.add('uploadOnServer', (response) => {
   cy.server();
   cy.route('POST', 'http://localhost:3333/files', response);
 });
 
-Cypress.Commands.add('searchBooks', query => {
+Cypress.Commands.add('searchBooks', (query) => {
   cy.get('[data-test=search-book]').type(query);
 });
 
-Cypress.Commands.add('filterBooks', filter => {
+Cypress.Commands.add('filterBooks', (filter) => {
   cy.get(`[data-test=${filter}]`).click();
 });
 
 Cypress.Commands.add('rateBook', (bookIndex, rate) => {
-  cy.get('[data-test=list-item]').then($books => {
+  cy.get('[data-test=list-item]').then(($books) => {
     cy.wrap($books[bookIndex])
       .find('.rating-star')
-      .then($stars => {
+      .then(($stars) => {
         cy.wrap($stars[rate - 1]).click();
       });
   });

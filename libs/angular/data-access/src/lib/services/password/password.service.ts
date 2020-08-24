@@ -20,14 +20,14 @@ export class PasswordService {
         mutation: CHANGE_PASSWORD_MUTATION,
         variables: {
           newPassword,
-          oldPassword
-        }
+          oldPassword,
+        },
       })
       .pipe(
         tap(({ data }) => {
           if (data) {
             const {
-              changePassword: { accessToken, refreshToken }
+              changePassword: { accessToken, refreshToken },
             } = data;
             this.storagePlatformService.setItem(AUTH_TOKEN, refreshToken);
             this.storeService.set(AUTH_TOKEN, accessToken);

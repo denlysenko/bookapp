@@ -4,7 +4,7 @@ import { BrowseBooksModule } from './browse-books.module';
 describe('BrowseBooksModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [BrowseBooksModule]
+      imports: [BrowseBooksModule],
     }).compileComponents();
   }));
 

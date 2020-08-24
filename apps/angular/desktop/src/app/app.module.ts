@@ -11,7 +11,7 @@ import {
   FeedbackPlatformService,
   StoragePlatformService,
   UploadPlatformService,
-  WebSocketImpl
+  WebSocketImpl,
 } from '@bookapp/angular/core';
 import { DataAccessModule } from '@bookapp/angular/data-access';
 import { AuthModule } from '@bookapp/angular/desktop/auth';
@@ -41,7 +41,7 @@ import { UploadService } from './services/upload.service';
     AuthModule,
     MainLayoutModule,
     BrowseBooksModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     AuthGuard,
@@ -49,33 +49,33 @@ import { UploadService } from './services/upload.service';
     CanDeactivateGuard,
     {
       provide: WebSocketImpl,
-      useValue: null
+      useValue: null,
     },
     {
       provide: Environment,
-      useValue: environment
+      useValue: environment,
     },
     {
       provide: StoragePlatformService,
-      useClass: StorageService
+      useClass: StorageService,
     },
     {
       provide: FeedbackPlatformService,
-      useClass: FeedbackService
+      useClass: FeedbackService,
     },
     {
       provide: UploadPlatformService,
-      useClass: UploadService
+      useClass: UploadService,
     },
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: {
         duration: 3500,
         verticalPosition: 'top',
-        horizontalPosition: 'right'
-      }
-    }
+        horizontalPosition: 'right',
+      },
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

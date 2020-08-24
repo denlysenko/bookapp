@@ -10,6 +10,6 @@ import { BookSearchComponent } from './book-search.component';
   declarations: [BookSearchComponent],
   exports: [BookSearchComponent],
   schemas: [NO_ERRORS_SCHEMA],
-  entryComponents: [BookSearchComponent]
+  entryComponents: [BookSearchComponent],
 })
 export class BookSearchModule {}

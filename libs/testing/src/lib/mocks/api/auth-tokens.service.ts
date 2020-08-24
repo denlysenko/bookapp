@@ -6,5 +6,5 @@ export const MockAuthTokensService = {
   createRefreshToken: jest.fn().mockImplementation(() => Promise.resolve(refreshToken)),
   removeRefreshToken: jest.fn().mockImplementation(() => Promise.resolve(true)),
   revokeUserTokens: jest.fn().mockResolvedValue(true),
-  refreshTokens: jest.fn()
+  refreshTokens: jest.fn(),
 };

@@ -1,7 +1,7 @@
 // tslint:disable: no-big-function
 // tslint:disable: no-duplicate-string
 describe('Add Book Page', () => {
-  const titleField = '[data-test=title]';
+  const titleField = 'input[data-test=title]';
   const authorField = '[data-test=author]';
   const descriptionField = '[data-test=description]';
   const saveBtn = '[data-test=save]';
@@ -55,9 +55,7 @@ describe('Add Book Page', () => {
           cy.get(paidCheckbox).click();
           cy.get(saveBtn).click();
 
-          cy.get('.mat-error')
-            .should('have.length', 4)
-            .and('contain', 'This field is required');
+          cy.get('.mat-error').should('have.length', 4).and('contain', 'This field is required');
         });
       });
 
@@ -68,9 +66,7 @@ describe('Add Book Page', () => {
           cy.get(descriptionField).type('Free Book from Genius author');
           cy.get(saveBtn).click();
 
-          cy.get('.mat-snack-bar-container')
-            .should('be.visible')
-            .and('contain', 'Book created!');
+          cy.get('.mat-snack-bar-container').should('be.visible').and('contain', 'Book created!');
 
           cy.contains('Browse Books').click();
 
@@ -88,9 +84,7 @@ describe('Add Book Page', () => {
           cy.get(priceField).type('5');
           cy.get(saveBtn).click();
 
-          cy.get('.mat-snack-bar-container')
-            .should('be.visible')
-            .and('contain', 'Book created!');
+          cy.get('.mat-snack-bar-container').should('be.visible').and('contain', 'Book created!');
 
           cy.contains('Buy Books').click();
 
@@ -116,34 +110,33 @@ describe('Add Book Page', () => {
         });
 
         it('should show error if mime type is invalid', () => {
-          cy.fixture('empty.pdf', 'base64').then(fileContent => {
-            cy.get('[data-test="file-input"]').upload(
-              { fileContent, fileName: 'empty.pdf', mimeType: 'application/pdf' },
-              { subjectType: 'input' }
-            );
-
-            cy.get('.mat-error')
-              .should('be.visible')
-              .and('contain', 'INVALID_IMG_ERR');
-          });
+          cy.get('[data-test="file-input"]').attachFile('empty.pdf', { subjectType: 'input' });
+          cy.get('.mat-error').should('be.visible').and('contain', 'INVALID_IMG_ERR');
         });
 
         it('should upload cover', () => {
           const publicUrl = '/assets/icons/icon-512x512.png';
 
           cy.uploadOnServer({
-            publicUrl
+            publicUrl,
           });
 
-          cy.fixture('icon.png', 'base64').then(fileContent => {
-            cy.get('[data-test="file-input"]').upload(
-              { fileContent, fileName: 'icon.png', mimeType: 'image/png' },
-              { subjectType: 'input' }
-            );
-            cy.get('[data-test=upload]').click();
+          cy.fixture('icon.png', 'binary')
+            .then(Cypress.Blob.binaryStringToBlob)
+            .then((fileContent) => {
+              cy.get('[data-test="file-input"]').attachFile(
+                { fileContent, filePath: 'icon.png' },
+                { subjectType: 'input' }
+              );
+              cy.get('[data-test=upload]').click();
 
-            cy.get('[data-test=cover]').should('have.attr', 'src', publicUrl);
-          });
+              cy.get('[data-test=cover]').should('have.attr', 'src', publicUrl);
+            });
+
+          cy.get('[data-test="file-input"]').attachFile('icon.png', { subjectType: 'input' });
+          cy.get('[data-test=upload]').click();
+
+          cy.get('[data-test=cover]').should('have.attr', 'src', publicUrl);
         });
       });
 
@@ -165,20 +158,13 @@ describe('Add Book Page', () => {
           const publicUrl = '/assets/icons/icon-512x512.png';
 
           cy.uploadOnServer({
-            publicUrl
+            publicUrl,
           });
 
-          cy.fixture('empty.pdf', 'base64').then(fileContent => {
-            cy.get('[data-test="file-input"]').upload(
-              { fileContent, fileName: 'empty.pdf', mimeType: 'application/pdf' },
-              { subjectType: 'input' }
-            );
-            cy.get('[data-test=upload]').click();
+          cy.get('[data-test="file-input"]').attachFile('empty.pdf', { subjectType: 'input' });
+          cy.get('[data-test=upload]').click();
 
-            cy.get('[data-test=download]')
-              .should('be.visible')
-              .and('have.attr', 'href', publicUrl);
-          });
+          cy.get('[data-test=download]').should('be.visible').and('have.attr', 'href', publicUrl);
         });
       });
     });
@@ -188,9 +174,7 @@ describe('Add Book Page', () => {
     context('role user', () => {
       beforeEach(() => {
         cy.login('user@test.com', 'password');
-        cy.get('[data-test=list-item]')
-          .first()
-          .click();
+        cy.get('[data-test=list-item]').first().click();
       });
 
       it('edit book link should be hidden', () => {
@@ -198,9 +182,9 @@ describe('Add Book Page', () => {
       });
 
       it('should guard route', () => {
-        cy.url().then(url => {
+        cy.url().then((url) => {
           const parts = url.split('/').slice(-2);
-          const path = parts.map(part => part.replace(/\?.*/, '')).join('/');
+          const path = parts.map((part) => part.replace(/\?.*/, '')).join('/');
           cy.visit(`/books/add/${path}`);
           cy.url().should('include', '/books/browse');
         });
@@ -210,28 +194,19 @@ describe('Add Book Page', () => {
     context('role admin', () => {
       beforeEach(() => {
         cy.login('admin@test.com', 'password');
-        cy.get('[data-test=list-item]')
-          .first()
-          .click();
+        cy.get('[data-test=list-item]').first().click();
         cy.get('#edit').click();
       });
 
       it('should update book', () => {
-        cy.get(titleField)
-          .clear()
-          .type('Updated');
+        cy.get(titleField).clear().type('Updated');
         cy.get(saveBtn).click();
 
-        cy.get('.mat-snack-bar-container')
-          .should('be.visible')
-          .and('contain', 'Book updated!');
+        cy.get('.mat-snack-bar-container').should('be.visible').and('contain', 'Book updated!');
 
         cy.get('.logs .mat-list-item')
           .should('have.length', 1)
           .and('contain', 'You updated a Book');
-
-        cy.go('back');
-        cy.get('[data-test=title]').should('contain', 'Updated');
       });
     });
   });

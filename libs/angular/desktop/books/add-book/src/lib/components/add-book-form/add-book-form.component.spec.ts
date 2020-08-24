@@ -23,7 +23,7 @@ const formValue = {
   description: book.description,
   paid: book.paid,
   coverUrl: book.coverUrl,
-  epubUrl: book.epubUrl
+  epubUrl: book.epubUrl,
 };
 
 const COVER_BTN = '#cover-btn';
@@ -43,23 +43,23 @@ describe('AddBookFormComponent', () => {
       providers: [
         {
           provide: FeedbackPlatformService,
-          useValue: MockFeedbackPlatformService
+          useValue: MockFeedbackPlatformService,
         },
         {
           provide: UploadPlatformService,
           useValue: {
-            deleteFile: jest.fn().mockImplementation(() => of(true))
-          }
+            deleteFile: jest.fn().mockImplementation(() => of(true)),
+          },
         },
         {
           provide: MatDialog,
           useValue: {
             open: jest.fn().mockImplementation(() => ({
-              afterClosed: jest.fn().mockReturnValue(of(publicUrl))
-            }))
-          }
-        }
-      ]
+              afterClosed: jest.fn().mockReturnValue(of(publicUrl)),
+            })),
+          },
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -67,8 +67,8 @@ describe('AddBookFormComponent', () => {
     fixture = TestBed.createComponent(AddBookFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    dialog = TestBed.get(MatDialog);
-    uploadService = TestBed.get(UploadPlatformService);
+    dialog = TestBed.inject(MatDialog);
+    uploadService = TestBed.inject(UploadPlatformService);
   });
 
   it('should create', () => {
@@ -83,7 +83,7 @@ describe('AddBookFormComponent', () => {
       description: null,
       paid: false,
       coverUrl: null,
-      epubUrl: null
+      epubUrl: null,
     });
   });
 
@@ -222,7 +222,7 @@ describe('AddBookFormComponent', () => {
 
     it('should not patch form value if coverUrl does not return', () => {
       dialog.open = jest.fn().mockImplementation(() => ({
-        afterClosed: jest.fn().mockReturnValue(of(null))
+        afterClosed: jest.fn().mockReturnValue(of(null)),
       }));
 
       clickOnBtn(fixture, COVER_BTN);
@@ -243,7 +243,7 @@ describe('AddBookFormComponent', () => {
 
     it('should not patch form value if epubUrl does not return', () => {
       dialog.open = jest.fn().mockImplementation(() => ({
-        afterClosed: jest.fn().mockReturnValue(of(null))
+        afterClosed: jest.fn().mockReturnValue(of(null)),
       }));
 
       clickOnBtn(fixture, EPUB_BTN);

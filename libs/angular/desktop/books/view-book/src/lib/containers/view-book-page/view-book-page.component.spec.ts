@@ -14,7 +14,7 @@ import {
   MockAngularAuthService,
   MockAngularBookmarksService,
   MockAngularBooksService,
-  user
+  user,
 } from '@bookapp/testing';
 
 import { ViewBookPageComponent } from './view-book-page.component';
@@ -36,27 +36,27 @@ describe('ViewBookPageComponent', () => {
           useValue: {
             snapshot: {
               paramMap: {
-                get: jest.fn(() => book.slug)
+                get: jest.fn(() => book.slug),
               },
               queryParamMap: {
-                get: jest.fn(() => book._id)
-              }
-            }
-          }
+                get: jest.fn(() => book._id),
+              },
+            },
+          },
         },
         {
           provide: BooksService,
-          useValue: MockAngularBooksService
+          useValue: MockAngularBooksService,
         },
         {
           provide: BookmarksService,
-          useValue: MockAngularBookmarksService
+          useValue: MockAngularBookmarksService,
         },
         {
           provide: AuthService,
-          useValue: MockAngularAuthService
-        }
-      ]
+          useValue: MockAngularAuthService,
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -64,30 +64,30 @@ describe('ViewBookPageComponent', () => {
     fixture = TestBed.createComponent(ViewBookPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    booksService = TestBed.get(BooksService);
-    bookmarksService = TestBed.get(BookmarksService);
+    booksService = TestBed.inject(BooksService);
+    bookmarksService = TestBed.inject(BookmarksService);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have book$', done => {
-    component.book$.subscribe(res => {
+  it('should have book$', (done) => {
+    component.book$.subscribe((res) => {
       expect(res).toEqual(book);
       done();
     });
   });
 
-  it('should have bookmarks$', done => {
-    component.bookmarks$.subscribe(res => {
+  it('should have bookmarks$', (done) => {
+    component.bookmarks$.subscribe((res) => {
       expect(res).toEqual([BOOKMARKS.FAVORITES]);
       done();
     });
   });
 
-  it('should have user$', done => {
-    component.user$.subscribe(res => {
+  it('should have user$', (done) => {
+    component.user$.subscribe((res) => {
       expect(res).toEqual(user);
       done();
     });
@@ -111,7 +111,7 @@ describe('ViewBookPageComponent', () => {
     it('should call bookmarksService.addToBookmarks()', () => {
       component.addToBookmarks({
         type: BOOKMARKS.FAVORITES,
-        bookId: book._id
+        bookId: book._id,
       });
       expect(bookmarksService.addToBookmarks).toHaveBeenCalled();
     });
@@ -120,7 +120,7 @@ describe('ViewBookPageComponent', () => {
     it('should call bookmarksService.removeFromBookmarks()', () => {
       component.removeFromBookmarks({
         type: BOOKMARKS.FAVORITES,
-        bookId: book._id
+        bookId: book._id,
       });
       expect(bookmarksService.removeFromBookmarks).toHaveBeenCalled();
     });

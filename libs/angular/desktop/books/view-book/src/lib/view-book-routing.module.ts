@@ -8,10 +8,10 @@ import { ViewBookPageComponent } from './containers/view-book-page/view-book-pag
     RouterModule.forChild([
       {
         path: '',
-        component: ViewBookPageComponent
-      }
-    ])
+        component: ViewBookPageComponent,
+      },
+    ]),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class ViewBookRoutingModule {}

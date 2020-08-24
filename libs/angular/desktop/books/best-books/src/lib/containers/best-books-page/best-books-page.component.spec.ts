@@ -18,7 +18,7 @@ describe('BestBooksPageComponent', () => {
   beforeAll(() => {
     (window as any).IntersectionObserver = jest.fn(() => ({
       observe: () => null,
-      disconnect: () => null
+      disconnect: () => null,
     }));
   });
 
@@ -28,9 +28,9 @@ describe('BestBooksPageComponent', () => {
       providers: [
         {
           provide: BooksService,
-          useValue: MockAngularBooksService
-        }
-      ]
+          useValue: MockAngularBooksService,
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -38,7 +38,7 @@ describe('BestBooksPageComponent', () => {
     fixture = TestBed.createComponent(BestBooksPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    booksService = TestBed.get(BooksService);
+    booksService = TestBed.inject(BooksService);
   });
 
   it('should create', () => {
@@ -46,8 +46,8 @@ describe('BestBooksPageComponent', () => {
   });
 
   describe('books$', () => {
-    it('should have books', done => {
-      component.books$.subscribe(books => {
+    it('should have books', (done) => {
+      component.books$.subscribe((books) => {
         expect(books).toEqual([book]);
         done();
       });
@@ -71,14 +71,14 @@ describe('BestBooksPageComponent', () => {
               ...MockAngularBooksService,
               getBestBooks: jest.fn().mockImplementationOnce(() => ({
                 valueChanges: of({
-                  data: { bestBooks: { rows: [book], count: 3 } }
+                  data: { bestBooks: { rows: [book], count: 3 } },
                 }),
                 refetch: jest.fn(),
-                fetchMore: jest.fn()
-              }))
-            }
-          }
-        ]
+                fetchMore: jest.fn(),
+              })),
+            },
+          },
+        ],
       }).compileComponents();
 
       fixture = TestBed.createComponent(BestBooksPageComponent);

@@ -4,7 +4,7 @@ import {
   Component,
   EventEmitter,
   Input,
-  Output
+  Output,
 } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,7 +23,7 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'bookapp-add-book-form',
   templateUrl: './add-book-form.component.html',
   styleUrls: ['./add-book-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddBookFormComponent extends BaseForm {
   form = this.fb.group({
@@ -34,7 +34,7 @@ export class AddBookFormComponent extends BaseForm {
     paid: [false],
     price: [null, Validators.required],
     coverUrl: [null],
-    epubUrl: [null]
+    epubUrl: [null],
   });
 
   @Input() loading: boolean;
@@ -101,10 +101,10 @@ export class AddBookFormComponent extends BaseForm {
   showCoverSelector() {
     const dialogRef = this.dialog.open(ImageSelectorComponent, {
       width: '300px',
-      data: { maintainAspectRatio: false }
+      data: { maintainAspectRatio: false },
     });
 
-    dialogRef.afterClosed().subscribe(coverUrl => {
+    dialogRef.afterClosed().subscribe((coverUrl) => {
       if (coverUrl) {
         this.form.patchValue({ coverUrl });
         this.cdr.markForCheck();
@@ -114,10 +114,10 @@ export class AddBookFormComponent extends BaseForm {
 
   showFileSelector() {
     const dialogRef = this.dialog.open(FileSelectorComponent, {
-      width: '300px'
+      width: '300px',
     });
 
-    dialogRef.afterClosed().subscribe(epubUrl => {
+    dialogRef.afterClosed().subscribe((epubUrl) => {
       if (epubUrl) {
         this.form.patchValue({ epubUrl });
         this.cdr.markForCheck();

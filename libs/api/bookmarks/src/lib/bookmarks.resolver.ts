@@ -3,7 +3,7 @@ import { ApiQuery, GqlAuthGuard, RequestWithUser } from '@bookapp/api/shared';
 import { Bookmark } from '@bookapp/shared';
 
 import { UseGuards } from '@nestjs/common';
-import { Args, Context, Mutation, Parent, Query, ResolveProperty, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { BookmarksService } from './bookmarks.service';
 
@@ -14,7 +14,7 @@ export class BookmarksResolver {
     private readonly booksDataLoader: BooksDataLoader
   ) {}
 
-  @ResolveProperty('book')
+  @ResolveField('book')
   async getBook(@Parent() bookmark: Bookmark) {
     const { bookId } = bookmark;
     return this.booksDataLoader.load(bookId);

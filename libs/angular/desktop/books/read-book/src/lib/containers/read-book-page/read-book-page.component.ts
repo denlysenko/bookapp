@@ -7,7 +7,7 @@ import { ProfileService } from '@bookapp/angular/data-access';
 @Component({
   selector: 'bookapp-read-book-page',
   templateUrl: './read-book-page.component.html',
-  styleUrls: ['./read-book-page.component.scss']
+  styleUrls: ['./read-book-page.component.scss'],
 })
 export class ReadBookPageComponent extends ReadBookBase {
   constructor(route: ActivatedRoute, profileService: ProfileService) {

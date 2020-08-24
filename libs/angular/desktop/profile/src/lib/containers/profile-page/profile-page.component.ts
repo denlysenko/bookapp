@@ -7,7 +7,7 @@ import { AuthService, ProfileService } from '@bookapp/angular/data-access';
 @Component({
   selector: 'bookapp-profile-page',
   templateUrl: './profile-page.component.html',
-  styleUrls: ['./profile-page.component.scss']
+  styleUrls: ['./profile-page.component.scss'],
 })
 export class ProfilePageComponent extends ProfilePageBase {
   constructor(

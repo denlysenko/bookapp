@@ -8,7 +8,7 @@ import {
   book,
   bookmark,
   MockAngularBookmarksService,
-  MockAngularBooksService
+  MockAngularBooksService,
 } from '@bookapp/testing';
 
 import { of } from 'rxjs';
@@ -26,7 +26,7 @@ describe('BookmarksPageComponent', () => {
   beforeAll(() => {
     (window as any).IntersectionObserver = jest.fn(() => ({
       observe: () => null,
-      disconnect: () => null
+      disconnect: () => null,
     }));
   });
 
@@ -39,23 +39,23 @@ describe('BookmarksPageComponent', () => {
           useValue: {
             snapshot: {
               data: {
-                type: BOOKMARKS.FAVORITES
-              }
+                type: BOOKMARKS.FAVORITES,
+              },
             },
             data: of({
-              title
-            })
-          }
+              title,
+            }),
+          },
         },
         {
           provide: BooksService,
-          useValue: MockAngularBooksService
+          useValue: MockAngularBooksService,
         },
         {
           provide: BookmarksService,
-          useValue: MockAngularBookmarksService
-        }
-      ]
+          useValue: MockAngularBookmarksService,
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -63,7 +63,7 @@ describe('BookmarksPageComponent', () => {
     fixture = TestBed.createComponent(BookmarksPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    booksService = TestBed.get(BooksService);
+    booksService = TestBed.inject(BooksService);
   });
 
   it('should create', () => {
@@ -71,8 +71,8 @@ describe('BookmarksPageComponent', () => {
   });
 
   describe('books$', () => {
-    it('should have books', done => {
-      component.books$.subscribe(books => {
+    it('should have books', (done) => {
+      component.books$.subscribe((books) => {
         expect(books).toEqual([bookmark.book]);
         done();
       });
@@ -92,7 +92,7 @@ describe('BookmarksPageComponent', () => {
         providers: [
           {
             provide: BooksService,
-            useValue: MockAngularBooksService
+            useValue: MockAngularBooksService,
           },
           {
             provide: BookmarksService,
@@ -100,14 +100,14 @@ describe('BookmarksPageComponent', () => {
               ...MockAngularBookmarksService,
               getBookmarksByType: jest.fn().mockImplementationOnce(() => ({
                 valueChanges: of({
-                  data: { bookmarks: { rows: [bookmark], count: 3 } }
+                  data: { bookmarks: { rows: [bookmark], count: 3 } },
                 }),
                 refetch: jest.fn(),
-                fetchMore: jest.fn()
-              }))
-            }
-          }
-        ]
+                fetchMore: jest.fn(),
+              })),
+            },
+          },
+        ],
       }).compileComponents();
 
       fixture = TestBed.createComponent(BookmarksPageComponent);

@@ -13,7 +13,7 @@ export class LogsService {
 
   getLastLogs() {
     return this.apollo.watchQuery<{ logs: ApiResponse<Log> }>({
-      query: LAST_LOGS_QUERY
+      query: LAST_LOGS_QUERY,
     });
   }
 
@@ -23,10 +23,10 @@ export class LogsService {
       variables: {
         skip,
         first,
-        orderBy
+        orderBy,
       },
       fetchPolicy: 'network-only',
-      notifyOnNetworkStatusChange: true
+      notifyOnNetworkStatusChange: true,
     });
   }
 }

@@ -12,11 +12,11 @@ import { ReadBookPageComponent } from './containers/read-book-page/read-book-pag
         path: '',
         component: ReadBookPageComponent,
         resolve: {
-          reading: ReadBookResolver
-        }
-      }
-    ])
+          reading: ReadBookResolver,
+        },
+      },
+    ]),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class ReadBookRoutingModule {}

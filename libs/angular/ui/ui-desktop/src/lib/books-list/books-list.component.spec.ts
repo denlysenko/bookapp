@@ -16,7 +16,7 @@ describe('BooksListComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, RatingModule],
       declarations: [BooksListComponent],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -41,7 +41,7 @@ describe('BooksListComponent', () => {
 
     expect(component.bookRated.emit).toHaveBeenCalledWith({
       bookId: book._id,
-      rate: 3
+      rate: 3,
     });
   });
 });

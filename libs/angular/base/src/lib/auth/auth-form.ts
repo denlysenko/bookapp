@@ -49,7 +49,7 @@ export abstract class AuthFormBase extends BaseForm implements OnInit {
     if (this.form.valid) {
       this.formSubmitted.emit({
         credentials: this.form.value,
-        isLoggingIn: this.isLoggingIn
+        isLoggingIn: this.isLoggingIn,
       });
     }
   }
@@ -59,7 +59,7 @@ export abstract class AuthFormBase extends BaseForm implements OnInit {
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
-      password: [null, Validators.required]
+      password: [null, Validators.required],
     });
 
     this.firstNameField = this.form.get('firstName');

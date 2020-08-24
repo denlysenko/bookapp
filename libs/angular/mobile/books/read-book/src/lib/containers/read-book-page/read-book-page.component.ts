@@ -14,7 +14,7 @@ import { WebView } from 'tns-core-modules/ui/web-view';
 @Component({
   selector: 'bookapp-read-book-page',
   templateUrl: './read-book-page.component.html',
-  styleUrls: ['./read-book-page.component.scss']
+  styleUrls: ['./read-book-page.component.scss'],
 })
 export class ReadBookPageComponent extends ReadBookBase implements OnDestroy {
   @ViewChild('epubWebView', { static: true })
@@ -48,7 +48,7 @@ export class ReadBookPageComponent extends ReadBookBase implements OnDestroy {
 
       this.webViewInterface.emit('loadBook', {
         src: this.epubUrl,
-        bookmark: this.bookmark
+        bookmark: this.bookmark,
       });
     });
 

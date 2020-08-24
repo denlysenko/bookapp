@@ -1,3 +1,3 @@
 export const MockRouterExtensions = {
-  navigate: jest.fn()
+  navigate: jest.fn(),
 };

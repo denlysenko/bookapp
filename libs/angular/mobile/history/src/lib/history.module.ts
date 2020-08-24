@@ -16,9 +16,9 @@ import { HistoryRoutingModule } from './history-routing.module';
     NativeScriptCommonModule,
     HistoryRoutingModule,
     NgShadowModule,
-    NativeScriptUIListViewModule
+    NativeScriptUIListViewModule,
   ],
   declarations: [HistoryPageComponent, HistoryListComponent, HistoryListItemComponent],
-  schemas: [NO_ERRORS_SCHEMA]
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class HistoryModule {}

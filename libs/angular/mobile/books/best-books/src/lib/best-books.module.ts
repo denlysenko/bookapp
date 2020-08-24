@@ -11,6 +11,6 @@ import { BestBooksPageComponent } from './containers/best-books-page/best-books-
 @NgModule({
   imports: [CommonModule, NativeScriptCommonModule, BestBooksRoutingModule, BooksListModule],
   declarations: [BestBooksPageComponent],
-  schemas: [NO_ERRORS_SCHEMA]
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class BestBooksModule {}

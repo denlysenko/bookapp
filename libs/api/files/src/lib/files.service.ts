@@ -14,7 +14,7 @@ export class FilesService {
   constructor(configService: ConfigService) {
     this.bucket = new Storage({
       projectId: configService.get('FIREBASE_PROJECT_ID'),
-      keyFilename: configService.get('FIREBASE_KEY_FILENAME')
+      keyFilename: configService.get('FIREBASE_KEY_FILENAME'),
     }).bucket(configService.get('FIREBASE_BUCKET_URL'));
   }
 
@@ -25,11 +25,11 @@ export class FilesService {
       const blobStream = blob.createWriteStream({
         metadata: {
           contentType: file.mimetype,
-          cacheControl: 'max-age=31536000'
-        }
+          cacheControl: 'max-age=31536000',
+        },
       });
 
-      blobStream.on('error', error => {
+      blobStream.on('error', (error) => {
         reject(error);
       });
 

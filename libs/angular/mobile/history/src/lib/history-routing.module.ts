@@ -9,10 +9,10 @@ import { HistoryPageComponent } from './containers/history-page/history-page.com
     NativeScriptRouterModule.forChild([
       {
         path: '',
-        component: HistoryPageComponent
-      }
-    ])
+        component: HistoryPageComponent,
+      },
+    ]),
   ],
-  exports: [NativeScriptRouterModule]
+  exports: [NativeScriptRouterModule],
 })
 export class HistoryRoutingModule {}

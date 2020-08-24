@@ -17,15 +17,15 @@ import { PUB_SUB } from './constants';
       context: ({ req, connection }) =>
         connection ? { req: { headers: connection.context } } : { req },
       formatError,
-      installSubscriptionHandlers: true
-    })
+      installSubscriptionHandlers: true,
+    }),
   ],
   providers: [
     {
       provide: PUB_SUB,
-      useValue: new PubSub()
-    }
+      useValue: new PubSub(),
+    },
   ],
-  exports: [PUB_SUB]
+  exports: [PUB_SUB],
 })
 export class GraphqlModule {}

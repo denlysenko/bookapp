@@ -9,7 +9,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
   selector: 'bookapp-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavComponent {
   readonly navMenu = navs;

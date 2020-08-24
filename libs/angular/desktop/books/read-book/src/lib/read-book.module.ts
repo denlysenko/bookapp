@@ -7,6 +7,6 @@ import { ReadBookRoutingModule } from './read-book-routing.module';
 
 @NgModule({
   imports: [CommonModule, ReadBookRoutingModule],
-  declarations: [ReadBookPageComponent, BookReaderComponent]
+  declarations: [ReadBookPageComponent, BookReaderComponent],
 })
 export class ReadBookModule {}

@@ -8,10 +8,10 @@ import { BestBooksPageComponent } from './containers/best-books-page/best-books-
     RouterModule.forChild([
       {
         path: '',
-        component: BestBooksPageComponent
-      }
-    ])
+        component: BestBooksPageComponent,
+      },
+    ]),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class BestBooksRoutingModule {}

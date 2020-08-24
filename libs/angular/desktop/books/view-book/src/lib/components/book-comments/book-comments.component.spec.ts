@@ -12,7 +12,7 @@ describe('BookCommentsComponent', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule],
       declarations: [BookCommentsComponent],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 

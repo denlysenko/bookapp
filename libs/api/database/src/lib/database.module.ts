@@ -13,10 +13,10 @@ mongoose.set('debug', process.env.NODE_ENV !== 'production');
         uri: configService.get('DB_URI'),
         useNewUrlParser: true,
         useFindAndModify: false,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
       }),
-      inject: [ConfigService]
-    })
-  ]
+      inject: [ConfigService],
+    }),
+  ],
 })
 export class DatabaseModule {}

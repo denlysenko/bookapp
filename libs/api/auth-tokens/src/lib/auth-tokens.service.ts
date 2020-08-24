@@ -24,13 +24,13 @@ export class AuthTokensService {
 
   createAccessToken(id: string): string {
     return sign({ id }, this.configService.get('ACCESS_TOKEN_SECRET'), {
-      expiresIn: this.configService.get('ACCESS_TOKEN_EXPIRATION_TIME')
+      expiresIn: this.configService.get('ACCESS_TOKEN_EXPIRATION_TIME'),
     });
   }
 
   async createRefreshToken(id: string): Promise<string> {
     const token = sign({ id }, this.configService.get('REFRESH_TOKEN_SECRET'), {
-      expiresIn: this.configService.get('REFRESH_TOKEN_EXPIRATION_TIME')
+      expiresIn: this.configService.get('REFRESH_TOKEN_EXPIRATION_TIME'),
     });
 
     await this.tokenModel.create({ token, userId: id });
@@ -69,12 +69,12 @@ export class AuthTokensService {
 
     const [refreshToken] = await Promise.all([
       this.createRefreshToken(user._id),
-      this.tokenModel.deleteOne({ token }).exec()
+      this.tokenModel.deleteOne({ token }).exec(),
     ]);
 
     return {
       accessToken: this.createAccessToken(user._id),
-      refreshToken
+      refreshToken,
     };
   }
 

@@ -20,9 +20,9 @@ describe('PasswordFormComponent', () => {
       providers: [
         {
           provide: FeedbackPlatformService,
-          useValue: MockFeedbackPlatformService
-        }
-      ]
+          useValue: MockFeedbackPlatformService,
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -39,7 +39,7 @@ describe('PasswordFormComponent', () => {
   it('should init form', () => {
     expect(component.form.value).toEqual({
       oldPassword: null,
-      password: null
+      password: null,
     });
   });
 
@@ -102,7 +102,7 @@ describe('PasswordFormComponent', () => {
       const formValue = {
         oldPassword: 'oldPassword',
         // tslint:disable-next-line: no-hardcoded-credentials
-        password: 'newPassword'
+        password: 'newPassword',
       };
       component.form.patchValue(formValue);
       component.submit();

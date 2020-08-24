@@ -4,7 +4,7 @@ import {
   MAT_DIALOG_DATA,
   MatDialogContent,
   MatDialogModule,
-  MatDialogRef
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 
@@ -28,16 +28,16 @@ describe('ConfirmDialogComponent', () => {
         {
           provide: MatDialogRef,
           useValue: {
-            close: jest.fn()
-          }
+            close: jest.fn(),
+          },
         },
         {
           provide: MAT_DIALOG_DATA,
           useValue: {
-            text
-          }
-        }
-      ]
+            text,
+          },
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -45,7 +45,7 @@ describe('ConfirmDialogComponent', () => {
     fixture = TestBed.createComponent(ConfirmDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    dialog = TestBed.get(MatDialogRef);
+    dialog = TestBed.inject(MatDialogRef);
   });
 
   it('should create', () => {

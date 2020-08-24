@@ -5,14 +5,14 @@ import {
   EventEmitter,
   forwardRef,
   OnInit,
-  Output
+  Output,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export const RATING_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => RatingComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
@@ -20,7 +20,7 @@ export const RATING_CONTROL_VALUE_ACCESSOR: any = {
   templateUrl: './rating.component.html',
   styleUrls: ['./rating.component.scss'],
   providers: [RATING_CONTROL_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RatingComponent implements ControlValueAccessor, OnInit {
   // tslint:disable-next-line: no-output-on-prefix
@@ -88,7 +88,7 @@ export class RatingComponent implements ControlValueAccessor, OnInit {
     const result: any[] = [];
     for (let i = 0; i < max; i++) {
       result.push({
-        index: i
+        index: i,
       });
     }
 

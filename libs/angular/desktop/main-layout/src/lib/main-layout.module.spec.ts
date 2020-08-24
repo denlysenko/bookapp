@@ -4,7 +4,7 @@ import { MainLayoutModule } from './main-layout.module';
 describe('MainLayoutModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MainLayoutModule]
+      imports: [MainLayoutModule],
     }).compileComponents();
   }));
 

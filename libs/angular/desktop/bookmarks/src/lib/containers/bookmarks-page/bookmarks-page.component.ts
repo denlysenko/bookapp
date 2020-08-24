@@ -7,7 +7,7 @@ import { BookmarksService, BooksService } from '@bookapp/angular/data-access';
 @Component({
   selector: 'bookapp-bookmarks-page',
   templateUrl: './bookmarks-page.component.html',
-  styleUrls: ['./bookmarks-page.component.scss']
+  styleUrls: ['./bookmarks-page.component.scss'],
 })
 export class BookmarksPageComponent extends BookmarksPageBase {
   constructor(

@@ -17,14 +17,14 @@ describe('FeedbackService', () => {
         {
           provide: MatSnackBar,
           useValue: {
-            open: jest.fn()
-          }
-        }
-      ]
+            open: jest.fn(),
+          },
+        },
+      ],
     });
 
-    service = TestBed.get(FeedbackService);
-    snackBar = TestBed.get(MatSnackBar);
+    service = TestBed.inject(FeedbackService);
+    snackBar = TestBed.inject(MatSnackBar);
   });
 
   it('should be created', () => {

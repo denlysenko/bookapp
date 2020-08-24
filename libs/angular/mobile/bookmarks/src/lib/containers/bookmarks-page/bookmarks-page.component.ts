@@ -12,7 +12,7 @@ import { getViewById } from 'tns-core-modules/ui/page/page';
   moduleId: module.id,
   selector: 'bookapp-bookmarks-page',
   templateUrl: './bookmarks-page.component.html',
-  styleUrls: ['./bookmarks-page.component.scss']
+  styleUrls: ['./bookmarks-page.component.scss'],
 })
 export class BookmarksPageComponent extends BookmarksPageBase {
   constructor(

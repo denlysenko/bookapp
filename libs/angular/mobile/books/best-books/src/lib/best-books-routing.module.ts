@@ -9,10 +9,10 @@ import { BestBooksPageComponent } from './containers/best-books-page/best-books-
     NativeScriptRouterModule.forChild([
       {
         path: '',
-        component: BestBooksPageComponent
-      }
-    ])
+        component: BestBooksPageComponent,
+      },
+    ]),
   ],
-  exports: [NativeScriptRouterModule]
+  exports: [NativeScriptRouterModule],
 })
 export class BestBooksRoutingModule {}

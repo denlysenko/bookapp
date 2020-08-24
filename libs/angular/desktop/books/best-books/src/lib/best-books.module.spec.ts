@@ -4,7 +4,7 @@ import { BestBooksModule } from './best-books.module';
 describe('BestBooksModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [BestBooksModule]
+      imports: [BestBooksModule],
     }).compileComponents();
   }));
 

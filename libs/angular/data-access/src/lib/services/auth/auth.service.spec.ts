@@ -4,7 +4,7 @@ import {
   AUTH_TOKEN,
   RouterExtensions,
   StoragePlatformService,
-  StoreService
+  StoreService,
 } from '@bookapp/angular/core';
 import { LOGIN_MUTATION, LOGOUT_MUTATION, ME_QUERY, SIGNUP_MUTATION } from '@bookapp/shared';
 import {
@@ -12,16 +12,17 @@ import {
   MockRouterExtensions,
   MockStoragePlatformService,
   MockStoreService,
-  user
+  user,
 } from '@bookapp/testing';
+
+import { InMemoryCache } from '@apollo/client/core';
+import { addTypenameToDocument } from '@apollo/client/utilities';
 
 import {
   APOLLO_TESTING_CACHE,
   ApolloTestingController,
-  ApolloTestingModule
+  ApolloTestingModule,
 } from 'apollo-angular/testing';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { addTypenameToDocument } from 'apollo-utilities';
 
 import { AuthService } from './auth.service';
 
@@ -43,24 +44,24 @@ describe('AuthService', () => {
         AuthService,
         {
           provide: StoragePlatformService,
-          useValue: MockStoragePlatformService
+          useValue: MockStoragePlatformService,
         },
         {
           provide: RouterExtensions,
-          useValue: MockRouterExtensions
+          useValue: MockRouterExtensions,
         },
         {
           provide: StoreService,
-          useValue: MockStoreService
-        }
-      ]
+          useValue: MockStoreService,
+        },
+      ],
     });
 
-    controller = TestBed.get(ApolloTestingController);
-    service = TestBed.get(AuthService);
-    storageService = TestBed.get(StoragePlatformService);
-    router = TestBed.get(RouterExtensions);
-    storeService = TestBed.get(StoreService);
+    controller = TestBed.inject(ApolloTestingController);
+    service = TestBed.inject(AuthService);
+    storageService = TestBed.inject(StoragePlatformService);
+    router = TestBed.inject(RouterExtensions);
+    storeService = TestBed.inject(StoreService);
   });
 
   afterEach(() => {
@@ -84,8 +85,8 @@ describe('AuthService', () => {
 
       op.flush({
         data: {
-          login: authPayload
-        }
+          login: authPayload,
+        },
       });
 
       controller.verify();
@@ -102,8 +103,8 @@ describe('AuthService', () => {
 
       op.flush({
         data: {
-          login: authPayload
-        }
+          login: authPayload,
+        },
       });
 
       controller.verify();
@@ -115,10 +116,10 @@ describe('AuthService', () => {
       email,
       password: pass,
       firstName: 'First Name',
-      lastName: 'Last Name'
+      lastName: 'Last Name',
     };
 
-    it('should signup', done => {
+    it('should signup', (done) => {
       service.signup(credentials).subscribe(({ data: { signup } }) => {
         expect(signup).toEqual(authPayload);
         done();
@@ -130,8 +131,8 @@ describe('AuthService', () => {
 
       op.flush({
         data: {
-          signup: authPayload
-        }
+          signup: authPayload,
+        },
       });
 
       controller.verify();
@@ -148,8 +149,8 @@ describe('AuthService', () => {
 
       op.flush({
         data: {
-          signup: authPayload
-        }
+          signup: authPayload,
+        },
       });
 
       controller.verify();
@@ -165,28 +166,28 @@ describe('AuthService', () => {
           AuthService,
           {
             provide: StoragePlatformService,
-            useValue: MockStoragePlatformService
+            useValue: MockStoragePlatformService,
           },
           {
             provide: RouterExtensions,
-            useValue: MockRouterExtensions
+            useValue: MockRouterExtensions,
           },
           {
             provide: StoreService,
-            useValue: MockStoreService
+            useValue: MockStoreService,
           },
           {
             provide: APOLLO_TESTING_CACHE,
-            useValue: new InMemoryCache({ addTypename: true })
-          }
-        ]
+            useValue: new InMemoryCache({ addTypename: true }),
+          },
+        ],
       });
 
-      controller = TestBed.get(ApolloTestingController);
-      service = TestBed.get(AuthService);
+      controller = TestBed.inject(ApolloTestingController);
+      service = TestBed.inject(AuthService);
     });
 
-    it('should return logged user', done => {
+    it('should return logged user', (done) => {
       service.me().valueChanges.subscribe(({ data: { me } }) => {
         expect(me._id).toEqual(user._id);
         done();
@@ -197,9 +198,9 @@ describe('AuthService', () => {
           me: {
             ...user,
             __typename: 'User',
-            reading: { ...user.reading, __typename: 'Reading' }
-          }
-        }
+            reading: { ...user.reading, __typename: 'Reading' },
+          },
+        },
       });
 
       controller.verify();
@@ -207,7 +208,7 @@ describe('AuthService', () => {
   });
 
   describe('logout()', () => {
-    it('should logout', done => {
+    it('should logout', (done) => {
       service.logout().subscribe(({ data: { logout } }) => {
         expect(logout).toEqual(true);
         done();
@@ -217,14 +218,14 @@ describe('AuthService', () => {
 
       op.flush({
         data: {
-          logout: true
-        }
+          logout: true,
+        },
       });
 
       controller.verify();
     });
 
-    it('should remove tokens from storages', done => {
+    it('should remove tokens from storages', (done) => {
       service.logout().subscribe(() => {
         done();
       });
@@ -233,8 +234,8 @@ describe('AuthService', () => {
 
       op.flush({
         data: {
-          logout: true
-        }
+          logout: true,
+        },
       });
 
       controller.verify();
@@ -243,7 +244,7 @@ describe('AuthService', () => {
       expect(storeService.remove).toHaveBeenCalledWith(AUTH_TOKEN);
     });
 
-    it('should navigate to auth', done => {
+    it('should navigate to auth', (done) => {
       service.logout().subscribe(() => {
         done();
       });
@@ -252,8 +253,8 @@ describe('AuthService', () => {
 
       op.flush({
         data: {
-          logout: true
-        }
+          logout: true,
+        },
       });
 
       controller.verify();

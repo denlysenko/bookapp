@@ -29,28 +29,28 @@ describe('ImageSelectorComponent', () => {
         {
           provide: UploadPlatformService,
           useValue: {
-            upload: jest.fn().mockImplementation(() => of(JSON.stringify({ publicUrl })))
-          }
+            upload: jest.fn().mockImplementation(() => of(JSON.stringify({ publicUrl }))),
+          },
         },
         {
           provide: MatDialogRef,
           useValue: {
-            close: jest.fn()
-          }
+            close: jest.fn(),
+          },
         },
         {
           provide: MAT_DIALOG_DATA,
-          useValue: {}
-        }
-      ]
+          useValue: {},
+        },
+      ],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ImageSelectorComponent);
     component = fixture.componentInstance;
-    uploadService = TestBed.get(UploadPlatformService);
-    dialog = TestBed.get(MatDialogRef);
+    uploadService = TestBed.inject(UploadPlatformService);
+    dialog = TestBed.inject(MatDialogRef);
     fixture.detectChanges();
   });
 
@@ -59,10 +59,10 @@ describe('ImageSelectorComponent', () => {
   });
 
   describe('cropperReady()', () => {
-    it('should emit true into cropperReady$', done => {
+    it('should emit true into cropperReady$', (done) => {
       component.onCropperReady();
 
-      component.cropperReady$.subscribe(ready => {
+      component.cropperReady$.subscribe((ready) => {
         expect(ready).toEqual(true);
         done();
       });
@@ -74,22 +74,22 @@ describe('ImageSelectorComponent', () => {
       component.onLoadImageFail();
     });
 
-    it('should propagate error', done => {
-      component.error$.subscribe(err => {
+    it('should propagate error', (done) => {
+      component.error$.subscribe((err) => {
         expect(err).toEqual('INVALID_IMG_ERR');
         done();
       });
     });
 
-    it('should propagate false to cropperReady$', done => {
-      component.cropperReady$.subscribe(ready => {
+    it('should propagate false to cropperReady$', (done) => {
+      component.cropperReady$.subscribe((ready) => {
         expect(ready).toEqual(false);
         done();
       });
     });
 
-    it('should propagate null to imageChangedEvent$', done => {
-      component.imageChangedEvent$.subscribe(event => {
+    it('should propagate null to imageChangedEvent$', (done) => {
+      component.imageChangedEvent$.subscribe((event) => {
         expect(event).toEqual(null);
         done();
       });
@@ -108,15 +108,15 @@ describe('ImageSelectorComponent', () => {
       component.onFileChange(imageEvent);
     });
 
-    it('should propagate null to error$', done => {
-      component.error$.subscribe(err => {
+    it('should propagate null to error$', (done) => {
+      component.error$.subscribe((err) => {
         expect(err).toEqual(null);
         done();
       });
     });
 
-    it('should propagate event to imageChangedEvent$', done => {
-      component.imageChangedEvent$.subscribe(event => {
+    it('should propagate event to imageChangedEvent$', (done) => {
+      component.imageChangedEvent$.subscribe((event) => {
         expect(event).toEqual(imageEvent);
         done();
       });
@@ -128,17 +128,17 @@ describe('ImageSelectorComponent', () => {
       component.onFileDrop({ dataTransfer: { files: imageEvent } });
     });
 
-    it('should propagate null to error$', done => {
-      component.error$.subscribe(err => {
+    it('should propagate null to error$', (done) => {
+      component.error$.subscribe((err) => {
         expect(err).toEqual(null);
         done();
       });
     });
 
-    it('should propagate event to imageChangedEvent$', done => {
-      component.imageChangedEvent$.subscribe(event => {
+    it('should propagate event to imageChangedEvent$', (done) => {
+      component.imageChangedEvent$.subscribe((event) => {
         expect(event).toEqual({
-          target: { files: imageEvent }
+          target: { files: imageEvent },
         });
         done();
       });
@@ -163,13 +163,13 @@ describe('ImageSelectorComponent', () => {
       expect(dialog.close).toHaveBeenCalledWith(publicUrl);
     });
 
-    it('should propagate false to cropperReady$ if error', done => {
+    it('should propagate false to cropperReady$ if error', (done) => {
       jest.spyOn(uploadService, 'upload').mockImplementationOnce(() => throwError({}));
 
       component.imageCropped(croppedEvent);
       component.save();
 
-      component.cropperReady$.subscribe(ready => {
+      component.cropperReady$.subscribe((ready) => {
         expect(ready).toEqual(false);
         done();
       });

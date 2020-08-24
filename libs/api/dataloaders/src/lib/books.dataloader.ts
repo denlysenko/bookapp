@@ -16,13 +16,13 @@ export class BooksDataLoader implements IDataLoader<string, Book> {
       async (bookIds: string[]) => {
         const books = await bookModel.find({ _id: { $in: bookIds } }).exec();
         const data = {};
-        books.forEach(book => {
+        books.forEach((book) => {
           data[book._id] = book;
         });
 
-        return bookIds.map(id => data[id]);
+        return bookIds.map((id) => data[id]);
       },
-      { cacheKeyFn: id => id.toString() }
+      { cacheKeyFn: (id) => id.toString() }
     );
 
     return new BooksDataLoader(dataloader);

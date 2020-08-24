@@ -14,9 +14,9 @@ import { BuyBooksPageComponent } from './containers/buy-books-page/buy-books-pag
     CommonModule,
     BuyBooksRoutingModule,
     BookSearchModule,
-    BooksListModule
+    BooksListModule,
   ],
   declarations: [BuyBooksPageComponent],
-  schemas: [NO_ERRORS_SCHEMA]
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class BuyBooksModule {}

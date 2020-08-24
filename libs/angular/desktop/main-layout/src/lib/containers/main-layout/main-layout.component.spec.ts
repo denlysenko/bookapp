@@ -18,13 +18,13 @@ describe('MainLayoutComponent', () => {
       providers: [
         {
           provide: AuthService,
-          useValue: MockAngularAuthService
+          useValue: MockAngularAuthService,
         },
         {
           provide: LogsService,
-          useValue: MockAngularLogsService
-        }
-      ]
+          useValue: MockAngularLogsService,
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -39,8 +39,8 @@ describe('MainLayoutComponent', () => {
   });
 
   describe('user$', () => {
-    it('should have user', done => {
-      component.user$.subscribe(u => {
+    it('should have user', (done) => {
+      component.user$.subscribe((u) => {
         expect(u).toMatchObject(user);
         done();
       });
@@ -52,8 +52,8 @@ describe('MainLayoutComponent', () => {
   });
 
   describe('logs$', () => {
-    it('should have logs', done => {
-      component.logs$.subscribe(logs => {
+    it('should have logs', (done) => {
+      component.logs$.subscribe((logs) => {
         const [l] = logs;
         expect(l.action).toEqual(log.action);
         done();
@@ -63,7 +63,7 @@ describe('MainLayoutComponent', () => {
 
   describe('logout()', () => {
     it('should call authService.logout()', () => {
-      const authService: AuthService = TestBed.get(AuthService);
+      const authService: AuthService = TestBed.inject(AuthService);
       component.logout();
       expect(authService.logout).toHaveBeenCalled();
     });

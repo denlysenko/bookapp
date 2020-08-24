@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import {
   DialogsModule,
   FileSelectorModule,
-  ImageSelectorModule
+  ImageSelectorModule,
 } from '@bookapp/angular/ui-desktop';
 
 import { AddBookRoutingModule } from './add-book-routing.module';
@@ -29,8 +29,8 @@ import { AddBookPageComponent } from './containers/add-book-page/add-book-page.c
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
-    DialogsModule
+    DialogsModule,
   ],
-  declarations: [AddBookPageComponent, AddBookFormComponent]
+  declarations: [AddBookPageComponent, AddBookFormComponent],
 })
 export class AddBookModule {}

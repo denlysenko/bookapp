@@ -14,11 +14,11 @@ import { ReadBookPageComponent } from './containers/read-book-page/read-book-pag
         path: '',
         component: ReadBookPageComponent,
         resolve: {
-          reading: ReadBookResolver
-        }
-      }
-    ])
+          reading: ReadBookResolver,
+        },
+      },
+    ]),
   ],
-  exports: [NativeScriptRouterModule]
+  exports: [NativeScriptRouterModule],
 })
 export class ReadBookRoutingModule {}

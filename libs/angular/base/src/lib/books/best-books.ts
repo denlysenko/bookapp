@@ -13,8 +13,8 @@ export abstract class BestBooksBase {
     tap(
       ({
         data: {
-          bestBooks: { rows, count }
-        }
+          bestBooks: { rows, count },
+        },
       }) => {
         this.hasMoreItems = rows.length !== count;
       }
@@ -44,7 +44,7 @@ export abstract class BestBooksBase {
 
       this.booksQueryRef.fetchMore({
         variables: {
-          skip: this.skip
+          skip: this.skip,
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult) {
@@ -57,10 +57,10 @@ export abstract class BestBooksBase {
             bestBooks: {
               count,
               rows: [...previousResult.bestBooks.rows, ...rows],
-              __typename: 'BestBookResponse'
-            }
+              __typename: 'BestBookResponse',
+            },
           };
-        }
+        },
       });
     }
   }
@@ -69,14 +69,14 @@ export abstract class BestBooksBase {
     const query = BEST_BOOKS_QUERY;
     const variables = {
       skip: this.skip,
-      first: DEFAULT_LIMIT
+      first: DEFAULT_LIMIT,
     };
 
     this.booksService
       .rateBook(event, (store, { data: { rateBook } }) => {
         const data: { bestBooks: ApiResponse<Book> } = store.readQuery({
           query,
-          variables
+          variables,
         });
 
         if (rateBook.rating < 5) {
@@ -94,7 +94,7 @@ export abstract class BestBooksBase {
         store.writeQuery({
           query,
           variables,
-          data
+          data,
         });
       })
       .subscribe();

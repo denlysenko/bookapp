@@ -14,7 +14,7 @@ export const HTTP_STATUS = {
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
   OK: 200,
-  CREATED: 201
+  CREATED: 201,
 };
 
 export const DEFAULT_LIMIT = 10;

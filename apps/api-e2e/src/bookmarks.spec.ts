@@ -12,7 +12,7 @@ import {
   BadRequestException,
   HttpStatus,
   INestApplication,
-  NotFoundException
+  NotFoundException,
 } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getConnectionToken, getModelToken, MongooseModule } from '@nestjs/mongoose';
@@ -27,7 +27,7 @@ const MockBookmarksService = {
   getByType: jest.fn().mockResolvedValue({ count: 1, rows: [bookmark] }),
   getByUserAndBook: jest.fn().mockResolvedValue([bookmark]),
   addToBookmarks: jest.fn().mockResolvedValue(bookmark),
-  removeFromBookmarks: jest.fn().mockResolvedValue(bookmark)
+  removeFromBookmarks: jest.fn().mockResolvedValue(bookmark),
 };
 
 describe('BookmarksModule', () => {
@@ -39,13 +39,13 @@ describe('BookmarksModule', () => {
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
-          isGlobal: true
+          isGlobal: true,
         }),
         AuthModule,
         GraphqlModule,
         BookmarksModule,
-        MongooseModule.forRoot('test')
-      ]
+        MongooseModule.forRoot('test'),
+      ],
     })
       .overrideProvider(getConnectionToken())
       .useValue(mockConnection)
@@ -82,18 +82,18 @@ describe('BookmarksModule', () => {
                 type
               }
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             bookmarks: {
               rows: [
                 {
-                  type: bookmark.type
-                }
-              ]
-            }
-          }
+                  type: bookmark.type,
+                },
+              ],
+            },
+          },
         });
     });
 
@@ -108,14 +108,14 @@ describe('BookmarksModule', () => {
                 type
               }
             }
-          }`
+          }`,
         });
 
       expect(bookmarksService.getByType).toHaveBeenCalledWith({
         filter: { userId: user._id, type: BOOKMARKS.WISHLIST },
         first: null,
         order: null,
-        skip: 10
+        skip: 10,
       });
     });
 
@@ -130,35 +130,33 @@ describe('BookmarksModule', () => {
                 type
               }
             }
-          }`
+          }`,
         });
 
       expect(bookmarksService.getByType).toHaveBeenCalledWith({
         filter: { userId: user._id, type: BOOKMARKS.WISHLIST },
         first: 10,
         order: null,
-        skip: null
+        skip: null,
       });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `query {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `query {
             bookmarks(type: WISHLIST) {
               rows {
                 type
               }
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
   });
@@ -173,35 +171,33 @@ describe('BookmarksModule', () => {
             userBookmarksByBook(bookId: "book_id") {
               type
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             userBookmarksByBook: [
               {
-                type: bookmark.type
-              }
-            ]
-          }
+                type: bookmark.type,
+              },
+            ],
+          },
         });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `query {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `query {
             userBookmarksByBook(bookId: "book_id") {
               type
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
   });
@@ -216,14 +212,14 @@ describe('BookmarksModule', () => {
             addToBookmarks(type: WISHLIST, bookId: "book_id") {
               type
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             addToBookmarks: {
-              type: bookmark.type
-            }
-          }
+              type: bookmark.type,
+            },
+          },
         });
     });
 
@@ -242,34 +238,32 @@ describe('BookmarksModule', () => {
             addToBookmarks(type: WISHLIST, bookId: "book_id") {
               type
             }
-          }`
+          }`,
         });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.BAD_REQUEST,
         error: 'Bad Request',
-        message: BOOKMARK_ERRORS.BOOKMARK_UNIQUE_ERR
+        message: BOOKMARK_ERRORS.BOOKMARK_UNIQUE_ERR,
       });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `mutation {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `mutation {
             addToBookmarks(type: WISHLIST, bookId: "book_id") {
               type
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
   });
@@ -284,14 +278,14 @@ describe('BookmarksModule', () => {
             removeFromBookmarks(type: WISHLIST, bookId: "book_id") {
               type
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             removeFromBookmarks: {
-              type: bookmark.type
-            }
-          }
+              type: bookmark.type,
+            },
+          },
         });
     });
 
@@ -310,34 +304,32 @@ describe('BookmarksModule', () => {
             removeFromBookmarks(type: WISHLIST, bookId: "book_id") {
               type
             }
-          }`
+          }`,
         });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.NOT_FOUND,
         error: 'Not Found',
-        message: BOOKMARK_ERRORS.BOOKMARK_NOT_FOUND_ERR
+        message: BOOKMARK_ERRORS.BOOKMARK_NOT_FOUND_ERR,
       });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `mutation {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `mutation {
             removeFromBookmarks(type: WISHLIST, bookId: "book_id") {
               type
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
   });

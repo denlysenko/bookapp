@@ -15,10 +15,10 @@ import { BooksListComponent } from './books-list.component';
     NativeScriptCommonModule,
     NativeScriptRouterModule,
     NgShadowModule,
-    NativeScriptUIListViewModule
+    NativeScriptUIListViewModule,
   ],
   declarations: [BooksListComponent, BookListItemComponent],
   exports: [BooksListComponent],
-  schemas: [NO_ERRORS_SCHEMA]
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class BooksListModule {}

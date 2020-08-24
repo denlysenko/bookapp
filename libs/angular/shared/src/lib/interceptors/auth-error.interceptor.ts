@@ -16,7 +16,7 @@ export class AuthErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
     return next.handle(request).pipe(
-      catchError(error => {
+      catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === HTTP_STATUS.UNAUTHORIZED) {
           this.feedbackService.error(error.error.message);
           this.authService.logout().subscribe();

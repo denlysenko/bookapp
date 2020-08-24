@@ -6,18 +6,19 @@ import {
   BOOKMARKS,
   BOOKMARKS_BY_USER_AND_BOOK_QUERY,
   BOOKMARKS_QUERY,
-  REMOVE_FROM_BOOKMARKS_MUTATION
+  REMOVE_FROM_BOOKMARKS_MUTATION,
 } from '@bookapp/shared';
 import { book, bookmark } from '@bookapp/testing';
+
+import { InMemoryCache } from '@apollo/client/core';
+import { addTypenameToDocument } from '@apollo/client/utilities';
 
 import { Apollo } from 'apollo-angular';
 import {
   APOLLO_TESTING_CACHE,
   ApolloTestingController,
-  ApolloTestingModule
+  ApolloTestingModule,
 } from 'apollo-angular/testing';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { addTypenameToDocument } from 'apollo-utilities';
 
 import { BookmarksService } from './bookmarks.service';
 
@@ -34,13 +35,13 @@ describe('BookmarksService', () => {
         BookmarksService,
         {
           provide: APOLLO_TESTING_CACHE,
-          useValue: new InMemoryCache({ addTypename: true })
-        }
-      ]
+          useValue: new InMemoryCache({ addTypename: true }),
+        },
+      ],
     });
 
-    controller = TestBed.get(ApolloTestingController);
-    service = TestBed.get(BookmarksService);
+    controller = TestBed.inject(ApolloTestingController);
+    service = TestBed.inject(BookmarksService);
   });
 
   afterEach(() => {
@@ -52,7 +53,7 @@ describe('BookmarksService', () => {
   });
 
   describe('getBookmarksByBook()', () => {
-    it('should get bookmarks by book', done => {
+    it('should get bookmarks by book', (done) => {
       service
         .getBookmarksByBook(book._id)
         .valueChanges.subscribe(({ data: { userBookmarksByBook } }) => {
@@ -67,8 +68,8 @@ describe('BookmarksService', () => {
 
       op.flush({
         data: {
-          userBookmarksByBook: [bookmarkWithTypename]
-        }
+          userBookmarksByBook: [bookmarkWithTypename],
+        },
       });
 
       controller.verify();
@@ -76,7 +77,7 @@ describe('BookmarksService', () => {
   });
 
   describe('getBookmarksByType()', () => {
-    it('should get bookmarks by type', done => {
+    it('should get bookmarks by type', (done) => {
       service
         .getBookmarksByType(BOOKMARKS.FAVORITES)
         .valueChanges.subscribe(({ data: { bookmarks } }) => {
@@ -94,9 +95,9 @@ describe('BookmarksService', () => {
           bookmarks: {
             rows: [{ ...bookmarkWithTypename, book: null }],
             count: 1,
-            __typename: 'Bookmark'
-          }
-        }
+            __typename: 'Bookmark',
+          },
+        },
       });
 
       controller.verify();
@@ -107,25 +108,25 @@ describe('BookmarksService', () => {
     let apollo: Apollo;
 
     beforeEach(() => {
-      apollo = TestBed.get(Apollo);
+      apollo = TestBed.inject(Apollo);
 
       apollo
         .query({
           query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
           variables: {
-            bookId: book._id
-          }
+            bookId: book._id,
+          },
         })
         .subscribe();
 
       controller.expectOne(addTypenameToDocument(BOOKMARKS_BY_USER_AND_BOOK_QUERY)).flush({
         data: {
-          userBookmarksByBook: []
-        }
+          userBookmarksByBook: [],
+        },
       });
     });
 
-    it('should call ADD_TO_BOOKMARKS_MUTATION', done => {
+    it('should call ADD_TO_BOOKMARKS_MUTATION', (done) => {
       service
         .addToBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id })
         .subscribe(({ data: { addToBookmarks } }) => {
@@ -140,21 +141,21 @@ describe('BookmarksService', () => {
 
       op.flush({
         data: {
-          addToBookmarks: bookmarkWithTypename
-        }
+          addToBookmarks: bookmarkWithTypename,
+        },
       });
 
       controller.verify();
     });
 
-    it('should add new bookmark in bookmarks list in store', done => {
+    it('should add new bookmark in bookmarks list in store', (done) => {
       service.addToBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id }).subscribe(() => {
         apollo
           .query<{ userBookmarksByBook: { type: number }[] }>({
             query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
             variables: {
-              bookId: book._id
-            }
+              bookId: book._id,
+            },
           })
           .subscribe(({ data: { userBookmarksByBook } }) => {
             expect(userBookmarksByBook.length).toEqual(1);
@@ -165,8 +166,8 @@ describe('BookmarksService', () => {
 
       controller.expectOne(addTypenameToDocument(ADD_TO_BOOKMARKS_MUTATION)).flush({
         data: {
-          addToBookmarks: bookmarkWithTypename
-        }
+          addToBookmarks: bookmarkWithTypename,
+        },
       });
 
       controller.verify();
@@ -177,25 +178,25 @@ describe('BookmarksService', () => {
     let apollo: Apollo;
 
     beforeEach(() => {
-      apollo = TestBed.get(Apollo);
+      apollo = TestBed.inject(Apollo);
 
       apollo
         .query({
           query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
           variables: {
-            bookId: book._id
-          }
+            bookId: book._id,
+          },
         })
         .subscribe();
 
       controller.expectOne(addTypenameToDocument(BOOKMARKS_BY_USER_AND_BOOK_QUERY)).flush({
         data: {
-          userBookmarksByBook: [bookmarkWithTypename]
-        }
+          userBookmarksByBook: [bookmarkWithTypename],
+        },
       });
     });
 
-    it('should call REMOVE_FROM_BOOKMARKS_MUTATION', done => {
+    it('should call REMOVE_FROM_BOOKMARKS_MUTATION', (done) => {
       service
         .removeFromBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id })
         .subscribe(({ data: { removeFromBookmarks } }) => {
@@ -210,21 +211,21 @@ describe('BookmarksService', () => {
 
       op.flush({
         data: {
-          removeFromBookmarks: bookmarkWithTypename
-        }
+          removeFromBookmarks: bookmarkWithTypename,
+        },
       });
 
       controller.verify();
     });
 
-    it('should remove bookmark from bookmarks list in store', done => {
+    it('should remove bookmark from bookmarks list in store', (done) => {
       service.removeFromBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id }).subscribe(() => {
         apollo
           .query<{ userBookmarksByBook: { type: number }[] }>({
             query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
             variables: {
-              bookId: book._id
-            }
+              bookId: book._id,
+            },
           })
           .subscribe(({ data: { userBookmarksByBook } }) => {
             expect(userBookmarksByBook.length).toEqual(0);
@@ -234,8 +235,8 @@ describe('BookmarksService', () => {
 
       controller.expectOne(addTypenameToDocument(REMOVE_FROM_BOOKMARKS_MUTATION)).flush({
         data: {
-          removeFromBookmarks: bookmarkWithTypename
-        }
+          removeFromBookmarks: bookmarkWithTypename,
+        },
       });
 
       controller.verify();

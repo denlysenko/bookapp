@@ -9,10 +9,10 @@ import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-pa
     NativeScriptRouterModule.forChild([
       {
         path: '',
-        component: BookmarksPageComponent
-      }
-    ])
+        component: BookmarksPageComponent,
+      },
+    ]),
   ],
-  exports: [NativeScriptRouterModule]
+  exports: [NativeScriptRouterModule],
 })
 export class BookmarksRoutingModule {}

@@ -1,23 +1,26 @@
 import { Injectable } from '@angular/core';
+
+import { MutationUpdaterFn } from '@apollo/client/core';
+
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import {
-  ADD_COMMENT_MUTATION,
   AddCommentResponse,
+  ADD_COMMENT_MUTATION,
   ApiResponse,
   BEST_BOOKS_QUERY,
   Book,
-  BOOK_QUERY,
   BookFormModel,
   BooksFilterInput,
+  BOOK_QUERY,
   CREATE_BOOK_MUTATION,
   FREE_BOOKS_QUERY,
   PAID_BOOKS_QUERY,
-  RATE_BOOK_MUTATION,
   RateBookResponse,
-  UPDATE_BOOK_MUTATION
+  RATE_BOOK_MUTATION,
+  UPDATE_BOOK_MUTATION,
 } from '@bookapp/shared';
+
 import { Apollo } from 'apollo-angular';
-import { DataProxy } from 'apollo-cache';
 
 export const DEFAULT_SORT_VALUE = 'createdAt_desc';
 
@@ -31,8 +34,8 @@ export class BooksService {
     return this.apollo.mutate<{ createBook: Book }>({
       mutation: CREATE_BOOK_MUTATION,
       variables: {
-        book
-      }
+        book,
+      },
     });
   }
 
@@ -41,8 +44,8 @@ export class BooksService {
       mutation: UPDATE_BOOK_MUTATION,
       variables: {
         id,
-        book
-      }
+        book,
+      },
     });
   }
 
@@ -60,10 +63,10 @@ export class BooksService {
         filter,
         skip,
         first,
-        orderBy
+        orderBy,
       },
       fetchPolicy,
-      notifyOnNetworkStatusChange: true
+      notifyOnNetworkStatusChange: true,
     });
   }
 
@@ -71,10 +74,10 @@ export class BooksService {
     return this.apollo.watchQuery<{ book: Book }>({
       query: BOOK_QUERY,
       variables: {
-        slug
+        slug,
       },
       fetchPolicy,
-      notifyOnNetworkStatusChange: true
+      notifyOnNetworkStatusChange: true,
     });
   }
 
@@ -83,39 +86,32 @@ export class BooksService {
       query: BEST_BOOKS_QUERY,
       variables: {
         skip,
-        first
+        first,
       },
       fetchPolicy,
-      notifyOnNetworkStatusChange: true
+      notifyOnNetworkStatusChange: true,
     });
   }
 
-  rateBook(
-    { bookId, rate },
-    update: (store: DataProxy, response: { data: RateBookResponse }) => void
-  ) {
+  rateBook({ bookId, rate }, update: MutationUpdaterFn<RateBookResponse>) {
     return this.apollo.mutate<RateBookResponse>({
       mutation: RATE_BOOK_MUTATION,
       variables: {
         bookId,
-        rate
+        rate,
       },
-      update
+      update,
     });
   }
 
-  addComment(
-    bookId: string,
-    text: string,
-    update: (store: DataProxy, response: { data: AddCommentResponse }) => void
-  ) {
+  addComment(bookId: string, text: string, update: MutationUpdaterFn<AddCommentResponse>) {
     return this.apollo.mutate<AddCommentResponse>({
       mutation: ADD_COMMENT_MUTATION,
       variables: {
         bookId,
-        text
+        text,
       },
-      update
+      update,
     });
   }
 }

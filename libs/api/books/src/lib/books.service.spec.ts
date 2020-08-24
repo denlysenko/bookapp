@@ -10,7 +10,7 @@ import {
   MockConfigService,
   MockLogsService,
   MockModel,
-  MockMongooseModel
+  MockMongooseModel,
 } from '@bookapp/testing';
 
 import { ConfigService } from '@nestjs/config';
@@ -38,29 +38,29 @@ describe('BooksService', () => {
         BooksService,
         {
           provide: ConfigService,
-          useValue: MockConfigService
+          useValue: MockConfigService,
         },
         {
           provide: getModelToken(ModelNames.BOOK),
-          useValue: MockModel
+          useValue: MockModel,
         },
         {
           provide: LogsService,
-          useValue: MockLogsService
+          useValue: MockLogsService,
         },
         {
           provide: FilesService,
           useValue: {
-            deleteFromBucket: jest.fn().mockResolvedValue(true)
-          }
+            deleteFromBucket: jest.fn().mockResolvedValue(true),
+          },
         },
         {
           provide: PUB_SUB,
           useValue: {
-            publish: jest.fn()
-          }
-        }
-      ]
+            publish: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     booksService = module.get<BooksService>(BooksService);
@@ -219,7 +219,7 @@ describe('BooksService', () => {
       try {
         await booksService.update(book._id, { ...book }, userId);
       } catch (err) {
-        expect(err.message.message).toEqual(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR);
+        expect(err.message).toEqual(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR);
       }
     });
 
@@ -238,7 +238,7 @@ describe('BooksService', () => {
         book._id,
         {
           ...book,
-          coverUrl: 'storage/newCoverUrl'
+          coverUrl: 'storage/newCoverUrl',
         },
         userId
       );
@@ -250,7 +250,7 @@ describe('BooksService', () => {
         book._id,
         {
           ...book,
-          epubUrl: 'storage/newEpubUrl'
+          epubUrl: 'storage/newEpubUrl',
         },
         userId
       );
@@ -267,7 +267,7 @@ describe('BooksService', () => {
           book._id,
           {
             ...book,
-            epubUrl: 'storage/newEpubUrl'
+            epubUrl: 'storage/newEpubUrl',
           },
           userId
         );
@@ -311,7 +311,7 @@ describe('BooksService', () => {
       try {
         await booksService.rateBook(book._id, 5, userId);
       } catch (err) {
-        expect(err.message.message).toEqual(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR);
+        expect(err.message).toEqual(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR);
       }
     });
 

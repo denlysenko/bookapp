@@ -24,25 +24,25 @@ interface SortOption {
   moduleId: module.id,
   selector: 'bookapp-browse-books-page',
   templateUrl: './browse-books-page.component.html',
-  styleUrls: ['./browse-books-page.component.scss']
+  styleUrls: ['./browse-books-page.component.scss'],
 })
 export class BrowseBooksPageComponent extends BooksPageBase {
   sortOptions: SortOption[] = [
     {
       value: 'rating_desc',
-      label: 'All books'
+      label: 'All books',
     },
     {
       value: 'createdAt_desc',
-      label: 'Most recent'
+      label: 'Most recent',
     },
     {
       value: 'views_desc',
-      label: 'Most popular'
-    }
+      label: 'Most popular',
+    },
   ];
 
-  sortItems: SegmentedBarItem[] = this.sortOptions.map(option => {
+  sortItems: SegmentedBarItem[] = this.sortOptions.map((option) => {
     const item = new SegmentedBarItem();
     item.title = option.label;
     return item;
@@ -88,7 +88,7 @@ export class BrowseBooksPageComponent extends BooksPageBase {
       context: { paid: false },
       fullscreen: true,
       animated: false,
-      viewContainerRef: this.viewContainerRef
+      viewContainerRef: this.viewContainerRef,
     };
 
     const book: Book = await this.modalService.showModal(BookSearchComponent, options);
@@ -110,7 +110,7 @@ export class BrowseBooksPageComponent extends BooksPageBase {
 
     if (filter) {
       const { sortValue } = filter;
-      const index = this.sortOptions.findIndex(option => option.value === sortValue);
+      const index = this.sortOptions.findIndex((option) => option.value === sortValue);
       this.selectedOption.next(index !== -1 ? index : 0);
     }
   }

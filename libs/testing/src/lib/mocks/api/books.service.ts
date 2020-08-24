@@ -7,5 +7,5 @@ export const MockBooksService = {
   findBestBooks: jest.fn().mockImplementation(() => Promise.resolve({ count: 1, rows: [book] })),
   create: jest.fn().mockImplementation(() => Promise.resolve(book)),
   update: jest.fn().mockImplementation(() => Promise.resolve(book)),
-  rateBook: jest.fn().mockImplementation(() => Promise.resolve(book))
+  rateBook: jest.fn().mockImplementation(() => Promise.resolve(book)),
 };

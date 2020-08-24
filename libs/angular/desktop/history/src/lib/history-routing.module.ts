@@ -8,10 +8,10 @@ import { HistoryPageComponent } from './containers/history-page/history-page.com
     RouterModule.forChild([
       {
         path: '',
-        component: HistoryPageComponent
-      }
-    ])
+        component: HistoryPageComponent,
+      },
+    ]),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class HistoryRoutingModule {}

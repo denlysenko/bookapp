@@ -24,8 +24,8 @@ import { ProfileRoutingModule } from './profile-routing.module';
     MatInputModule,
     MatButtonModule,
     MatDialogModule,
-    ImageSelectorModule
+    ImageSelectorModule,
   ],
-  declarations: [ProfileFormComponent, ProfilePageComponent, AvatarSelectorComponent]
+  declarations: [ProfileFormComponent, ProfilePageComponent, AvatarSelectorComponent],
 })
 export class ProfileModule {}

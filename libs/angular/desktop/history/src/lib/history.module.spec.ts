@@ -4,7 +4,7 @@ import { HistoryModule } from './history.module';
 describe('HistoryModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HistoryModule]
+      imports: [HistoryModule],
     }).compileComponents();
   }));
 

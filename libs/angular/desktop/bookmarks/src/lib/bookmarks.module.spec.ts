@@ -5,7 +5,7 @@ import { BookmarksModule } from './bookmarks.module';
 describe('BookmarksModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [BookmarksModule]
+      imports: [BookmarksModule],
     }).compileComponents();
   }));
 

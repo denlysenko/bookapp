@@ -15,10 +15,10 @@ import { FileSelectorComponent } from './file-selector.component';
     MatDividerModule,
     MatProgressBarModule,
     MatButtonModule,
-    DropModule
+    DropModule,
   ],
   declarations: [FileSelectorComponent],
   exports: [FileSelectorComponent],
-  entryComponents: [FileSelectorComponent]
+  entryComponents: [FileSelectorComponent],
 })
 export class FileSelectorModule {}

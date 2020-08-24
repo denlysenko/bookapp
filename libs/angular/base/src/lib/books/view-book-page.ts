@@ -15,7 +15,7 @@ export abstract class ViewBookPageBase {
     .getBookmarksByBook(this.route.snapshot.queryParamMap.get('bookId'))
     .valueChanges.pipe(
       map(({ data }) => data.userBookmarksByBook),
-      map(bookmarks => bookmarks.map(bookmark => bookmark.type))
+      map((bookmarks) => bookmarks.map((bookmark) => bookmark.type))
     );
 
   private loading = new BehaviorSubject<boolean>(false);
@@ -40,18 +40,22 @@ export abstract class ViewBookPageBase {
         } = store.readQuery({
           query: BOOK_QUERY,
           variables: {
-            slug
-          }
+            slug,
+          },
         });
-
-        data.book.comments.push(addComment);
 
         store.writeQuery({
           query: BOOK_QUERY,
           variables: {
-            slug
+            slug,
           },
-          data
+          data: {
+            ...data,
+            book: {
+              ...data.book,
+              comments: [...data.book.comments, addComment],
+            },
+          },
         });
       })
       .pipe(
@@ -76,20 +80,24 @@ export abstract class ViewBookPageBase {
         const data: { book: Book } = store.readQuery({
           query: BOOK_QUERY,
           variables: {
-            slug
-          }
+            slug,
+          },
         });
-
-        data.book.rating = rateBook.rating;
-        data.book.total_rates = rateBook.total_rates;
-        data.book.total_rating = rateBook.total_rating;
 
         store.writeQuery({
           query: BOOK_QUERY,
           variables: {
-            slug
+            slug,
           },
-          data
+          data: {
+            ...data,
+            book: {
+              ...data.book,
+              rating: rateBook.rating,
+              total_rates: rateBook.total_rates,
+              total_rating: rateBook.total_rating,
+            },
+          },
         });
       })
       .subscribe();

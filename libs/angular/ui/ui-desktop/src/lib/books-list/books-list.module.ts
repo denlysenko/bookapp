@@ -17,9 +17,9 @@ import { BooksListComponent } from './books-list.component';
     InfiniteScrollModule,
     MatCardModule,
     RatingModule,
-    LazyImageModule
+    LazyImageModule,
   ],
   declarations: [BooksListComponent],
-  exports: [BooksListComponent]
+  exports: [BooksListComponent],
 })
 export class BooksListModule {}

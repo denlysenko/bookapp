@@ -27,16 +27,16 @@ describe('FileSelectorComponent', () => {
         {
           provide: UploadPlatformService,
           useValue: {
-            upload: jest.fn().mockImplementation(() => of(JSON.stringify({ publicUrl })))
-          }
+            upload: jest.fn().mockImplementation(() => of(JSON.stringify({ publicUrl }))),
+          },
         },
         {
           provide: MatDialogRef,
           useValue: {
-            close: jest.fn()
-          }
-        }
-      ]
+            close: jest.fn(),
+          },
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -44,8 +44,8 @@ describe('FileSelectorComponent', () => {
     fixture = TestBed.createComponent(FileSelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    uploadService = TestBed.get(UploadPlatformService);
-    dialog = TestBed.get(MatDialogRef);
+    uploadService = TestBed.inject(UploadPlatformService);
+    dialog = TestBed.inject(MatDialogRef);
   });
 
   it('should create', () => {
@@ -57,15 +57,15 @@ describe('FileSelectorComponent', () => {
       component.onFileChange(imageEvent);
     });
 
-    it('should propagate null to error$', done => {
-      component.error$.subscribe(err => {
+    it('should propagate null to error$', (done) => {
+      component.error$.subscribe((err) => {
         expect(err).toEqual(null);
         done();
       });
     });
 
-    it('should propagate event to imageChangedEvent$', done => {
-      component.imageChangedEvent$.subscribe(event => {
+    it('should propagate event to imageChangedEvent$', (done) => {
+      component.imageChangedEvent$.subscribe((event) => {
         expect(event).toEqual(imageEvent);
         done();
       });
@@ -77,17 +77,17 @@ describe('FileSelectorComponent', () => {
       component.onFileDrop({ dataTransfer: { files: imageEvent } });
     });
 
-    it('should propagate null to error$', done => {
-      component.error$.subscribe(err => {
+    it('should propagate null to error$', (done) => {
+      component.error$.subscribe((err) => {
         expect(err).toEqual(null);
         done();
       });
     });
 
-    it('should propagate event to imageChangedEvent$', done => {
-      component.imageChangedEvent$.subscribe(event => {
+    it('should propagate event to imageChangedEvent$', (done) => {
+      component.imageChangedEvent$.subscribe((event) => {
         expect(event).toEqual({
-          target: { files: imageEvent }
+          target: { files: imageEvent },
         });
         done();
       });
@@ -112,13 +112,13 @@ describe('FileSelectorComponent', () => {
       expect(dialog.close).toHaveBeenCalledWith(publicUrl);
     });
 
-    it('should propagate null to imageChangedEvent$ if error', done => {
+    it('should propagate null to imageChangedEvent$ if error', (done) => {
       jest.spyOn(uploadService, 'upload').mockImplementationOnce(() => throwError({}));
 
       component.onFileChange(imageEvent);
       component.save();
 
-      component.imageChangedEvent$.subscribe(event => {
+      component.imageChangedEvent$.subscribe((event) => {
         expect(event).toEqual(null);
         done();
       });

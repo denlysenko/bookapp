@@ -7,7 +7,7 @@ import { AuthService, LogsService } from '@bookapp/angular/data-access';
 @Component({
   selector: 'bookapp-main-layout',
   templateUrl: './main-layout.component.html',
-  styleUrls: ['./main-layout.component.scss']
+  styleUrls: ['./main-layout.component.scss'],
 })
 export class MainLayoutComponent extends MainLayoutBase implements OnDestroy {
   mobileQuery: MediaQueryList;

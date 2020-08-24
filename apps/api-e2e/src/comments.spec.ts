@@ -16,7 +16,7 @@ import * as request from 'supertest';
 const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
 
 const MockCommentsService = {
-  saveForBook: jest.fn().mockResolvedValue(comment)
+  saveForBook: jest.fn().mockResolvedValue(comment),
 };
 
 describe('CommentsModule', () => {
@@ -28,13 +28,13 @@ describe('CommentsModule', () => {
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
-          isGlobal: true
+          isGlobal: true,
         }),
         AuthModule,
         GraphqlModule,
         CommentsModule,
-        MongooseModule.forRoot('test')
-      ]
+        MongooseModule.forRoot('test'),
+      ],
     })
       .overrideProvider(getConnectionToken())
       .useValue(mockConnection)
@@ -69,33 +69,31 @@ describe('CommentsModule', () => {
             addComment(bookId: "book_id", text: "test comment") {
               _id
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             addComment: {
-              _id: comment._id
-            }
-          }
+              _id: comment._id,
+            },
+          },
         });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `mutation {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `mutation {
             addComment(bookId: "book_id", text: "test comment") {
               _id
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
   });

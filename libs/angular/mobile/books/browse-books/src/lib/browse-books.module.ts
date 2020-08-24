@@ -9,6 +9,6 @@ import { BrowseBooksPageComponent } from './containers/browse-books-page/browse-
 @NgModule({
   imports: [NativeScriptCommonModule, CommonModule, BookSearchModule, BooksListModule],
   declarations: [BrowseBooksPageComponent],
-  schemas: [NO_ERRORS_SCHEMA]
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class BrowseBooksModule {}

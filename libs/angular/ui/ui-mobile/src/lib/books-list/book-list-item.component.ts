@@ -7,7 +7,7 @@ import {
   Input,
   OnDestroy,
   Output,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 
 import { Book } from '@bookapp/shared';
@@ -16,7 +16,7 @@ import { Book } from '@bookapp/shared';
   selector: 'bookapp-book-list-item',
   templateUrl: './book-list-item.component.html',
   styleUrls: ['./book-list-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookListItemComponent implements AfterViewInit, OnDestroy {
   @Input()

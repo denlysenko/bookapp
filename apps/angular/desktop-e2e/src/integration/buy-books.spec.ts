@@ -38,15 +38,11 @@ describe('Buy Books Page', () => {
 
   it('should rate a book', () => {
     cy.rateBook(1, 5);
-    cy.get('.logs .mat-list-item')
-      .first()
-      .should('contain', 'You rated a Book');
+    cy.get('.logs .mat-list-item').first().should('contain', 'You rated a Book');
   });
 
   it('should open book view page', () => {
-    cy.get('[data-test=list-item]')
-      .first()
-      .click();
+    cy.get('[data-test=list-item]').first().click();
 
     cy.url().should('contain', 'the-hound-of-the-baskervilles');
   });

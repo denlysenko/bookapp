@@ -1,25 +1,26 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injector } from '@angular/core';
 
+import { ApolloLink, InMemoryCache, split } from '@apollo/client/core';
+import { onError } from '@apollo/client/link/error';
+import { RetryLink } from '@apollo/client/link/retry';
+import { WebSocketLink } from '@apollo/client/link/ws';
+import { getMainDefinition } from '@apollo/client/utilities';
+
 import {
   AUTH_TOKEN,
   EnvConfig,
   FeedbackPlatformService,
   HTTP_STATUS,
   StoragePlatformService,
-  StoreService
+  StoreService,
 } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
 import { AuthPayload, REFRESH_TOKEN_HEADER } from '@bookapp/shared';
 
-import { HttpLink } from 'apollo-angular-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloLink, split } from 'apollo-link';
-import { onError } from 'apollo-link-error';
-import { RetryLink } from 'apollo-link-retry';
+import { HttpLink } from 'apollo-angular/http';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
-import { WebSocketLink } from 'apollo-link-ws';
-import { getMainDefinition } from 'apollo-utilities';
+
 import * as jwtDecode from 'jwt-decode';
 
 interface Definition {
@@ -29,14 +30,14 @@ interface Definition {
 
 const defaultOptions = {
   watchQuery: {
-    errorPolicy: 'all'
+    errorPolicy: 'all',
   },
   query: {
-    errorPolicy: 'all'
+    errorPolicy: 'all',
   },
   mutate: {
-    errorPolicy: 'all'
-  }
+    errorPolicy: 'all',
+  },
 };
 
 // tslint:disable-next-line: cognitive-complexity
@@ -50,7 +51,10 @@ export function createApolloFactory(
   injector: Injector
 ) {
   const http = httpLink.create({
-    uri: environment.endpointUrl
+    uri: ({ operationName }) =>
+      (window as any).Cypress
+        ? `${environment.endpointUrl}?${operationName}`
+        : environment.endpointUrl,
   });
 
   const ws = new WebSocketLink({
@@ -58,15 +62,15 @@ export function createApolloFactory(
     options: {
       reconnect: true,
       connectionParams: {
-        authToken: storeService.get(AUTH_TOKEN)
-      }
+        authToken: storeService.get(AUTH_TOKEN),
+      },
     },
-    webSocketImpl
+    webSocketImpl,
   });
 
   const auth = new ApolloLink((operation, forward) => {
     operation.setContext({
-      headers: new HttpHeaders().set('Authorization', `Bearer ${storeService.get(AUTH_TOKEN)}`)
+      headers: new HttpHeaders().set('Authorization', `Bearer ${storeService.get(AUTH_TOKEN)}`),
     });
 
     return forward(operation);
@@ -117,7 +121,7 @@ export function createApolloFactory(
       ) {
         const authService = injector.get(AuthService);
 
-        feedbackService.error(error.extensions.exception.response.error);
+        feedbackService.error(error.extensions.exception.response.error); // check and replace on response.message
         authService.logout().subscribe();
         return;
       }
@@ -138,17 +142,17 @@ export function createApolloFactory(
     delay: {
       initial: 1000,
       max: Infinity,
-      jitter: true
+      jitter: true,
     },
     attempts: {
       max: 5,
-      retryIf: error =>
+      retryIf: (error) =>
         error.status === HTTP_STATUS.SERVICE_UNAVAILABLE ||
-        error.status === HTTP_STATUS.GATEWAY_TIMEOUT
-    }
+        error.status === HTTP_STATUS.GATEWAY_TIMEOUT,
+    },
   });
 
-  const refreshTokenLink = new TokenRefreshLink({
+  const refreshTokenLink: any = new TokenRefreshLink({
     accessTokenField: 'accessToken',
     isTokenValidOrUndefined: () => {
       const token = storeService.get(AUTH_TOKEN);
@@ -167,7 +171,7 @@ export function createApolloFactory(
     fetchAccessToken: () => {
       return httpClient
         .post<Response>(environment.refreshTokenUrl, null, {
-          headers: new HttpHeaders().set(REFRESH_TOKEN_HEADER, storageService.getItem(AUTH_TOKEN))
+          headers: new HttpHeaders().set(REFRESH_TOKEN_HEADER, storageService.getItem(AUTH_TOKEN)),
         })
         .toPromise();
     },
@@ -175,14 +179,14 @@ export function createApolloFactory(
       storageService.setItem(AUTH_TOKEN, response.refreshToken);
       return response;
     },
-    handleFetch: accessToken => {
+    handleFetch: (accessToken) => {
       storeService.set(AUTH_TOKEN, accessToken);
-    }
+    },
   });
 
   return {
     link: ApolloLink.from([refreshTokenLink, errorLink, retryLink, link]),
     cache: new InMemoryCache(),
-    defaultOptions
+    defaultOptions,
   };
 }

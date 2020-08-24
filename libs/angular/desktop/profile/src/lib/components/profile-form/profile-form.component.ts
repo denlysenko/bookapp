@@ -9,13 +9,13 @@ import { ProfileForm, User } from '@bookapp/shared';
   selector: 'bookapp-profile-form',
   templateUrl: './profile-form.component.html',
   styleUrls: ['./profile-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileFormComponent extends BaseForm {
   form = this.fb.group({
     firstName: [null, Validators.required],
     lastName: [null, Validators.required],
-    email: [null, [Validators.required, Validators.email]]
+    email: [null, [Validators.required, Validators.email]],
   });
 
   @Input() loading: boolean;

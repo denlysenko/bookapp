@@ -4,7 +4,7 @@ import {
   EventEmitter,
   Input,
   OnInit,
-  Output
+  Output,
 } from '@angular/core';
 
 declare var ePubReader: any;
@@ -13,7 +13,7 @@ declare var ePubReader: any;
   selector: 'bookapp-book-reader',
   templateUrl: './book-reader.component.html',
   styleUrls: ['./book-reader.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookReaderComponent implements OnInit {
   @Input()

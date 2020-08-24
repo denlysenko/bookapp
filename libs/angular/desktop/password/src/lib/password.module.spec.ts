@@ -4,7 +4,7 @@ import { PasswordModule } from './password.module';
 describe('PasswordModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [PasswordModule]
+      imports: [PasswordModule],
     }).compileComponents();
   }));
 

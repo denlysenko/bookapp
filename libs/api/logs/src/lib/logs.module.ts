@@ -11,9 +11,9 @@ import { LogSchema } from './schemas/log';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: ModelNames.LOG, schema: LogSchema }]),
-    DataLoadersModule
+    DataLoadersModule,
   ],
   providers: [LogsService, LogsResolver],
-  exports: [LogsService]
+  exports: [LogsService],
 })
 export class LogsModule {}

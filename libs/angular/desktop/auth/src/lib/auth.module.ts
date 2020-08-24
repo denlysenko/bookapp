@@ -19,15 +19,15 @@ import { AuthPageComponent } from './containers/auth-page/auth-page.component';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   declarations: [AuthPageComponent, AuthFormComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthErrorInterceptor,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class AuthModule {}

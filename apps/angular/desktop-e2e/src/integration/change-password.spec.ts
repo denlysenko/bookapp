@@ -17,9 +17,7 @@ describe('Change Password Page', () => {
   context('invalid form', () => {
     it('should display required errors', () => {
       cy.get(submitBtn).click();
-      cy.get('mat-error')
-        .should('have.length', 2)
-        .and('contain', 'This field is required');
+      cy.get('mat-error').should('have.length', 2).and('contain', 'This field is required');
     });
   });
 
@@ -39,9 +37,7 @@ describe('Change Password Page', () => {
       cy.get(passwordField).type('password1');
       cy.get(submitBtn).click();
 
-      cy.get('.mat-snack-bar-container')
-        .should('be.visible')
-        .and('contain', 'Password changed!');
+      cy.get('.mat-snack-bar-container').should('be.visible').and('contain', 'Password changed!');
     });
   });
 });

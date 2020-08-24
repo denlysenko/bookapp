@@ -10,10 +10,10 @@ import { ViewBookPageComponent } from './containers/view-book-page/view-book-pag
     NativeScriptRouterModule.forChild([
       {
         path: '',
-        component: ViewBookPageComponent
-      }
-    ])
+        component: ViewBookPageComponent,
+      },
+    ]),
   ],
-  exports: [NativeScriptRouterModule]
+  exports: [NativeScriptRouterModule],
 })
 export class ViewBookRoutingModule {}

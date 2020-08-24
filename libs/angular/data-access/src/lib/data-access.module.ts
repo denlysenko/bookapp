@@ -18,7 +18,7 @@ import { ProfileService } from './services/profile/profile.service';
     BookmarksService,
     ReadBookResolver,
     EditBookResolver,
-    LogsService
-  ]
+    LogsService,
+  ],
 })
 export class DataAccessModule {}

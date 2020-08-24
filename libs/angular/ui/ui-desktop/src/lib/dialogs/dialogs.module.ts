@@ -10,6 +10,6 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
   imports: [CommonModule, MatDialogModule, MatDividerModule, MatButtonModule],
   declarations: [ConfirmDialogComponent],
   exports: [ConfirmDialogComponent],
-  entryComponents: [ConfirmDialogComponent]
+  entryComponents: [ConfirmDialogComponent],
 })
 export class DialogsModule {}

@@ -8,10 +8,10 @@ import { PasswordPageComponent } from './containers/password-page/password-page.
     RouterModule.forChild([
       {
         path: '',
-        component: PasswordPageComponent
-      }
-    ])
+        component: PasswordPageComponent,
+      },
+    ]),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class PasswordRoutingModule {}

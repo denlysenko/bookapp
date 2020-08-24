@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 import { ProfileFragment } from './fragments';
 
@@ -27,7 +27,7 @@ export const LOGOUT_MUTATION = gql`
 `;
 
 export const ME_QUERY = gql`
-  query {
+  query me {
     me {
       ...Profile
     }

@@ -20,7 +20,7 @@ const filesPath = resolve(`${__dirname}`, '../test-files');
 
 const MockFilesService = {
   uploadToBucket: jest.fn().mockImplementation(() => Promise.resolve({ publicUrl })),
-  deleteFromBucket: jest.fn().mockImplementation(() => Promise.resolve())
+  deleteFromBucket: jest.fn().mockImplementation(() => Promise.resolve()),
 };
 
 describe('FilesModule', () => {
@@ -32,11 +32,11 @@ describe('FilesModule', () => {
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
-          isGlobal: true
+          isGlobal: true,
         }),
         AuthModule,
-        FilesModule
-      ]
+        FilesModule,
+      ],
     })
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
@@ -96,18 +96,15 @@ describe('FilesModule', () => {
         .expect({
           statusCode: HttpStatus.BAD_REQUEST,
           error: 'Bad Request',
-          message: FILE_ERRORS.INVALID_MIMETYPE_ERR
+          message: FILE_ERRORS.INVALID_MIMETYPE_ERR,
         });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      return request(app.getHttpServer())
-        .post('/files')
-        .expect(HttpStatus.UNAUTHORIZED)
-        .expect({
-          statusCode: HttpStatus.UNAUTHORIZED,
-          error: 'Unauthorized'
-        });
+      return request(app.getHttpServer()).post('/files').expect(HttpStatus.UNAUTHORIZED).expect({
+        statusCode: HttpStatus.UNAUTHORIZED,
+        message: 'Unauthorized',
+      });
     });
   });
 
@@ -127,7 +124,7 @@ describe('FilesModule', () => {
         .expect(HttpStatus.UNAUTHORIZED)
         .expect({
           statusCode: HttpStatus.UNAUTHORIZED,
-          error: 'Unauthorized'
+          message: 'Unauthorized',
         });
     });
   });

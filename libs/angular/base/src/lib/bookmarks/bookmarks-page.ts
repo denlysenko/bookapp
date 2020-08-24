@@ -17,18 +17,18 @@ export abstract class BookmarksPageBase {
     tap(
       ({
         data: {
-          bookmarks: { rows, count }
-        }
+          bookmarks: { rows, count },
+        },
       }) => {
         this.hasMoreItems = rows.length !== count;
       }
     ),
-    map(({ data }) => data.bookmarks.rows.map(bookmark => bookmark.book))
+    map(({ data }) => data.bookmarks.rows.map((bookmark) => bookmark.book))
   );
 
   loading$: Observable<boolean> = this.bookmarksQueryRef.valueChanges.pipe(
     pluck('loading'),
-    tap(loading => {
+    tap((loading) => {
       this.pending = loading;
     })
   );
@@ -54,7 +54,7 @@ export abstract class BookmarksPageBase {
 
       this.bookmarksQueryRef.fetchMore({
         variables: {
-          skip: this.skip
+          skip: this.skip,
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult) {
@@ -67,10 +67,10 @@ export abstract class BookmarksPageBase {
             bookmarks: {
               count,
               rows: [...previousResult.bookmarks.rows, ...rows],
-              __typename: 'BookmarksResponse'
-            }
+              __typename: 'BookmarksResponse',
+            },
           };
-        }
+        },
       });
     }
   }
@@ -79,14 +79,14 @@ export abstract class BookmarksPageBase {
     const variables = {
       type: this.type,
       skip: this.skip,
-      first: DEFAULT_LIMIT
+      first: DEFAULT_LIMIT,
     };
 
     this.booksService
       .rateBook(event, (store, { data: { rateBook } }) => {
         const data: { bookmarks: ApiResponse<Bookmark> } = store.readQuery({
           query: BOOKMARKS_QUERY,
-          variables
+          variables,
         });
 
         const updatedBookmark = data.bookmarks.rows.find(({ book }) => book._id === event.bookId);
@@ -97,7 +97,7 @@ export abstract class BookmarksPageBase {
         store.writeQuery({
           query: BOOKMARKS_QUERY,
           variables,
-          data
+          data,
         });
       })
       .subscribe();

@@ -25,8 +25,8 @@ export class RolesGuard implements CanActivate, CanLoad {
   private hasRoles(roles: string[]): Observable<boolean> {
     return this.authService.me().valueChanges.pipe(
       map(({ data }) => data.me),
-      map(user => {
-        if (!user.roles.some(role => roles.includes(role))) {
+      map((user) => {
+        if (!user.roles.some((role) => roles.includes(role))) {
           this.routerExtensions.navigate(['']);
           return false;
         }

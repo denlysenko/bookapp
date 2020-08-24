@@ -40,7 +40,7 @@ export class BooksService {
 
     return {
       count,
-      rows
+      rows,
     };
   }
 
@@ -64,7 +64,7 @@ export class BooksService {
 
     return {
       count,
-      rows
+      rows,
     };
   }
 

@@ -40,7 +40,7 @@ export class UsersService {
 
     return {
       count,
-      rows
+      rows,
     };
   }
 
@@ -97,7 +97,7 @@ export class UsersService {
 
     return {
       accessToken: this.authTokensService.createAccessToken(user._id),
-      refreshToken: await this.authTokensService.createRefreshToken(user._id)
+      refreshToken: await this.authTokensService.createRefreshToken(user._id),
     };
   }
 
@@ -127,8 +127,8 @@ export class UsersService {
       .findOne({
         resetPasswordToken: token,
         resetPasswordExpires: {
-          $gt: Date.now()
-        }
+          $gt: Date.now(),
+        },
       })
       .exec();
 

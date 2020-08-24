@@ -6,6 +6,6 @@ import { PreloaderComponent } from './preloader.component';
 @NgModule({
   imports: [CommonModule],
   declarations: [PreloaderComponent],
-  exports: [PreloaderComponent]
+  exports: [PreloaderComponent],
 })
 export class PreloaderModule {}

@@ -10,7 +10,7 @@ export enum UserActions {
   BOOK_REMOVED_FROM_WISHLIST = 'BOOK_REMOVED_FROM_WISHLIST',
   BOOK_REMOVED_FROM_FAVORITES = 'BOOK_REMOVED_FROM_FAVORITES',
   BOOK_BOUGHT = 'BOOK_BOUGHT',
-  COMMENT_ADDED = 'COMMENT_ADDED'
+  COMMENT_ADDED = 'COMMENT_ADDED',
 }
 
 export const UserActionsDesc = {
@@ -25,5 +25,5 @@ export const UserActionsDesc = {
   [UserActions.BOOK_REMOVED_FROM_WISHLIST]: 'You removed a Book from Wishlist',
   [UserActions.BOOK_REMOVED_FROM_FAVORITES]: 'You removed a Book from Favourites',
   [UserActions.BOOK_BOUGHT]: 'You bought a Book',
-  [UserActions.COMMENT_ADDED]: 'You commented a Book'
+  [UserActions.COMMENT_ADDED]: 'You commented a Book',
 };

@@ -13,8 +13,8 @@ export class ProfileService {
       mutation: UPDATE_USER_MUTATION,
       variables: {
         id,
-        user
-      }
+        user,
+      },
     });
   }
 
@@ -23,20 +23,24 @@ export class ProfileService {
       mutation: UPDATE_USER_MUTATION,
       variables: {
         id,
-        user: { reading }
+        user: { reading },
       },
       update: (store, { data: { updateUser } }) => {
         const data: { me: User } = store.readQuery({
-          query: ME_QUERY
+          query: ME_QUERY,
         });
-
-        data.me.reading = updateUser.reading;
 
         store.writeQuery({
           query: ME_QUERY,
-          data
+          data: {
+            ...data,
+            me: {
+              ...data.me,
+              reading: updateUser.reading,
+            },
+          },
         });
-      }
+      },
     });
   }
 }

@@ -7,7 +7,7 @@ import { BooksService } from '@bookapp/angular/data-access';
 @Component({
   selector: 'bookapp-buy-books-page',
   templateUrl: './buy-books-page.component.html',
-  styleUrls: ['./buy-books-page.component.scss']
+  styleUrls: ['./buy-books-page.component.scss'],
 })
 export class BuyBooksPageComponent extends BooksPageBase {
   constructor(storeService: StoreService, booksService: BooksService) {

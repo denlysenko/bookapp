@@ -6,6 +6,6 @@ export const CommentSchema = new Schema({
   text: String,
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });

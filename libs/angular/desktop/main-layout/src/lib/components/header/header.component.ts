@@ -7,7 +7,7 @@ import { User } from '@bookapp/shared';
   selector: 'bookapp-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
   readonly title = 'Book App';

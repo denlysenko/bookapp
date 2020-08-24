@@ -5,24 +5,24 @@ import {
   Book,
   BooksFilter,
   FREE_BOOKS_QUERY,
-  PAID_BOOKS_QUERY
+  PAID_BOOKS_QUERY,
 } from '@bookapp/shared';
 
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, pluck, tap } from 'rxjs/operators';
+import { filter, map, pluck, tap } from 'rxjs/operators';
 
 import { BaseComponent } from '../core/base-component';
 
 const FILTER_KEYS = {
   BROWSE_BOOKS: 'BROWSE_BOOKS',
-  BUY_BOOKS: 'BUY_BOOKS'
+  BUY_BOOKS: 'BUY_BOOKS',
 };
 
 export abstract class BooksPageBase extends BaseComponent {
   filter = new BehaviorSubject<BooksFilter>(
     this.storeService.get(FILTER_KEYS[this.paid ? 'BUY_BOOKS' : 'BROWSE_BOOKS']) || {
       searchQuery: '',
-      sortValue: DEFAULT_SORT_VALUE
+      sortValue: DEFAULT_SORT_VALUE,
     }
   );
 
@@ -32,11 +32,12 @@ export abstract class BooksPageBase extends BaseComponent {
   booksQueryRef = this.booksService.getBooks(this.paid, this.filterInput);
 
   books$: Observable<Book[]> = this.booksQueryRef.valueChanges.pipe(
+    filter(({ loading }) => !loading),
     tap(
       ({
         data: {
-          books: { rows, count }
-        }
+          books: { rows, count },
+        },
       }) => {
         this.hasMoreItems = rows.length !== count;
       }
@@ -46,7 +47,7 @@ export abstract class BooksPageBase extends BaseComponent {
 
   loading$: Observable<boolean> = this.booksQueryRef.valueChanges.pipe(
     pluck('loading'),
-    tap(loading => {
+    tap((loading) => {
       this.pending = loading;
     })
   );
@@ -71,14 +72,14 @@ export abstract class BooksPageBase extends BaseComponent {
 
     this.filter.next({
       ...this.filter.getValue(),
-      sortValue
+      sortValue,
     });
 
     this.updateFilterInStore();
 
     this.booksQueryRef.refetch({
       skip: this.skip,
-      orderBy: sortValue
+      orderBy: sortValue,
     });
   }
 
@@ -87,19 +88,19 @@ export abstract class BooksPageBase extends BaseComponent {
 
     this.filter.next({
       ...this.filter.getValue(),
-      searchQuery
+      searchQuery,
     });
 
     this.updateFilterInStore();
 
     this.filterInput = {
       ...this.filterInput,
-      search: searchQuery
+      search: searchQuery,
     };
 
     this.booksQueryRef.refetch({
       filter: this.filterInput,
-      skip: this.skip
+      skip: this.skip,
     });
   }
 
@@ -113,7 +114,7 @@ export abstract class BooksPageBase extends BaseComponent {
 
       this.booksQueryRef.fetchMore({
         variables: {
-          skip: this.skip
+          skip: this.skip,
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult) {
@@ -126,10 +127,10 @@ export abstract class BooksPageBase extends BaseComponent {
             books: {
               count,
               rows: [...previousResult.books.rows, ...rows],
-              __typename: 'BookResponse'
-            }
+              __typename: 'BookResponse',
+            },
           };
-        }
+        },
       });
     }
   }
@@ -141,25 +142,43 @@ export abstract class BooksPageBase extends BaseComponent {
       filter: this.filterInput,
       skip: this.skip,
       first: DEFAULT_LIMIT,
-      orderBy: this.filter.getValue().sortValue
+      orderBy: this.filter.getValue().sortValue,
     };
 
     this.booksService
       .rateBook(event, (store, { data: { rateBook } }) => {
         const data: { books: ApiResponse<Book> } = store.readQuery({
           query,
-          variables
+          variables,
         });
 
-        const updatedBook = data.books.rows.find(({ _id }) => _id === event.bookId);
-        updatedBook.rating = rateBook.rating;
-        updatedBook.total_rates = rateBook.total_rates;
-        updatedBook.total_rating = rateBook.total_rating;
+        const index = data.books.rows.findIndex(({ _id }) => _id === event.bookId);
+
+        if (index === -1) {
+          return;
+        }
+
+        const updatedBook = {
+          ...data.books.rows[index],
+          rating: rateBook.rating,
+          total_rates: rateBook.total_rates,
+          total_rating: rateBook.total_rating,
+        };
 
         store.writeQuery({
           query,
           variables,
-          data
+          data: {
+            ...data,
+            books: {
+              ...data.books,
+              rows: [
+                ...data.books.rows.slice(0, index),
+                updatedBook,
+                ...data.books.rows.slice(index + 1),
+              ],
+            },
+          },
         });
       })
       .subscribe();

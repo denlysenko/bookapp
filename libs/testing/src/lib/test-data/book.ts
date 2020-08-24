@@ -17,5 +17,5 @@ export const book = {
   price: null,
   comments: [comment],
   createdAt: 1563132857195,
-  updatedAt: 1563132857195
+  updatedAt: 1563132857195,
 };

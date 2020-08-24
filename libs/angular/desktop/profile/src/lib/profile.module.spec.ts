@@ -4,7 +4,7 @@ import { ProfileModule } from './profile.module';
 describe('ProfileModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ProfileModule]
+      imports: [ProfileModule],
     }).compileComponents();
   }));
 

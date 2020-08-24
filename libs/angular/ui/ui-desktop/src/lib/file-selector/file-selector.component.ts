@@ -8,7 +8,7 @@ import { UploadPlatformService } from '@bookapp/angular/core';
   selector: 'bookapp-file-selector',
   templateUrl: './file-selector.component.html',
   styleUrls: ['./file-selector.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileSelectorComponent extends FileSelectorBase {
   progress$ = this.uploadService.progress$;

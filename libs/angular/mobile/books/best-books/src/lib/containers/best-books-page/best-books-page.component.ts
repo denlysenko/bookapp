@@ -11,7 +11,7 @@ import { getViewById } from 'tns-core-modules/ui/page/page';
   moduleId: module.id,
   selector: 'bookapp-best-books-page',
   templateUrl: './best-books-page.component.html',
-  styleUrls: ['./best-books-page.component.scss']
+  styleUrls: ['./best-books-page.component.scss'],
 })
 export class BestBooksPageComponent extends BestBooksBase {
   constructor(booksService: BooksService) {

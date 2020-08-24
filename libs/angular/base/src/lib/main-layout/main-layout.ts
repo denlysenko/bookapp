@@ -11,7 +11,7 @@ import { BaseComponent } from '../core/base-component';
 export abstract class MainLayoutBase extends BaseComponent implements OnDestroy {
   user$ = this.authService.me().valueChanges.pipe(
     map(({ data }) => data.me),
-    tap(user => {
+    tap((user) => {
       if (!this.unsubscribeFromNewLogs) {
         this.subscribeToNewLogs(user._id);
       }
@@ -63,10 +63,10 @@ export abstract class MainLayoutBase extends BaseComponent implements OnDestroy 
           logs: {
             rows: newLogs,
             count: prev.logs.count,
-            __typename: 'LogsResponse'
-          }
+            __typename: 'LogsResponse',
+          },
         };
-      }
+      },
     });
   }
 }

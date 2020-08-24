@@ -16,7 +16,7 @@ describe('NavComponent', () => {
     TestBed.configureTestingModule({
       imports: [MatListModule],
       declarations: [NavComponent, DateToPeriodPipe],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 

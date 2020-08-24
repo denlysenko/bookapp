@@ -8,7 +8,7 @@ import { Log, UserActionsDesc } from '@bookapp/shared';
   selector: 'bookapp-app-menu',
   templateUrl: './app-menu.component.html',
   styleUrls: ['./app-menu.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppMenuComponent {
   readonly navMenu = navs;

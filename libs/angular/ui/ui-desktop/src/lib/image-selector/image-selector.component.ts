@@ -13,7 +13,7 @@ import { shareReplay } from 'rxjs/operators';
   selector: 'bookapp-image-selector',
   templateUrl: './image-selector.component.html',
   styleUrls: ['./image-selector.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageSelectorComponent extends FileSelectorBase {
   progress$ = this.uploadService.progress$;

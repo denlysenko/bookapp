@@ -15,7 +15,7 @@ describe('BooksFilterComponent', () => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, MatButtonToggleModule],
       declarations: [BooksFilterComponent],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 

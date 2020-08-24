@@ -13,8 +13,8 @@ import { BookmarkSchema } from './schemas/bookmark';
   imports: [
     MongooseModule.forFeature([{ name: ModelNames.BOOKMARK, schema: BookmarkSchema }]),
     LogsModule,
-    DataLoadersModule
+    DataLoadersModule,
   ],
-  providers: [BookmarksService, BookmarksResolver]
+  providers: [BookmarksService, BookmarksResolver],
 })
 export class BookmarksModule {}

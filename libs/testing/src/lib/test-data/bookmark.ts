@@ -3,5 +3,5 @@ import { book } from './book';
 
 export const bookmark = {
   type: BOOKMARKS.FAVORITES,
-  book
+  book,
 };

@@ -32,7 +32,7 @@ export abstract class FileSelectorBase {
   onFileDrop(event: any) {
     this.error.next(null);
     this.imageChangedEvent.next({
-      target: { files: event.dataTransfer.files }
+      target: { files: event.dataTransfer.files },
     });
   }
 
@@ -43,8 +43,8 @@ export abstract class FileSelectorBase {
       tap(() => {
         this.loading.next(false);
       }),
-      map(response => JSON.parse(response)),
-      catchError(err => {
+      map((response) => JSON.parse(response)),
+      catchError((err) => {
         this.loading.next(false);
         this.imageChangedEvent.next(null);
         const error = JSON.parse(err);

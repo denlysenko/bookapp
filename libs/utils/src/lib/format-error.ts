@@ -1,4 +1,4 @@
-export const formatError = err => {
+export const formatError = (err) => {
   if (err.originalError && err.originalError.name === 'ValidationError') {
     return err.originalError.errors;
   }

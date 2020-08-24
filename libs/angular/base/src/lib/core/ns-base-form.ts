@@ -20,7 +20,7 @@ export abstract class NsBaseForm {
       return;
     }
 
-    Object.keys(err).forEach(key => {
+    Object.keys(err).forEach((key) => {
       const formControl = this.dataform.getPropertyByName(key);
 
       if (formControl) {

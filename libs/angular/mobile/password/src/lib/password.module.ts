@@ -15,9 +15,9 @@ import { PasswordRoutingModule } from './password-routing.module';
     CommonModule,
     NativeScriptUIDataFormModule,
     PasswordRoutingModule,
-    NgShadowModule
+    NgShadowModule,
   ],
   schemas: [NO_ERRORS_SCHEMA],
-  declarations: [PasswordPageComponent, PasswordFormComponent]
+  declarations: [PasswordPageComponent, PasswordFormComponent],
 })
 export class PasswordModule {}

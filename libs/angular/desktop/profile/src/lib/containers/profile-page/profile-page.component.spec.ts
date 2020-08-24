@@ -23,19 +23,19 @@ describe('ProfilePageComponent', () => {
       providers: [
         {
           provide: AuthService,
-          useValue: MockAngularAuthService
+          useValue: MockAngularAuthService,
         },
         {
           provide: FeedbackPlatformService,
-          useValue: MockFeedbackPlatformService
+          useValue: MockFeedbackPlatformService,
         },
         {
           provide: ProfileService,
           useValue: {
-            update: jest.fn().mockImplementation(() => of({ data: { updateProfile: user } }))
-          }
-        }
-      ]
+            update: jest.fn().mockImplementation(() => of({ data: { updateProfile: user } })),
+          },
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -43,7 +43,7 @@ describe('ProfilePageComponent', () => {
     fixture = TestBed.createComponent(ProfilePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    profileService = TestBed.get(ProfileService);
+    profileService = TestBed.inject(ProfileService);
   });
 
   it('should create', () => {
@@ -54,18 +54,18 @@ describe('ProfilePageComponent', () => {
     it('should update profile', () => {
       component.updateProfile({ id: user._id, user: { firstName } });
       expect(profileService.update).toHaveBeenCalledWith(user._id, {
-        firstName
+        firstName,
       });
     });
 
-    it('should propagate error', done => {
+    it('should propagate error', (done) => {
       const error: any = { message: 'Error' };
 
       jest.spyOn(profileService, 'update').mockImplementationOnce(() => of({ errors: [error] }));
 
       let result: any;
 
-      component.error$.subscribe(err => {
+      component.error$.subscribe((err) => {
         result = err;
         done();
       });

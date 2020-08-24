@@ -10,7 +10,7 @@ import { Page } from 'tns-core-modules/ui/page';
   moduleId: module.id,
   selector: 'bookapp-auth-page',
   templateUrl: './auth-page.component.html',
-  styleUrls: ['./auth-page.component.scss']
+  styleUrls: ['./auth-page.component.scss'],
 })
 export class AuthPageComponent extends AuthPageBase {
   constructor(public page: Page, authService: AuthService, routerExtensions: RouterExtensions) {

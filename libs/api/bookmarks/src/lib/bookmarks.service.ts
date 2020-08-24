@@ -32,7 +32,7 @@ export class BookmarksService {
 
     return {
       count,
-      rows
+      rows,
     };
   }
 

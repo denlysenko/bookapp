@@ -5,6 +5,6 @@ import { BookCommentsBase } from '@bookapp/angular/base';
   selector: 'bookapp-book-comments',
   templateUrl: './book-comments.component.html',
   styleUrls: ['./book-comments.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookCommentsComponent extends BookCommentsBase {}

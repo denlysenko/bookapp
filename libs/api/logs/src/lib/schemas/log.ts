@@ -5,7 +5,7 @@ export const LogSchema = new Schema({
   userId: Schema.Types.ObjectId,
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
-  bookId: Schema.Types.ObjectId
+  bookId: Schema.Types.ObjectId,
 });

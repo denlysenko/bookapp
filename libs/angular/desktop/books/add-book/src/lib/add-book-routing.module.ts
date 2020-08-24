@@ -15,22 +15,22 @@ import { AddBookPageComponent } from './containers/add-book-page/add-book-page.c
         component: AddBookPageComponent,
         canDeactivate: [CanDeactivateGuard],
         data: {
-          roles: [ROLES.ADMIN]
-        }
+          roles: [ROLES.ADMIN],
+        },
       },
       {
         path: ':author/:slug',
         component: AddBookPageComponent,
         canDeactivate: [CanDeactivateGuard],
         resolve: {
-          book: EditBookResolver
+          book: EditBookResolver,
         },
         data: {
-          roles: [ROLES.ADMIN]
-        }
-      }
-    ])
+          roles: [ROLES.ADMIN],
+        },
+      },
+    ]),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AddBookRoutingModule {}

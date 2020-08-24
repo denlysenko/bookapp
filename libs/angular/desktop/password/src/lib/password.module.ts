@@ -18,8 +18,8 @@ import { PasswordRoutingModule } from './password-routing.module';
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
   ],
-  declarations: [PasswordFormComponent, PasswordPageComponent]
+  declarations: [PasswordFormComponent, PasswordPageComponent],
 })
 export class PasswordModule {}

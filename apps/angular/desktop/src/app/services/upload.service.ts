@@ -5,7 +5,7 @@ import {
   EnvConfig,
   Environment,
   HTTP_STATUS,
-  StoreService
+  StoreService,
 } from '@bookapp/angular/core';
 
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -24,7 +24,7 @@ export class UploadService {
   }
 
   upload(file: File | Blob, name: string = 'file'): Observable<string> {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       const formData = new FormData();
       const xhr = new XMLHttpRequest();
 
@@ -64,7 +64,7 @@ export class UploadService {
   }
 
   deleteFile(key: string): Observable<string> {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       const xhr = new XMLHttpRequest();
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {

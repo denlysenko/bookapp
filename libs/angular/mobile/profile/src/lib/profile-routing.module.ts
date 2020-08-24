@@ -10,10 +10,10 @@ import { ProfilePageComponent } from './containers/profile-page/profile-page.com
     NativeScriptRouterModule.forChild([
       {
         path: '',
-        component: ProfilePageComponent
-      }
-    ])
+        component: ProfilePageComponent,
+      },
+    ]),
   ],
-  exports: [NativeScriptRouterModule]
+  exports: [NativeScriptRouterModule],
 })
 export class ProfileRoutingModule {}

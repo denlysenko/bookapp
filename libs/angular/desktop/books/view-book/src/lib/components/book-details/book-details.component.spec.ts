@@ -19,7 +19,7 @@ describe('BookDetailsComponent', () => {
     TestBed.configureTestingModule({
       imports: [CommonModule, FormsModule, RatingModule, MatIconModule, RouterTestingModule],
       declarations: [BookDetailsComponent],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -47,7 +47,7 @@ describe('BookDetailsComponent', () => {
     it('should emit bookmarkAdded event', () => {
       expect(component.bookmarkAdded.emit).toHaveBeenCalledWith({
         type: BOOKMARKS.FAVORITES,
-        bookId: book._id
+        bookId: book._id,
       });
     });
   });
@@ -66,7 +66,7 @@ describe('BookDetailsComponent', () => {
     it('should emit bookmarkRemoved event', () => {
       expect(component.bookmarkRemoved.emit).toHaveBeenCalledWith({
         type: BOOKMARKS.FAVORITES,
-        bookId: book._id
+        bookId: book._id,
       });
     });
   });
@@ -82,7 +82,7 @@ describe('BookDetailsComponent', () => {
 
       expect(component.bookRated.emit).toHaveBeenCalledWith({
         bookId: book._id,
-        rate: 3
+        rate: 3,
       });
     });
   });

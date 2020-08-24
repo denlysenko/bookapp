@@ -4,5 +4,5 @@ export enum ModelNames {
   COMMENT = 'Comment',
   LOG = 'Log',
   USER = 'User',
-  AUTH_TOKEN = 'AuthToken'
+  AUTH_TOKEN = 'AuthToken',
 }

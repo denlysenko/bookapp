@@ -11,7 +11,7 @@ import {
   MockConfigService,
   MockModel,
   MockMongooseModel,
-  user
+  user,
 } from '@bookapp/testing';
 
 import { ConfigService } from '@nestjs/config';
@@ -36,23 +36,23 @@ describe('UsersService', () => {
         UsersService,
         {
           provide: ConfigService,
-          useValue: MockConfigService
+          useValue: MockConfigService,
         },
         {
           provide: getModelToken(ModelNames.USER),
-          useValue: MockModel
+          useValue: MockModel,
         },
         {
           provide: AuthTokensService,
-          useValue: MockAuthTokensService
+          useValue: MockAuthTokensService,
         },
         {
           provide: FilesService,
           useValue: {
-            deleteFromBucket: jest.fn().mockImplementation(() => Promise.resolve())
-          }
-        }
-      ]
+            deleteFromBucket: jest.fn().mockImplementation(() => Promise.resolve()),
+          },
+        },
+      ],
     }).compile();
 
     usersService = module.get<UsersService>(UsersService);
@@ -168,7 +168,7 @@ describe('UsersService', () => {
       try {
         await usersService.update(user._id, { ...user });
       } catch (err) {
-        expect(err.message.message).toEqual(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
+        expect(err.message).toEqual(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
       }
     });
 
@@ -192,7 +192,7 @@ describe('UsersService', () => {
 
       await usersService.update(user._id, {
         ...user,
-        avatar: 'storage/newAvatarUrl'
+        avatar: 'storage/newAvatarUrl',
       });
       expect(filesService.deleteFromBucket).toHaveBeenCalledWith('avatarUrl');
     });
@@ -234,7 +234,7 @@ describe('UsersService', () => {
       try {
         await usersService.changePassword(user._id, 'oldPassword', 'newPassword');
       } catch (err) {
-        expect(err.message.message).toEqual(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
+        expect(err.message).toEqual(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
       }
     });
 
@@ -248,7 +248,7 @@ describe('UsersService', () => {
       try {
         await usersService.changePassword(user._id, 'oldPassword', 'newPassword');
       } catch (err) {
-        expect(err.message.message).toEqual(USER_VALIDATION_ERRORS.OLD_PASSWORD_MATCH_ERR);
+        expect(err.message).toEqual(USER_VALIDATION_ERRORS.OLD_PASSWORD_MATCH_ERR);
       }
     });
 
@@ -290,7 +290,7 @@ describe('UsersService', () => {
       try {
         await usersService.requestResetPassword(email);
       } catch (err) {
-        expect(err.message.message).toEqual(USER_VALIDATION_ERRORS.EMAIL_NOT_FOUND_ERR);
+        expect(err.message).toEqual(USER_VALIDATION_ERRORS.EMAIL_NOT_FOUND_ERR);
       }
     });
 
@@ -323,8 +323,8 @@ describe('UsersService', () => {
       expect(userModel.findOne).toHaveBeenCalledWith({
         resetPasswordToken: 'token',
         resetPasswordExpires: {
-          $gt: Date.now()
-        }
+          $gt: Date.now(),
+        },
       });
     });
 
@@ -334,7 +334,7 @@ describe('UsersService', () => {
       try {
         await usersService.resetPassword('token', 'password');
       } catch (err) {
-        expect(err.message.message).toEqual(USER_VALIDATION_ERRORS.TOKEN_NOT_FOUND_ERR);
+        expect(err.message).toEqual(USER_VALIDATION_ERRORS.TOKEN_NOT_FOUND_ERR);
       }
     });
 
@@ -367,7 +367,7 @@ describe('UsersService', () => {
       try {
         await usersService.remove(user._id);
       } catch (err) {
-        expect(err.message.message).toEqual(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
+        expect(err.message).toEqual(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
       }
     });
 

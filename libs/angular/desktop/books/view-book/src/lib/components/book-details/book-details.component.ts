@@ -7,7 +7,7 @@ import { ROLES, User } from '@bookapp/shared';
   selector: 'bookapp-book-details',
   templateUrl: './book-details.component.html',
   styleUrls: ['./book-details.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookDetailsComponent extends BookDetailsBase {
   @Input()

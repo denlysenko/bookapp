@@ -12,7 +12,7 @@ import {
   MockConfigService,
   mockConnection,
   MockModel,
-  user
+  user,
 } from '@bookapp/testing';
 
 import { HttpStatus, INestApplication, NotFoundException } from '@nestjs/common';
@@ -29,11 +29,11 @@ const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
 const validationError = new ValidationError();
 validationError.errors = {
   title: {
-    message: BOOK_VALIDATION_ERRORS.TITLE_REQUIRED_ERR
+    message: BOOK_VALIDATION_ERRORS.TITLE_REQUIRED_ERR,
   },
   author: {
-    message: BOOK_VALIDATION_ERRORS.AUTHOR_REQUIRED_ERR
-  }
+    message: BOOK_VALIDATION_ERRORS.AUTHOR_REQUIRED_ERR,
+  },
 };
 
 describe('BooksModule', () => {
@@ -45,13 +45,13 @@ describe('BooksModule', () => {
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
-          isGlobal: true
+          isGlobal: true,
         }),
         AuthModule,
         GraphqlModule,
         BooksModule,
-        MongooseModule.forRoot('test')
-      ]
+        MongooseModule.forRoot('test'),
+      ],
     })
       .overrideProvider(getConnectionToken())
       .useValue(mockConnection)
@@ -74,7 +74,7 @@ describe('BooksModule', () => {
 
     jest.spyOn(usersService, 'findById').mockResolvedValue({
       ...user,
-      roles: [ROLES.ADMIN]
+      roles: [ROLES.ADMIN],
     } as any);
 
     app = module.createNestApplication();
@@ -93,18 +93,18 @@ describe('BooksModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             books: {
               rows: [
                 {
-                  _id: book._id
-                }
-              ]
-            }
-          }
+                  _id: book._id,
+                },
+              ],
+            },
+          },
         });
     });
 
@@ -119,14 +119,14 @@ describe('BooksModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         });
 
       expect(booksService.findAll).toHaveBeenCalledWith({
         filter: { paid: false, test: /query/i },
         first: null,
         order: null,
-        skip: null
+        skip: null,
       });
     });
 
@@ -141,14 +141,14 @@ describe('BooksModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         });
 
       expect(booksService.findAll).toHaveBeenCalledWith({
         filter: { paid: false },
         first: null,
         order: null,
-        skip: 10
+        skip: 10,
       });
     });
 
@@ -163,14 +163,14 @@ describe('BooksModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         });
 
       expect(booksService.findAll).toHaveBeenCalledWith({
         filter: { paid: false },
         first: 10,
         order: null,
-        skip: null
+        skip: null,
       });
     });
 
@@ -185,35 +185,33 @@ describe('BooksModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         });
 
       expect(booksService.findAll).toHaveBeenCalledWith({
         filter: { paid: false },
         first: null,
         order: { title: 1 },
-        skip: null
+        skip: null,
       });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `query {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `query {
             books(paid: false) {
               rows {
                 _id
               }
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
   });
@@ -230,18 +228,18 @@ describe('BooksModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             bestBooks: {
               rows: [
                 {
-                  _id: book._id
-                }
-              ]
-            }
-          }
+                  _id: book._id,
+                },
+              ],
+            },
+          },
         });
     });
 
@@ -256,14 +254,14 @@ describe('BooksModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         });
 
       expect(booksService.findBestBooks).toHaveBeenCalledWith({
         filter: null,
         first: null,
         order: null,
-        skip: 10
+        skip: 10,
       });
     });
 
@@ -278,35 +276,33 @@ describe('BooksModule', () => {
                 _id
               }
             }
-          }`
+          }`,
         });
 
       expect(booksService.findBestBooks).toHaveBeenCalledWith({
         filter: null,
         first: 10,
         order: null,
-        skip: null
+        skip: null,
       });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `query {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `query {
             bestBooks {
               rows {
                 _id
               }
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
   });
@@ -321,33 +317,31 @@ describe('BooksModule', () => {
             book(slug: "book-title") {
               _id
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             book: {
-              _id: book._id
-            }
-          }
+              _id: book._id,
+            },
+          },
         });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `query {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `query {
             book(slug: "book-title") {
               _id
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
   });
@@ -369,14 +363,14 @@ describe('BooksModule', () => {
             }) {
               _id
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             createBook: {
-              _id: book._id
-            }
-          }
+              _id: book._id,
+            },
+          },
         });
 
       expect(booksService.create).toHaveBeenCalledWith(
@@ -386,7 +380,7 @@ describe('BooksModule', () => {
           description: 'Book description',
           coverUrl: 'uploads/cover.png',
           epubUrl: 'uploads/book.epub',
-          paid: false
+          paid: false,
         },
         user._id
       );
@@ -412,22 +406,20 @@ describe('BooksModule', () => {
             }) {
               _id
             }
-          }`
+          }`,
         });
 
       const [error] = res.body.errors;
 
       expect(error).toEqual({
         title: { message: BOOK_VALIDATION_ERRORS.TITLE_REQUIRED_ERR },
-        author: { message: BOOK_VALIDATION_ERRORS.AUTHOR_REQUIRED_ERR }
+        author: { message: BOOK_VALIDATION_ERRORS.AUTHOR_REQUIRED_ERR },
       });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `mutation {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `mutation {
             createBook(book: {
               title: "Test Book",
               author: "Test Author",
@@ -438,14 +430,14 @@ describe('BooksModule', () => {
             }) {
               _id
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
 
@@ -469,15 +461,15 @@ describe('BooksModule', () => {
             }) {
               _id
             }
-          }`
+          }`,
         });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         error: 'Forbidden',
         message: 'Forbidden resource',
-        statusCode: HttpStatus.FORBIDDEN
+        statusCode: HttpStatus.FORBIDDEN,
       });
     });
   });
@@ -495,21 +487,21 @@ describe('BooksModule', () => {
             }) {
               _id
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             updateBook: {
-              _id: book._id
-            }
-          }
+              _id: book._id,
+            },
+          },
         });
 
       expect(booksService.update).toHaveBeenCalledWith(
         'book_id',
         {
           coverUrl: 'uploads/cover2.png',
-          epubUrl: 'uploads/book2.epub'
+          epubUrl: 'uploads/book2.epub',
         },
         user._id
       );
@@ -531,36 +523,34 @@ describe('BooksModule', () => {
             }) {
               _id
             }
-          }`
+          }`,
         });
 
       const [error] = res.body.errors;
 
       expect(error).toEqual({
         title: { message: BOOK_VALIDATION_ERRORS.TITLE_REQUIRED_ERR },
-        author: { message: BOOK_VALIDATION_ERRORS.AUTHOR_REQUIRED_ERR }
+        author: { message: BOOK_VALIDATION_ERRORS.AUTHOR_REQUIRED_ERR },
       });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `mutation {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `mutation {
             updateBook(id: "book_id", book: {
               coverUrl: "uploads/cover2.png",
               epubUrl: "uploads/book2.epub"
             }) {
               _id
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
 
@@ -580,15 +570,15 @@ describe('BooksModule', () => {
             }) {
               _id
             }
-          }`
+          }`,
         });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         error: 'Forbidden',
         message: 'Forbidden resource',
-        statusCode: HttpStatus.FORBIDDEN
+        statusCode: HttpStatus.FORBIDDEN,
       });
     });
   });
@@ -603,14 +593,14 @@ describe('BooksModule', () => {
             rateBook(id: "book_id", rate: 5) {
               _id
             }
-          }`
+          }`,
         })
         .expect({
           data: {
             rateBook: {
-              _id: book._id
-            }
-          }
+              _id: book._id,
+            },
+          },
         });
     });
 
@@ -629,34 +619,32 @@ describe('BooksModule', () => {
             rateBook(id: "book_id", rate: 5) {
               _id
             }
-          }`
+          }`,
         });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         error: 'Not Found',
         message: BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR,
-        statusCode: HttpStatus.NOT_FOUND
+        statusCode: HttpStatus.NOT_FOUND,
       });
     });
 
     it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/graphql')
-        .send({
-          query: `mutation {
+      const res = await request(app.getHttpServer()).post('/graphql').send({
+        query: `mutation {
             rateBook(id: "book_id", rate: 5) {
               _id
             }
-          }`
-        });
+          }`,
+      });
 
       const [error] = res.body.errors;
 
-      expect(error.message).toEqual({
+      expect(error.extensions.exception.response).toEqual({
         statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Unauthorized'
+        message: 'Unauthorized',
       });
     });
   });

@@ -10,7 +10,7 @@ import { TabView } from 'tns-core-modules/ui/tab-view/tab-view';
   moduleId: module.id,
   selector: 'bookapp-view-book-page',
   templateUrl: './view-book-page.component.html',
-  styleUrls: ['./view-book-page.component.scss']
+  styleUrls: ['./view-book-page.component.scss'],
 })
 export class ViewBookPageComponent extends ViewBookPageBase {
   selectedIndex = 0;

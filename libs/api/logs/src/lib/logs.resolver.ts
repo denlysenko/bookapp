@@ -10,9 +10,9 @@ import {
   Context,
   Parent,
   Query,
-  ResolveProperty,
+  ResolveField,
   Resolver,
-  Subscription
+  Subscription,
 } from '@nestjs/graphql';
 
 import { PubSub } from 'graphql-subscriptions';
@@ -38,13 +38,13 @@ export class LogsResolver {
   }
 
   @Subscription('logCreated', {
-    filter: (payload, variables) => payload.logCreated.userId.equals(variables.userId)
+    filter: (payload, variables) => payload.logCreated.userId.equals(variables.userId),
   })
   logCreated() {
     return this.pubSub.asyncIterator('logCreated');
   }
 
-  @ResolveProperty('book')
+  @ResolveField('book')
   getBook(@Parent() log: Log) {
     const { bookId } = log;
     return this.booksDataLoader.load(bookId);

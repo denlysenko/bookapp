@@ -29,23 +29,23 @@ describe('CommentsService', () => {
         CommentsService,
         {
           provide: ConfigService,
-          useValue: MockConfigService
+          useValue: MockConfigService,
         },
         {
           provide: getModelToken(ModelNames.COMMENT),
-          useValue: MockModel
+          useValue: MockModel,
         },
         {
           provide: LogsService,
-          useValue: MockLogsService
+          useValue: MockLogsService,
         },
         {
           provide: PUB_SUB,
           useValue: {
-            publish: jest.fn()
-          }
-        }
-      ]
+            publish: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     commentsService = module.get<CommentsService>(CommentsService);
@@ -79,7 +79,7 @@ describe('CommentsService', () => {
       expect(logsService.create).toHaveBeenCalledWith({
         action: UserActions.COMMENT_ADDED,
         bookId,
-        userId
+        userId,
       });
     });
 

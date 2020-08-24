@@ -5,7 +5,7 @@ import {
   MockAuthTokensService,
   MockConfigService,
   MockModel,
-  refreshToken
+  refreshToken,
 } from '@bookapp/testing';
 
 import { HttpStatus, INestApplication, UnauthorizedException } from '@nestjs/common';
@@ -23,10 +23,10 @@ describe('AuthTokenModule', () => {
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
-          isGlobal: true
+          isGlobal: true,
         }),
-        AuthTokensModule
-      ]
+        AuthTokensModule,
+      ],
     })
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
@@ -68,7 +68,7 @@ describe('AuthTokenModule', () => {
         .expect({
           statusCode: HttpStatus.UNAUTHORIZED,
           error: 'Unauthorized',
-          message: AUTH_ERRORS.UNAUTHORIZED_ERR
+          message: AUTH_ERRORS.UNAUTHORIZED_ERR,
         });
     });
   });

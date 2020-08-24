@@ -40,7 +40,7 @@ export class LogsService {
 
     return {
       count,
-      rows
+      rows,
     };
   }
 }

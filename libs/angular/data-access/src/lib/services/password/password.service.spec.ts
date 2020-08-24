@@ -24,19 +24,19 @@ describe('PasswordService', () => {
         PasswordService,
         {
           provide: StoragePlatformService,
-          useValue: MockStoragePlatformService
+          useValue: MockStoragePlatformService,
         },
         {
           provide: StoreService,
-          useValue: MockStoreService
-        }
-      ]
+          useValue: MockStoreService,
+        },
+      ],
     });
 
-    controller = TestBed.get(ApolloTestingController);
-    service = TestBed.get(PasswordService);
-    storageService = TestBed.get(StoragePlatformService);
-    storeService = TestBed.get(StoreService);
+    controller = TestBed.inject(ApolloTestingController);
+    service = TestBed.inject(PasswordService);
+    storageService = TestBed.inject(StoragePlatformService);
+    storeService = TestBed.inject(StoreService);
   });
 
   afterEach(() => {
@@ -48,7 +48,7 @@ describe('PasswordService', () => {
   });
 
   describe('changePassword()', () => {
-    it('should change password', done => {
+    it('should change password', (done) => {
       service.changePassword(newPassword, oldPassword).subscribe(({ data: { changePassword } }) => {
         expect(changePassword).toEqual(authPayload);
         done();
@@ -61,8 +61,8 @@ describe('PasswordService', () => {
 
       op.flush({
         data: {
-          changePassword: authPayload
-        }
+          changePassword: authPayload,
+        },
       });
 
       controller.verify();
@@ -75,8 +75,8 @@ describe('PasswordService', () => {
 
       op.flush({
         data: {
-          changePassword: authPayload
-        }
+          changePassword: authPayload,
+        },
       });
 
       expect(storageService.setItem).toHaveBeenCalledWith(AUTH_TOKEN, authPayload.refreshToken);

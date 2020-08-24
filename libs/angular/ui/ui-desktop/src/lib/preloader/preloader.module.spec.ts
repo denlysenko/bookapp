@@ -4,7 +4,7 @@ import { PreloaderModule } from './preloader.module';
 describe('PreloaderModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [PreloaderModule]
+      imports: [PreloaderModule],
     }).compileComponents();
   }));
 

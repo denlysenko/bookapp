@@ -28,17 +28,17 @@ describe('PasswordPageComponent', () => {
           useValue: {
             changePassword: jest
               .fn()
-              .mockImplementation(() => of({ data: { changePassword: true } }))
-          }
+              .mockImplementation(() => of({ data: { changePassword: true } })),
+          },
         },
         {
           provide: FeedbackPlatformService,
-          useValue: MockFeedbackPlatformService
-        }
-      ]
+          useValue: MockFeedbackPlatformService,
+        },
+      ],
     }).compileComponents();
 
-    passwordService = TestBed.get(PasswordService);
+    passwordService = TestBed.inject(PasswordService);
   }));
 
   beforeEach(() => {
@@ -57,7 +57,7 @@ describe('PasswordPageComponent', () => {
       expect(passwordService.changePassword).toHaveBeenCalledWith(password, oldPassword);
     });
 
-    it('should propagate error', done => {
+    it('should propagate error', (done) => {
       const error: any = { message: 'Error' };
 
       jest
@@ -66,14 +66,14 @@ describe('PasswordPageComponent', () => {
 
       let result: any;
 
-      component.error$.subscribe(err => {
+      component.error$.subscribe((err) => {
         result = err;
         done();
       });
 
       component.changePassword({
         oldPassword,
-        password
+        password,
       });
 
       expect(result).toEqual(error);

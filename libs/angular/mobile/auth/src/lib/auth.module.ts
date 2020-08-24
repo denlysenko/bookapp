@@ -19,8 +19,8 @@ import { AuthPageComponent } from './containers/auth-page/auth-page.component';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthErrorInterceptor,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class AuthModule {}

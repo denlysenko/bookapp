@@ -16,9 +16,9 @@ import { ViewBookRoutingModule } from './view-book-routing.module';
     NativeScriptCommonModule,
     NativeScriptFormsModule,
     ViewBookRoutingModule,
-    NgShadowModule
+    NgShadowModule,
   ],
   declarations: [ViewBookPageComponent, BookDetailsComponent, BookCommentsComponent],
-  schemas: [NO_ERRORS_SCHEMA]
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class ViewBookModule {}

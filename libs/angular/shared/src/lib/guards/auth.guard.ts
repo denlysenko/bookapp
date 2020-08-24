@@ -8,7 +8,7 @@ import {
   Environment,
   RouterExtensions,
   StoragePlatformService,
-  StoreService
+  StoreService,
 } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
 import { AuthPayload, REFRESH_TOKEN_HEADER } from '@bookapp/shared';
@@ -47,10 +47,10 @@ export class AuthGuard implements CanActivate, CanLoad {
     if (!accessToken && refreshToken) {
       return this.http
         .post<AuthPayload>(this.environment.refreshTokenUrl, null, {
-          headers: new HttpHeaders().set(REFRESH_TOKEN_HEADER, refreshToken)
+          headers: new HttpHeaders().set(REFRESH_TOKEN_HEADER, refreshToken),
         })
         .pipe(
-          tap(payload => {
+          tap((payload) => {
             this.storeService.set(AUTH_TOKEN, payload.accessToken);
             this.storagePlatformService.setItem(AUTH_TOKEN, payload.refreshToken);
           }),
@@ -65,8 +65,8 @@ export class AuthGuard implements CanActivate, CanLoad {
       transition: {
         name: 'flip',
         duration: 300,
-        curve: 'linear'
-      }
+        curve: 'linear',
+      },
     });
 
     return false;

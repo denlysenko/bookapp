@@ -6,7 +6,7 @@ import { Book } from '@bookapp/shared';
   selector: 'bookapp-books-list',
   templateUrl: './books-list.component.html',
   styleUrls: ['./books-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BooksListComponent {
   @Input() books: Book[];

@@ -7,7 +7,7 @@ import { AuthService } from '@bookapp/angular/data-access';
 @Component({
   selector: 'bookapp-auth-page',
   templateUrl: './auth-page.component.html',
-  styleUrls: ['./auth-page.component.scss']
+  styleUrls: ['./auth-page.component.scss'],
 })
 export class AuthPageComponent extends AuthPageBase {
   constructor(authService: AuthService, routerExtensions: RouterExtensions) {

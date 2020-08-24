@@ -16,8 +16,8 @@ import { BooksFilterComponent } from './books-filter.component';
     MatButtonToggleModule,
     MatFormFieldModule,
     MatIconModule,
-    MatInputModule
+    MatInputModule,
   ],
-  exports: [BooksFilterComponent]
+  exports: [BooksFilterComponent],
 })
 export class BooksFilterModule {}

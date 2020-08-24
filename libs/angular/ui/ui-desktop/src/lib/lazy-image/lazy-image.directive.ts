@@ -2,11 +2,11 @@ import { AfterViewInit, Directive, ElementRef, Input, Renderer2 } from '@angular
 
 const OPTIONS = {
   threshold: 0.25,
-  rootMargin: '0px 0px 100px 0px'
+  rootMargin: '0px 0px 100px 0px',
 };
 
 @Directive({
-  selector: '[bookappLazyImage]'
+  selector: '[bookappLazyImage]',
 })
 export class LazyImageDirective implements AfterViewInit {
   @Input() bookappLazyImage = '';
@@ -16,14 +16,14 @@ export class LazyImageDirective implements AfterViewInit {
   constructor(private readonly renderer: Renderer2, private readonly elem: ElementRef) {}
 
   ngAfterViewInit() {
-    this._intersectionObserver = new IntersectionObserver(entries => {
+    this._intersectionObserver = new IntersectionObserver((entries) => {
       this.checkForIntersection(entries);
     }, OPTIONS);
     this._intersectionObserver.observe(this.elem.nativeElement);
   }
 
   private checkForIntersection(entries: IntersectionObserverEntry[]) {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (this.checkIfIntersecting(entry)) {
         this.renderer.setProperty(this.elem.nativeElement, 'src', this.bookappLazyImage);
         this._intersectionObserver.unobserve(this.elem.nativeElement);

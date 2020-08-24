@@ -22,10 +22,7 @@ describe('History Page', () => {
   });
 
   it('should order by createdAt', () => {
-    cy.get('.mat-row')
-      .first()
-      .as('firstRow')
-      .should('contain', '14.10.2019');
+    cy.get('.mat-row').first().as('firstRow').should('contain', '14.10.2019');
 
     cy.get('.mat-header-cell.mat-column-createdAt').click();
 
@@ -33,10 +30,7 @@ describe('History Page', () => {
   });
 
   it('should redirect to book page', () => {
-    cy.get('.mat-row')
-      .first()
-      .find('a')
-      .click();
+    cy.get('.mat-row').first().find('a').click();
 
     cy.url().should('include', 'pride-and-prejudice');
   });

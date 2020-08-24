@@ -9,12 +9,12 @@ import { PasswordForm } from '@bookapp/shared';
   selector: 'bookapp-password-form',
   templateUrl: './password-form.component.html',
   styleUrls: ['./password-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordFormComponent extends BaseForm {
   form = this.fb.group({
     password: [null, Validators.required],
-    oldPassword: [null, Validators.required]
+    oldPassword: [null, Validators.required],
   });
 
   @Input() loading: boolean;

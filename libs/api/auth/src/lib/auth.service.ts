@@ -25,7 +25,7 @@ export class AuthService {
 
     return {
       accessToken: this.authTokensService.createAccessToken(user._id),
-      refreshToken: await this.authTokensService.createRefreshToken(user._id)
+      refreshToken: await this.authTokensService.createRefreshToken(user._id),
     };
   }
 
@@ -34,7 +34,7 @@ export class AuthService {
 
     return {
       accessToken: this.authTokensService.createAccessToken(newUser._id),
-      refreshToken: await this.authTokensService.createRefreshToken(newUser._id)
+      refreshToken: await this.authTokensService.createRefreshToken(newUser._id),
     };
   }
 
