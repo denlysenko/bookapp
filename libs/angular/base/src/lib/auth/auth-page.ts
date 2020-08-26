@@ -1,5 +1,5 @@
 import { RouterExtensions } from '@bookapp/angular/core';
-import { AuthService } from '@bookapp/angular/data-access';
+import { AuthFacade } from '@bookapp/angular/data-access';
 import { SignupCredentials } from '@bookapp/shared';
 
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -10,7 +10,7 @@ export abstract class AuthPageBase {
   private loading = new BehaviorSubject<boolean>(false);
 
   constructor(
-    private readonly authService: AuthService,
+    private readonly authFacade: AuthFacade,
     private readonly routerExtensions: RouterExtensions
   ) {}
 
@@ -28,7 +28,7 @@ export abstract class AuthPageBase {
 
   private login(email: string, password: string) {
     this.loading.next(true);
-    this.authService
+    this.authFacade
       .login(email, password)
       .pipe(
         finalize(() => {
@@ -40,7 +40,7 @@ export abstract class AuthPageBase {
 
   private signup(credentials: SignupCredentials) {
     this.loading.next(true);
-    this.authService
+    this.authFacade
       .signup(credentials)
       .pipe(
         finalize(() => {

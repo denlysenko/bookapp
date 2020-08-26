@@ -1,7 +1,6 @@
 import { Directive, OnDestroy } from '@angular/core';
 
-import { AuthService, LogsService } from '@bookapp/angular/data-access';
-import { LOG_CREATED_SUBSCRIPTION } from '@bookapp/shared';
+import { AuthFacade, LogsService } from '@bookapp/angular/data-access';
 
 import { map, tap } from 'rxjs/operators';
 
@@ -9,30 +8,25 @@ import { BaseComponent } from '../core/base-component';
 
 @Directive()
 export abstract class MainLayoutBase extends BaseComponent implements OnDestroy {
-  user$ = this.authService.me().valueChanges.pipe(
+  user$ = this.authFacade.watchMe().pipe(
     map(({ data }) => data.me),
     tap((user) => {
       if (!this.unsubscribeFromNewLogs) {
-        this.subscribeToNewLogs(user._id);
+        this.unsubscribeFromNewLogs = this.logsService.subscribeToNewLogs(user._id);
       }
     })
   );
 
-  logsQueryRef = this.logsService.getLastLogs();
-
-  logs$ = this.logsQueryRef.valueChanges.pipe(map(({ data }) => data.logs.rows));
+  logs$ = this.logsService.getLastLogs();
 
   private unsubscribeFromNewLogs: () => void | null = null;
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly logsService: LogsService
-  ) {
+  constructor(private readonly authFacade: AuthFacade, private readonly logsService: LogsService) {
     super();
   }
 
   logout() {
-    this.authService.logout().subscribe();
+    this.authFacade.logout().subscribe();
   }
 
   ngOnDestroy() {
@@ -42,31 +36,5 @@ export abstract class MainLayoutBase extends BaseComponent implements OnDestroy 
     }
 
     super.ngOnDestroy();
-  }
-
-  private subscribeToNewLogs(userId: string) {
-    this.unsubscribeFromNewLogs = this.logsQueryRef.subscribeToMore({
-      document: LOG_CREATED_SUBSCRIPTION,
-      variables: { userId },
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev;
-        }
-
-        const newLogs = [subscriptionData.data.logCreated, ...prev.logs.rows];
-
-        if (newLogs.length > 3) {
-          newLogs.pop();
-        }
-
-        return {
-          logs: {
-            rows: newLogs,
-            count: prev.logs.count,
-            __typename: 'LogsResponse',
-          },
-        };
-      },
-    });
   }
 }

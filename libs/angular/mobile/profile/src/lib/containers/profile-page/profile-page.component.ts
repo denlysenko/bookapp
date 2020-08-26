@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { ProfilePageBase } from '@bookapp/angular/base';
 import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { AuthService, ProfileService } from '@bookapp/angular/data-access';
+import { AuthFacade, ProfileService } from '@bookapp/angular/data-access';
 
 @Component({
   selector: 'bookapp-profile-page',
@@ -12,9 +12,9 @@ import { AuthService, ProfileService } from '@bookapp/angular/data-access';
 export class ProfilePageComponent extends ProfilePageBase {
   constructor(
     profileService: ProfileService,
-    authService: AuthService,
+    authFacade: AuthFacade,
     feedbackService: FeedbackPlatformService
   ) {
-    super(profileService, authService, feedbackService);
+    super(profileService, authFacade, feedbackService);
   }
 }

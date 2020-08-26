@@ -2,7 +2,8 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 
 import { MainLayoutBase } from '@bookapp/angular/base';
-import { AuthService, LogsService } from '@bookapp/angular/data-access';
+import { RouterExtensions } from '@bookapp/angular/core';
+import { AuthFacade, LogsService } from '@bookapp/angular/data-access';
 
 @Component({
   selector: 'bookapp-main-layout',
@@ -17,10 +18,10 @@ export class MainLayoutComponent extends MainLayoutBase implements OnDestroy {
   constructor(
     private readonly cdr: ChangeDetectorRef,
     private readonly media: MediaMatcher,
-    authService: AuthService,
+    authFacade: AuthFacade,
     logsService: LogsService
   ) {
-    super(authService, logsService);
+    super(authFacade, logsService);
     this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
     this.mobileQueryListener = () => this.cdr.detectChanges();
     // tslint:disable-next-line: deprecation

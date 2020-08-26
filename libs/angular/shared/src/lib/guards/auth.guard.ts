@@ -10,19 +10,20 @@ import {
   StoragePlatformService,
   StoreService,
 } from '@bookapp/angular/core';
-import { AuthService } from '@bookapp/angular/data-access';
+import { AuthFacade } from '@bookapp/angular/data-access';
 import { AuthPayload, REFRESH_TOKEN_HEADER } from '@bookapp/shared';
 
 import { isNil } from 'lodash';
+
 import { Observable, of } from 'rxjs';
-import { catchError, filter, mapTo, switchMapTo, take, tap } from 'rxjs/operators';
+import { catchError, filter, map, mapTo, switchMapTo, take, tap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad {
   constructor(
     private readonly storeService: StoreService,
     private readonly storagePlatformService: StoragePlatformService,
-    private readonly authService: AuthService,
+    private readonly authFacade: AuthFacade,
     private readonly routerExtensions: RouterExtensions,
     private readonly http: HttpClient,
     @Inject(Environment) private readonly environment: EnvConfig
@@ -73,8 +74,9 @@ export class AuthGuard implements CanActivate, CanLoad {
   }
 
   private waitForUser() {
-    return this.authService.me().valueChanges.pipe(
-      filter(({ data }) => !isNil(data) && !isNil(data.me)),
+    return this.authFacade.me().pipe(
+      map(({ data }) => data.me),
+      filter((user) => !isNil(user)),
       mapTo(true),
       take(1)
     );

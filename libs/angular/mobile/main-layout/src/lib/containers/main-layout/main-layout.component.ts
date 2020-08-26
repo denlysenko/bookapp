@@ -3,7 +3,7 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { MainLayoutBase } from '@bookapp/angular/base';
-import { AuthService, LogsService } from '@bookapp/angular/data-access';
+import { AuthFacade, LogsService } from '@bookapp/angular/data-access';
 
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent, SideDrawerType } from 'nativescript-ui-sidedrawer/angular';
@@ -35,12 +35,12 @@ export class MainLayoutComponent extends MainLayoutBase implements AfterViewInit
   private drawer: SideDrawerType;
 
   constructor(
-    authService: AuthService,
+    authFacade: AuthFacade,
     logsService: LogsService,
     private readonly router: Router,
     private readonly page: Page
   ) {
-    super(authService, logsService);
+    super(authFacade, logsService);
     this.page.actionBarHidden = true;
     this._sideDrawerTransition = new SlideInOnTopTransition();
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe((e) => {

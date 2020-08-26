@@ -15,7 +15,7 @@ import {
   StoragePlatformService,
   StoreService,
 } from '@bookapp/angular/core';
-import { AuthService } from '@bookapp/angular/data-access';
+import { AuthFacade } from '@bookapp/angular/data-access';
 import { AuthPayload, REFRESH_TOKEN_HEADER } from '@bookapp/shared';
 
 import { HttpLink } from 'apollo-angular/http';
@@ -119,10 +119,10 @@ export function createApolloFactory(
         error.extensions.exception.response &&
         error.extensions.exception.response.statusCode === HTTP_STATUS.UNAUTHORIZED
       ) {
-        const authService = injector.get(AuthService);
+        const authFacade = injector.get(AuthFacade);
 
         feedbackService.error(error.extensions.exception.response.error); // check and replace on response.message
-        authService.logout().subscribe();
+        authFacade.logout().subscribe();
         return;
       }
 

@@ -2,7 +2,11 @@ import { NgModule } from '@angular/core';
 
 import { EditBookResolver } from './resolvers/edit-book.resolver';
 import { ReadBookResolver } from './resolvers/read-book.resolver';
-import { AuthService } from './services/auth/auth.service';
+import { AuthFacade } from './services/auth/auth.facade';
+import { LoginMutation } from './services/auth/LoginMutation';
+import { LogoutMutation } from './services/auth/LogoutMutation';
+import { MeQuery } from './services/auth/MeQuery';
+import { SignupMutation } from './services/auth/SignupMutation';
 import { BookmarksService } from './services/bookmarks/bookmarks.service';
 import { BooksService } from './services/books/books.service';
 import { LogsService } from './services/logs/logs.service';
@@ -11,7 +15,11 @@ import { ProfileService } from './services/profile/profile.service';
 
 @NgModule({
   providers: [
-    AuthService,
+    LoginMutation,
+    SignupMutation,
+    LogoutMutation,
+    MeQuery,
+    AuthFacade,
     PasswordService,
     ProfileService,
     BooksService,
