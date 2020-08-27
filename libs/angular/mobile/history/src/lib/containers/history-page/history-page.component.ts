@@ -1,8 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 
 import { HistoryPageBase } from '@bookapp/angular/base';
-import { DEFAULT_LIMIT } from '@bookapp/angular/core';
+import { DEFAULT_LIMIT, StoreService } from '@bookapp/angular/core';
 import { LogsService } from '@bookapp/angular/data-access';
+import { LogsFilter } from '@bookapp/shared';
 
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 
@@ -16,6 +17,8 @@ import { HistoryListComponent } from '../../components/history-list/history-list
   selector: 'bookapp-history-page',
   templateUrl: './history-page.component.html',
   styleUrls: ['./history-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [LogsService],
 })
 export class HistoryPageComponent extends HistoryPageBase {
   @ViewChild(HistoryListComponent, { static: false })
@@ -23,8 +26,8 @@ export class HistoryPageComponent extends HistoryPageBase {
 
   private skip = 0;
 
-  constructor(logsService: LogsService) {
-    super(logsService);
+  constructor(logsService: LogsService, storeService: StoreService) {
+    super(logsService, storeService);
   }
 
   onDrawerButtonTap() {
@@ -56,35 +59,28 @@ export class HistoryPageComponent extends HistoryPageBase {
     if (this.hasMoreItems) {
       this.skip += DEFAULT_LIMIT;
 
-      this.logsQueryRef.fetchMore({
-        variables: {
-          skip: this.skip,
-        },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult) {
-            return previousResult;
-          }
-
-          const { rows, count } = fetchMoreResult.logs;
-
-          return {
-            logs: {
-              count,
-              rows: [...previousResult.logs.rows, ...rows],
-              __typename: 'LogsResponse',
-            },
-          };
-        },
+      this.filter.next({
+        ...this.filter.getValue(),
+        skip: this.skip,
       });
+
+      this.logsService.loadMore(this.skip);
     }
   }
 
   private sort(direction: string) {
     this.skip = 0;
-    this.logsQueryRef.refetch({
-      skip: this.skip,
-      orderBy: `createdAt_${direction}`,
+
+    const skip = this.skip;
+    const orderBy = `createdAt_${direction}` as LogsFilter['orderBy'];
+
+    this.filter.next({
+      ...this.filter.getValue(),
+      skip,
+      orderBy,
     });
+
+    this.logsService.refetch({ skip, orderBy });
     this.historyListView.scrollToIndex(0);
   }
 }

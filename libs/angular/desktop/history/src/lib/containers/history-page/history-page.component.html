@@ -4,6 +4,8 @@
 </mat-toolbar>
 <div class="view-content">
   <bookapp-history-list
+    [sorting]="sorting$ | async"
+    [pagination]="pagination$ | async"
     [logs]="logs$ | async"
     [totalCount]="count$ | async"
     (sortChanged)="sort($event)"

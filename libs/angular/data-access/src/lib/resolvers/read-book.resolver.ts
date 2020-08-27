@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import { AuthFacade } from '../services/auth/auth.facade';
+import { AuthService } from '../services/auth/auth.service';
 import { BooksService } from '../services/books/books.service';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class ReadBookResolver
   implements Resolve<{ epubUrl: string; bookmark: string; userId: string }> {
   constructor(
     private readonly booksService: BooksService,
-    private readonly authFacade: AuthFacade
+    private readonly authService: AuthService
   ) {}
 
   resolve(route: ActivatedRouteSnapshot) {
@@ -21,7 +21,7 @@ export class ReadBookResolver
     if (slug) {
       return combineLatest([
         this.booksService.getBook(slug).valueChanges,
-        this.authFacade.me().pipe(map(({ data }) => data.me)),
+        this.authService.fetchMe().pipe(map(({ data }) => data.me)),
       ]).pipe(
         map(([book, user]) => ({
           epubUrl: book.data.book.epubUrl,
@@ -32,7 +32,7 @@ export class ReadBookResolver
       );
     }
 
-    return this.authFacade.me().pipe(
+    return this.authService.fetchMe().pipe(
       map(({ data }) => data.me),
       map((user) => ({
         epubUrl: user.reading.epubUrl,

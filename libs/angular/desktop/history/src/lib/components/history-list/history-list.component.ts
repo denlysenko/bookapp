@@ -3,7 +3,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
-import { Log, UserActionsDesc } from '@bookapp/shared';
+import { Log, Pagination, Sorting, UserActionsDesc } from '@bookapp/shared';
 
 @Component({
   selector: 'bookapp-history-list',
@@ -15,10 +15,12 @@ export class HistoryListComponent {
   readonly displayedColumns = ['createdAt', 'action', 'book'];
   readonly defaultLimit = DEFAULT_LIMIT;
   readonly actions = UserActionsDesc;
-  readonly sorting = {
-    active: 'createdAt',
-    direction: 'desc',
-  };
+
+  @Input()
+  sorting: Sorting;
+
+  @Input()
+  pagination: Pagination;
 
   @Input()
   logs: Log[];

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route } from '@angular/router';
 
 import { RouterExtensions } from '@bookapp/angular/core';
-import { AuthFacade } from '@bookapp/angular/data-access';
+import { AuthService } from '@bookapp/angular/data-access';
 
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { map, take } from 'rxjs/operators';
 @Injectable()
 export class RolesGuard implements CanActivate, CanLoad {
   constructor(
-    private readonly authFacade: AuthFacade,
+    private readonly authService: AuthService,
     private readonly routerExtensions: RouterExtensions
   ) {}
 
@@ -23,7 +23,7 @@ export class RolesGuard implements CanActivate, CanLoad {
   }
 
   private hasRoles(roles: string[]): Observable<boolean> {
-    return this.authFacade.me().pipe(
+    return this.authService.fetchMe().pipe(
       map(({ data }) => data.me),
       map((user) => {
         if (!user.roles.some((role) => roles.includes(role))) {

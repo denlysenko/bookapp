@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const LOGS_QUERY = gql`
-  query($skip: Int, $first: Int, $orderBy: LogOrderByInput) {
+  query logs($skip: Int, $first: Int, $orderBy: LogOrderByInput) {
     logs(skip: $skip, first: $first, orderBy: $orderBy) {
       count
       rows {
@@ -20,7 +20,7 @@ export const LOGS_QUERY = gql`
 `;
 
 export const LAST_LOGS_QUERY = gql`
-  query {
+  query lastLogs {
     logs(skip: 0, first: 3, orderBy: createdAt_desc) {
       rows {
         action

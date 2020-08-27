@@ -43,7 +43,8 @@
 
     <mat-paginator
       [length]="totalCount"
-      [pageSize]="defaultLimit"
+      [pageIndex]="pagination.skip / pagination.first"
+      [pageSize]="pagination.first"
       [pageSizeOptions]="[10, 20, 50, 100]"
       (page)="pageChanged.emit($event)"
     >

@@ -11,12 +11,13 @@ import {
   LOGIN_MUTATION,
   LOGOUT_MUTATION,
   ME_QUERY,
-  SIGNUP_MUTATION,
   SignupCredentials,
+  SIGNUP_MUTATION,
   User,
 } from '@bookapp/shared';
 
 import { Apollo } from 'apollo-angular';
+
 import { tap } from 'rxjs/operators';
 
 @Injectable()
@@ -40,9 +41,7 @@ export class AuthService {
       .pipe(
         tap(({ data }) => {
           if (data) {
-            const {
-              login: { accessToken, refreshToken },
-            } = data;
+            const { accessToken, refreshToken } = data.login;
             this.storagePlatformService.setItem(AUTH_TOKEN, refreshToken);
             this.storeService.set(AUTH_TOKEN, accessToken);
           }
@@ -61,9 +60,7 @@ export class AuthService {
       .pipe(
         tap(({ data }) => {
           if (data) {
-            const {
-              signup: { accessToken, refreshToken },
-            } = data;
+            const { accessToken, refreshToken } = data.signup;
             this.storagePlatformService.setItem(AUTH_TOKEN, refreshToken);
             this.storeService.set(AUTH_TOKEN, accessToken);
           }
@@ -71,8 +68,14 @@ export class AuthService {
       );
   }
 
-  me() {
+  watchMe() {
     return this.apollo.watchQuery<{ me: User }>({
+      query: ME_QUERY,
+    }).valueChanges;
+  }
+
+  fetchMe() {
+    return this.apollo.query<{ me: User }>({
       query: ME_QUERY,
     });
   }

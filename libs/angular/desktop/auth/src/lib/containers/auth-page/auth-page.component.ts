@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { AuthPageBase } from '@bookapp/angular/base';
 import { RouterExtensions } from '@bookapp/angular/core';
-import { AuthFacade } from '@bookapp/angular/data-access';
+import { AuthService } from '@bookapp/angular/data-access';
 
 @Component({
   selector: 'bookapp-auth-page',
@@ -10,7 +10,7 @@ import { AuthFacade } from '@bookapp/angular/data-access';
   styleUrls: ['./auth-page.component.scss'],
 })
 export class AuthPageComponent extends AuthPageBase {
-  constructor(authFacade: AuthFacade, routerExtensions: RouterExtensions) {
-    super(authFacade, routerExtensions);
+  constructor(authService: AuthService, routerExtensions: RouterExtensions) {
+    super(authService, routerExtensions);
   }
 }

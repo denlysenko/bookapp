@@ -1,9 +1,9 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { MainLayoutBase } from '@bookapp/angular/base';
-import { AuthFacade, LogsService } from '@bookapp/angular/data-access';
+import { AuthService, LogsService } from '@bookapp/angular/data-access';
 
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent, SideDrawerType } from 'nativescript-ui-sidedrawer/angular';
@@ -17,6 +17,8 @@ import { Page } from 'tns-core-modules/ui/page';
   selector: 'bookapp-main-layout',
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [LogsService],
   animations: [
     trigger('state', [
       state('in', style({ opacity: 1, transform: 'translateY(0)' })),
@@ -35,12 +37,12 @@ export class MainLayoutComponent extends MainLayoutBase implements AfterViewInit
   private drawer: SideDrawerType;
 
   constructor(
-    authFacade: AuthFacade,
+    authService: AuthService,
     logsService: LogsService,
     private readonly router: Router,
     private readonly page: Page
   ) {
-    super(authFacade, logsService);
+    super(authService, logsService);
     this.page.actionBarHidden = true;
     this._sideDrawerTransition = new SlideInOnTopTransition();
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe((e) => {

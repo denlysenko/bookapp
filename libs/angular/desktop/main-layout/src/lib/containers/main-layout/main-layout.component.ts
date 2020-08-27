@@ -1,14 +1,15 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 
 import { MainLayoutBase } from '@bookapp/angular/base';
-import { RouterExtensions } from '@bookapp/angular/core';
-import { AuthFacade, LogsService } from '@bookapp/angular/data-access';
+import { AuthService, LogsService } from '@bookapp/angular/data-access';
 
 @Component({
   selector: 'bookapp-main-layout',
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [LogsService],
 })
 export class MainLayoutComponent extends MainLayoutBase implements OnDestroy {
   mobileQuery: MediaQueryList;
@@ -18,10 +19,10 @@ export class MainLayoutComponent extends MainLayoutBase implements OnDestroy {
   constructor(
     private readonly cdr: ChangeDetectorRef,
     private readonly media: MediaMatcher,
-    authFacade: AuthFacade,
+    authService: AuthService,
     logsService: LogsService
   ) {
-    super(authFacade, logsService);
+    super(authService, logsService);
     this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
     this.mobileQueryListener = () => this.cdr.detectChanges();
     // tslint:disable-next-line: deprecation

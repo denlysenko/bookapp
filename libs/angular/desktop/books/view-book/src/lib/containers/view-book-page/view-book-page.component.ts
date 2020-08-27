@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ViewBookPageBase } from '@bookapp/angular/base';
-import { AuthFacade, BookmarksService, BooksService } from '@bookapp/angular/data-access';
+import { AuthService, BookmarksService, BooksService } from '@bookapp/angular/data-access';
 
 import { map } from 'rxjs/operators';
 
@@ -12,13 +12,13 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./view-book-page.component.scss'],
 })
 export class ViewBookPageComponent extends ViewBookPageBase {
-  user$ = this.authFacade.me().pipe(map(({ data }) => data.me));
+  user$ = this.authService.fetchMe().pipe(map(({ data }) => data.me));
 
   constructor(
     route: ActivatedRoute,
     booksService: BooksService,
     bookmarksService: BookmarksService,
-    private readonly authFacade: AuthFacade
+    private readonly authService: AuthService
   ) {
     super(route, booksService, bookmarksService);
   }

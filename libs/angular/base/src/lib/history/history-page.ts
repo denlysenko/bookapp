@@ -1,34 +1,76 @@
+import { DEFAULT_LIMIT, StoreService } from '@bookapp/angular/core';
 import { LogsService } from '@bookapp/angular/data-access';
-import { Log } from '@bookapp/shared';
+import { Log, LogsFilter } from '@bookapp/shared';
 
-import { Observable } from 'rxjs';
-import { filter, map, pluck, tap } from 'rxjs/operators';
+import { isNil } from 'lodash';
+
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter, map, shareReplay, startWith, take, tap } from 'rxjs/operators';
+
+const FILTER_KEY = 'HISTORY';
 
 export abstract class HistoryPageBase {
-  readonly logsQueryRef = this.logsService.getLogs();
   hasMoreItems = false;
 
-  logs$: Observable<Log[]> = this.logsQueryRef.valueChanges.pipe(
-    filter(({ loading }) => !loading),
-    tap(
-      ({
-        data: {
-          logs: { rows, count },
-        },
-      }) => {
-        this.hasMoreItems = rows.length !== count;
+  readonly filter = new BehaviorSubject<LogsFilter>(this.storeService.get(FILTER_KEY));
+
+  readonly sorting$ = this.filter.asObservable().pipe(
+    map((logsFilter) => {
+      if (!isNil(logsFilter) && !isNil(logsFilter.orderBy)) {
+        const [active, direction] = logsFilter.orderBy.split('_');
+
+        return {
+          active,
+          direction,
+        };
       }
-    ),
+
+      return {
+        active: 'createdAt',
+        direction: 'desc',
+      };
+    }),
+    take(1)
+  );
+
+  readonly pagination$ = this.filter.asObservable().pipe(
+    map((logsFilter) => {
+      if (!isNil(logsFilter)) {
+        return {
+          skip: logsFilter.skip || 0,
+          first: logsFilter.first || DEFAULT_LIMIT,
+        };
+      }
+
+      return {
+        skip: 0,
+        first: DEFAULT_LIMIT,
+      };
+    }),
+    take(1)
+  );
+
+  readonly source$ = this.logsService
+    .watchAllLogs(this.filter.getValue())
+    .pipe(shareReplay({ bufferSize: 1, refCount: true }));
+
+  readonly logs$: Observable<Log[]> = this.source$.pipe(
+    filter(({ data }) => !!data.logs),
+    tap(({ data }) => {
+      const { rows, count } = data.logs;
+      this.hasMoreItems = rows.length !== count;
+    }),
     map(({ data }) => data.logs.rows)
   );
 
-  count$: Observable<number> = this.logsQueryRef.valueChanges.pipe(
-    filter(({ loading }) => !loading),
+  readonly count$: Observable<number> = this.source$.pipe(
+    filter(({ data }) => !!data.logs),
     map(({ data }) => data.logs.count)
   );
 
-  loading$: Observable<boolean> = this.logsQueryRef.valueChanges.pipe(
-    pluck('loading'),
+  readonly loading$: Observable<boolean> = this.source$.pipe(
+    startWith({ loading: true }),
+    map(({ loading }) => loading),
     tap((loading) => {
       this.pending = loading;
     })
@@ -36,5 +78,12 @@ export abstract class HistoryPageBase {
 
   protected pending = false;
 
-  constructor(private readonly logsService: LogsService) {}
+  constructor(
+    protected readonly logsService: LogsService,
+    private readonly storeService: StoreService
+  ) {}
+
+  protected updateFilterInStore() {
+    this.storeService.set(FILTER_KEY, this.filter.getValue());
+  }
 }

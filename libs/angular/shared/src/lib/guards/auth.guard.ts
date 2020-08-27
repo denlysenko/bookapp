@@ -10,7 +10,7 @@ import {
   StoragePlatformService,
   StoreService,
 } from '@bookapp/angular/core';
-import { AuthFacade } from '@bookapp/angular/data-access';
+import { AuthService } from '@bookapp/angular/data-access';
 import { AuthPayload, REFRESH_TOKEN_HEADER } from '@bookapp/shared';
 
 import { isNil } from 'lodash';
@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate, CanLoad {
   constructor(
     private readonly storeService: StoreService,
     private readonly storagePlatformService: StoragePlatformService,
-    private readonly authFacade: AuthFacade,
+    private readonly authService: AuthService,
     private readonly routerExtensions: RouterExtensions,
     private readonly http: HttpClient,
     @Inject(Environment) private readonly environment: EnvConfig
@@ -74,7 +74,7 @@ export class AuthGuard implements CanActivate, CanLoad {
   }
 
   private waitForUser() {
-    return this.authFacade.me().pipe(
+    return this.authService.fetchMe().pipe(
       map(({ data }) => data.me),
       filter((user) => !isNil(user)),
       mapTo(true),
