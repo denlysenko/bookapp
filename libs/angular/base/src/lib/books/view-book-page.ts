@@ -4,7 +4,7 @@ import { BookmarksService, BooksService } from '@bookapp/angular/data-access';
 import { Book, BOOK_QUERY, BookmarkEvent } from '@bookapp/shared';
 
 import { BehaviorSubject, Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize, map, filter } from 'rxjs/operators';
 
 export abstract class ViewBookPageBase {
   book$: Observable<Book> = this.booksService
@@ -12,8 +12,9 @@ export abstract class ViewBookPageBase {
     .valueChanges.pipe(map(({ data }) => data.book));
 
   bookmarks$: Observable<string[]> = this.bookmarksService
-    .getBookmarksByBook(this.route.snapshot.queryParamMap.get('bookId'))
-    .valueChanges.pipe(
+    .watchBookmarksByBook(this.route.snapshot.queryParamMap.get('bookId'))
+    .pipe(
+      filter(({ data }) => !!data.userBookmarksByBook),
       map(({ data }) => data.userBookmarksByBook),
       map((bookmarks) => bookmarks.map((bookmark) => bookmark.type))
     );

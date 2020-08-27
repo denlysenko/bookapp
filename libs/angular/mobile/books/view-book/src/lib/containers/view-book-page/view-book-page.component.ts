@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ViewBookPageBase } from '@bookapp/angular/base';
@@ -11,6 +11,8 @@ import { TabView } from 'tns-core-modules/ui/tab-view/tab-view';
   selector: 'bookapp-view-book-page',
   templateUrl: './view-book-page.component.html',
   styleUrls: ['./view-book-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [BookmarksService],
 })
 export class ViewBookPageComponent extends ViewBookPageBase {
   selectedIndex = 0;

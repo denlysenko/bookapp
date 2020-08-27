@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ViewBookPageBase } from '@bookapp/angular/base';
@@ -10,6 +10,8 @@ import { map } from 'rxjs/operators';
   selector: 'bookapp-view-book-page',
   templateUrl: './view-book-page.component.html',
   styleUrls: ['./view-book-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [BookmarksService],
 })
 export class ViewBookPageComponent extends ViewBookPageBase {
   user$ = this.authService.fetchMe().pipe(map(({ data }) => data.me));

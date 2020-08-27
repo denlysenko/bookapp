@@ -10,13 +10,19 @@ import {
   REMOVE_FROM_BOOKMARKS_MUTATION,
 } from '@bookapp/shared';
 
-import { Apollo } from 'apollo-angular';
+import { Apollo, QueryRef } from 'apollo-angular';
+
+import { isNil } from 'lodash';
 
 @Injectable()
 export class BookmarksService {
+  private bookmarksByTypeQueryRef: QueryRef<{
+    bookmarks: ApiResponse<Bookmark>;
+  }> | null = null;
+
   constructor(private readonly apollo: Apollo) {}
 
-  getBookmarksByBook(bookId: string) {
+  watchBookmarksByBook(bookId: string) {
     return this.apollo.watchQuery<{
       userBookmarksByBook: { type: string }[];
     }>({
@@ -24,19 +30,46 @@ export class BookmarksService {
       variables: {
         bookId,
       },
-    });
+    }).valueChanges;
   }
 
-  getBookmarksByType(type: string, skip = 0, first = DEFAULT_LIMIT) {
-    return this.apollo.watchQuery<{ bookmarks: ApiResponse<Bookmark> }>({
-      query: BOOKMARKS_QUERY,
+  watchBookmarksByType(type: string) {
+    if (isNil(this.bookmarksByTypeQueryRef)) {
+      this.bookmarksByTypeQueryRef = this.apollo.watchQuery<{ bookmarks: ApiResponse<Bookmark> }>({
+        query: BOOKMARKS_QUERY,
+        variables: {
+          type,
+          skip: 0,
+          first: DEFAULT_LIMIT,
+        },
+        fetchPolicy: 'network-only',
+        notifyOnNetworkStatusChange: true,
+      });
+    }
+
+    return this.bookmarksByTypeQueryRef.valueChanges;
+  }
+
+  fetchMoreBookmarksByType(skip: number) {
+    return this.bookmarksByTypeQueryRef.fetchMore({
       variables: {
-        type,
         skip,
-        first,
       },
-      fetchPolicy: 'network-only',
-      notifyOnNetworkStatusChange: true,
+      updateQuery: (previousResult: { bookmarks: ApiResponse<Bookmark> }, { fetchMoreResult }) => {
+        if (!fetchMoreResult) {
+          return previousResult;
+        }
+
+        const { rows, count } = fetchMoreResult.bookmarks;
+
+        return {
+          bookmarks: {
+            count,
+            rows: [...previousResult.bookmarks.rows, ...rows],
+            __typename: 'BookmarksResponse',
+          },
+        };
+      },
     });
   }
 
@@ -63,7 +96,6 @@ export class BookmarksService {
             bookId,
           },
           data: {
-            ...data,
             userBookmarksByBook: [...data.userBookmarksByBook, addToBookmarks],
           },
         });
@@ -94,7 +126,6 @@ export class BookmarksService {
             bookId,
           },
           data: {
-            ...data,
             userBookmarksByBook: data.userBookmarksByBook.filter(
               (bookmark) => bookmark.type !== removeFromBookmarks.type
             ),
