@@ -7,7 +7,7 @@ import { finalize, map } from 'rxjs/operators';
 const PROFILE_UPDATE_SUCCESS = 'Profile updated!';
 
 export abstract class ProfilePageBase {
-  user$ = this.authService.fetchMe().pipe(map(({ data }) => data.me));
+  user$ = this.authService.watchMe().pipe(map(({ data }) => data.me));
 
   private error = new BehaviorSubject<any | null>(null);
   private loading = new BehaviorSubject<boolean>(false);

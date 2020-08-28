@@ -121,18 +121,6 @@ describe('Add Book Page', () => {
             publicUrl,
           });
 
-          cy.fixture('icon.png', 'binary')
-            .then(Cypress.Blob.binaryStringToBlob)
-            .then((fileContent) => {
-              cy.get('[data-test="file-input"]').attachFile(
-                { fileContent, filePath: 'icon.png' },
-                { subjectType: 'input' }
-              );
-              cy.get('[data-test=upload]').click();
-
-              cy.get('[data-test=cover]').should('have.attr', 'src', publicUrl);
-            });
-
           cy.get('[data-test="file-input"]').attachFile('icon.png', { subjectType: 'input' });
           cy.get('[data-test=upload]').click();
 
