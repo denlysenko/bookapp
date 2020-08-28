@@ -8,6 +8,9 @@ import {
   BOOKMARKS_BY_USER_AND_BOOK_QUERY,
   BOOKMARKS_QUERY,
   REMOVE_FROM_BOOKMARKS_MUTATION,
+  RateBookEvent,
+  RateBookResponse,
+  RATE_BOOK_MUTATION,
 } from '@bookapp/shared';
 
 import { Apollo, QueryRef } from 'apollo-angular';
@@ -130,6 +133,47 @@ export class BookmarksService {
               (bookmark) => bookmark.type !== removeFromBookmarks.type
             ),
           },
+        });
+      },
+    });
+  }
+
+  rateBook({ bookId, rate }: RateBookEvent) {
+    return this.apollo.mutate<RateBookResponse>({
+      mutation: RATE_BOOK_MUTATION,
+      variables: {
+        bookId,
+        rate,
+      },
+      update: (_, { data: { rateBook } }) => {
+        if (isNil(this.bookmarksByTypeQueryRef)) {
+          return;
+        }
+
+        this.bookmarksByTypeQueryRef.updateQuery((prevData) => {
+          const index = prevData.bookmarks.rows.findIndex(({ _id }) => _id === bookId);
+
+          if (index === -1) {
+            return prevData;
+          }
+
+          const updatedBook = {
+            ...prevData.bookmarks.rows[index],
+            rating: rateBook.rating,
+            total_rates: rateBook.total_rates,
+            total_rating: rateBook.total_rating,
+          };
+
+          return {
+            bookmarks: {
+              ...prevData.bookmarks,
+              rows: [
+                ...prevData.bookmarks.rows.slice(0, index),
+                updatedBook,
+                ...prevData.bookmarks.rows.slice(index + 1),
+              ],
+            },
+          };
         });
       },
     });

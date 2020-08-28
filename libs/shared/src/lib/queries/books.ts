@@ -8,7 +8,7 @@ import {
 } from './fragments';
 
 export const CREATE_BOOK_MUTATION = gql`
-  mutation($book: BookInput!) {
+  mutation createBook($book: BookInput!) {
     createBook(book: $book) {
       ...CreatedBook
     }
@@ -17,7 +17,7 @@ export const CREATE_BOOK_MUTATION = gql`
 `;
 
 export const UPDATE_BOOK_MUTATION = gql`
-  mutation($id: ID!, $book: BookInput!) {
+  mutation updateBook($id: ID!, $book: BookInput!) {
     updateBook(id: $id, book: $book) {
       ...CreatedBook
     }
@@ -26,7 +26,7 @@ export const UPDATE_BOOK_MUTATION = gql`
 `;
 
 export const BOOK_FOR_EDIT_QUERY = gql`
-  query($slug: String!) {
+  query bookForEdit($slug: String!) {
     book(slug: $slug) {
       ...CreatedBook
     }
@@ -35,7 +35,7 @@ export const BOOK_FOR_EDIT_QUERY = gql`
 `;
 
 export const FREE_BOOKS_QUERY = gql`
-  query(
+  query freeBooks(
     $paid: Boolean!
     $filter: FilterInput
     $skip: Int
@@ -53,7 +53,7 @@ export const FREE_BOOKS_QUERY = gql`
 `;
 
 export const PAID_BOOKS_QUERY = gql`
-  query(
+  query paidBooks(
     $paid: Boolean!
     $filter: FilterInput
     $skip: Int
@@ -71,7 +71,7 @@ export const PAID_BOOKS_QUERY = gql`
 `;
 
 export const RATE_BOOK_MUTATION = gql`
-  mutation($bookId: ID!, $rate: Int!) {
+  mutation rateBook($bookId: ID!, $rate: Int!) {
     rateBook(id: $bookId, rate: $rate) {
       rating
       total_rates
@@ -81,7 +81,7 @@ export const RATE_BOOK_MUTATION = gql`
 `;
 
 export const BOOK_QUERY = gql`
-  query($slug: String!) {
+  query book($slug: String!) {
     book(slug: $slug) {
       ...Book
     }
@@ -90,7 +90,7 @@ export const BOOK_QUERY = gql`
 `;
 
 export const BEST_BOOKS_QUERY = gql`
-  query($skip: Int, $first: Int) {
+  query bestBooks($skip: Int, $first: Int) {
     bestBooks(skip: $skip, first: $first) {
       count
       rows {

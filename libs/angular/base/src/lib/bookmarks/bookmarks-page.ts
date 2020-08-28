@@ -1,8 +1,8 @@
 import { ActivatedRoute } from '@angular/router';
 
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
-import { BookmarksService, BooksService } from '@bookapp/angular/data-access';
-import { ApiResponse, Book, Bookmark, BOOKMARKS_QUERY } from '@bookapp/shared';
+import { BookmarksService } from '@bookapp/angular/data-access';
+import { Book, RateBookEvent } from '@bookapp/shared';
 
 import { Observable } from 'rxjs';
 import { filter, map, shareReplay, startWith, tap } from 'rxjs/operators';
@@ -39,7 +39,6 @@ export abstract class BookmarksPageBase {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly booksService: BooksService,
     private readonly bookmarksService: BookmarksService
   ) {}
 
@@ -54,31 +53,7 @@ export abstract class BookmarksPageBase {
     }
   }
 
-  rate(event: { bookId: string; rate: number }) {
-    const variables = {
-      type: this.type,
-      skip: this.skip,
-      first: DEFAULT_LIMIT,
-    };
-
-    this.booksService
-      .rateBook(event, (store, { data: { rateBook } }) => {
-        const data: { bookmarks: ApiResponse<Bookmark> } = store.readQuery({
-          query: BOOKMARKS_QUERY,
-          variables,
-        });
-
-        const updatedBookmark = data.bookmarks.rows.find(({ book }) => book._id === event.bookId);
-        updatedBookmark.book.rating = rateBook.rating;
-        updatedBookmark.book.total_rates = rateBook.total_rates;
-        updatedBookmark.book.total_rating = rateBook.total_rating;
-
-        store.writeQuery({
-          query: BOOKMARKS_QUERY,
-          variables,
-          data,
-        });
-      })
-      .subscribe();
+  rate(event: RateBookEvent) {
+    this.bookmarksService.rateBook(event).subscribe();
   }
 }

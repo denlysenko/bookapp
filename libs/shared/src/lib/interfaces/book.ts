@@ -33,3 +33,8 @@ export interface BookFormModel {
 export interface RateBookResponse {
   rateBook: Book;
 }
+
+export interface RateBookEvent {
+  bookId: string;
+  rate: number;
+}

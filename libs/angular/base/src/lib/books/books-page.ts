@@ -1,15 +1,9 @@
 import { DEFAULT_LIMIT, StoreService } from '@bookapp/angular/core';
 import { BooksService, DEFAULT_SORT_VALUE } from '@bookapp/angular/data-access';
-import {
-  ApiResponse,
-  Book,
-  BooksFilter,
-  FREE_BOOKS_QUERY,
-  PAID_BOOKS_QUERY,
-} from '@bookapp/shared';
+import { Book, BooksFilter, RateBookEvent } from '@bookapp/shared';
 
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, map, pluck, tap } from 'rxjs/operators';
+import { filter, map, shareReplay, startWith, tap } from 'rxjs/operators';
 
 import { BaseComponent } from '../core/base-component';
 
@@ -19,7 +13,7 @@ const FILTER_KEYS = {
 };
 
 export abstract class BooksPageBase extends BaseComponent {
-  filter = new BehaviorSubject<BooksFilter>(
+  readonly filter = new BehaviorSubject<BooksFilter>(
     this.storeService.get(FILTER_KEYS[this.paid ? 'BUY_BOOKS' : 'BROWSE_BOOKS']) || {
       searchQuery: '',
       sortValue: DEFAULT_SORT_VALUE,
@@ -29,24 +23,22 @@ export abstract class BooksPageBase extends BaseComponent {
   filterInput = { field: 'title', search: this.filter.getValue().searchQuery };
   hasMoreItems = false;
 
-  booksQueryRef = this.booksService.getBooks(this.paid, this.filterInput);
+  readonly source$ = this.booksService
+    .watchBooks(this.paid, this.filterInput, this.filter.getValue().sortValue)
+    .pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
-  books$: Observable<Book[]> = this.booksQueryRef.valueChanges.pipe(
-    filter(({ loading }) => !loading),
-    tap(
-      ({
-        data: {
-          books: { rows, count },
-        },
-      }) => {
-        this.hasMoreItems = rows.length !== count;
-      }
-    ),
+  books$: Observable<Book[]> = this.source$.pipe(
+    filter(({ data }) => !!data.books),
+    tap(({ data }) => {
+      const { rows, count } = data.books;
+      this.hasMoreItems = rows.length !== count;
+    }),
     map(({ data }) => data.books.rows)
   );
 
-  loading$: Observable<boolean> = this.booksQueryRef.valueChanges.pipe(
-    pluck('loading'),
+  loading$: Observable<boolean> = this.source$.pipe(
+    startWith({ loading: true }),
+    map(({ loading }) => loading),
     tap((loading) => {
       this.pending = loading;
     })
@@ -77,7 +69,7 @@ export abstract class BooksPageBase extends BaseComponent {
 
     this.updateFilterInStore();
 
-    this.booksQueryRef.refetch({
+    this.booksService.refetch({
       skip: this.skip,
       orderBy: sortValue,
     });
@@ -98,7 +90,7 @@ export abstract class BooksPageBase extends BaseComponent {
       search: searchQuery,
     };
 
-    this.booksQueryRef.refetch({
+    this.booksService.refetch({
       filter: this.filterInput,
       skip: this.skip,
     });
@@ -111,77 +103,12 @@ export abstract class BooksPageBase extends BaseComponent {
 
     if (this.hasMoreItems) {
       this.skip += DEFAULT_LIMIT;
-
-      this.booksQueryRef.fetchMore({
-        variables: {
-          skip: this.skip,
-        },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult) {
-            return previousResult;
-          }
-
-          const { rows, count } = fetchMoreResult.books;
-
-          return {
-            books: {
-              count,
-              rows: [...previousResult.books.rows, ...rows],
-              __typename: 'BookResponse',
-            },
-          };
-        },
-      });
+      this.booksService.loadMore(this.skip);
     }
   }
 
-  rate(event: { bookId: string; rate: number }) {
-    const query = this.paid ? PAID_BOOKS_QUERY : FREE_BOOKS_QUERY;
-    const variables = {
-      paid: this.paid,
-      filter: this.filterInput,
-      skip: this.skip,
-      first: DEFAULT_LIMIT,
-      orderBy: this.filter.getValue().sortValue,
-    };
-
-    this.booksService
-      .rateBook(event, (store, { data: { rateBook } }) => {
-        const data: { books: ApiResponse<Book> } = store.readQuery({
-          query,
-          variables,
-        });
-
-        const index = data.books.rows.findIndex(({ _id }) => _id === event.bookId);
-
-        if (index === -1) {
-          return;
-        }
-
-        const updatedBook = {
-          ...data.books.rows[index],
-          rating: rateBook.rating,
-          total_rates: rateBook.total_rates,
-          total_rating: rateBook.total_rating,
-        };
-
-        store.writeQuery({
-          query,
-          variables,
-          data: {
-            ...data,
-            books: {
-              ...data.books,
-              rows: [
-                ...data.books.rows.slice(0, index),
-                updatedBook,
-                ...data.books.rows.slice(index + 1),
-              ],
-            },
-          },
-        });
-      })
-      .subscribe();
+  rate(event: RateBookEvent) {
+    this.booksService.rateBook(event).subscribe();
   }
 
   private updateFilterInStore() {

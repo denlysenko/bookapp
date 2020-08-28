@@ -1,117 +1,128 @@
 import { Injectable } from '@angular/core';
 
-import { MutationUpdaterFn } from '@apollo/client/core';
-
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import {
-  AddCommentResponse,
-  ADD_COMMENT_MUTATION,
   ApiResponse,
-  BEST_BOOKS_QUERY,
   Book,
-  BookFormModel,
   BooksFilterInput,
-  BOOK_QUERY,
-  CREATE_BOOK_MUTATION,
   FREE_BOOKS_QUERY,
   PAID_BOOKS_QUERY,
+  RateBookEvent,
   RateBookResponse,
   RATE_BOOK_MUTATION,
-  UPDATE_BOOK_MUTATION,
 } from '@bookapp/shared';
 
-import { Apollo } from 'apollo-angular';
+import { Apollo, QueryRef } from 'apollo-angular';
+
+import { isNil } from 'lodash';
+import { EmptyObject } from 'apollo-angular/types';
 
 export const DEFAULT_SORT_VALUE = 'createdAt_desc';
 
-const fetchPolicy = 'network-only';
-
 @Injectable()
 export class BooksService {
+  private booksQueryRef: QueryRef<{ books: ApiResponse<Book> }> | null = null;
+
   constructor(private readonly apollo: Apollo) {}
 
-  create(book: BookFormModel) {
-    return this.apollo.mutate<{ createBook: Book }>({
-      mutation: CREATE_BOOK_MUTATION,
-      variables: {
-        book,
-      },
-    });
-  }
-
-  update(id: string, book: Partial<BookFormModel>) {
-    return this.apollo.mutate<{ updateBook: Book }>({
-      mutation: UPDATE_BOOK_MUTATION,
-      variables: {
-        id,
-        book,
-      },
-    });
-  }
-
-  getBooks(
+  watchBooks(
     paid: boolean,
     filter?: BooksFilterInput,
     orderBy = DEFAULT_SORT_VALUE,
     skip = 0,
     first = DEFAULT_LIMIT
   ) {
-    return this.apollo.watchQuery<{ books: ApiResponse<Book> }>({
-      query: paid ? PAID_BOOKS_QUERY : FREE_BOOKS_QUERY,
-      variables: {
-        paid,
-        filter,
-        skip,
-        first,
-        orderBy,
-      },
-      fetchPolicy,
-      notifyOnNetworkStatusChange: true,
-    });
+    if (isNil(this.booksQueryRef)) {
+      this.booksQueryRef = this.apollo.watchQuery<{ books: ApiResponse<Book> }>({
+        query: paid ? PAID_BOOKS_QUERY : FREE_BOOKS_QUERY,
+        variables: {
+          paid,
+          filter,
+          skip,
+          first,
+          orderBy,
+        },
+        fetchPolicy: 'network-only',
+        notifyOnNetworkStatusChange: true,
+      });
+    }
+
+    return this.booksQueryRef.valueChanges;
   }
 
-  getBook(slug: string) {
-    return this.apollo.watchQuery<{ book: Book }>({
-      query: BOOK_QUERY,
-      variables: {
-        slug,
-      },
-      fetchPolicy,
-      notifyOnNetworkStatusChange: true,
-    });
-  }
+  loadMore(skip: number) {
+    if (isNil(this.booksQueryRef)) {
+      return;
+    }
 
-  getBestBooks(skip = 0, first = DEFAULT_LIMIT) {
-    return this.apollo.watchQuery<{ bestBooks: ApiResponse<Book> }>({
-      query: BEST_BOOKS_QUERY,
+    this.booksQueryRef.fetchMore({
       variables: {
         skip,
-        first,
       },
-      fetchPolicy,
-      notifyOnNetworkStatusChange: true,
+      updateQuery: (previousResult, { fetchMoreResult }) => {
+        if (!fetchMoreResult) {
+          return previousResult;
+        }
+
+        const { rows, count } = fetchMoreResult.books;
+
+        return {
+          books: {
+            count,
+            rows: [...previousResult.books.rows, ...rows],
+            __typename: 'BookResponse',
+          },
+        };
+      },
     });
   }
 
-  rateBook({ bookId, rate }, update: MutationUpdaterFn<RateBookResponse>) {
+  refetch(variables: EmptyObject) {
+    if (isNil(this.booksQueryRef)) {
+      return;
+    }
+
+    this.booksQueryRef.refetch(variables);
+  }
+
+  rateBook({ bookId, rate }: RateBookEvent) {
     return this.apollo.mutate<RateBookResponse>({
       mutation: RATE_BOOK_MUTATION,
       variables: {
         bookId,
         rate,
       },
-      update,
-    });
-  }
+      update: (_, { data: { rateBook } }) => {
+        if (isNil(this.booksQueryRef)) {
+          return;
+        }
 
-  addComment(bookId: string, text: string, update: MutationUpdaterFn<AddCommentResponse>) {
-    return this.apollo.mutate<AddCommentResponse>({
-      mutation: ADD_COMMENT_MUTATION,
-      variables: {
-        bookId,
-        text,
+        this.booksQueryRef.updateQuery((prevData) => {
+          const index = prevData.books.rows.findIndex(({ _id }) => _id === bookId);
+
+          if (index === -1) {
+            return prevData;
+          }
+
+          const updatedBook = {
+            ...prevData.books.rows[index],
+            rating: rateBook.rating,
+            total_rates: rateBook.total_rates,
+            total_rating: rateBook.total_rating,
+          };
+
+          return {
+            books: {
+              ...prevData.books,
+              rows: [
+                ...prevData.books.rows.slice(0, index),
+                updatedBook,
+                ...prevData.books.rows.slice(index + 1),
+              ],
+            },
+          };
+        });
       },
-      update,
     });
   }
 }

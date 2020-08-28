@@ -1,9 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { BooksService } from '@bookapp/angular/data-access';
+import { AddBookService } from '@bookapp/angular/data-access';
 import { ConfirmDialogComponent } from '@bookapp/angular/ui-desktop';
 import { Book, BookFormModel } from '@bookapp/shared';
 
@@ -21,6 +21,7 @@ const UNSAVED_CHANGES_WARNING =
   selector: 'bookapp-add-book-page',
   templateUrl: './add-book-page.component.html',
   styleUrls: ['./add-book-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddBookPageComponent {
   book$: Observable<Book> = this.route.data.pipe(pluck('book'));
@@ -34,7 +35,7 @@ export class AddBookPageComponent {
   constructor(
     protected feedbackService: FeedbackPlatformService,
     private readonly dialog: MatDialog,
-    private readonly booksService: BooksService,
+    private readonly booksService: AddBookService,
     private readonly route: ActivatedRoute
   ) {}
 

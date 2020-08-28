@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ReadBookBase } from '@bookapp/angular/base';
@@ -8,6 +8,7 @@ import { ProfileService } from '@bookapp/angular/data-access';
   selector: 'bookapp-read-book-page',
   templateUrl: './read-book-page.component.html',
   styleUrls: ['./read-book-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReadBookPageComponent extends ReadBookBase {
   constructor(route: ActivatedRoute, profileService: ProfileService) {

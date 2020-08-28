@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, ChangeDetectionStrategy } from '@angular/core';
 
 import { BooksPageBase } from '@bookapp/angular/base';
 import { RouterExtensions, StoreService } from '@bookapp/angular/core';
@@ -25,6 +25,8 @@ interface SortOption {
   selector: 'bookapp-browse-books-page',
   templateUrl: './browse-books-page.component.html',
   styleUrls: ['./browse-books-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [BooksService],
 })
 export class BrowseBooksPageComponent extends BooksPageBase {
   sortOptions: SortOption[] = [

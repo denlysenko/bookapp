@@ -33,7 +33,6 @@ export class ProfileService {
         store.writeQuery({
           query: ME_QUERY,
           data: {
-            ...data,
             me: {
               ...data.me,
               reading: updateUser.reading,

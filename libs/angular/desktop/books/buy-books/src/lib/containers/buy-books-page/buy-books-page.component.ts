@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { BooksPageBase } from '@bookapp/angular/base';
 import { StoreService } from '@bookapp/angular/core';
@@ -8,6 +8,8 @@ import { BooksService } from '@bookapp/angular/data-access';
   selector: 'bookapp-buy-books-page',
   templateUrl: './buy-books-page.component.html',
   styleUrls: ['./buy-books-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [BooksService],
 })
 export class BuyBooksPageComponent extends BooksPageBase {
   constructor(storeService: StoreService, booksService: BooksService) {

@@ -1,35 +1,35 @@
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
-import { BooksService } from '@bookapp/angular/data-access';
-import { ApiResponse, BEST_BOOKS_QUERY, Book } from '@bookapp/shared';
+import { BestBooksService } from '@bookapp/angular/data-access';
+import { Book, RateBookEvent } from '@bookapp/shared';
 
 import { Observable } from 'rxjs';
-import { map, pluck, tap } from 'rxjs/operators';
+import { filter, map, shareReplay, startWith, tap } from 'rxjs/operators';
 
 export abstract class BestBooksBase {
   hasMoreItems = false;
-  booksQueryRef = this.booksService.getBestBooks();
 
-  books$: Observable<Book[]> = this.booksQueryRef.valueChanges.pipe(
-    tap(
-      ({
-        data: {
-          bestBooks: { rows, count },
-        },
-      }) => {
-        this.hasMoreItems = rows.length !== count;
-      }
-    ),
+  readonly source$ = this.booksService
+    .watchBooks()
+    .pipe(shareReplay({ bufferSize: 1, refCount: true }));
+
+  books$: Observable<Book[]> = this.source$.pipe(
+    filter(({ data }) => !!data.bestBooks),
+    tap(({ data }) => {
+      const { rows, count } = data.bestBooks;
+      this.hasMoreItems = rows.length !== count;
+    }),
     map(({ data }) => data.bestBooks.rows)
   );
 
-  loading$: Observable<boolean> = this.booksQueryRef.valueChanges.pipe(
-    pluck('loading'),
+  loading$: Observable<boolean> = this.source$.pipe(
+    startWith({ loading: true }),
+    map(({ loading }) => loading),
     tap((loading: boolean) => {
       this.pending = loading;
     })
   );
 
-  constructor(private readonly booksService: BooksService) {}
+  constructor(private readonly booksService: BestBooksService) {}
 
   private skip = 0;
   private pending = false;
@@ -41,62 +41,11 @@ export abstract class BestBooksBase {
 
     if (this.hasMoreItems) {
       this.skip += DEFAULT_LIMIT;
-
-      this.booksQueryRef.fetchMore({
-        variables: {
-          skip: this.skip,
-        },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult) {
-            return previousResult;
-          }
-
-          const { rows, count } = fetchMoreResult.bestBooks;
-
-          return {
-            bestBooks: {
-              count,
-              rows: [...previousResult.bestBooks.rows, ...rows],
-              __typename: 'BestBookResponse',
-            },
-          };
-        },
-      });
+      this.booksService.loadMore(this.skip);
     }
   }
 
-  rate(event: { bookId: string; rate: number }) {
-    const query = BEST_BOOKS_QUERY;
-    const variables = {
-      skip: this.skip,
-      first: DEFAULT_LIMIT,
-    };
-
-    this.booksService
-      .rateBook(event, (store, { data: { rateBook } }) => {
-        const data: { bestBooks: ApiResponse<Book> } = store.readQuery({
-          query,
-          variables,
-        });
-
-        if (rateBook.rating < 5) {
-          const updatedBookIndex = data.bestBooks.rows.findIndex(({ _id }) => _id === event.bookId);
-          if (updatedBookIndex > -1) {
-            data.bestBooks.rows.splice(updatedBookIndex, 1);
-          }
-        } else {
-          const updatedBook = data.bestBooks.rows.find(({ _id }) => _id === event.bookId);
-          updatedBook.rating = rateBook.rating;
-          updatedBook.total_rates = rateBook.total_rates;
-          updatedBook.total_rating = rateBook.total_rating;
-        }
-
-        store.writeQuery({
-          query,
-          variables,
-          data,
-        });
-      })
-      .subscribe();
+  rate(event: RateBookEvent) {
+    this.booksService.rateBook(event).subscribe();
   }
 }
