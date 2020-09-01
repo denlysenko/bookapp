@@ -54,6 +54,10 @@ export class BookmarksService {
   }
 
   fetchMoreBookmarksByType(skip: number) {
+    if (isNil(this.bookmarksByTypeQueryRef)) {
+      return;
+    }
+
     return this.bookmarksByTypeQueryRef.fetchMore({
       variables: {
         skip,
@@ -151,14 +155,14 @@ export class BookmarksService {
         }
 
         this.bookmarksByTypeQueryRef.updateQuery((prevData) => {
-          const index = prevData.bookmarks.rows.findIndex(({ _id }) => _id === bookId);
+          const index = prevData.bookmarks.rows.findIndex(({ book }) => book._id === bookId);
 
           if (index === -1) {
             return prevData;
           }
 
           const updatedBook = {
-            ...prevData.bookmarks.rows[index],
+            ...prevData.bookmarks.rows[index].book,
             rating: rateBook.rating,
             total_rates: rateBook.total_rates,
             total_rating: rateBook.total_rating,
@@ -169,7 +173,7 @@ export class BookmarksService {
               ...prevData.bookmarks,
               rows: [
                 ...prevData.bookmarks.rows.slice(0, index),
-                updatedBook,
+                { ...prevData.bookmarks.rows[index], book: updatedBook },
                 ...prevData.bookmarks.rows.slice(index + 1),
               ],
             },

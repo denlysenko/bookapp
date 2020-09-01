@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ProfilePageBase } from '@bookapp/angular/base';
 import { FeedbackPlatformService } from '@bookapp/angular/core';
@@ -8,6 +8,7 @@ import { AuthService, ProfileService } from '@bookapp/angular/data-access';
   selector: 'bookapp-profile-page',
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfilePageComponent extends ProfilePageBase {
   constructor(

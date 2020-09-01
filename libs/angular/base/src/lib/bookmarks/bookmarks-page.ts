@@ -19,7 +19,7 @@ export abstract class BookmarksPageBase {
     filter(({ data }) => !!data.bookmarks),
     tap(({ data }) => {
       const { rows, count } = data.bookmarks;
-      this.hasMoreItems = rows.length !== count;
+      this.hasMoreItems = rows.length < count;
     }),
     map(({ data }) => data.bookmarks.rows.map((bookmark) => bookmark.book))
   );

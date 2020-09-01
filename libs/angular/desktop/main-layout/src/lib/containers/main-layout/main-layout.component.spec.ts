@@ -11,6 +11,7 @@ import { MainLayoutComponent } from './main-layout.component';
 describe('MainLayoutComponent', () => {
   let component: MainLayoutComponent;
   let fixture: ComponentFixture<MainLayoutComponent>;
+  let logsService: LogsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -20,18 +21,26 @@ describe('MainLayoutComponent', () => {
           provide: AuthService,
           useValue: MockAngularAuthService,
         },
-        {
-          provide: LogsService,
-          useValue: MockAngularLogsService,
-        },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(MainLayoutComponent, {
+        set: {
+          providers: [
+            {
+              provide: LogsService,
+              useValue: MockAngularLogsService,
+            },
+          ],
+        },
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MainLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    logsService = fixture.debugElement.injector.get(LogsService);
   });
 
   it('should create', () => {
@@ -47,7 +56,7 @@ describe('MainLayoutComponent', () => {
     });
 
     it('should subscribe to logs', () => {
-      expect(component.logsQueryRef.subscribeToMore).toHaveBeenCalled();
+      expect(logsService.subscribeToNewLogs).toHaveBeenCalled();
     });
   });
 

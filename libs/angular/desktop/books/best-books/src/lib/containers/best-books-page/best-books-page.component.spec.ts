@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { BooksService } from '@bookapp/angular/data-access';
-import { book, MockAngularBooksService } from '@bookapp/testing';
+import { BestBooksService } from '@bookapp/angular/data-access';
+import { book, MockAngularBestBooksService } from '@bookapp/testing';
 
 import { of } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { BestBooksPageComponent } from './best-books-page.component';
 describe('BestBooksPageComponent', () => {
   let component: BestBooksPageComponent;
   let fixture: ComponentFixture<BestBooksPageComponent>;
-  let booksService: BooksService;
+  let booksService: BestBooksService;
 
   beforeAll(() => {
     (window as any).IntersectionObserver = jest.fn(() => ({
@@ -25,20 +25,25 @@ describe('BestBooksPageComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, RouterTestingModule, BestBooksModule],
-      providers: [
-        {
-          provide: BooksService,
-          useValue: MockAngularBooksService,
+    })
+      .overrideComponent(BestBooksPageComponent, {
+        set: {
+          providers: [
+            {
+              provide: BestBooksService,
+              useValue: MockAngularBestBooksService,
+            },
+          ],
         },
-      ],
-    }).compileComponents();
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BestBooksPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    booksService = TestBed.inject(BooksService);
+    booksService = fixture.debugElement.injector.get(BestBooksService);
   });
 
   it('should create', () => {
@@ -55,45 +60,33 @@ describe('BestBooksPageComponent', () => {
   });
 
   describe('loadMore()', () => {
-    it('should not fetchMore if there are no items', () => {
+    it('should not loadMore if there are no items', () => {
       component.loadMore();
-      expect(component.booksQueryRef.fetchMore).not.toHaveBeenCalled();
+      expect(booksService.loadMore).not.toHaveBeenCalled();
     });
 
-    it('should fetchMore books', () => {
-      TestBed.resetTestingModule();
-      TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, RouterTestingModule, BestBooksModule],
-        providers: [
-          {
-            provide: BooksService,
-            useValue: {
-              ...MockAngularBooksService,
-              getBestBooks: jest.fn().mockImplementationOnce(() => ({
-                valueChanges: of({
-                  data: { bestBooks: { rows: [book], count: 3 } },
-                }),
-                refetch: jest.fn(),
-                fetchMore: jest.fn(),
-              })),
-            },
-          },
-        ],
-      }).compileComponents();
+    it('should loadMore books', () => {
+      jest
+        .spyOn(booksService, 'watchBooks')
+        .mockImplementationOnce(() =>
+          of({ data: { bestBooks: { rows: [book], count: 2 } } } as any)
+        );
 
       fixture = TestBed.createComponent(BestBooksPageComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
 
       component.loadMore();
-      expect(component.booksQueryRef.fetchMore).toHaveBeenCalled();
+      expect(booksService.loadMore).toHaveBeenCalledWith(10);
     });
   });
 
   describe('rate()', () => {
-    it('should rate book', () => {
-      component.rate({ bookId: book._id, rate: 5 });
+    it('should rate book', fakeAsync(() => {
+      const event = { bookId: book._id, rate: 5 };
+      component.rate(event);
+      tick();
       expect(booksService.rateBook).toHaveBeenCalled();
-    });
+    }));
   });
 });

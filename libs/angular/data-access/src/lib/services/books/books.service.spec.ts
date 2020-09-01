@@ -1,35 +1,24 @@
-// tslint:disable: no-identical-functions
 // tslint:disable: no-big-function
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+// tslint:disable: no-identical-functions
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { DEFAULT_LIMIT } from '@bookapp/angular/core';
-import {
-  ADD_COMMENT_MUTATION,
-  BEST_BOOKS_QUERY,
-  Book,
-  BOOK_QUERY,
-  CREATE_BOOK_MUTATION,
-  FREE_BOOKS_QUERY,
-  PAID_BOOKS_QUERY,
-  RATE_BOOK_MUTATION,
-  UPDATE_BOOK_MUTATION,
-  RateBookResponse,
-} from '@bookapp/shared';
-import { book, user } from '@bookapp/testing';
-
-import { InMemoryCache, MutationUpdaterFn } from '@apollo/client/core';
+import { InMemoryCache } from '@apollo/client/core';
 import { addTypenameToDocument } from '@apollo/client/utilities';
 
-import { Apollo } from 'apollo-angular';
+import { DEFAULT_LIMIT } from '@bookapp/angular/core';
+import { Book, FREE_BOOKS_QUERY, PAID_BOOKS_QUERY, RATE_BOOK_MUTATION } from '@bookapp/shared';
+import { book } from '@bookapp/testing';
+
 import {
-  APOLLO_TESTING_CACHE,
   ApolloTestingController,
   ApolloTestingModule,
+  APOLLO_TESTING_CACHE,
 } from 'apollo-angular/testing';
 
 import { BooksService, DEFAULT_SORT_VALUE } from './books.service';
 
 const bookWithTypename = { ...book, __typename: 'Book' };
+const orderBy = 'createdAt_asc';
 
 describe('BooksService', () => {
   let controller: ApolloTestingController;
@@ -51,103 +40,13 @@ describe('BooksService', () => {
     service = TestBed.inject(BooksService);
   });
 
-  afterEach(() => {
-    controller.verify();
-  });
-
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('create()', () => {
-    // tslint:disable: no-shadowed-variable
-    let controller: ApolloTestingController;
-    let service: BooksService;
-
-    beforeEach(() => {
-      TestBed.resetTestingModule();
-      TestBed.configureTestingModule({
-        imports: [ApolloTestingModule],
-        providers: [BooksService],
-      });
-
-      controller = TestBed.inject(ApolloTestingController);
-      service = TestBed.inject(BooksService);
-    });
-
-    const newBook = {
-      title: book.title,
-      author: book.author,
-      coverUrl: book.coverUrl,
-      epubUrl: book.epubUrl,
-      description: book.description,
-      paid: book.paid,
-    };
-
-    it('should create book', (done) => {
-      service.create(newBook).subscribe(({ data: { createBook } }) => {
-        expect(createBook).toEqual(bookWithTypename);
-        done();
-      });
-
-      const op = controller.expectOne(CREATE_BOOK_MUTATION);
-
-      expect(op.operation.variables.book).toEqual(newBook);
-
-      op.flush({
-        data: {
-          createBook: bookWithTypename,
-        },
-      });
-
-      controller.verify();
-    });
-  });
-
-  describe('update()', () => {
-    // tslint:disable: no-shadowed-variable
-    let controller: ApolloTestingController;
-    let service: BooksService;
-
-    beforeEach(() => {
-      TestBed.resetTestingModule();
-      TestBed.configureTestingModule({
-        imports: [ApolloTestingModule],
-        providers: [BooksService],
-      });
-
-      controller = TestBed.inject(ApolloTestingController);
-      service = TestBed.inject(BooksService);
-    });
-
-    it('should update book', (done) => {
-      const updatedBook = {
-        coverUrl: 'uploads/new_cover.png',
-      };
-
-      service.update(book._id, updatedBook).subscribe(({ data: { updateBook } }) => {
-        expect(updateBook).toEqual(bookWithTypename);
-        done();
-      });
-
-      const op = controller.expectOne(UPDATE_BOOK_MUTATION);
-
-      expect(op.operation.variables.id).toEqual(book._id);
-      expect(op.operation.variables.book).toEqual(updatedBook);
-
-      op.flush({
-        data: {
-          updateBook: bookWithTypename,
-        },
-      });
-
-      controller.verify();
-    });
-  });
-
-  describe('getBooks()', () => {
-    it('should get paid books', (done) => {
-      service.getBooks(true).valueChanges.subscribe(
+  describe('watchBooks()', () => {
+    it('should watch paid books', (done) => {
+      service.watchBooks(true).subscribe(
         ({
           data: {
             books: { rows },
@@ -182,8 +81,8 @@ describe('BooksService', () => {
       controller.verify();
     });
 
-    it('should get free books', (done) => {
-      service.getBooks(false).valueChanges.subscribe(
+    it('should watch free books', (done) => {
+      service.watchBooks(false).subscribe(
         ({
           data: {
             books: { rows },
@@ -217,7 +116,7 @@ describe('BooksService', () => {
     });
 
     it('should filter books', (done) => {
-      service.getBooks(false, { field: 'field', search: 'search' }).valueChanges.subscribe(
+      service.watchBooks(false, { field: 'field', search: 'search' }).subscribe(
         ({
           data: {
             books: { rows },
@@ -254,7 +153,7 @@ describe('BooksService', () => {
     });
 
     it('should skip books', (done) => {
-      service.getBooks(false, undefined, undefined, 10).valueChanges.subscribe(
+      service.watchBooks(false, undefined, undefined, 10).subscribe(
         ({
           data: {
             books: { rows },
@@ -288,7 +187,7 @@ describe('BooksService', () => {
     });
 
     it('should limit books', (done) => {
-      service.getBooks(false, undefined, undefined, undefined, 20).valueChanges.subscribe(
+      service.watchBooks(false, undefined, undefined, undefined, 20).subscribe(
         ({
           data: {
             books: { rows },
@@ -322,7 +221,7 @@ describe('BooksService', () => {
     });
 
     it('should order books', (done) => {
-      service.getBooks(false, undefined, 'title_desc').valueChanges.subscribe(
+      service.watchBooks(false, undefined, 'title_desc').subscribe(
         ({
           data: {
             books: { rows },
@@ -356,232 +255,178 @@ describe('BooksService', () => {
     });
   });
 
-  describe('getBook()', () => {
-    it('should get book', (done) => {
-      service.getBook(book.slug).valueChanges.subscribe(({ data }) => {
-        expect(data.book._id).toEqual(book._id);
-        done();
-      });
-
-      const op = controller.expectOne(addTypenameToDocument(BOOK_QUERY));
-
-      expect(op.operation.variables.slug).toEqual(book.slug);
-
-      op.flush({
-        data: {
-          book: { ...bookWithTypename, comments: [] },
-        },
-      });
-
-      controller.verify();
+  describe('loadMore()', () => {
+    it('should not fetchMore books if QueryRef is not created', () => {
+      service.loadMore(10);
+      controller.expectNone(addTypenameToDocument(FREE_BOOKS_QUERY));
     });
-  });
 
-  describe('getBestBook()', () => {
-    it('should get best book', (done) => {
-      service.getBestBooks().valueChanges.subscribe(({ data }) => {
-        const [b] = data.bestBooks.rows;
-        expect(b._id).toEqual(book._id);
-        done();
+    it('should fetchMore books', fakeAsync(() => {
+      let rows: Book[];
+
+      service.watchBooks(false).subscribe(({ data }) => {
+        rows = data.books.rows;
       });
 
-      const op = controller.expectOne(addTypenameToDocument(BEST_BOOKS_QUERY));
-
-      op.flush({
+      controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY)).flush({
         data: {
-          bestBooks: {
-            rows: [bookWithTypename],
+          books: {
+            rows: [{ ...bookWithTypename, _id: '1213' }],
             count: 1,
-            __typename: 'BestBooks',
+            __typename: 'Books',
           },
         },
       });
 
-      controller.verify();
+      tick();
+      expect(rows.length).toEqual(1);
+
+      service.loadMore(10);
+
+      const op = controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY));
+      expect(op.operation.variables.skip).toEqual(10);
+
+      op.flush({
+        data: {
+          books: {
+            rows: [bookWithTypename],
+            count: 1,
+            __typename: 'Books',
+          },
+        },
+      });
+
+      tick();
+      expect(rows.length).toEqual(2);
+    }));
+  });
+
+  describe('refetch()', () => {
+    it('should not refetch books if QueryRef is not created', () => {
+      service.refetch({ orderBy });
+      controller.expectNone(addTypenameToDocument(FREE_BOOKS_QUERY));
     });
+
+    it('should refetch books', fakeAsync(() => {
+      let rows: Book[];
+
+      service.watchBooks(false).subscribe(({ data }) => {
+        if (data.books) {
+          rows = data.books.rows;
+        }
+      });
+
+      controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY)).flush({
+        data: {
+          books: {
+            rows: [{ ...bookWithTypename, _id: '1213' }],
+            count: 1,
+            __typename: 'Books',
+          },
+        },
+      });
+
+      tick();
+      expect(rows[0]._id).toEqual('1213');
+
+      service.refetch({ orderBy });
+
+      const op = controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY));
+      expect(op.operation.variables.orderBy).toEqual(orderBy);
+
+      op.flush({
+        data: {
+          books: {
+            rows: [bookWithTypename],
+            count: 1,
+            __typename: 'Books',
+          },
+        },
+      });
+
+      tick();
+      expect(rows[0]._id).toEqual(book._id);
+    }));
   });
 
   describe('rateBook()', () => {
-    const update: MutationUpdaterFn<RateBookResponse> = (store, { data: { rateBook } }) => {
-      const data: { book: Book } = store.readQuery({
-        query: BOOK_QUERY,
-        variables: {
-          slug: book.slug,
-        },
+    it('should return previous cache if book with passed id is not there', fakeAsync(() => {
+      let rows: Book[];
+
+      service.watchBooks(false).subscribe(({ data }) => {
+        rows = data.books.rows;
       });
 
-      store.writeQuery({
-        query: BOOK_QUERY,
-        variables: {
-          slug: book.slug,
-        },
+      controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY)).flush({
         data: {
-          ...data,
-          book: {
-            ...data.book,
-            rating: rateBook.rating,
-            total_rates: rateBook.total_rates,
-            total_rating: rateBook.total_rating,
+          books: {
+            rows: [{ ...bookWithTypename, _id: '1213' }],
+            count: 1,
+            __typename: 'Books',
           },
         },
       });
-    };
 
-    beforeEach(() => {
-      service.getBook(book.slug).valueChanges.subscribe();
-      controller.expectOne(addTypenameToDocument(BOOK_QUERY)).flush({
-        data: {
-          book: { ...bookWithTypename, comments: [] },
-        },
-      });
-    });
+      tick();
 
-    it('should call RATE_BOOK_MUTATION', (done) => {
-      service
-        .rateBook({ bookId: book._id, rate: 5 }, update)
-        .subscribe(({ data: { rateBook } }) => {
-          expect(rateBook.total_rates).toEqual(book.total_rates + 1);
-          done();
-        });
+      service.rateBook({ bookId: '123', rate: 3 }).subscribe();
 
       const op = controller.expectOne(addTypenameToDocument(RATE_BOOK_MUTATION));
 
-      expect(op.operation.variables.bookId).toEqual(book._id);
-      expect(op.operation.variables.rate).toEqual(5);
+      expect(op.operation.variables.bookId).toEqual('123');
+      expect(op.operation.variables.rate).toEqual(3);
 
       op.flush({
         data: {
           rateBook: {
-            ...bookWithTypename,
-            total_rates: bookWithTypename.total_rates + 1,
+            total_rating: book.total_rating + 1,
+            total_rates: book.total_rates + 1,
+            rating: 3,
           },
         },
       });
 
-      controller.expectOne(addTypenameToDocument(BOOK_QUERY));
-      controller.verify();
-    });
+      tick();
 
-    it('should update book in store with new rating', (done) => {
-      const apollo: Apollo = TestBed.inject(Apollo);
+      expect(rows[0].rating).toEqual(book.rating);
+    }));
 
-      service.rateBook({ bookId: book._id, rate: 5 }, update).subscribe(() => {
-        apollo
-          .query<{ book: Book }>({
-            query: BOOK_QUERY,
-            variables: {
-              slug: book.slug,
-            },
-          })
-          .subscribe(({ data: { book } }) => {
-            expect(book.total_rates).toEqual(bookWithTypename.total_rates + 1);
-            done();
-          });
+    it('should update book in cache', fakeAsync(() => {
+      let rows: Book[];
+
+      service.watchBooks(false).subscribe(({ data }) => {
+        rows = data.books.rows;
       });
+
+      controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY)).flush({
+        data: {
+          books: {
+            rows: [bookWithTypename],
+            count: 1,
+            __typename: 'Books',
+          },
+        },
+      });
+
+      tick();
+
+      service.rateBook({ bookId: book._id, rate: 5 }).subscribe();
 
       controller.expectOne(addTypenameToDocument(RATE_BOOK_MUTATION)).flush({
         data: {
           rateBook: {
-            ...bookWithTypename,
-            total_rates: bookWithTypename.total_rates + 1,
+            total_rating: book.total_rating + 1,
+            total_rates: book.total_rates + 1,
+            rating: 5,
           },
         },
       });
 
-      controller.expectOne(addTypenameToDocument(BOOK_QUERY));
-      controller.verify();
-    });
-  });
+      tick();
 
-  describe('addComment()', () => {
-    const comment = {
-      _id: 'comment_2',
-      bookId: book._id,
-      author: { ...user, __typename: 'User' },
-      text: 'New comment',
-      createdAt: 1563132857195,
-      __typename: 'Comment',
-    };
-
-    const update = (store, { data: { addComment } }) => {
-      const data: { book: Book } = store.readQuery({
-        query: BOOK_QUERY,
-        variables: {
-          slug: book.slug,
-        },
-      });
-
-      store.writeQuery({
-        query: BOOK_QUERY,
-        variables: {
-          slug: book.slug,
-        },
-        data: {
-          ...data,
-          book: {
-            ...data.book,
-            comments: [...data.book.comments, addComment],
-          },
-        },
-      });
-    };
-
-    beforeEach(() => {
-      service.getBook(book.slug).valueChanges.subscribe();
-      controller.expectOne(addTypenameToDocument(BOOK_QUERY)).flush({
-        data: {
-          book: { ...bookWithTypename, comments: [] },
-        },
-      });
-    });
-
-    it('should call ADD_COMMENT_MUTATION', (done) => {
-      service.addComment(book._id, comment.text, update).subscribe(({ data: { addComment } }) => {
-        expect(addComment.text).toEqual(comment.text);
-        done();
-      });
-
-      const op = controller.expectOne(addTypenameToDocument(ADD_COMMENT_MUTATION));
-
-      expect(op.operation.variables.bookId).toEqual(book._id);
-      expect(op.operation.variables.text).toEqual(comment.text);
-
-      op.flush({
-        data: {
-          addComment: comment,
-        },
-      });
-
-      controller.expectOne(addTypenameToDocument(BOOK_QUERY));
-      controller.verify();
-    });
-
-    it('should update book in store with new comment', (done) => {
-      const apollo: Apollo = TestBed.inject(Apollo);
-
-      service.addComment(book._id, comment.text, update).subscribe(() => {
-        apollo
-          .query<{ book: Book }>({
-            query: BOOK_QUERY,
-            variables: {
-              slug: book.slug,
-            },
-          })
-          .subscribe(({ data: { book } }) => {
-            expect(book.comments.length).toEqual(1);
-            expect(book.comments[0].text).toEqual(comment.text);
-            done();
-          });
-      });
-
-      controller.expectOne(addTypenameToDocument(ADD_COMMENT_MUTATION)).flush({
-        data: {
-          addComment: comment,
-        },
-      });
-
-      controller.expectOne(addTypenameToDocument(BOOK_QUERY));
-      controller.verify();
-    });
+      expect(rows[0].rating).toEqual(5);
+      expect(rows[0].total_rating).toEqual(book.total_rating + 1);
+      expect(rows[0].total_rates).toEqual(book.total_rates + 1);
+    }));
   });
 });

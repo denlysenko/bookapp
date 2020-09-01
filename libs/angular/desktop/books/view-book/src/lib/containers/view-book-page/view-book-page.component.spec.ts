@@ -1,19 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { AuthService, BookmarksService, BooksService } from '@bookapp/angular/data-access';
+import { AuthService, BookmarksService, BookService } from '@bookapp/angular/data-access';
 import { RatingModule } from '@bookapp/angular/ui-desktop';
 import { BOOKMARKS } from '@bookapp/shared';
 import {
   book,
   MockAngularAuthService,
   MockAngularBookmarksService,
-  MockAngularBooksService,
+  MockAngularBookService,
   user,
 } from '@bookapp/testing';
 
@@ -22,7 +22,7 @@ import { ViewBookPageComponent } from './view-book-page.component';
 describe('ViewBookPageComponent', () => {
   let component: ViewBookPageComponent;
   let fixture: ComponentFixture<ViewBookPageComponent>;
-  let booksService: BooksService;
+  let bookService: BookService;
   let bookmarksService: BookmarksService;
 
   beforeEach(async(() => {
@@ -44,28 +44,36 @@ describe('ViewBookPageComponent', () => {
             },
           },
         },
-        {
-          provide: BooksService,
-          useValue: MockAngularBooksService,
-        },
-        {
-          provide: BookmarksService,
-          useValue: MockAngularBookmarksService,
-        },
+
         {
           provide: AuthService,
           useValue: MockAngularAuthService,
         },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ViewBookPageComponent, {
+        set: {
+          providers: [
+            {
+              provide: BookService,
+              useValue: MockAngularBookService,
+            },
+            {
+              provide: BookmarksService,
+              useValue: MockAngularBookmarksService,
+            },
+          ],
+        },
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ViewBookPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    booksService = TestBed.inject(BooksService);
-    bookmarksService = TestBed.inject(BookmarksService);
+    bookService = fixture.debugElement.injector.get(BookService);
+    bookmarksService = fixture.debugElement.injector.get(BookmarksService);
   });
 
   it('should create', () => {
@@ -94,17 +102,20 @@ describe('ViewBookPageComponent', () => {
   });
 
   describe('submitComment()', () => {
-    it('should call booksService.addComment()', () => {
-      component.submitComment('bookId', 'text', 'slug');
-      expect(booksService.addComment).toHaveBeenCalled();
-    });
+    it('should call addComment()', fakeAsync(() => {
+      component.submitComment('bookId', 'text');
+      tick();
+      expect(bookService.addComment).toHaveBeenCalledWith('bookId', 'text');
+    }));
   });
 
   describe('rate()', () => {
-    it('should call booksService.rate()', () => {
-      component.rate({ bookId: 'bookId', rate: 5 }, 'slug');
-      expect(booksService.rateBook).toHaveBeenCalled();
-    });
+    it('should call bookService.rate()', fakeAsync(() => {
+      const event = { bookId: 'bookId', rate: 5 };
+      component.rate(event);
+      tick();
+      expect(bookService.rateBook).toHaveBeenCalledWith(event);
+    }));
   });
 
   describe('addToBookmarks()', () => {
@@ -116,6 +127,7 @@ describe('ViewBookPageComponent', () => {
       expect(bookmarksService.addToBookmarks).toHaveBeenCalled();
     });
   });
+
   describe('removeFromBookmarks()', () => {
     it('should call bookmarksService.removeFromBookmarks()', () => {
       component.removeFromBookmarks({

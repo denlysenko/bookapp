@@ -1,5 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
+import { InMemoryCache } from '@apollo/client/core';
+import { addTypenameToDocument } from '@apollo/client/utilities';
+
 import {
   AUTH_TOKEN,
   RouterExtensions,
@@ -15,13 +18,10 @@ import {
   user,
 } from '@bookapp/testing';
 
-import { InMemoryCache } from '@apollo/client/core';
-import { addTypenameToDocument } from '@apollo/client/utilities';
-
 import {
-  APOLLO_TESTING_CACHE,
   ApolloTestingController,
   ApolloTestingModule,
+  APOLLO_TESTING_CACHE,
 } from 'apollo-angular/testing';
 
 import { AuthService } from './auth.service';
@@ -157,7 +157,7 @@ describe('AuthService', () => {
     });
   });
 
-  describe('me()', () => {
+  describe('watchMe()', () => {
     beforeEach(() => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
@@ -188,7 +188,7 @@ describe('AuthService', () => {
     });
 
     it('should return logged user', (done) => {
-      service.me().valueChanges.subscribe(({ data: { me } }) => {
+      service.watchMe().subscribe(({ data: { me } }) => {
         expect(me._id).toEqual(user._id);
         done();
       });

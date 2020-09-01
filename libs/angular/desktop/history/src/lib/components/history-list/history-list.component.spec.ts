@@ -3,6 +3,8 @@ import { HAMMER_LOADER } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { DEFAULT_LIMIT } from '@bookapp/angular/core';
+
 import { HistoryModule } from '../../history.module';
 import { HistoryListComponent } from './history-list.component';
 
@@ -25,6 +27,14 @@ describe('HistoryListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HistoryListComponent);
     component = fixture.componentInstance;
+    component.sorting = {
+      active: 'createdAt',
+      direction: 'desc',
+    };
+    component.pagination = {
+      skip: 0,
+      first: DEFAULT_LIMIT,
+    };
     fixture.detectChanges();
   });
 

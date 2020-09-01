@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -32,12 +32,19 @@ describe('BuyBooksPageComponent', () => {
           provide: StoreService,
           useValue: MockStoreService,
         },
-        {
-          provide: BooksService,
-          useValue: MockAngularBooksService,
-        },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(BuyBooksPageComponent, {
+        set: {
+          providers: [
+            {
+              provide: BooksService,
+              useValue: MockAngularBooksService,
+            },
+          ],
+        },
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -45,7 +52,7 @@ describe('BuyBooksPageComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     storeService = TestBed.inject(StoreService);
-    booksService = TestBed.inject(BooksService);
+    booksService = fixture.debugElement.injector.get(BooksService);
   });
 
   it('should create', () => {
@@ -69,22 +76,7 @@ describe('BuyBooksPageComponent', () => {
         sortValue: 'createdAt_desc',
       };
 
-      TestBed.resetTestingModule();
-      TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, RouterTestingModule, BuyBooksModule],
-        providers: [
-          {
-            provide: StoreService,
-            useValue: {
-              get: jest.fn().mockReturnValue(filterInStore),
-            },
-          },
-          {
-            provide: BooksService,
-            useValue: MockAngularBooksService,
-          },
-        ],
-      }).compileComponents();
+      jest.spyOn(storeService, 'get').mockReturnValueOnce(filterInStore);
 
       fixture = TestBed.createComponent(BuyBooksPageComponent);
       component = fixture.componentInstance;
@@ -128,7 +120,7 @@ describe('BuyBooksPageComponent', () => {
     });
 
     it('should refetch books', () => {
-      expect(component.booksQueryRef.refetch).toHaveBeenCalledWith({
+      expect(booksService.refetch).toHaveBeenCalledWith({
         orderBy: 'title_asc',
         skip: 0,
       });
@@ -158,7 +150,7 @@ describe('BuyBooksPageComponent', () => {
     });
 
     it('should refetch books', () => {
-      expect(component.booksQueryRef.refetch).toHaveBeenCalledWith({
+      expect(booksService.refetch).toHaveBeenCalledWith({
         filter: { field: 'title', search: 'title' },
         skip: 0,
       });
@@ -168,47 +160,31 @@ describe('BuyBooksPageComponent', () => {
   describe('loadMore()', () => {
     it('should not fetchMore if there are no items', () => {
       component.loadMore();
-      expect(component.booksQueryRef.fetchMore).not.toHaveBeenCalled();
+      expect(booksService.loadMore).not.toHaveBeenCalled();
     });
 
     it('should fetchMore books', () => {
-      TestBed.resetTestingModule();
-      TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, RouterTestingModule, BuyBooksModule],
-        providers: [
-          {
-            provide: StoreService,
-            useValue: MockStoreService,
-          },
-          {
-            provide: BooksService,
-            useValue: {
-              ...MockAngularBooksService,
-              getBooks: jest.fn().mockImplementationOnce(() => ({
-                valueChanges: of({
-                  data: { books: { rows: [book], count: 3 } },
-                }),
-                refetch: jest.fn(),
-                fetchMore: jest.fn(),
-              })),
-            },
-          },
-        ],
-      }).compileComponents();
+      jest.spyOn(booksService, 'watchBooks').mockImplementationOnce(() =>
+        of({
+          data: { books: { rows: [book], count: 3 } },
+        } as any)
+      );
 
       fixture = TestBed.createComponent(BuyBooksPageComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
 
       component.loadMore();
-      expect(component.booksQueryRef.fetchMore).toHaveBeenCalled();
+      expect(booksService.loadMore).toHaveBeenCalledWith(10);
     });
   });
 
   describe('rate()', () => {
-    it('should rate book', () => {
-      component.rate({ bookId: book._id, rate: 5 });
-      expect(booksService.rateBook).toHaveBeenCalled();
-    });
+    it('should rate book', fakeAsync(() => {
+      const event = { bookId: book._id, rate: 5 };
+      component.rate(event);
+      tick();
+      expect(booksService.rateBook).toHaveBeenCalledWith(event);
+    }));
   });
 });

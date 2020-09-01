@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { AuthService, ProfileService } from '@bookapp/angular/data-access';
@@ -58,7 +58,7 @@ describe('ProfilePageComponent', () => {
       });
     });
 
-    it('should propagate error', (done) => {
+    it('should propagate error', fakeAsync(() => {
       const error: any = { message: 'Error' };
 
       jest.spyOn(profileService, 'update').mockImplementationOnce(() => of({ errors: [error] }));
@@ -67,12 +67,12 @@ describe('ProfilePageComponent', () => {
 
       component.error$.subscribe((err) => {
         result = err;
-        done();
       });
 
       component.updateProfile({ id: user._id, user: { firstName } });
+      tick();
 
       expect(result).toEqual(error);
-    });
+    }));
   });
 });

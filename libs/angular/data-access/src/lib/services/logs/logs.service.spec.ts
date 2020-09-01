@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 
+import { InMemoryCache } from '@apollo/client/core';
+import { addTypenameToDocument } from '@apollo/client/utilities';
+
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import { LAST_LOGS_QUERY, LOGS_QUERY } from '@bookapp/shared';
 import { book, log } from '@bookapp/testing';
 
-import { InMemoryCache } from '@apollo/client/core';
-import { addTypenameToDocument } from '@apollo/client/utilities';
-
 import {
-  APOLLO_TESTING_CACHE,
   ApolloTestingController,
   ApolloTestingModule,
+  APOLLO_TESTING_CACHE,
 } from 'apollo-angular/testing';
 
 import { DEFAULT_ORDER_BY, LogsService } from './logs.service';
@@ -44,9 +44,9 @@ describe('LogsService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('getLastLogs()', () => {
+  describe('watchLastLogs()', () => {
     it('should get last logs', (done) => {
-      service.getLastLogs().valueChanges.subscribe(
+      service.watchLastLogs().subscribe(
         ({
           data: {
             logs: { rows },
@@ -82,22 +82,19 @@ describe('LogsService', () => {
     });
   });
 
-  describe('getLogs()', () => {
-    it('should get logs', (done) => {
-      service
-        .getLogs()
-
-        .valueChanges.subscribe(
-          ({
-            data: {
-              logs: { rows },
-            },
-          }) => {
-            const [l] = rows;
-            expect(l.action).toEqual(log.action);
-            done();
-          }
-        );
+  describe('watchAllLogs()', () => {
+    it('should get all logs', (done) => {
+      service.watchAllLogs().subscribe(
+        ({
+          data: {
+            logs: { rows },
+          },
+        }) => {
+          const [l] = rows;
+          expect(l.action).toEqual(log.action);
+          done();
+        }
+      );
 
       const op = controller.expectOne(addTypenameToDocument(LOGS_QUERY));
 

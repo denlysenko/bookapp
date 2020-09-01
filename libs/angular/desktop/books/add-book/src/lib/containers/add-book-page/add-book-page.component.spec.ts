@@ -6,10 +6,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { FeedbackPlatformService, UploadPlatformService } from '@bookapp/angular/core';
-import { BooksService } from '@bookapp/angular/data-access';
+import { AddBookService } from '@bookapp/angular/data-access';
 import {
   book,
-  MockAngularBooksService,
+  MockAngularAddBookService,
   MockFeedbackPlatformService,
   MockMatDialog,
 } from '@bookapp/testing';
@@ -31,7 +31,7 @@ const formValue = {
 describe('AddBookPageComponent', () => {
   let component: AddBookPageComponent;
   let fixture: ComponentFixture<AddBookPageComponent>;
-  let booksService: BooksService;
+  let addBookService: AddBookService;
   let feedbackService: FeedbackPlatformService;
 
   beforeEach(async(() => {
@@ -49,8 +49,8 @@ describe('AddBookPageComponent', () => {
           useValue: MockMatDialog,
         },
         {
-          provide: BooksService,
-          useValue: MockAngularBooksService,
+          provide: AddBookService,
+          useValue: MockAngularAddBookService,
         },
         {
           provide: ActivatedRoute,
@@ -72,7 +72,7 @@ describe('AddBookPageComponent', () => {
     fixture = TestBed.createComponent(AddBookPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    booksService = TestBed.inject(BooksService);
+    addBookService = TestBed.inject(AddBookService);
     feedbackService = TestBed.inject(FeedbackPlatformService);
   });
 
@@ -83,12 +83,12 @@ describe('AddBookPageComponent', () => {
   describe('save()', () => {
     it('should create book', () => {
       component.save(formValue);
-      expect(booksService.create).toHaveBeenCalledWith(formValue);
+      expect(addBookService.create).toHaveBeenCalledWith(formValue);
     });
 
     it('should update book', () => {
       component.save({ _id: book._id, ...formValue });
-      expect(booksService.update).toHaveBeenCalledWith(book._id, formValue);
+      expect(addBookService.update).toHaveBeenCalledWith(book._id, formValue);
     });
 
     it('should show success message', () => {
@@ -98,7 +98,7 @@ describe('AddBookPageComponent', () => {
 
     it('should propagate error', (done) => {
       const error: any = { message: 'Error message' };
-      jest.spyOn(booksService, 'create').mockImplementationOnce(() => of({ errors: [error] }));
+      jest.spyOn(addBookService, 'create').mockImplementationOnce(() => of({ errors: [error] }));
 
       component.save(formValue);
       component.error$.subscribe((err) => {

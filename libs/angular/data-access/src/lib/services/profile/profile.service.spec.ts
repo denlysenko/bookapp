@@ -1,5 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
+import { InMemoryCache } from '@apollo/client/core';
+import { addTypenameToDocument } from '@apollo/client/utilities';
+
 import { RouterExtensions, StoragePlatformService, StoreService } from '@bookapp/angular/core';
 import { ME_QUERY, UPDATE_USER_MUTATION } from '@bookapp/shared';
 import {
@@ -9,13 +12,10 @@ import {
   user,
 } from '@bookapp/testing';
 
-import { InMemoryCache } from '@apollo/client/core';
-import { addTypenameToDocument } from '@apollo/client/utilities';
-
 import {
-  APOLLO_TESTING_CACHE,
   ApolloTestingController,
   ApolloTestingModule,
+  APOLLO_TESTING_CACHE,
 } from 'apollo-angular/testing';
 
 import { AuthService } from '../auth/auth.service';
@@ -104,7 +104,7 @@ describe('ProfileService', () => {
       const authService: AuthService = TestBed.inject(AuthService);
       const reading = { bookmark: 'bookmark', epubUrl: 'epubUrl' };
 
-      authService.me().valueChanges.subscribe();
+      authService.watchMe().subscribe();
 
       service.saveReading(user._id, reading).subscribe(({ data: { updateUser } }) => {
         expect(updateUser).toEqual({

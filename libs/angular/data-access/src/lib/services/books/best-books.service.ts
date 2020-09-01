@@ -76,27 +76,22 @@ export class BestBooksService {
         }
 
         this.bestBooksQueryRef.updateQuery((prevData) => {
-          if (rateBook.rating < 5) {
-            const updatedBookIndex = prevData.bestBooks.rows.findIndex(({ _id }) => _id === bookId);
-
-            if (updatedBookIndex === -1) {
-              return prevData;
-            }
-
-            prevData.bestBooks.rows.splice(updatedBookIndex, 1);
-
-            return {
-              bestBooks: {
-                ...prevData.bestBooks,
-                count: prevData.bestBooks.count - 1,
-              },
-            };
-          }
-
           const index = prevData.bestBooks.rows.findIndex(({ _id }) => _id === bookId);
 
           if (index === -1) {
             return prevData;
+          }
+
+          if (rateBook.rating < 5) {
+            const rows = [...prevData.bestBooks.rows];
+            rows.splice(index, 1);
+
+            return {
+              bestBooks: {
+                rows,
+                count: prevData.bestBooks.count - 1,
+              },
+            };
           }
 
           const updatedBook = {

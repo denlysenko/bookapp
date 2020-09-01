@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { RouterExtensions } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
@@ -76,7 +76,7 @@ describe('AuthPageComponent', () => {
       expect(router.navigate).toHaveBeenCalled();
     });
 
-    it('should propagate error', (done) => {
+    it('should propagate error', fakeAsync(() => {
       const error: any = { message: 'Error' };
 
       jest.spyOn(authService, 'login').mockImplementationOnce(() => of({ errors: [error] }));
@@ -85,15 +85,15 @@ describe('AuthPageComponent', () => {
 
       component.error$.subscribe((err) => {
         result = err;
-        done();
       });
 
       component.submit({
         isLoggingIn: true,
         credentials: { email, password },
       });
+      tick();
 
       expect(result).toEqual(error);
-    });
+    }));
   });
 });

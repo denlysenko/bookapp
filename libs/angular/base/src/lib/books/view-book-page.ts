@@ -31,7 +31,7 @@ export abstract class ViewBookPageBase {
     return this.loading.asObservable();
   }
 
-  submitComment(bookId: string, text: string, slug: string) {
+  submitComment(bookId: string, text: string) {
     this.loading.next(true);
 
     this.bookService
