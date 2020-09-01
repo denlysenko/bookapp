@@ -60,11 +60,17 @@ describe('Add Book Page', () => {
       });
 
       context('valid form', () => {
+        beforeEach(() => {
+          cy.server().route('POST', '/graphql?createBook').as('createBook');
+        });
+
         it('should save free book', () => {
           cy.get(titleField).type('Free Book');
           cy.get(authorField).type('Genius');
           cy.get(descriptionField).type('Free Book from Genius author');
           cy.get(saveBtn).click();
+
+          cy.wait('@createBook');
 
           cy.get('.mat-snack-bar-container').should('be.visible').and('contain', 'Book created!');
 
@@ -83,6 +89,8 @@ describe('Add Book Page', () => {
           cy.get(paidCheckbox).click();
           cy.get(priceField).type('5');
           cy.get(saveBtn).click();
+
+          cy.wait('@createBook');
 
           cy.get('.mat-snack-bar-container').should('be.visible').and('contain', 'Book created!');
 
@@ -122,6 +130,8 @@ describe('Add Book Page', () => {
           });
 
           cy.get('[data-test="file-input"]').attachFile('icon.png', { subjectType: 'input' });
+          // wait until image cropper initialized
+          cy.wait(800);
           cy.get('[data-test=upload]').click();
 
           cy.get('[data-test=cover]').should('have.attr', 'src', publicUrl);
@@ -182,6 +192,7 @@ describe('Add Book Page', () => {
     context('role admin', () => {
       beforeEach(() => {
         cy.login('admin@test.com', 'password');
+        cy.server().route('POST', '/graphql?updateBook').as('updateBook');
         cy.get('[data-test=list-item]').first().click();
         cy.get('#edit').click();
       });
@@ -189,6 +200,8 @@ describe('Add Book Page', () => {
       it('should update book', () => {
         cy.get(titleField).clear().type('Updated');
         cy.get(saveBtn).click();
+
+        cy.wait('@updateBook');
 
         cy.get('.mat-snack-bar-container').should('be.visible').and('contain', 'Book updated!');
 

@@ -15,8 +15,9 @@ describe('Profile page', () => {
   beforeEach(() => {
     cy.exec('npm run seed:db');
     cy.login('user@test.com', 'password');
+    cy.server().route('POST', '/graphql?updateUser').as('updateUser');
     cy.get('#user-menu-toggler').click();
-    cy.contains('Edit Profile').click();
+    cy.contains('Edit Profile').click({ force: true });
   });
 
   context('invalid form', () => {
@@ -55,7 +56,7 @@ describe('Profile page', () => {
       cy.get(lastNameField).type('Test 1');
       cy.get(emailField).type('user1@test.com');
       cy.get(submitBtn).click();
-
+      cy.wait('@updateUser');
       cy.get('.mat-snack-bar-container').should('be.visible').and('contain', 'Profile updated');
 
       cy.get('.user-menu').should('contain', 'User 1 Test 1');
@@ -85,7 +86,10 @@ describe('Profile page', () => {
       cy.uploadOnServer({ publicUrl });
 
       cy.get('[data-test="file-input"]').attachFile('icon.png', { subjectType: 'input' });
+      // wait until image cropper initialized
+      cy.wait(800);
       cy.get('[data-test=upload]').click();
+      cy.wait('@updateUser');
       cy.get('.mat-snack-bar-container').should('be.visible').and('contain', 'Profile updated');
       cy.get('.avatar').should('have.attr', 'src', publicUrl);
       cy.get('[data-test=avatar]').should('have.attr', 'src', publicUrl);

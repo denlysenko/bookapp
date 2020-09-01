@@ -6,6 +6,7 @@ describe('Buy Books Page', () => {
   beforeEach(() => {
     cy.exec('npm run seed:db');
     cy.login('user@test.com', 'password');
+    cy.server().route('POST', '/graphql?paidBooks').as('paidBooks');
     cy.contains('Buy Books').click();
   });
 
@@ -15,21 +16,24 @@ describe('Buy Books Page', () => {
 
   it('should search a book', () => {
     cy.searchBooks('Littl');
+    cy.wait('@paidBooks');
     cy.get('[data-test=list-item]')
       .should('have.length', 1)
       .and('contain', 'Little Town on the Prairie');
   });
 
-  it('should filter books by most recent', () => {
-    cy.filterBooks('recent');
+  it('should filter books by all', () => {
+    cy.filterBooks('all');
+    cy.wait('@paidBooks');
     cy.get('[data-test=list-item]')
       .first()
       .find('.title')
-      .should('contain', 'The Hound of the Baskervilles');
+      .should('contain', 'Little Town on the Prairie');
   });
 
   it('should filter books by most popular', () => {
     cy.filterBooks('popular');
+    cy.wait('@paidBooks');
     cy.get('[data-test=list-item]')
       .first()
       .find('.title')
@@ -37,13 +41,16 @@ describe('Buy Books Page', () => {
   });
 
   it('should rate a book', () => {
+    cy.server().route('POST', '/graphql?rateBook').as('rateBook');
     cy.rateBook(1, 5);
+    cy.wait('@rateBook');
     cy.get('.logs .mat-list-item').first().should('contain', 'You rated a Book');
   });
 
   it('should open book view page', () => {
+    cy.server().route('POST', '/graphql?book').as('book');
     cy.get('[data-test=list-item]').first().click();
-
+    cy.wait('@book');
     cy.url().should('contain', 'the-hound-of-the-baskervilles');
   });
 });
