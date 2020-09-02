@@ -14,7 +14,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import * as path from 'path';
-import * as uuidv4 from 'uuid/v4';
+import { uuid } from 'uuidv4';
 
 import { FILE_ERRORS } from './constants';
 import { FilesService } from './files.service';
@@ -45,7 +45,7 @@ export class FilesController {
       throw new BadRequestException(FILE_ERRORS.INVALID_MIMETYPE_ERR);
     }
 
-    const filename = `${uuidv4()}${path.extname(file.originalname)}`;
+    const filename = `${uuid()}${path.extname(file.originalname)}`;
     return this.filesService.uploadToBucket(file.buffer, filename);
   }
 

@@ -1,8 +1,8 @@
 FROM node:12.13.1-alpine
 LABEL author="denlysenko"
 WORKDIR /var/www/bookapp-api
-COPY package.json .
-COPY package-lock.json .
+COPY dist/apps/api/package.json .
+COPY dist/apps/api/package-lock.json .
 COPY libs/api/graphql/src/lib/schemas/ ./libs/api/graphql/src/lib/schemas/
 RUN npm install --production
 COPY .env.production .
