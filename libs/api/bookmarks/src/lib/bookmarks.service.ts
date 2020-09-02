@@ -1,6 +1,7 @@
 import { LogDto, LogsService } from '@bookapp/api/logs';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
-import { ApiResponse, BOOKMARKS, UserActions } from '@bookapp/shared';
+import { BOOKMARKS, UserActions } from '@bookapp/shared/enums';
+import { ApiResponse } from '@bookapp/shared/interfaces';
 
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';

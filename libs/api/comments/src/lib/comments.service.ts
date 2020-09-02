@@ -1,7 +1,7 @@
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogDto, LogsService } from '@bookapp/api/logs';
 import { ModelNames } from '@bookapp/api/shared';
-import { UserActions } from '@bookapp/shared';
+import { UserActions } from '@bookapp/shared/enums';
 
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CREATE_BOOK_MUTATION, UPDATE_BOOK_MUTATION } from '@bookapp/shared';
+import { CREATE_BOOK_MUTATION, UPDATE_BOOK_MUTATION } from '@bookapp/shared/queries';
 import { book } from '@bookapp/testing';
 
 import { ApolloTestingController, ApolloTestingModule } from 'apollo-angular/testing';

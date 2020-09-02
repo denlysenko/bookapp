@@ -5,12 +5,10 @@ import {
   ApiResponse,
   Book,
   BooksFilterInput,
-  FREE_BOOKS_QUERY,
-  PAID_BOOKS_QUERY,
   RateBookEvent,
   RateBookResponse,
-  RATE_BOOK_MUTATION,
-} from '@bookapp/shared';
+} from '@bookapp/shared/interfaces';
+import { FREE_BOOKS_QUERY, PAID_BOOKS_QUERY, RATE_BOOK_MUTATION } from '@bookapp/shared/queries';
 
 import { Apollo, QueryRef } from 'apollo-angular';
 

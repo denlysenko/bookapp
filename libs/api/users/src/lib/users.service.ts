@@ -1,7 +1,7 @@
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
 import { FilesService } from '@bookapp/api/files';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
-import { ApiResponse, AuthPayload } from '@bookapp/shared';
+import { ApiResponse, AuthPayload } from '@bookapp/shared/interfaces';
 import { extractFileKey } from '@bookapp/utils';
 
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';

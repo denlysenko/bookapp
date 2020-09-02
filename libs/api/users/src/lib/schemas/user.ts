@@ -1,5 +1,5 @@
 // tslint:disable:only-arrow-functions
-import { ROLES } from '@bookapp/shared';
+import { ROLES } from '@bookapp/shared/enums';
 
 import { pbkdf2, pbkdf2Sync, randomBytes } from 'crypto';
 import { Schema } from 'mongoose';

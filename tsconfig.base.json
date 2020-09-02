@@ -42,7 +42,6 @@
       "@bookapp/angular/desktop/profile": ["libs/angular/desktop/profile/src/index.ts"],
       "@bookapp/angular/ui-desktop": ["libs/angular/ui/ui-desktop/src/index.ts"],
       "@bookapp/angular/mobile/profile": ["libs/angular/mobile/profile/src/index.ts"],
-      "@bookapp/shared": ["libs/shared/src/index.ts"],
       "@bookapp/utils": ["libs/utils/src/index.ts"],
       "@bookapp/angular/desktop/books/add-book": [
         "libs/angular/desktop/books/add-book/src/index.ts"
@@ -82,7 +81,11 @@
       ],
       "@bookapp/angular/mobile/books/read-book": [
         "libs/angular/mobile/books/read-book/src/index.ts"
-      ]
+      ],
+      "@bookapp/shared/interfaces": ["libs/shared/interfaces/src/index.ts"],
+      "@bookapp/shared/enums": ["libs/shared/enums/src/index.ts"],
+      "@bookapp/shared/queries": ["libs/shared/queries/src/index.ts"],
+      "@bookapp/shared/constants": ["libs/shared/constants/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

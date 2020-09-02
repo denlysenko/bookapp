@@ -1,6 +1,6 @@
 import { DEFAULT_LIMIT, StoreService } from '@bookapp/angular/core';
 import { LogsService } from '@bookapp/angular/data-access';
-import { Log, LogsFilter } from '@bookapp/shared';
+import { Log, LogsFilter } from '@bookapp/shared/interfaces';
 
 import { isNil } from 'lodash';
 

@@ -3,7 +3,8 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { InMemoryCache } from '@apollo/client/core';
 import { addTypenameToDocument } from '@apollo/client/utilities';
 
-import { BEST_BOOKS_QUERY, Book, RATE_BOOK_MUTATION } from '@bookapp/shared';
+import { Book } from '@bookapp/shared/interfaces';
+import { BEST_BOOKS_QUERY, RATE_BOOK_MUTATION } from '@bookapp/shared/queries';
 import { book } from '@bookapp/testing';
 
 import {

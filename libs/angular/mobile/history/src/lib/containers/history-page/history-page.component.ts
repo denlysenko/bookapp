@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { HistoryPageBase } from '@bookapp/angular/base';
 import { DEFAULT_LIMIT, StoreService } from '@bookapp/angular/core';
 import { LogsService } from '@bookapp/angular/data-access';
-import { LogsFilter } from '@bookapp/shared';
+import { LogsFilter } from '@bookapp/shared/interfaces';
 
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 

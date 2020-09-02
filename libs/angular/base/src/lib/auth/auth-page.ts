@@ -1,6 +1,6 @@
 import { RouterExtensions } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
-import { SignupCredentials } from '@bookapp/shared';
+import { SignupCredentials } from '@bookapp/shared/interfaces';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';

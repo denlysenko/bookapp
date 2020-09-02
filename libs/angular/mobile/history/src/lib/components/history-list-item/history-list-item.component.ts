@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { Log, UserActionsDesc } from '@bookapp/shared';
+import { UserActionsDesc } from '@bookapp/shared/enums';
+import { Log } from '@bookapp/shared/interfaces';
 
 @Component({
   selector: 'bookapp-history-list-item',

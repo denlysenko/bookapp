@@ -5,7 +5,7 @@ import { AuthPageComponent } from '@bookapp/angular/desktop/auth';
 import { BrowseBooksPageComponent } from '@bookapp/angular/desktop/books/browse-books';
 import { MainLayoutComponent } from '@bookapp/angular/desktop/main-layout';
 import { AuthGuard, RolesGuard } from '@bookapp/angular/shared';
-import { BOOKMARKS, ROLES } from '@bookapp/shared';
+import { BOOKMARKS, ROLES } from '@bookapp/shared/enums';
 
 // tslint:disable: no-duplicate-string
 @NgModule({

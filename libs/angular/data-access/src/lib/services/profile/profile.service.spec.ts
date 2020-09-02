@@ -4,7 +4,7 @@ import { InMemoryCache } from '@apollo/client/core';
 import { addTypenameToDocument } from '@apollo/client/utilities';
 
 import { RouterExtensions, StoragePlatformService, StoreService } from '@bookapp/angular/core';
-import { ME_QUERY, UPDATE_USER_MUTATION } from '@bookapp/shared';
+import { ME_QUERY, UPDATE_USER_MUTATION } from '@bookapp/shared/queries';
 import {
   MockRouterExtensions,
   MockStoragePlatformService,

@@ -4,7 +4,7 @@ import { BooksPageBase } from '@bookapp/angular/base';
 import { RouterExtensions, StoreService } from '@bookapp/angular/core';
 import { BooksService } from '@bookapp/angular/data-access';
 import { BookSearchComponent, BooksListComponent } from '@bookapp/angular/ui-mobile';
-import { Book, BooksFilter } from '@bookapp/shared';
+import { Book, BooksFilter } from '@bookapp/shared/interfaces';
 
 import { ModalDialogOptions, ModalDialogService } from 'nativescript-angular/modal-dialog';
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';

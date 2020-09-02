@@ -6,15 +6,13 @@ import {
   StoragePlatformService,
   StoreService,
 } from '@bookapp/angular/core';
+import { AuthPayload, SignupCredentials, User } from '@bookapp/shared/interfaces';
 import {
-  AuthPayload,
   LOGIN_MUTATION,
   LOGOUT_MUTATION,
   ME_QUERY,
-  SignupCredentials,
   SIGNUP_MUTATION,
-  User,
-} from '@bookapp/shared';
+} from '@bookapp/shared/queries';
 
 import { Apollo } from 'apollo-angular';
 

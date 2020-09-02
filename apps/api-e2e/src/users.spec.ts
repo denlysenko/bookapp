@@ -5,7 +5,7 @@ import { AuthTokensService } from '@bookapp/api/auth-tokens';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
 import { UsersModule, UsersService, USER_VALIDATION_ERRORS } from '@bookapp/api/users';
-import { ROLES } from '@bookapp/shared';
+import { ROLES } from '@bookapp/shared/enums';
 import {
   authPayload,
   MockAuthTokensService,

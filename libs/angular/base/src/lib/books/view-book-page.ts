@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 
 import { BookmarksService, BookService } from '@bookapp/angular/data-access';
-import { Book, BookmarkEvent, RateBookEvent } from '@bookapp/shared';
+import { Book, BookmarkEvent, RateBookEvent } from '@bookapp/shared/interfaces';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, finalize, map } from 'rxjs/operators';

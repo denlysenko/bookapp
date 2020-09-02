@@ -1,6 +1,7 @@
 import { EventEmitter, Input, Output, Directive } from '@angular/core';
 
-import { Book, BookmarkEvent, BOOKMARKS } from '@bookapp/shared';
+import { BOOKMARKS } from '@bookapp/shared/enums';
+import { Book, BookmarkEvent } from '@bookapp/shared/interfaces';
 
 @Directive()
 export abstract class BookDetailsBase {

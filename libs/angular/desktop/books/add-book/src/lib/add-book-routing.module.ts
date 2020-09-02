@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { EditBookResolver } from '@bookapp/angular/data-access';
 import { CanDeactivateGuard } from '@bookapp/angular/shared';
-import { ROLES } from '@bookapp/shared';
+import { ROLES } from '@bookapp/shared/enums';
 
 import { AddBookPageComponent } from './containers/add-book-page/add-book-page.component';
 

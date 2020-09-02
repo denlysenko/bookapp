@@ -1,6 +1,6 @@
 import { EventEmitter, Input, Output, Directive } from '@angular/core';
 
-import { Comment } from '@bookapp/shared';
+import { Comment } from '@bookapp/shared/interfaces';
 
 @Directive()
 export abstract class BookCommentsBase {

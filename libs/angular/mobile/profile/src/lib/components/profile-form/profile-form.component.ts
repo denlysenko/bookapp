@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 
 import { NsBaseForm } from '@bookapp/angular/base';
 import { FeedbackPlatformService, UploadPlatformService } from '@bookapp/angular/core';
-import { ProfileForm, User } from '@bookapp/shared';
+import { ProfileForm, User } from '@bookapp/shared/interfaces';
 
 import { requestPermissions, takePicture } from 'nativescript-camera';
 import { ImageCropper } from 'nativescript-imagecropper';

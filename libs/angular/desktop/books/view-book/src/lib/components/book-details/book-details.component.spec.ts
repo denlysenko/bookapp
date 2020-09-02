@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { RatingModule } from '@bookapp/angular/ui-desktop';
-import { BOOKMARKS, ROLES } from '@bookapp/shared';
+import { BOOKMARKS, ROLES } from '@bookapp/shared/enums';
 import { book, user } from '@bookapp/testing';
 
 import { BookDetailsComponent } from './book-details.component';

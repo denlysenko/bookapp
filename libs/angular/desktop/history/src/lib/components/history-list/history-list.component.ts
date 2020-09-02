@@ -3,7 +3,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
-import { Log, Pagination, Sorting, UserActionsDesc } from '@bookapp/shared';
+import { UserActionsDesc } from '@bookapp/shared/enums';
+import { Log, Pagination, Sorting } from '@bookapp/shared/interfaces';
 
 @Component({
   selector: 'bookapp-history-list',

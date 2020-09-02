@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { Log } from '@bookapp/shared';
+import { Log } from '@bookapp/shared/interfaces';
 
 import { ListViewLoadOnDemandMode } from 'nativescript-ui-listview';
 import { RadListViewComponent } from 'nativescript-ui-listview/angular/listview-directives';

@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { categories, navs } from '@bookapp/angular/shared';
-import { Log, ROLES, User, UserActionsDesc } from '@bookapp/shared';
+import { ROLES, UserActionsDesc } from '@bookapp/shared/enums';
+import { Log, User } from '@bookapp/shared/interfaces';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 

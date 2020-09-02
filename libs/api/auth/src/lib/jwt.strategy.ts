@@ -1,6 +1,6 @@
 import { AUTH_ERRORS } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
-import { JwtPayload } from '@bookapp/shared';
+import { JwtPayload } from '@bookapp/shared/interfaces';
 
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';

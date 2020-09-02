@@ -34,7 +34,7 @@ export class ReadBookPageComponent extends ReadBookBase implements OnDestroy {
     this.webViewInterface = new WebViewInterface(this.epubWebView, '~/assets/www/index.html');
 
     this.epubWebView.on('loadFinished', (args: EventData) => {
-      const webview: WebView = args.object as WebView;
+      const webview: WebView = args.object;
 
       if (webview.android) {
         this.epubWebView.android.getSettings().setAllowContentAccess(true);

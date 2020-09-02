@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { BookmarksService } from '@bookapp/angular/data-access';
-import { BOOKMARKS } from '@bookapp/shared';
+import { BOOKMARKS } from '@bookapp/shared/enums';
 import { book, bookmark, MockAngularBookmarksService } from '@bookapp/testing';
 
 import { of } from 'rxjs';

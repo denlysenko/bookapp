@@ -1,14 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
-import {
-  ApiResponse,
-  LAST_LOGS_QUERY,
-  Log,
-  LOGS_QUERY,
-  LOG_CREATED_SUBSCRIPTION,
-  LogsFilter,
-} from '@bookapp/shared';
+import { ApiResponse, Log, LogsFilter } from '@bookapp/shared/interfaces';
+import { LAST_LOGS_QUERY, LOGS_QUERY, LOG_CREATED_SUBSCRIPTION } from '@bookapp/shared/queries';
 
 import { Apollo, QueryRef } from 'apollo-angular';
 import { EmptyObject } from 'apollo-angular/types';

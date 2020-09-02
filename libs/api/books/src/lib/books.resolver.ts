@@ -1,7 +1,8 @@
 import { CommentsService } from '@bookapp/api/comments';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { ApiQuery, GqlAuthGuard, RequestWithUser, Roles, RolesGuard } from '@bookapp/api/shared';
-import { Book, ROLES } from '@bookapp/shared';
+import { ROLES } from '@bookapp/shared/enums';
+import { Book } from '@bookapp/shared/interfaces';
 import { convertToMongoSortQuery } from '@bookapp/utils';
 
 import { Inject, UseGuards } from '@nestjs/common';

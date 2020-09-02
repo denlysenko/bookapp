@@ -1,4 +1,4 @@
-import { UploadResponse } from '@bookapp/shared';
+import { UploadResponse } from '@bookapp/shared/interfaces';
 
 import { Bucket, Storage } from '@google-cloud/storage';
 

@@ -1,7 +1,7 @@
 // tslint:disable: no-big-function
 import { LogsService } from '@bookapp/api/logs';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
-import { BOOKMARKS, UserActions } from '@bookapp/shared';
+import { BOOKMARKS, UserActions } from '@bookapp/shared/enums';
 import {
   MockConfigService,
   MockLogsService,

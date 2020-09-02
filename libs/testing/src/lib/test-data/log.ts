@@ -1,4 +1,4 @@
-import { UserActions } from '@bookapp/shared';
+import { UserActions } from '@bookapp/shared/enums';
 
 export const log = {
   _id: 'id',

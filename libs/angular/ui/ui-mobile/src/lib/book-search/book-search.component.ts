@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { BaseComponent } from '@bookapp/angular/base';
 import { BooksService } from '@bookapp/angular/data-access';
-import { Book } from '@bookapp/shared';
+import { Book } from '@bookapp/shared/interfaces';
 
 import { ModalDialogParams } from 'nativescript-angular/modal-dialog';
 

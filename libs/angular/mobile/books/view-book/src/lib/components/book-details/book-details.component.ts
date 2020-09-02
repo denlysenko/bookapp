@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 
 import { BookDetailsBase } from '@bookapp/angular/base';
-import { Book } from '@bookapp/shared';
+import { Book } from '@bookapp/shared/interfaces';
 
 @Component({
   moduleId: module.id,

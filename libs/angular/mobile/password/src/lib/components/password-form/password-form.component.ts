@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 
 import { NsBaseForm } from '@bookapp/angular/base';
 import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { PasswordForm } from '@bookapp/shared';
+import { PasswordForm } from '@bookapp/shared/interfaces';
 
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import * as app from 'tns-core-modules/application';

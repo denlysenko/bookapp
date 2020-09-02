@@ -6,7 +6,8 @@ import { InMemoryCache } from '@apollo/client/core';
 import { addTypenameToDocument } from '@apollo/client/utilities';
 
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
-import { Book, FREE_BOOKS_QUERY, PAID_BOOKS_QUERY, RATE_BOOK_MUTATION } from '@bookapp/shared';
+import { Book } from '@bookapp/shared/interfaces';
+import { FREE_BOOKS_QUERY, PAID_BOOKS_QUERY, RATE_BOOK_MUTATION } from '@bookapp/shared/queries';
 import { book } from '@bookapp/testing';
 
 import {

@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
 
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
+import { ApiResponse, Bookmark, RateBookEvent, RateBookResponse } from '@bookapp/shared/interfaces';
 import {
   ADD_TO_BOOKMARKS_MUTATION,
-  ApiResponse,
-  Bookmark,
   BOOKMARKS_BY_USER_AND_BOOK_QUERY,
   BOOKMARKS_QUERY,
   REMOVE_FROM_BOOKMARKS_MUTATION,
-  RateBookEvent,
-  RateBookResponse,
   RATE_BOOK_MUTATION,
-} from '@bookapp/shared';
+} from '@bookapp/shared/queries';
 
 import { Apollo, QueryRef } from 'apollo-angular';
 

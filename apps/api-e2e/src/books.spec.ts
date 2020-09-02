@@ -5,7 +5,7 @@ import { BooksModule, BooksService, BOOK_VALIDATION_ERRORS } from '@bookapp/api/
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
-import { ROLES } from '@bookapp/shared';
+import { ROLES } from '@bookapp/shared/enums';
 import {
   book,
   MockBooksService,

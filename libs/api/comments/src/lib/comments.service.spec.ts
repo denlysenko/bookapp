@@ -1,7 +1,7 @@
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogsService } from '@bookapp/api/logs';
 import { ModelNames } from '@bookapp/api/shared';
-import { UserActions } from '@bookapp/shared';
+import { UserActions } from '@bookapp/shared/enums';
 import { MockConfigService, MockLogsService, MockModel, MockMongooseModel } from '@bookapp/testing';
 
 import { ConfigService } from '@nestjs/config';

@@ -2,7 +2,7 @@ import { ChangeDetectorRef, EventEmitter, Input, OnInit, Output, Directive } fro
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { SignupCredentials } from '@bookapp/shared';
+import { SignupCredentials } from '@bookapp/shared/interfaces';
 
 import { BaseForm } from '../core/base-form';
 

@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { AddBookService } from '@bookapp/angular/data-access';
 import { ConfirmDialogComponent } from '@bookapp/angular/ui-desktop';
-import { Book, BookFormModel } from '@bookapp/shared';
+import { Book, BookFormModel } from '@bookapp/shared/interfaces';
 
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { pluck, switchMap, switchMapTo, tap } from 'rxjs/operators';

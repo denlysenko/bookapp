@@ -4,15 +4,15 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { InMemoryCache } from '@apollo/client/core';
 import { addTypenameToDocument } from '@apollo/client/utilities';
 
+import { BOOKMARKS } from '@bookapp/shared/enums';
+import { Bookmark } from '@bookapp/shared/interfaces';
 import {
   ADD_TO_BOOKMARKS_MUTATION,
-  Bookmark,
-  BOOKMARKS,
   BOOKMARKS_BY_USER_AND_BOOK_QUERY,
   BOOKMARKS_QUERY,
   REMOVE_FROM_BOOKMARKS_MUTATION,
   RATE_BOOK_MUTATION,
-} from '@bookapp/shared';
+} from '@bookapp/shared/queries';
 import { book, bookmark } from '@bookapp/testing';
 
 import {

@@ -1,4 +1,4 @@
-import { BOOKMARKS } from '@bookapp/shared';
+import { BOOKMARKS } from '@bookapp/shared/enums';
 import { book } from './book';
 
 export const bookmark = {

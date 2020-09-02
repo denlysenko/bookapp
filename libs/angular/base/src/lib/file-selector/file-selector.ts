@@ -1,5 +1,5 @@
 import { UploadPlatformService } from '@bookapp/angular/core';
-import { UploadResponse } from '@bookapp/shared';
+import { UploadResponse } from '@bookapp/shared/interfaces';
 
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';

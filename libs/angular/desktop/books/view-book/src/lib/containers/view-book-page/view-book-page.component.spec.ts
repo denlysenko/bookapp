@@ -8,7 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { AuthService, BookmarksService, BookService } from '@bookapp/angular/data-access';
 import { RatingModule } from '@bookapp/angular/ui-desktop';
-import { BOOKMARKS } from '@bookapp/shared';
+import { BOOKMARKS } from '@bookapp/shared/enums';
 import {
   book,
   MockAngularAuthService,

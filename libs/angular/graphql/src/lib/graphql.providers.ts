@@ -16,7 +16,8 @@ import {
   StoreService,
 } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
-import { AuthPayload, REFRESH_TOKEN_HEADER } from '@bookapp/shared';
+import { REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
+import { AuthPayload } from '@bookapp/shared/interfaces';
 
 import { HttpLink } from 'apollo-angular/http';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';

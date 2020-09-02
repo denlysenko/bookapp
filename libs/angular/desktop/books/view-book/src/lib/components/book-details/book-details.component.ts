@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { BookDetailsBase } from '@bookapp/angular/base';
-import { ROLES, User } from '@bookapp/shared';
+import { ROLES } from '@bookapp/shared/enums';
+import { User } from '@bookapp/shared/interfaces';
 
 @Component({
   selector: 'bookapp-book-details',

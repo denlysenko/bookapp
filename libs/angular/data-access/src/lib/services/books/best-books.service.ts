@@ -1,14 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
-import {
-  ApiResponse,
-  BEST_BOOKS_QUERY,
-  Book,
-  RateBookEvent,
-  RateBookResponse,
-  RATE_BOOK_MUTATION,
-} from '@bookapp/shared';
+import { ApiResponse, Book, RateBookEvent, RateBookResponse } from '@bookapp/shared/interfaces';
+import { BEST_BOOKS_QUERY, RATE_BOOK_MUTATION } from '@bookapp/shared/queries';
 
 import { Apollo, QueryRef } from 'apollo-angular';
 

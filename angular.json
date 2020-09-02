@@ -938,21 +938,6 @@
         }
       }
     },
-    "shared": {
-      "root": "libs/shared",
-      "sourceRoot": "libs/shared/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["libs/shared/tsconfig.lib.json"],
-            "exclude": ["**/node_modules/**", "!libs/shared/**/*"]
-          }
-        }
-      }
-    },
     "utils": {
       "root": "libs/utils",
       "sourceRoot": "libs/utils/src",
@@ -1398,6 +1383,66 @@
       "schematics": {
         "@nrwl/angular:component": {
           "styleext": "scss"
+        }
+      }
+    },
+    "shared-interfaces": {
+      "root": "libs/shared/interfaces",
+      "sourceRoot": "libs/shared/interfaces/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/shared/interfaces/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/shared/interfaces/**/*"]
+          }
+        }
+      }
+    },
+    "shared-enums": {
+      "root": "libs/shared/enums",
+      "sourceRoot": "libs/shared/enums/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/shared/enums/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/shared/enums/**/*"]
+          }
+        }
+      }
+    },
+    "shared-queries": {
+      "root": "libs/shared/queries",
+      "sourceRoot": "libs/shared/queries/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/shared/queries/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/shared/queries/**/*"]
+          }
+        }
+      }
+    },
+    "shared-constants": {
+      "root": "libs/shared/constants",
+      "sourceRoot": "libs/shared/constants/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/shared/constants/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/shared/constants/**/*"]
+          }
         }
       }
     }

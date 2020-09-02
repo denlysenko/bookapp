@@ -1,4 +1,4 @@
-import { User } from '@bookapp/shared';
+import { User } from '@bookapp/shared/interfaces';
 import { Request } from 'express';
 
 export interface RequestWithUser extends Request {

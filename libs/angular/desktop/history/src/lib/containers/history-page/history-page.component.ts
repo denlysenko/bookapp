@@ -5,7 +5,7 @@ import { Sort } from '@angular/material/sort';
 import { HistoryPageBase } from '@bookapp/angular/base';
 import { StoreService } from '@bookapp/angular/core';
 import { LogsService } from '@bookapp/angular/data-access';
-import { LogsFilter } from '@bookapp/shared';
+import { LogsFilter } from '@bookapp/shared/interfaces';
 
 @Component({
   selector: 'bookapp-history-page',

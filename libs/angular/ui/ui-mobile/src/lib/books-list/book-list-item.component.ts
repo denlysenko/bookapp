@@ -10,7 +10,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { Book } from '@bookapp/shared';
+import { Book } from '@bookapp/shared/interfaces';
 
 @Component({
   selector: 'bookapp-book-list-item',

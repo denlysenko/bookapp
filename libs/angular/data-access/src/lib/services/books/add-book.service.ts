@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Book, BookFormModel, CREATE_BOOK_MUTATION, UPDATE_BOOK_MUTATION } from '@bookapp/shared';
+import { Book, BookFormModel } from '@bookapp/shared/interfaces';
+import { CREATE_BOOK_MUTATION, UPDATE_BOOK_MUTATION } from '@bookapp/shared/queries';
 
 import { Apollo } from 'apollo-angular';
 

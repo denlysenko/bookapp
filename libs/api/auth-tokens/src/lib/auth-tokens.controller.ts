@@ -1,4 +1,4 @@
-import { REFRESH_TOKEN_HEADER } from '@bookapp/shared';
+import { REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
 
 import { Controller, Headers, HttpCode, HttpStatus, Post } from '@nestjs/common';
 

@@ -2,7 +2,8 @@ import { FilesService } from '@bookapp/api/files';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogDto, LogsService } from '@bookapp/api/logs';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
-import { ApiResponse, UserActions } from '@bookapp/shared';
+import { UserActions } from '@bookapp/shared/enums';
+import { ApiResponse } from '@bookapp/shared/interfaces';
 import { extractFileKey } from '@bookapp/utils';
 
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';

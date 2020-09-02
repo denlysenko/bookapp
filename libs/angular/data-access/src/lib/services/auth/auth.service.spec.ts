@@ -9,7 +9,12 @@ import {
   StoragePlatformService,
   StoreService,
 } from '@bookapp/angular/core';
-import { LOGIN_MUTATION, LOGOUT_MUTATION, ME_QUERY, SIGNUP_MUTATION } from '@bookapp/shared';
+import {
+  LOGIN_MUTATION,
+  LOGOUT_MUTATION,
+  ME_QUERY,
+  SIGNUP_MUTATION,
+} from '@bookapp/shared/queries';
 import {
   authPayload,
   MockRouterExtensions,

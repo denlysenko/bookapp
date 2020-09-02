@@ -1,7 +1,7 @@
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
 import { AUTH_ERRORS } from '@bookapp/api/shared';
 import { UserDto, UsersService } from '@bookapp/api/users';
-import { AuthPayload } from '@bookapp/shared';
+import { AuthPayload } from '@bookapp/shared/interfaces';
 
 import { BadRequestException, Injectable } from '@nestjs/common';
 

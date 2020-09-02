@@ -107,9 +107,6 @@
     "angular-mobile-profile": {
       "tags": []
     },
-    "shared": {
-      "tags": []
-    },
     "utils": {
       "tags": []
     },
@@ -162,6 +159,18 @@
       "tags": []
     },
     "angular-mobile-books-read-book": {
+      "tags": []
+    },
+    "shared-interfaces": {
+      "tags": []
+    },
+    "shared-enums": {
+      "tags": []
+    },
+    "shared-queries": {
+      "tags": []
+    },
+    "shared-constants": {
       "tags": []
     }
   },

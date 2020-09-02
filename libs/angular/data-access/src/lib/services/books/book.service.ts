@@ -2,14 +2,16 @@ import { Injectable } from '@angular/core';
 
 import {
   AddCommentResponse,
-  ADD_COMMENT_MUTATION,
   Book,
-  BOOK_FOR_EDIT_QUERY,
-  BOOK_QUERY,
   RateBookEvent,
   RateBookResponse,
+} from '@bookapp/shared/interfaces';
+import {
+  ADD_COMMENT_MUTATION,
+  BOOK_FOR_EDIT_QUERY,
+  BOOK_QUERY,
   RATE_BOOK_MUTATION,
-} from '@bookapp/shared';
+} from '@bookapp/shared/queries';
 
 import { Apollo, QueryRef } from 'apollo-angular';
 

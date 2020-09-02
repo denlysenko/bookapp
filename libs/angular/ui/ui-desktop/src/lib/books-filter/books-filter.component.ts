@@ -11,7 +11,7 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 
 import { BaseComponent } from '@bookapp/angular/base';
 import { DEFAULT_SORT_VALUE } from '@bookapp/angular/data-access';
-import { BooksFilter } from '@bookapp/shared';
+import { BooksFilter } from '@bookapp/shared/interfaces';
 
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 

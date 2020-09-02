@@ -5,7 +5,7 @@ import { BookmarksModule, BookmarksService, BOOKMARK_ERRORS } from '@bookapp/api
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
-import { BOOKMARKS } from '@bookapp/shared';
+import { BOOKMARKS } from '@bookapp/shared/enums';
 import { bookmark, MockConfigService, mockConnection, MockModel, user } from '@bookapp/testing';
 
 import {

@@ -1,6 +1,6 @@
 import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import { BestBooksService } from '@bookapp/angular/data-access';
-import { Book, RateBookEvent } from '@bookapp/shared';
+import { Book, RateBookEvent } from '@bookapp/shared/interfaces';
 
 import { Observable } from 'rxjs';
 import { filter, map, shareReplay, startWith, tap } from 'rxjs/operators';

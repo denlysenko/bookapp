@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { MatDialog } from '@angular/material/dialog';
 
 import { ImageSelectorComponent } from '@bookapp/angular/ui-desktop';
-import { ProfileForm, User } from '@bookapp/shared';
+import { ProfileForm, User } from '@bookapp/shared/interfaces';
 
 @Component({
   selector: 'bookapp-avatar-selector',

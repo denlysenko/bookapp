@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 import { BaseForm } from '@bookapp/angular/base';
 import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { ProfileForm, User } from '@bookapp/shared';
+import { ProfileForm, User } from '@bookapp/shared/interfaces';
 
 @Component({
   selector: 'bookapp-profile-form',
