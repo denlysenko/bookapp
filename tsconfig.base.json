@@ -85,7 +85,9 @@
       "@bookapp/shared/interfaces": ["libs/shared/interfaces/src/index.ts"],
       "@bookapp/shared/enums": ["libs/shared/enums/src/index.ts"],
       "@bookapp/shared/queries": ["libs/shared/queries/src/index.ts"],
-      "@bookapp/shared/constants": ["libs/shared/constants/src/index.ts"]
+      "@bookapp/shared/constants": ["libs/shared/constants/src/index.ts"],
+      "@bookapp/react/core": ["libs/react/core/src/index.ts"],
+      "@bookapp/shared/services": ["libs/shared/services/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

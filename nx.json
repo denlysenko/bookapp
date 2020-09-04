@@ -172,6 +172,12 @@
     },
     "shared-constants": {
       "tags": []
+    },
+    "react-core": {
+      "tags": []
+    },
+    "shared-services": {
+      "tags": []
     }
   },
   "tasksRunnerOptions": {

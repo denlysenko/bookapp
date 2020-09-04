@@ -1446,6 +1446,36 @@
           }
         }
       }
+    },
+    "react-core": {
+      "root": "libs/react/core",
+      "sourceRoot": "libs/react/core/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/react/core/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/react/core/**/*"]
+          }
+        }
+      }
+    },
+    "shared-services": {
+      "root": "libs/shared/services",
+      "sourceRoot": "libs/shared/services/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/shared/services/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/shared/services/**/*"]
+          }
+        }
+      }
     }
   },
   "cli": {
