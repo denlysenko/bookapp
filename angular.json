@@ -63,7 +63,7 @@
             "main": "apps/react/desktop/src/main.tsx",
             "polyfills": "apps/react/desktop/src/polyfills.ts",
             "tsConfig": "apps/react/desktop/tsconfig.app.json",
-            "assets": ["apps/react/desktop/src/favicon.ico", "apps/react/desktop/src/assets"],
+            "assets": ["apps/react/desktop/src/assets"],
             "styles": ["apps/react/desktop/src/styles.scss"],
             "scripts": [],
             "buildLibsFromSource": true
