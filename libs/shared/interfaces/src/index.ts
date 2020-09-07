@@ -14,3 +14,4 @@ export * from './lib/signup-credentials';
 export * from './lib/sorting';
 export * from './lib/upload-response';
 export * from './lib/user';
+export * from './lib/environment';

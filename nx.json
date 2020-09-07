@@ -178,6 +178,9 @@
     },
     "shared-services": {
       "tags": []
+    },
+    "react-graphql": {
+      "tags": []
     }
   },
   "tasksRunnerOptions": {

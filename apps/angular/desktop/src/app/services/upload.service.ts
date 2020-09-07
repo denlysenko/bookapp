@@ -1,12 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 
-import {
-  AUTH_TOKEN,
-  EnvConfig,
-  Environment,
-  HTTP_STATUS,
-  StoreService,
-} from '@bookapp/angular/core';
+import { AUTH_TOKEN, Environment, HTTP_STATUS, StoreService } from '@bookapp/angular/core';
+import { EnvConfig } from '@bookapp/shared/interfaces';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 

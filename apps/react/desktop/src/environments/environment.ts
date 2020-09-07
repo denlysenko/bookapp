@@ -1,6 +1,9 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// When building for production, this file is replaced with `environment.prod.ts`.
+import { EnvConfig } from '@bookapp/shared/interfaces';
 
-export const environment = {
+export const environment: EnvConfig = {
   production: false,
+  endpointUrl: 'http://localhost:3333/graphql',
+  subscriptionsEndpoint: 'ws://localhost:3333/graphql',
+  uploadUrl: 'http://localhost:3333/files',
+  refreshTokenUrl: 'http://localhost:3333/refreshTokens',
 };

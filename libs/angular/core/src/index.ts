@@ -1,7 +1,5 @@
 export * from './lib/core.module';
 
-export * from './lib/models/environment';
-
 export * from './lib/constants';
 
 export * from './lib/services/feedback-platform.service';

@@ -1,14 +1,16 @@
 import { Inject, Injectable } from '@angular/core';
 
-import { AUTH_TOKEN, EnvConfig, Environment, StoreService } from '@bookapp/angular/core';
+import { AUTH_TOKEN, Environment, StoreService } from '@bookapp/angular/core';
+import { EnvConfig } from '@bookapp/shared/interfaces';
 
 import {
   ErrorEventData,
   ProgressEventData,
   Request,
   ResultEventData,
-  session
+  session,
 } from 'nativescript-background-http';
+
 import { BehaviorSubject, Observable } from 'rxjs';
 
 const s = session('image-upload');
@@ -27,16 +29,16 @@ export class UploadService {
   }
 
   upload(fileUrl: string, name: string = 'file'): Observable<string> {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       const token = this.storeService.get(AUTH_TOKEN);
 
       const request: Request = {
         url: this.environment.uploadUrl,
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        description: 'uploading'
+        description: 'uploading',
       };
 
       const params = [{ name, filename: fileUrl, mimeType: 'image/png' }];

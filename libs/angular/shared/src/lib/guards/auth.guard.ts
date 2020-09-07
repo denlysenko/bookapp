@@ -4,7 +4,6 @@ import { CanActivate, CanLoad } from '@angular/router';
 
 import {
   AUTH_TOKEN,
-  EnvConfig,
   Environment,
   RouterExtensions,
   StoragePlatformService,
@@ -12,7 +11,7 @@ import {
 } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
 import { REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
-import { AuthPayload } from '@bookapp/shared/interfaces';
+import { AuthPayload, EnvConfig } from '@bookapp/shared/interfaces';
 
 import { isNil } from 'lodash';
 

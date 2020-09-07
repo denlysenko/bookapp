@@ -1,4 +1,4 @@
-import { EnvConfig } from '@bookapp/angular/core';
+import { EnvConfig } from '@bookapp/shared/interfaces';
 
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
@@ -9,7 +9,7 @@ export const environment: EnvConfig = {
   endpointUrl: 'https://bookapp-api.herokuapp.com/graphql',
   subscriptionsEndpoint: 'wss://bookapp-api.herokuapp.com/graphql',
   uploadUrl: 'https://bookapp-api.herokuapp.com/files',
-  refreshTokenUrl: 'https://bookapp-api.herokuapp.com/refreshTokens'
+  refreshTokenUrl: 'https://bookapp-api.herokuapp.com/refreshTokens',
 };
 
 /*

@@ -1476,6 +1476,21 @@
           }
         }
       }
+    },
+    "react-graphql": {
+      "root": "libs/react/graphql",
+      "sourceRoot": "libs/react/graphql/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/react/graphql/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/react/graphql/**/*"]
+          }
+        }
+      }
     }
   },
   "cli": {
