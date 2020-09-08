@@ -1,5 +1,6 @@
-import { DEFAULT_LIMIT, StoreService } from '@bookapp/angular/core';
+import { StoreService } from '@bookapp/angular/core';
 import { BooksService, DEFAULT_SORT_VALUE } from '@bookapp/angular/data-access';
+import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { Book, BooksFilter, RateBookEvent } from '@bookapp/shared/interfaces';
 
 import { BehaviorSubject, Observable } from 'rxjs';

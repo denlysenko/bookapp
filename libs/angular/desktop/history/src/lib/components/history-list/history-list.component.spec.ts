@@ -3,7 +3,7 @@ import { HAMMER_LOADER } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { DEFAULT_LIMIT } from '@bookapp/angular/core';
+import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 
 import { HistoryModule } from '../../history.module';
 import { HistoryListComponent } from './history-list.component';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { DEFAULT_LIMIT } from '@bookapp/angular/core';
+import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { ApiResponse, Log, LogsFilter } from '@bookapp/shared/interfaces';
 import { LAST_LOGS_QUERY, LOGS_QUERY, LOG_CREATED_SUBSCRIPTION } from '@bookapp/shared/queries';
 

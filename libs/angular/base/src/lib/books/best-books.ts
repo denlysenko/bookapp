@@ -1,5 +1,5 @@
-import { DEFAULT_LIMIT } from '@bookapp/angular/core';
 import { BestBooksService } from '@bookapp/angular/data-access';
+import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { Book, RateBookEvent } from '@bookapp/shared/interfaces';
 
 import { Observable } from 'rxjs';

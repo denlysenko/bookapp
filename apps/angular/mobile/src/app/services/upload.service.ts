@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 
-import { AUTH_TOKEN, Environment, StoreService } from '@bookapp/angular/core';
+import { Environment, StoreService } from '@bookapp/angular/core';
+import { AUTH_TOKEN } from '@bookapp/shared/constants';
 import { EnvConfig } from '@bookapp/shared/interfaces';
 
 import {

@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injector } from '@angular/core';
-
 import { ApolloLink, InMemoryCache, split } from '@apollo/client/core';
 import { onError } from '@apollo/client/link/error';
 import { RetryLink } from '@apollo/client/link/retry';
@@ -8,19 +7,16 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 
 import {
-  AUTH_TOKEN,
   FeedbackPlatformService,
-  HTTP_STATUS,
   StoragePlatformService,
   StoreService,
 } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
-import { REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
+import { AUTH_TOKEN, HTTP_STATUS, REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
 import { AuthPayload, EnvConfig } from '@bookapp/shared/interfaces';
 
 import { HttpLink } from 'apollo-angular/http';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
-
 import * as jwtDecode from 'jwt-decode';
 
 interface Definition {

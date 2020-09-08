@@ -1,9 +1,9 @@
-import { DEFAULT_LIMIT, StoreService } from '@bookapp/angular/core';
+import { StoreService } from '@bookapp/angular/core';
 import { LogsService } from '@bookapp/angular/data-access';
+import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { Log, LogsFilter } from '@bookapp/shared/interfaces';
 
 import { isNil } from 'lodash';
-
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map, shareReplay, startWith, take, tap } from 'rxjs/operators';
 

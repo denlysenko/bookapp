@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { AUTH_TOKEN, StoragePlatformService, StoreService } from '@bookapp/angular/core';
+import { StoragePlatformService, StoreService } from '@bookapp/angular/core';
+import { AUTH_TOKEN } from '@bookapp/shared/constants';
 import { AuthPayload } from '@bookapp/shared/interfaces';
 import { CHANGE_PASSWORD_MUTATION } from '@bookapp/shared/queries';
 

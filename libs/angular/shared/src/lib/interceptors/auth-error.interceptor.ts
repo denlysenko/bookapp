@@ -1,8 +1,9 @@
 import { HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { FeedbackPlatformService, HTTP_STATUS } from '@bookapp/angular/core';
+import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
+import { HTTP_STATUS } from '@bookapp/shared/constants';
 
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';

@@ -11,9 +11,8 @@ import { RetryLink } from '@apollo/client/link/retry';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 
-import { AUTH_TOKEN, HTTP_STATUS } from '@bookapp/angular/core';
 import { storage, store } from '@bookapp/react/core';
-import { REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
+import { AUTH_TOKEN, HTTP_STATUS, REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
 import { AuthPayload, EnvConfig } from '@bookapp/shared/interfaces';
 
 import { TokenRefreshLink } from 'apollo-link-token-refresh';

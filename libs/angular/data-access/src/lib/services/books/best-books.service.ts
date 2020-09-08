@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { DEFAULT_LIMIT } from '@bookapp/angular/core';
+import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { ApiResponse, Book, RateBookEvent, RateBookResponse } from '@bookapp/shared/interfaces';
 import { BEST_BOOKS_QUERY, RATE_BOOK_MUTATION } from '@bookapp/shared/queries';
 

@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import {
-  AUTH_TOKEN,
-  RouterExtensions,
-  StoragePlatformService,
-  StoreService,
-} from '@bookapp/angular/core';
+import { RouterExtensions, StoragePlatformService, StoreService } from '@bookapp/angular/core';
+import { AUTH_TOKEN } from '@bookapp/shared/constants';
 import { AuthPayload, SignupCredentials, User } from '@bookapp/shared/interfaces';
 import {
   LOGIN_MUTATION,
@@ -15,7 +11,6 @@ import {
 } from '@bookapp/shared/queries';
 
 import { Apollo } from 'apollo-angular';
-
 import { tap } from 'rxjs/operators';
 
 @Injectable()

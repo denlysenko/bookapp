@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { InMemoryCache } from '@apollo/client/core';
 import { addTypenameToDocument } from '@apollo/client/utilities';
 
-import { DEFAULT_LIMIT } from '@bookapp/angular/core';
+import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { LAST_LOGS_QUERY, LOGS_QUERY } from '@bookapp/shared/queries';
 import { book, log } from '@bookapp/testing';
 

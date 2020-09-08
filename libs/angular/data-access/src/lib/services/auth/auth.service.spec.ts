@@ -3,12 +3,8 @@ import { TestBed } from '@angular/core/testing';
 import { InMemoryCache } from '@apollo/client/core';
 import { addTypenameToDocument } from '@apollo/client/utilities';
 
-import {
-  AUTH_TOKEN,
-  RouterExtensions,
-  StoragePlatformService,
-  StoreService,
-} from '@bookapp/angular/core';
+import { RouterExtensions, StoragePlatformService, StoreService } from '@bookapp/angular/core';
+import { AUTH_TOKEN } from '@bookapp/shared/constants';
 import {
   LOGIN_MUTATION,
   LOGOUT_MUTATION,

@@ -3,18 +3,16 @@ import { Inject, Injectable } from '@angular/core';
 import { CanActivate, CanLoad } from '@angular/router';
 
 import {
-  AUTH_TOKEN,
   Environment,
   RouterExtensions,
   StoragePlatformService,
   StoreService,
 } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
-import { REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
+import { AUTH_TOKEN, REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
 import { AuthPayload, EnvConfig } from '@bookapp/shared/interfaces';
 
 import { isNil } from 'lodash';
-
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mapTo, switchMapTo, take, tap } from 'rxjs/operators';
 

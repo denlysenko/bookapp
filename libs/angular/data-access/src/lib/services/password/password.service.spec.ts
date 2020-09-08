@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AUTH_TOKEN, StoragePlatformService, StoreService } from '@bookapp/angular/core';
+import { StoragePlatformService, StoreService } from '@bookapp/angular/core';
+import { AUTH_TOKEN } from '@bookapp/shared/constants';
 import { CHANGE_PASSWORD_MUTATION } from '@bookapp/shared/queries';
 import { authPayload, MockStoragePlatformService, MockStoreService } from '@bookapp/testing';
 
