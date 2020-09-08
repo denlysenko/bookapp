@@ -7,11 +7,15 @@ import { ThemeProvider } from '@material-ui/styles';
 import React from 'react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
-import { environment } from '../environments/environment';
 import './app.scss';
+import { environment } from '../environments/environment';
 import { theme } from './theme';
 
 const client = createApollo(environment);
+
+function Root() {
+  return <div>This is the root route.</div>;
+}
 
 export const App = () => {
   return (
@@ -43,12 +47,7 @@ export const App = () => {
                 <a href="https://nx.dev/tutorial/01-create-application">Interactive tutorial</a>
               </li>
             </ul>
-            <Route
-              path="/"
-              exact={true}
-              // tslint:disable-next-line: jsx-no-lambda
-              render={() => <div>This is the root route.</div>}
-            />
+            <Route path="/" element={<Root />} />
           </div>
         </Router>
       </ThemeProvider>
