@@ -63,7 +63,10 @@
             "main": "apps/react/desktop/src/main.tsx",
             "polyfills": "apps/react/desktop/src/polyfills.ts",
             "tsConfig": "apps/react/desktop/tsconfig.app.json",
-            "assets": ["apps/react/desktop/src/assets"],
+            "assets": [
+              "apps/react/desktop/src/assets",
+              { "glob": "**/*", "input": "libs/shared/assets/", "output": "/assets/" }
+            ],
             "styles": ["apps/react/desktop/src/styles.scss"],
             "scripts": [],
             "buildLibsFromSource": true
@@ -172,8 +175,7 @@
             "tsConfig": "apps/angular/desktop/tsconfig.app.json",
             "assets": [
               "apps/angular/desktop/src/assets",
-              "apps/angular/desktop/src/manifest.webmanifest",
-              "apps/angular/desktop/src/_redirects"
+              { "glob": "**/*", "input": "libs/shared/assets/", "output": "/assets/" }
             ],
             "styles": [
               "node_modules/epubjs-reader/reader/css/main.css",
