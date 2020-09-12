@@ -181,6 +181,9 @@
     },
     "react-graphql": {
       "tags": []
+    },
+    "react-data-access": {
+      "tags": []
     }
   },
   "tasksRunnerOptions": {
