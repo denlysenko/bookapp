@@ -37,7 +37,7 @@ const defaultOptions: DefaultOptions = {
 };
 
 // tslint:disable-next-line: cognitive-complexity
-export function createApollo(environment: EnvConfig) {
+export function createApollo(environment: EnvConfig, showFeedback: (msg: string) => void) {
   const http = new HttpLink({
     uri: ({ operationName }) =>
       (window as any).Cypress
@@ -76,13 +76,6 @@ export function createApollo(environment: EnvConfig) {
   );
 
   const errorLink = onError(({ networkError, graphQLErrors }) => {
-    // TODO: replace with actual react implementation
-    const feedbackService = {
-      error: (msg) => {
-        console.log(msg);
-      },
-    };
-
     if (networkError) {
       let msg: string;
 
@@ -101,7 +94,7 @@ export function createApollo(environment: EnvConfig) {
       }
 
       if (msg) {
-        feedbackService.error(msg);
+        showFeedback(msg);
       }
     }
 
@@ -119,7 +112,7 @@ export function createApollo(environment: EnvConfig) {
           logout: () => of({}),
         };
 
-        feedbackService.error(error.extensions.exception.response.error); // check and replace on response.message
+        showFeedback(error.extensions.exception.response.message);
         authService.logout().subscribe();
         return;
       }
@@ -130,7 +123,7 @@ export function createApollo(environment: EnvConfig) {
         error.extensions.exception.response &&
         error.extensions.exception.response.statusCode === HTTP_STATUS.FORBIDDEN
       ) {
-        feedbackService.error(error.extensions.exception.response.error);
+        showFeedback(error.extensions.exception.response.error);
         return;
       }
     }
