@@ -12,6 +12,7 @@
               matInput
               placeholder="First Name"
               formControlName="firstName"
+              required
               data-test="firstName"
             />
             <mat-error *ngIf="form.get('firstName').hasError('required')"
@@ -29,6 +30,7 @@
               matInput
               placeholder="Last Name"
               formControlName="lastName"
+              required
               data-test="lastName"
             />
             <mat-error *ngIf="form.get('lastName').hasError('required')"
@@ -47,6 +49,7 @@
               matInput
               placeholder="Email"
               formControlName="email"
+              required
               data-test="email"
             />
             <mat-error *ngIf="form.get('email').hasError('required')"
@@ -66,6 +69,7 @@
               matInput
               placeholder="Password"
               formControlName="password"
+              required
               data-test="password"
             />
             <mat-error *ngIf="form.get('password').hasError('required')"
@@ -80,13 +84,12 @@
       <mat-card-actions>
         <span
           >{{ isLoggingIn ? "Don't have an account?" : 'Already have an account?' }}
-          <a
+          <button
             mat-button
-            href="javascript:void(0)"
             (click)="toggleAuthMode()"
             [disabled]="loading"
             data-test="toggle"
-            >{{ isLoggingIn ? 'Create one' : 'Back to Login' }}</a
+            >{{ isLoggingIn ? 'Create one' : 'Back to Login' }}</button
           >
         </span>
         <button mat-raised-button color="primary" data-test="submit" [disabled]="loading">
