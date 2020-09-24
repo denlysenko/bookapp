@@ -1516,6 +1516,54 @@
           }
         }
       }
+    },
+    "react-pages-auth": {
+      "root": "libs/react/pages/auth",
+      "sourceRoot": "libs/react/pages/auth/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/react/pages/auth/tsconfig.lib.json",
+              "libs/react/pages/auth/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/react/pages/auth/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/react/pages/auth/jest.config.js",
+            "passWithNoTests": true,
+            "setupFile": "libs/react/pages/auth/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "react-ui": {
+      "root": "libs/react/ui",
+      "sourceRoot": "libs/react/ui/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/react/ui/tsconfig.lib.json", "libs/react/ui/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**", "!libs/react/ui/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/react/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

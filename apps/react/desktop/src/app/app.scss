@@ -1,0 +1,36 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: Roboto, 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande',
+    sans-serif;
+  font-size: 14px;
+  background-color: #eeeeee;
+}
+
+a {
+  color: inherit;
+}
+
+// custom inputs border color
+.MuiOutlinedInput-root:hover:not(.Mui-error) {
+  .MuiOutlinedInput-notchedOutline {
+    // TODO: use scss variable
+    border-color: #15a4fa !important;
+  }
+}
+
+.MuiOutlinedInput-root.Mui-focused:not(.Mui-error) {
+  .MuiOutlinedInput-notchedOutline {
+    border-color: #15a4fa !important;
+  }
+}

@@ -89,7 +89,9 @@
       "@bookapp/react/core": ["libs/react/core/src/index.ts"],
       "@bookapp/shared/services": ["libs/shared/services/src/index.ts"],
       "@bookapp/react/graphql": ["libs/react/graphql/src/index.ts"],
-      "@bookapp/react/data-access": ["libs/react/data-access/src/index.ts"]
+      "@bookapp/react/data-access": ["libs/react/data-access/src/index.ts"],
+      "@bookapp/react/pages/auth": ["libs/react/pages/auth/src/index.ts"],
+      "@bookapp/react/ui": ["libs/react/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

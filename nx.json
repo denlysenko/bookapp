@@ -184,6 +184,12 @@
     },
     "react-data-access": {
       "tags": []
+    },
+    "react-pages-auth": {
+      "tags": []
+    },
+    "react-ui": {
+      "tags": []
     }
   },
   "tasksRunnerOptions": {
