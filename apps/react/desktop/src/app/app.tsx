@@ -7,7 +7,7 @@ import { ApolloProvider } from '@apollo/client';
 import { useRefreshToken } from '@bookapp/react/core';
 import { createApollo } from '@bookapp/react/graphql';
 import { Auth } from '@bookapp/react/pages/auth';
-import { FeedbackProvider, useFeedback } from '@bookapp/react/ui';
+import { FeedbackProvider, FullPageSpinner, useFeedback } from '@bookapp/react/ui';
 
 import { environment } from '../environments/environment';
 import './app.scss';
@@ -37,8 +37,7 @@ export default () => {
   const { refreshing } = useRefreshToken(environment.refreshTokenUrl);
 
   if (refreshing) {
-    // TODO: use UI Loader later
-    return <div>Loading...</div>;
+    return <FullPageSpinner />;
   }
 
   return (
