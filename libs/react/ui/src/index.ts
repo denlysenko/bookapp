@@ -1,2 +1,2 @@
-export * from './feedback';
-export * from './FullPageSpinner';
+export * from './lib/feedback';
+export * from './lib/FullPageSpinner';
