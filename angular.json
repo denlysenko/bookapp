@@ -1564,6 +1564,57 @@
           }
         }
       }
+    },
+    "react-guards": {
+      "root": "libs/react/guards",
+      "sourceRoot": "libs/react/guards/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/react/guards/tsconfig.lib.json",
+              "libs/react/guards/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/react/guards/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/react/guards/jest.config.js",
+            "setupFile": "libs/react/guards/src/test-setup.ts",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "react-pages-main": {
+      "root": "libs/react/pages/main",
+      "sourceRoot": "libs/react/pages/main/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/react/pages/main/tsconfig.lib.json",
+              "libs/react/pages/main/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/react/pages/main/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/react/pages/main/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

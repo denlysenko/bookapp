@@ -6,7 +6,9 @@ import { ThemeProvider } from '@material-ui/styles';
 import { ApolloProvider } from '@apollo/client';
 import { useRefreshToken } from '@bookapp/react/core';
 import { createApollo } from '@bookapp/react/graphql';
+import { AnonymousGuard, AuthGuard } from '@bookapp/react/guards';
 import { Auth } from '@bookapp/react/pages/auth';
+import { Main } from '@bookapp/react/pages/main';
 import { FeedbackProvider, FullPageSpinner, useFeedback } from '@bookapp/react/ui';
 
 import { environment } from '../environments/environment';
@@ -24,7 +26,8 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Router>
           <Routes>
-            <Route path="/auth" element={<Auth />} />
+            <AnonymousGuard path="/auth" element={<Auth />} />
+            <AuthGuard path="/" element={<Main />} />
           </Routes>
         </Router>
       </ThemeProvider>

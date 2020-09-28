@@ -190,6 +190,12 @@
     },
     "react-ui": {
       "tags": []
+    },
+    "react-guards": {
+      "tags": []
+    },
+    "react-pages-main": {
+      "tags": []
     }
   },
   "tasksRunnerOptions": {
