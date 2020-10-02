@@ -13,7 +13,6 @@ export const AuthGuard: React.FC<RouteProps> = (props): ReactElement | null => {
   const { getMe, me, fetchingMe } = useAuth();
 
   useEffect(() => {
-    console.log('auth guard effect');
     if (!isNil(accessToken) && isNil(me)) {
       getMe();
     }

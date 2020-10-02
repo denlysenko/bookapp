@@ -16,7 +16,6 @@ export function useAuth() {
   const [executeLoginMutation] = useMutation<{ login: AuthPayload }>(LOGIN_MUTATION);
   const [executeSignupMutation] = useMutation<{ signup: AuthPayload }>(SIGNUP_MUTATION);
   const [executeLogoutMutation, { client }] = useMutation<{ logout: boolean }>(LOGOUT_MUTATION);
-  // TODO: possibly create separate custom hook useMe() and use useQuery(ME_QUERY) there
   const [getMe, { data: currentUser, loading }] = useLazyQuery<{ me: User }>(ME_QUERY);
 
   const navigate = useNavigate();
