@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { userMenu } from '@bookapp/angular/shared';
+import { userMenu } from '@bookapp/shared/constants';
 import { User } from '@bookapp/shared/interfaces';
 
 @Component({

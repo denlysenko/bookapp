@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { categories, navs } from '@bookapp/angular/shared';
+import { categories, navs } from '@bookapp/shared/constants';
 import { ROLES, UserActionsDesc } from '@bookapp/shared/enums';
 import { Log, User } from '@bookapp/shared/interfaces';
 
