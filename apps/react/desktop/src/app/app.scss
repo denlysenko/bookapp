@@ -19,6 +19,7 @@ body {
 
 a {
   color: inherit;
+  text-decoration: none;
 }
 
 // custom inputs border color
@@ -33,4 +34,12 @@ a {
   .MuiOutlinedInput-notchedOutline {
     border-color: #15a4fa !important;
   }
+}
+
+.MuiIconButton-root {
+  color: inherit !important;
+}
+
+.MuiMenuItem-root {
+  min-height: 48px !important;
 }

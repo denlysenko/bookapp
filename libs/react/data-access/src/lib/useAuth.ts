@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 
 import { storage, store } from '@bookapp/react/core';
 import { AUTH_TOKEN } from '@bookapp/shared/constants';
@@ -15,9 +15,9 @@ import { useNavigate } from 'react-router-dom';
 export function useAuth() {
   const [executeLoginMutation] = useMutation<{ login: AuthPayload }>(LOGIN_MUTATION);
   const [executeSignupMutation] = useMutation<{ signup: AuthPayload }>(SIGNUP_MUTATION);
-  const [executeLogoutMutation] = useMutation<{ logout: boolean }>(LOGOUT_MUTATION);
+  const [executeLogoutMutation, { client }] = useMutation<{ logout: boolean }>(LOGOUT_MUTATION);
   // TODO: possibly create separate custom hook useMe() and use useQuery(ME_QUERY) there
-  const [getMe, { client, data: currentUser, loading }] = useLazyQuery<{ me: User }>(ME_QUERY);
+  const [getMe, { data: currentUser, loading }] = useLazyQuery<{ me: User }>(ME_QUERY);
 
   const navigate = useNavigate();
 

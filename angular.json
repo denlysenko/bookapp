@@ -1611,6 +1611,7 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/react/pages/main/jest.config.js",
+            "setupFile": "libs/react/pages/main/src/test-setup.ts",
             "passWithNoTests": true
           }
         }

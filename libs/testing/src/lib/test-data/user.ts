@@ -14,3 +14,10 @@ export const user = {
     epubUrl: '',
   },
 };
+
+export const userWithTypename = {
+  ...user,
+  displayName: 'Test User',
+  __typename: 'User',
+  reading: { ...user.reading, __typename: 'Reading' },
+};
