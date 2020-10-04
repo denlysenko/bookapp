@@ -54,7 +54,7 @@ export const Header = ({ toggleDrawer }: HeaderProps) => {
         </Link>
         {me && (
           <div className={classes.userMenu}>
-            <Button className={classes.userMenuToggler} onClick={handleClick}>
+            <Button id="user-menu" className={classes.userMenuToggler} onClick={handleClick}>
               <img
                 src={me.avatar ? me.avatar : '/assets/images/no-avatar.svg'}
                 className={classes.avatar}

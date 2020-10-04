@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Routes } from 'react-router-dom';
 
 import { ThemeProvider } from '@material-ui/styles';
 
@@ -15,6 +15,13 @@ import { environment } from '../environments/environment';
 import './app.scss';
 import { theme } from './theme';
 
+const Password = lazy(() =>
+  // tslint:disable-next-line: no-shadowed-variable
+  import('@bookapp/react/pages/password').then(({ Password }) => ({
+    default: Password,
+  }))
+);
+
 const App = () => {
   console.log('App rendered');
 
@@ -24,12 +31,16 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
-        <Router>
-          <Routes>
-            <AnonymousGuard path="/auth" element={<Auth />} />
-            <AuthGuard path="/" element={<Main />} />
-          </Routes>
-        </Router>
+        <Suspense fallback={<FullPageSpinner />}>
+          <Router>
+            <Routes>
+              <AnonymousGuard path="/auth" element={<Auth />} />
+              <AuthGuard path="/" element={<Main />}>
+                <AuthGuard path="password" element={<Password />} />
+              </AuthGuard>
+            </Routes>
+          </Router>
+        </Suspense>
       </ThemeProvider>
     </ApolloProvider>
   );

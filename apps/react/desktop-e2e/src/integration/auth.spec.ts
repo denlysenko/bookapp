@@ -69,7 +69,7 @@ describe('Auth page', () => {
         cy.get(passwordField).type('password{enter}');
 
         cy.url().should('include', '/'); // TODO: replace with /books/browse
-        // cy.get('.user-menu').should('contain', 'User Test');
+        cy.get('#user-menu').should('contain', 'User Test');
       });
     });
   });
@@ -122,7 +122,7 @@ describe('Auth page', () => {
         cy.get(passwordField).type('password{enter}');
 
         cy.url().should('include', '/'); // TODO: replace with /books/browse
-        // cy.get('.user-menu').should('contain', 'NewUser NewUser');
+        cy.get('#user-menu').should('contain', 'NewUser NewUser');
       });
     });
   });

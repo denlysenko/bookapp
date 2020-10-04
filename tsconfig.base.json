@@ -93,7 +93,8 @@
       "@bookapp/react/pages/auth": ["libs/react/pages/auth/src/index.ts"],
       "@bookapp/react/ui": ["libs/react/ui/src/index.ts"],
       "@bookapp/react/guards": ["libs/react/guards/src/index.ts"],
-      "@bookapp/react/pages/main": ["libs/react/pages/main/src/index.ts"]
+      "@bookapp/react/pages/main": ["libs/react/pages/main/src/index.ts"],
+      "@bookapp/react/pages/password": ["libs/react/pages/password/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

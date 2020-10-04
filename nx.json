@@ -196,6 +196,9 @@
     },
     "react-pages-main": {
       "tags": []
+    },
+    "react-pages-password": {
+      "tags": []
     }
   },
   "tasksRunnerOptions": {

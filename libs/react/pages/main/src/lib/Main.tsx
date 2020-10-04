@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -44,7 +45,7 @@ export const Main = () => {
       </Drawer>
       <main className={classes.content}>
         <Toolbar />
-        Main Page
+        <Outlet />
       </main>
       <Footer />
     </div>
