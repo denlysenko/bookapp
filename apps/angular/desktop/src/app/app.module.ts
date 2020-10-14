@@ -19,8 +19,8 @@ import { BrowseBooksModule } from '@bookapp/angular/desktop/books/browse-books';
 import { MainLayoutModule } from '@bookapp/angular/desktop/main-layout';
 import { GraphQLModule } from '@bookapp/angular/graphql';
 import { AuthGuard, CanDeactivateGuard, RolesGuard } from '@bookapp/angular/shared';
+import { environment } from '@bookapp/shared/environments';
 
-import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FeedbackService } from './services/feedback.service';

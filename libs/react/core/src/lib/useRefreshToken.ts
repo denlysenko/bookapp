@@ -2,18 +2,19 @@ import { useEffect, useState } from 'react';
 import { isNil } from 'lodash';
 
 import { AUTH_TOKEN, HTTP_STATUS, REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
+import { environment } from '@bookapp/shared/environments';
 import { AuthPayload } from '@bookapp/shared/interfaces';
 
 import { storage } from './storage';
 import { store } from './store';
 
-export function useRefreshToken(refreshTokenUrl: string) {
+export function useRefreshToken() {
   const refreshToken = storage.getItem(AUTH_TOKEN);
   const [loading, setLoading] = useState(() => !isNil(refreshToken));
 
   useEffect(() => {
     if (!isNil(refreshToken)) {
-      fetch(refreshTokenUrl, {
+      fetch(environment.refreshTokenUrl, {
         method: 'POST',
         headers: {
           [REFRESH_TOKEN_HEADER]: refreshToken,

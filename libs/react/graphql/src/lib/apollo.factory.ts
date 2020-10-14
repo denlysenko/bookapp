@@ -13,7 +13,8 @@ import { getMainDefinition } from '@apollo/client/utilities';
 
 import { storage, store } from '@bookapp/react/core';
 import { AUTH_TOKEN, HTTP_STATUS, REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
-import { AuthPayload, EnvConfig } from '@bookapp/shared/interfaces';
+import { environment } from '@bookapp/shared/environments';
+import { AuthPayload } from '@bookapp/shared/interfaces';
 
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import jwtDecode from 'jwt-decode';
@@ -37,7 +38,7 @@ const defaultOptions: DefaultOptions = {
 };
 
 // tslint:disable-next-line: cognitive-complexity
-export function createApollo(environment: EnvConfig, showFeedback: (msg: string) => void) {
+export function createApollo(showFeedback: (msg: string) => void) {
   const http = new HttpLink({
     uri: ({ operationName }) =>
       (window as any).Cypress

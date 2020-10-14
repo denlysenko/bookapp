@@ -7,7 +7,7 @@ import {
   RouterExtensions,
   StoragePlatformService,
   UploadPlatformService,
-  WebSocketImpl
+  WebSocketImpl,
 } from '@bookapp/angular/core';
 import { DataAccessModule } from '@bookapp/angular/data-access';
 import { GraphQLModule } from '@bookapp/angular/graphql';
@@ -15,6 +15,7 @@ import { AuthModule } from '@bookapp/angular/mobile/auth';
 import { BrowseBooksModule } from '@bookapp/angular/mobile/books/browse-books';
 import { MainLayoutModule } from '@bookapp/angular/mobile/main-layout';
 import { AuthGuard } from '@bookapp/angular/shared';
+import { environment } from '@bookapp/shared/environments';
 
 import { NativeScriptAnimationsModule } from 'nativescript-angular/animations';
 import { registerElement } from 'nativescript-angular/element-registry';
@@ -23,7 +24,6 @@ import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
 import { RouterExtensions as TNSRouterExtensions } from 'nativescript-angular/router';
 import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
 
-import { environment } from '../../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FeedbackService } from './services/feedback.service';
@@ -47,14 +47,14 @@ registerElement(
     NativeScriptHttpClientModule,
     NativeScriptAnimationsModule,
     TNSFontIconModule.forRoot({
-      mdi: './assets/material-design-icons.css'
+      mdi: './assets/material-design-icons.css',
     }),
     CoreModule,
     GraphQLModule,
     DataAccessModule,
     AuthModule,
     MainLayoutModule,
-    BrowseBooksModule
+    BrowseBooksModule,
   ],
   declarations: [AppComponent],
   providers: [
@@ -62,29 +62,29 @@ registerElement(
     AuthGuard,
     {
       provide: WebSocketImpl,
-      useValue: WebSocket
+      useValue: WebSocket,
     },
     {
       provide: Environment,
-      useValue: environment
+      useValue: environment,
     },
     {
       provide: StoragePlatformService,
-      useClass: StorageService
+      useClass: StorageService,
     },
     {
       provide: RouterExtensions,
-      useClass: TNSRouterExtensions
+      useClass: TNSRouterExtensions,
     },
     {
       provide: FeedbackPlatformService,
-      useClass: FeedbackService
+      useClass: FeedbackService,
     },
     {
       provide: UploadPlatformService,
-      useClass: UploadService
-    }
+      useClass: UploadService,
+    },
   ],
-  schemas: [NO_ERRORS_SCHEMA]
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class AppModule {}
