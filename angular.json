@@ -79,8 +79,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "apps/react/desktop/src/environments/environment.ts",
-                  "with": "apps/react/desktop/src/environments/environment.prod.ts"
+                  "replace": "libs/shared/environments/src/lib/environment.ts",
+                  "with": "libs/shared/environments/src/lib/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -95,6 +95,14 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                }
+              ]
+            },
+            "testing": {
+              "fileReplacements": [
+                {
+                  "replace": "libs/shared/environments/src/lib/environment.ts",
+                  "with": "libs/shared/environments/src/lib/environment.testing.ts"
                 }
               ]
             }
@@ -205,8 +213,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "apps/angular/desktop/src/environments/environment.ts",
-                  "with": "apps/angular/desktop/src/environments/environment.prod.ts"
+                  "replace": "libs/shared/environments/src/lib/environment.ts",
+                  "with": "libs/shared/environments/src/lib/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -235,8 +243,8 @@
             "testing": {
               "fileReplacements": [
                 {
-                  "replace": "apps/angular/desktop/src/environments/environment.ts",
-                  "with": "apps/angular/desktop/src/environments/environment.testing.ts"
+                  "replace": "libs/shared/environments/src/lib/environment.ts",
+                  "with": "libs/shared/environments/src/lib/environment.testing.ts"
                 }
               ]
             }
@@ -1639,6 +1647,47 @@
             "jestConfig": "libs/react/pages/password/jest.config.js",
             "setupFile": "libs/react/pages/password/src/test-setup.ts",
             "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "react-pages-profile": {
+      "root": "libs/react/pages/profile",
+      "sourceRoot": "libs/react/pages/profile/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/react/pages/profile/tsconfig.lib.json",
+              "libs/react/pages/profile/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/react/pages/profile/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/react/pages/profile/jest.config.js",
+            "setupFile": "libs/react/pages/profile/src/test-setup.ts",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-environments": {
+      "root": "libs/shared/environments",
+      "sourceRoot": "libs/shared/environments/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/shared/environments/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/shared/environments/**/*"]
           }
         }
       }

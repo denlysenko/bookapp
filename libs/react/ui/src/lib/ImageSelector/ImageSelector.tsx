@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import ReactCrop, { Crop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -33,7 +33,7 @@ export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorPro
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
   const [upImg, setUpImg] = useState<string>();
-  const [crop, setCrop] = useState<Crop>({ unit: '%', width: 100, height: 100, x: 0, y: 0 });
+  const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState(null);
   const [error, setError] = useState(null);
   const { dropElemRef } = useDropZone(onFileDrop);
@@ -70,7 +70,6 @@ export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorPro
 
   const reset = () => {
     setUpImg(null);
-    setCrop({ unit: '%', width: 100, height: 100, x: 0, y: 0 });
     setCompletedCrop(null);
     setError(null);
     imgRef.current = null;
@@ -100,6 +99,10 @@ export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorPro
     }
   };
 
+  useEffect(() => {
+    setCrop({ unit: '%', width: 100, height: 100, x: 0, y: 0 });
+  }, [ready]);
+
   return (
     <Dialog className={classes.root} open={open} onClose={handleClose}>
       <DialogTitle>Select File</DialogTitle>
@@ -111,6 +114,7 @@ export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorPro
           </div>
         )}
         <ReactCrop
+          style={{ display: ready ? 'inline-block' : 'none' }}
           src={upImg}
           imageAlt="image"
           onImageLoaded={onLoad}
@@ -121,7 +125,7 @@ export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorPro
         />
         {!ready && (
           <div className="dropzone" ref={dropElemRef}>
-            <input type="file" id="file" data-test="file-input" onChange={onSelectFile} />
+            <input type="file" id="file" data-testid="file-input" onChange={onSelectFile} />
             <label className="MuiButtonBase-root" htmlFor="file">
               Click to select
             </label>
@@ -133,10 +137,10 @@ export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorPro
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="contained" onClick={handleClose}>
+        <Button variant="contained" onClick={handleClose} data-testid="cancel">
           CANCEL
         </Button>
-        <Button variant="contained" onClick={handleUpload} color="secondary">
+        <Button variant="contained" onClick={handleUpload} color="secondary" data-testid="upload">
           UPLOAD
         </Button>
       </DialogActions>

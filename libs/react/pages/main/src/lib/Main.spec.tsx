@@ -1,13 +1,13 @@
 import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
+
 import { MockedProvider } from '@apollo/client/testing';
 
 import { ME_QUERY } from '@bookapp/shared/queries';
 import { userWithTypename } from '@bookapp/testing';
 
 import Main from './Main';
-
-jest.mock('react-router-dom');
 
 const userMock = {
   request: {
@@ -24,7 +24,9 @@ describe('Main', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
       <MockedProvider mocks={[userMock]}>
-        <Main />
+        <MemoryRouter>
+          <Main />
+        </MemoryRouter>
       </MockedProvider>
     );
     expect(baseElement).toBeTruthy();

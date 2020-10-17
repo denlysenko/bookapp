@@ -199,6 +199,12 @@
     },
     "react-pages-password": {
       "tags": []
+    },
+    "react-pages-profile": {
+      "tags": []
+    },
+    "shared-environments": {
+      "tags": []
     }
   },
   "tasksRunnerOptions": {

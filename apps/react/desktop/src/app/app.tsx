@@ -11,7 +11,6 @@ import { Auth } from '@bookapp/react/pages/auth';
 import { Main } from '@bookapp/react/pages/main';
 import { FeedbackProvider, FullPageSpinner, useFeedback } from '@bookapp/react/ui';
 
-import { environment } from '../environments/environment';
 import './app.scss';
 import { theme } from './theme';
 
@@ -22,11 +21,18 @@ const Password = lazy(() =>
   }))
 );
 
+const Profile = lazy(() =>
+  // tslint:disable-next-line: no-shadowed-variable
+  import('@bookapp/react/pages/profile').then(({ Profile }) => ({
+    default: Profile,
+  }))
+);
+
 const App = () => {
   console.log('App rendered');
 
   const { showFeedback } = useFeedback();
-  const client = createApollo(environment, showFeedback);
+  const client = createApollo(showFeedback);
 
   return (
     <ApolloProvider client={client}>
@@ -37,6 +43,7 @@ const App = () => {
               <AnonymousGuard path="/auth" element={<Auth />} />
               <AuthGuard path="/" element={<Main />}>
                 <AuthGuard path="password" element={<Password />} />
+                <AuthGuard path="profile" element={<Profile />} />
               </AuthGuard>
             </Routes>
           </Router>
@@ -48,7 +55,7 @@ const App = () => {
 
 export default () => {
   // using this hook here instead of App component to avoid recreation of Apollo client on re-render
-  const { refreshing } = useRefreshToken(environment.refreshTokenUrl);
+  const { refreshing } = useRefreshToken();
 
   if (refreshing) {
     return <FullPageSpinner />;
