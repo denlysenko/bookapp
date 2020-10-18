@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from '@apollo/client/core';
 
 export const LOGS_QUERY = gql`
   query logs($skip: Int, $first: Int, $orderBy: LogOrderByInput) {

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from '@apollo/client/core';
 
 export const ProfileFragment = gql`
   fragment Profile on User {

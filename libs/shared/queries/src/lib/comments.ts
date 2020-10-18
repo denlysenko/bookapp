@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from '@apollo/client/core';
 
 export const ADD_COMMENT_MUTATION = gql`
   mutation addComment($bookId: ID!, $text: String!) {
