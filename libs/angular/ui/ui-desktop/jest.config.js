@@ -1,6 +1,5 @@
 module.exports = {
-  name: 'angular-ui-desktop',
-  preset: '../../../../jest.config.js',
+  preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
@@ -19,4 +18,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html'],
   coverageDirectory: '../../../../coverage/libs/angular/ui-desktop',
+  displayName: 'angular-ui-desktop',
 };

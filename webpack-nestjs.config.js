@@ -74,6 +74,10 @@ function generatePackageJson() {
   const basePackageJson = {
     dependencies,
   };
-  const pathToPackageJson = path.join(__dirname, 'package.json');
-  return new GeneratePackageJsonPlugin(basePackageJson, pathToPackageJson);
+
+  return new GeneratePackageJsonPlugin(basePackageJson, {
+    sourcePackageFilenames: [
+      path.join(__dirname, 'package.json'),
+    ],
+ });
 }

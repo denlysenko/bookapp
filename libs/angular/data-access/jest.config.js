@@ -1,6 +1,5 @@
 module.exports = {
-  name: 'angular-data-access',
-  preset: '../../../jest.config.js',
+  preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
@@ -20,4 +19,5 @@ module.exports = {
     'jest-preset-angular/build/AngularSnapshotSerializer.js',
     'jest-preset-angular/build/HTMLCommentSerializer.js',
   ],
+  displayName: 'angular-data-access',
 };

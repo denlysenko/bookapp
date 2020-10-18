@@ -17,7 +17,7 @@ import { AuthPayload, EnvConfig } from '@bookapp/shared/interfaces';
 
 import { HttpLink } from 'apollo-angular/http';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
-import * as jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 interface Definition {
   kind: string;

@@ -1,9 +1,9 @@
 module.exports = {
-  name: 'react-pages-profile',
-  preset: '../../../../jest.config.js',
+  preset: '../../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]sx?$': ['babel-jest', { cwd: __dirname, configFile: './babel-jest.config.json' }],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../../coverage/libs/react/pages/profile',
+  displayName: 'react-pages-profile',
 };
