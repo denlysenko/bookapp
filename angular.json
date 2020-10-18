@@ -957,29 +957,6 @@
         }
       }
     },
-    "utils": {
-      "root": "libs/utils",
-      "sourceRoot": "libs/utils/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["libs/utils/tsconfig.lib.json", "libs/utils/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**", "!libs/utils/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/utils/jest.config.js",
-            "tsConfig": "libs/utils/tsconfig.spec.json",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "angular-desktop-books-add-book": {
       "projectType": "library",
       "root": "libs/angular/desktop/books/add-book",
@@ -1688,6 +1665,58 @@
           "options": {
             "tsConfig": ["libs/shared/environments/tsconfig.lib.json"],
             "exclude": ["**/node_modules/**", "!libs/shared/environments/**/*"]
+          }
+        }
+      }
+    },
+    "utils-api": {
+      "root": "libs/utils/api",
+      "sourceRoot": "libs/utils/api/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/utils/api/tsconfig.lib.json", "libs/utils/api/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**", "!libs/utils/api/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/utils/api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "utils-angular": {
+      "root": "libs/utils/angular",
+      "sourceRoot": "libs/utils/angular/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/utils/angular/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/utils/angular/**/*"]
+          }
+        }
+      }
+    },
+    "utils-react": {
+      "root": "libs/utils/react",
+      "sourceRoot": "libs/utils/react/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/utils/react/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/utils/react/**/*"]
           }
         }
       }

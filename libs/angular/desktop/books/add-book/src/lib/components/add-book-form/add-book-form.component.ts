@@ -13,7 +13,7 @@ import { BaseForm } from '@bookapp/angular/base';
 import { FeedbackPlatformService, UploadPlatformService } from '@bookapp/angular/core';
 import { FileSelectorComponent, ImageSelectorComponent } from '@bookapp/angular/ui-desktop';
 import { Book } from '@bookapp/shared/interfaces';
-import { extractFileKey } from '@bookapp/utils';
+import { extractFileKey } from '@bookapp/utils/api';
 
 import { isEqual } from 'lodash';
 import { forkJoin, of } from 'rxjs';

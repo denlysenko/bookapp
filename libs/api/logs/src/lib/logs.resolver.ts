@@ -2,7 +2,7 @@ import { BooksDataLoader } from '@bookapp/api/dataloaders';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { ApiQuery, FilterInput, GqlAuthGuard, RequestWithUser } from '@bookapp/api/shared';
 import { Log } from '@bookapp/shared/interfaces';
-import { convertToMongoSortQuery } from '@bookapp/utils';
+import { convertToMongoSortQuery } from '@bookapp/utils/api';
 
 import { Inject, UseGuards } from '@nestjs/common';
 import {

@@ -1,4 +1,4 @@
-import { formatError } from '@bookapp/utils';
+import { formatError } from '@bookapp/utils/api';
 
 import { Global, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';

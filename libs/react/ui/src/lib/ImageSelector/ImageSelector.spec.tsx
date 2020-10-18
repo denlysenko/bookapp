@@ -5,7 +5,7 @@ import { HTTP_STATUS } from '@bookapp/shared/constants';
 
 import ImageSelector from './ImageSelector';
 
-jest.mock('@bookapp/utils', () => ({
+jest.mock('@bookapp/utils/react', () => ({
   getCroppedImg: jest.fn(() => Promise.resolve('userAvatar')),
 }));
 

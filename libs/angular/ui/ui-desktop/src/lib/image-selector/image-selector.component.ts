@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileSelectorBase } from '@bookapp/angular/base';
 import { UploadPlatformService } from '@bookapp/angular/core';
-import { dataURIToBlob } from '@bookapp/utils';
+import { dataURIToBlob } from '@bookapp/utils/angular';
 
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 

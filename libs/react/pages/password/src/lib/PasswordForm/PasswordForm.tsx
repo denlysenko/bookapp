@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 
 import { ERRORS } from '@bookapp/shared/constants';
 import { PasswordForm as PasswordFormValues } from '@bookapp/shared/interfaces';
-import { getFormikError } from '@bookapp/utils';
+import { getFormikError } from '@bookapp/utils/react';
 
 import { usePasswordFormStyles } from './usePasswordFormStyles';
 

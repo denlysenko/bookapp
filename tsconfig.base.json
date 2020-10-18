@@ -42,7 +42,6 @@
       "@bookapp/angular/desktop/profile": ["libs/angular/desktop/profile/src/index.ts"],
       "@bookapp/angular/ui-desktop": ["libs/angular/ui/ui-desktop/src/index.ts"],
       "@bookapp/angular/mobile/profile": ["libs/angular/mobile/profile/src/index.ts"],
-      "@bookapp/utils": ["libs/utils/src/index.ts"],
       "@bookapp/angular/desktop/books/add-book": [
         "libs/angular/desktop/books/add-book/src/index.ts"
       ],
@@ -96,7 +95,10 @@
       "@bookapp/react/pages/main": ["libs/react/pages/main/src/index.ts"],
       "@bookapp/react/pages/password": ["libs/react/pages/password/src/index.ts"],
       "@bookapp/react/pages/profile": ["libs/react/pages/profile/src/index.ts"],
-      "@bookapp/shared/environments": ["libs/shared/environments/src/index.ts"]
+      "@bookapp/shared/environments": ["libs/shared/environments/src/index.ts"],
+      "@bookapp/utils/api": ["libs/utils/api/src/index.ts"],
+      "@bookapp/utils/angular": ["libs/utils/angular/src/index.ts"],
+      "@bookapp/utils/react": ["libs/utils/react/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -13,7 +13,7 @@ import Icon from '@material-ui/core/Icon';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 import { useUpload } from '@bookapp/react/data-access';
-import { getCroppedImg } from '@bookapp/utils';
+import { getCroppedImg } from '@bookapp/utils/react';
 
 import { useDropZone } from '../dropzone';
 import { useImageSelectorStyles } from './useImageSelectorStyles';

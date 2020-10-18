@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 import { ERRORS } from '@bookapp/shared/constants';
 import { useFeedback } from '@bookapp/react/ui';
-import { getFormikError, handleValidationError } from '@bookapp/utils';
+import { getFormikError, handleValidationError } from '@bookapp/utils/react';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';

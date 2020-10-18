@@ -10,7 +10,7 @@ import TextField from '@material-ui/core/TextField';
 
 import { ERRORS } from '@bookapp/shared/constants';
 import { User } from '@bookapp/shared/interfaces';
-import { getFormikError, handleValidationError } from '@bookapp/utils';
+import { getFormikError, handleValidationError } from '@bookapp/utils/react';
 
 import { useProfileFormStyles } from './useProfileFormStyles';
 

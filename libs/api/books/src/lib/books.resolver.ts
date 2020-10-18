@@ -3,7 +3,7 @@ import { PUB_SUB } from '@bookapp/api/graphql';
 import { ApiQuery, GqlAuthGuard, RequestWithUser, Roles, RolesGuard } from '@bookapp/api/shared';
 import { ROLES } from '@bookapp/shared/enums';
 import { Book } from '@bookapp/shared/interfaces';
-import { convertToMongoSortQuery } from '@bookapp/utils';
+import { convertToMongoSortQuery } from '@bookapp/utils/api';
 
 import { Inject, UseGuards } from '@nestjs/common';
 import {

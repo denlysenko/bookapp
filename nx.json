@@ -107,9 +107,6 @@
     "angular-mobile-profile": {
       "tags": []
     },
-    "utils": {
-      "tags": []
-    },
     "angular-desktop-books-add-book": {
       "tags": []
     },
@@ -204,6 +201,15 @@
       "tags": []
     },
     "shared-environments": {
+      "tags": []
+    },
+    "utils-api": {
+      "tags": []
+    },
+    "utils-angular": {
+      "tags": []
+    },
+    "utils-react": {
       "tags": []
     }
   },
