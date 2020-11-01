@@ -101,6 +101,7 @@ export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorPro
 
   useEffect(() => {
     setCrop({ unit: '%', width: 100, height: 100, x: 0, y: 0 });
+    setCompletedCrop({ unit: '%', width: 100, height: 100, x: 0, y: 0 });
   }, [ready]);
 
   return (
