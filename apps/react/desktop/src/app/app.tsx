@@ -1,15 +1,17 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes } from 'react-router-dom';
 
+import { ApolloProvider } from '@apollo/client';
+
 import { ThemeProvider } from '@material-ui/styles';
 
-import { ApolloProvider } from '@apollo/client';
 import { useRefreshToken } from '@bookapp/react/core';
 import { createApollo } from '@bookapp/react/graphql';
-import { AnonymousGuard, AuthGuard } from '@bookapp/react/guards';
+import { AnonymousGuard, AuthGuard, RolesGuard } from '@bookapp/react/guards';
 import { Auth } from '@bookapp/react/pages/auth';
 import { Main } from '@bookapp/react/pages/main';
 import { FeedbackProvider, FullPageSpinner, useFeedback } from '@bookapp/react/ui';
+import { ROLES } from '@bookapp/shared/enums';
 
 import './app.scss';
 import { theme } from './theme';
@@ -25,6 +27,13 @@ const Profile = lazy(() =>
   // tslint:disable-next-line: no-shadowed-variable
   import('@bookapp/react/pages/profile').then(({ Profile }) => ({
     default: Profile,
+  }))
+);
+
+const AddBook = lazy(() =>
+  // tslint:disable-next-line: no-shadowed-variable
+  import('@bookapp/react/pages/books/add-book').then(({ AddBook }) => ({
+    default: AddBook,
   }))
 );
 
@@ -44,6 +53,12 @@ const App = () => {
               <AuthGuard path="/" element={<Main />}>
                 <AuthGuard path="password" element={<Password />} />
                 <AuthGuard path="profile" element={<Profile />} />
+                <RolesGuard path="books/add" element={<AddBook />} roles={[ROLES.ADMIN]} />
+                <RolesGuard
+                  path="books/add/:author/:slug"
+                  element={<AddBook />}
+                  roles={[ROLES.ADMIN]}
+                />
               </AuthGuard>
             </Routes>
           </Router>

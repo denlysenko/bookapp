@@ -31,5 +31,6 @@ module.exports = {
     '<rootDir>/libs/react/pages/password',
     '<rootDir>/libs/react/pages/profile',
     '<rootDir>/libs/utils/api',
+    '<rootDir>/libs/react/pages/books/add-book',
   ],
 };

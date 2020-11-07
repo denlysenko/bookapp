@@ -212,6 +212,9 @@
     },
     "utils-react": {
       "tags": []
+    },
+    "react-pages-books-add-book": {
+      "tags": []
     }
   },
   "tasksRunnerOptions": {

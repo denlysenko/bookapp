@@ -23,6 +23,7 @@ export const useMainStyles = makeStyles({
 
   content: {
     flexGrow: 1,
+    height: 0,
     marginLeft: 250,
     backgroundColor: '#fafafa',
 

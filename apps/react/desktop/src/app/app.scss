@@ -40,7 +40,7 @@ a {
   }
 }
 
-.MuiIconButton-root {
+.MuiIconButton-root:not(.MuiCheckbox-root) {
   color: inherit !important;
 }
 

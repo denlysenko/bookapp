@@ -28,6 +28,7 @@ export interface BookFormModel {
   epubUrl: string;
   description: string;
   paid: boolean;
+  price?: number;
 }
 
 export interface RateBookResponse {
