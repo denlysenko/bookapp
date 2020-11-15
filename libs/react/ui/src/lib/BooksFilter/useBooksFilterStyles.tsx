@@ -6,6 +6,13 @@ export const useBooksFilterStyles = makeStyles({
     justifyContent: 'space-between',
     width: '100%',
 
+    ['@media (max-width: 768px)']: {
+      flexDirection: 'column',
+      height: 'auto',
+      alignItems: 'flex-start',
+      paddingBottom: '1rem',
+    },
+
     '& .MuiToggleButtonGroup-root': {
       background: '#ffffff',
     },
@@ -25,6 +32,11 @@ export const useBooksFilterStyles = makeStyles({
     '& .MuiFormControl-root': {
       flexBasis: '35%',
       fontSize: 14,
+
+      ['@media (max-width: 768px)']: {
+        width: '100%',
+        marginTop: '1em',
+      },
 
       '& .MuiInputBase-root, & .MuiFormLabel-root': {
         color: '#9ca5b9',

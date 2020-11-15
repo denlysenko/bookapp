@@ -60,6 +60,7 @@ export const BooksFilter = ({
         </ToggleButton>
       </ToggleButtonGroup>
       <TextField
+        name="searchTerm"
         label="Enter Book Title"
         InputProps={{
           endAdornment: (
