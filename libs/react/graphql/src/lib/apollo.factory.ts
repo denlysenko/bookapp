@@ -154,7 +154,7 @@ export function createApollo(showFeedback: (msg: string) => void) {
       }
 
       try {
-        const { exp } = jwtDecode(token);
+        const { exp } = jwtDecode<{ exp: number }>(token);
         return Date.now() < exp * 1000;
       } catch (err) {
         return false;
