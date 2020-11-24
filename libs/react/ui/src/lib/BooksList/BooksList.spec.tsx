@@ -25,12 +25,7 @@ describe('BooksList', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
       <MemoryRouter>
-        <BooksList
-          books={books}
-          hasMoreItems={false}
-          onBookRate={onBookRate}
-          onLoadMore={onLoadMore}
-        />
+        <BooksList books={books} onBookRate={onBookRate} onLoadMore={onLoadMore} />
       </MemoryRouter>
     );
     expect(baseElement).toBeTruthy();
@@ -39,12 +34,7 @@ describe('BooksList', () => {
   it('should render list items', async () => {
     const { getAllByTestId } = render(
       <MemoryRouter>
-        <BooksList
-          books={books}
-          hasMoreItems={false}
-          onBookRate={onBookRate}
-          onLoadMore={onLoadMore}
-        />
+        <BooksList books={books} onBookRate={onBookRate} onLoadMore={onLoadMore} />
       </MemoryRouter>
     );
     expect(getAllByTestId('list-item')).toHaveLength(books.length);
@@ -53,12 +43,7 @@ describe('BooksList', () => {
   it('should call onBookRated prop', async () => {
     const { getByText } = render(
       <MemoryRouter>
-        <BooksList
-          books={books}
-          hasMoreItems={false}
-          onBookRate={onBookRate}
-          onLoadMore={onLoadMore}
-        />
+        <BooksList books={books} onBookRate={onBookRate} onLoadMore={onLoadMore} />
       </MemoryRouter>
     );
 

@@ -70,10 +70,10 @@ export const Nav = () => {
         ))}
       </List>
       <div className={classes.divider} />
-      <List component="ul" disablePadding={true}>
+      <List className="logs" component="ul" disablePadding={true}>
         {logs &&
           logs.map((log) => (
-            <div key={log._id} className={classes.listItem}>
+            <div key={log.createdAt} className={classes.listItem}>
               <ListItem>
                 <ListItemIcon>
                   <Icon>access_time</Icon>

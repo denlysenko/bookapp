@@ -61,7 +61,7 @@ describe('BooksFilter', () => {
   });
 
   describe('handleSearchChange', () => {
-    it('should call onSort prop', async () => {
+    it('should call onSearch prop', async () => {
       const searchTerm = 'test';
       const { container } = render(
         <BooksFilter filter={filter} onSort={onSort} onSearch={onSearch} />

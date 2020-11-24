@@ -6,6 +6,10 @@ export const useProfileStyles = makeStyles({
     height: 'calc(100% - 128px)',
     overflowY: 'auto',
 
+    ['@media (max-width: 576px)']: {
+      height: 'calc(100% - 112px)',
+    },
+
     '& .MuiCardHeader-root': {
       paddingBottom: 8,
     },

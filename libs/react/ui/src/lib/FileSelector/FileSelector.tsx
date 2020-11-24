@@ -10,13 +10,16 @@ import Icon from '@material-ui/core/Icon';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 import { useUpload } from '@bookapp/react/data-access';
+import {
+  initialFileSelectorState,
+  fileSelectorReducer,
+  FileSelectorActionTypes,
+} from '@bookapp/react/state';
 
 import { isNil } from 'lodash';
 
 import { useDropZone } from '../dropzone';
 import { useFileSelectorStyles } from './useFileSelectorStyles';
-import { initialState, reducer } from './reducer';
-import { FileSelectorActionTypes } from './actions';
 
 export interface FileSelectorProps {
   open: boolean;
@@ -27,7 +30,10 @@ export interface FileSelectorProps {
 export const FileSelector = ({ open, onClose, onFileUpload }: FileSelectorProps) => {
   const classes = useFileSelectorStyles();
 
-  const [{ loading, file, error }, dispatch] = useReducer(reducer, initialState);
+  const [{ loading, file, error }, dispatch] = useReducer(
+    fileSelectorReducer,
+    initialFileSelectorState
+  );
   const { dropElemRef } = useDropZone(onFileDrop);
   const { progress, uploadFile } = useUpload();
 

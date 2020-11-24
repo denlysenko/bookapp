@@ -99,7 +99,12 @@
       "@bookapp/utils/api": ["libs/utils/api/src/index.ts"],
       "@bookapp/utils/angular": ["libs/utils/angular/src/index.ts"],
       "@bookapp/utils/react": ["libs/utils/react/src/index.ts"],
-      "@bookapp/react/pages/books/add-book": ["libs/react/pages/books/add-book/src/index.ts"]
+      "@bookapp/react/pages/books/add-book": ["libs/react/pages/books/add-book/src/index.ts"],
+      "@bookapp/react/pages/books/browse-books": [
+        "libs/react/pages/books/browse-books/src/index.ts"
+      ],
+      "@bookapp/react/state": ["libs/react/state/src/index.ts"],
+      "@bookapp/react/pages/books/buy-books": ["libs/react/pages/books/buy-books/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

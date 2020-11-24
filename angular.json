@@ -1545,6 +1545,7 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/react/ui/jest.config.js",
+            "setupFile": "libs/react/ui/src/test-setup.ts",
             "passWithNoTests": true
           }
         }
@@ -1742,6 +1743,81 @@
           "options": {
             "jestConfig": "libs/react/pages/books/add-book/jest.config.js",
             "setupFile": "libs/react/pages/books/add-book/src/test-setup.ts",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "react-pages-books-browse-books": {
+      "root": "libs/react/pages/books/browse-books",
+      "sourceRoot": "libs/react/pages/books/browse-books/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/react/pages/books/browse-books/tsconfig.lib.json",
+              "libs/react/pages/books/browse-books/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/react/pages/books/browse-books/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/react/pages/books/browse-books/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "react-state": {
+      "root": "libs/react/state",
+      "sourceRoot": "libs/react/state/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/react/state/tsconfig.lib.json",
+              "libs/react/state/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/react/state/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/react/state/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "react-pages-books-buy-books": {
+      "root": "libs/react/pages/books/buy-books",
+      "sourceRoot": "libs/react/pages/books/buy-books/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/react/pages/books/buy-books/tsconfig.lib.json",
+              "libs/react/pages/books/buy-books/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/react/pages/books/buy-books/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/react/pages/books/buy-books/jest.config.js",
             "passWithNoTests": true
           }
         }

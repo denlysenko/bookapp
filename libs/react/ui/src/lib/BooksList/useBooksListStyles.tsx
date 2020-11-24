@@ -6,12 +6,25 @@ export const useBooksListStyles = makeStyles({
     flexWrap: 'wrap',
     margin: '0 -0.75rem -1.5rem -0.75rem',
 
+    ['@media (max-width: 576px)']: {
+      margin: 0,
+      justifyContent: 'center',
+    },
+
     '& .list-item-wrapper': {
       width: '100%',
       maxWidth: 200,
       paddingLeft: '0.75rem',
       paddingRight: '0.75rem',
       marginBottom: '1.5rem',
+
+      ['@media (max-width: 768px)']: {
+        maxWidth: '50%',
+      },
+
+      ['@media (max-width: 576px)']: {
+        maxWidth: '85%',
+      },
     },
 
     '& .list-item': {
@@ -19,7 +32,7 @@ export const useBooksListStyles = makeStyles({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      height: 320,
+      height: 350,
       cursor: 'pointer',
       padding: '1rem',
     },

@@ -6,13 +6,16 @@ interface State {
   error?: string;
 }
 
-export const initialState: State = {
+export const initialFileSelectorState: State = {
   loading: false,
   file: null,
   error: undefined,
 };
 
-export const reducer = (state = initialState, action: FileSelectorAction) => {
+export const fileSelectorReducer = (
+  state = initialFileSelectorState,
+  action: FileSelectorAction
+) => {
   switch (action.type) {
     case FileSelectorActionTypes.START_LOADING: {
       return {

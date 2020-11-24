@@ -23,17 +23,17 @@ Cypress.Commands.add('uploadOnServer', (response) => {
 });
 
 Cypress.Commands.add('searchBooks', (query) => {
-  cy.get('[data-test=search-book]').type(query);
+  cy.get('[data-testid=search] [name=searchTerm]').type(query);
 });
 
 Cypress.Commands.add('filterBooks', (filter) => {
-  cy.get(`[data-test=${filter}]`).click();
+  cy.get(`[data-testid=${filter}]`).click();
 });
 
 Cypress.Commands.add('rateBook', (bookIndex, rate) => {
-  cy.get('[data-test=list-item]').then(($books) => {
+  cy.get('[data-testid=list-item]').then(($books) => {
     cy.wrap($books[bookIndex])
-      .find('.rating-star')
+      .find('.MuiRating-label')
       .then(($stars) => {
         cy.wrap($stars[rate - 1]).click();
       });

@@ -24,8 +24,7 @@ describe('Add Book Page', () => {
 
       it('should guard route', () => {
         cy.visit('/books/add');
-        // TODO: replace with /books/browse
-        cy.url().should('include', '/');
+        cy.url().should('include', '/books/browse');
       });
     });
 
@@ -62,13 +61,12 @@ describe('Add Book Page', () => {
 
           cy.get('.MuiSnackbarContent-root').should('be.visible').and('contain', 'Book created!');
 
-          // TODO: test this later
-          // cy.contains('Browse Books').click();
+          cy.contains('Browse Books').click();
 
-          // cy.get('[data-test=list-item]').should('have.length', 5);
-          // cy.get('.logs .mat-list-item')
-          //   .should('have.length', 1)
-          // .and('contain', 'You created a Book');
+          cy.get('[data-testid=list-item]').should('have.length', 5);
+          cy.get('.logs .MuiListItem-root')
+            .should('have.length', 1)
+            .and('contain', 'You created a Book');
         });
 
         it('should save paid book', () => {
@@ -81,13 +79,12 @@ describe('Add Book Page', () => {
 
           cy.get('.MuiSnackbarContent-root').should('be.visible').and('contain', 'Book created!');
 
-          // TODO: test this later
-          // cy.contains('Buy Books').click();
+          cy.contains('Buy Books').click();
 
-          // cy.get('[data-test=list-item]').should('have.length', 4);
-          // cy.get('.logs .mat-list-item')
-          //   .should('have.length', 1)
-          //   .and('contain', 'You created a Book');
+          cy.get('[data-testid=list-item]').should('have.length', 4);
+          cy.get('.logs .MuiListItem-root')
+            .should('have.length', 1)
+            .and('contain', 'You created a Book');
         });
       });
 

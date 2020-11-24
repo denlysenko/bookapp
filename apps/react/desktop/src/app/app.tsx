@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 
 import { ApolloProvider } from '@apollo/client';
 
@@ -37,6 +37,20 @@ const AddBook = lazy(() =>
   }))
 );
 
+const BrowseBooks = lazy(() =>
+  // tslint:disable-next-line: no-shadowed-variable
+  import('@bookapp/react/pages/books/browse-books').then(({ BrowseBooks }) => ({
+    default: BrowseBooks,
+  }))
+);
+
+const BuyBooks = lazy(() =>
+  // tslint:disable-next-line: no-shadowed-variable
+  import('@bookapp/react/pages/books/buy-books').then(({ BuyBooks }) => ({
+    default: BuyBooks,
+  }))
+);
+
 const App = () => {
   console.log('App rendered');
 
@@ -51,6 +65,7 @@ const App = () => {
             <Routes>
               <AnonymousGuard path="/auth" element={<Auth />} />
               <AuthGuard path="/" element={<Main />}>
+                <Route path="" element={<Navigate to="/books/browse" />} />
                 <AuthGuard path="password" element={<Password />} />
                 <AuthGuard path="profile" element={<Profile />} />
                 <RolesGuard path="books/add" element={<AddBook />} roles={[ROLES.ADMIN]} />
@@ -59,6 +74,8 @@ const App = () => {
                   element={<AddBook />}
                   roles={[ROLES.ADMIN]}
                 />
+                <AuthGuard path="books/browse" element={<BrowseBooks />} />
+                <AuthGuard path="books/buy" element={<BuyBooks />} />
               </AuthGuard>
             </Routes>
           </Router>

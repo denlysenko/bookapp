@@ -215,6 +215,15 @@
     },
     "react-pages-books-add-book": {
       "tags": []
+    },
+    "react-pages-books-browse-books": {
+      "tags": []
+    },
+    "react-state": {
+      "tags": []
+    },
+    "react-pages-books-buy-books": {
+      "tags": []
     }
   },
   "tasksRunnerOptions": {

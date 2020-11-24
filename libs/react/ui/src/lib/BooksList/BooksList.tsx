@@ -12,25 +12,16 @@ import { useBooksListStyles } from './useBooksListStyles';
 
 export interface BooksListProps {
   books: Book[];
-  hasMoreItems: boolean;
   onBookRate: ({ bookId: string, rate: number }) => void;
   onLoadMore: () => void;
 }
 
-export const BooksList = ({ books = [], hasMoreItems, onBookRate, onLoadMore }: BooksListProps) => {
+export const BooksList = ({ books = [], onBookRate, onLoadMore }: BooksListProps) => {
   const classes = useBooksListStyles();
-
-  const loadMore = () => {
-    if (!hasMoreItems) {
-      return;
-    }
-
-    onLoadMore();
-  };
 
   return (
     <div className={classes.root}>
-      <InfiniteScroll onLoadMore={loadMore}>
+      <InfiniteScroll onLoadMore={onLoadMore}>
         {books.map((book) => (
           <div key={book._id} className="list-item-wrapper" data-testid="list-item">
             <Card className="list-item">
@@ -43,7 +34,10 @@ export const BooksList = ({ books = [], hasMoreItems, onBookRate, onLoadMore }: 
                   />
                 </Link>
               </div>
-              <Link to={book.paid ? '/books/buy/' + book.url : '/books/browse/' + book.url}>
+              <Link
+                className="title"
+                to={book.paid ? '/books/buy/' + book.url : '/books/browse/' + book.url}
+              >
                 {book.title}
               </Link>
               <span className="author">by {book.author}</span>
