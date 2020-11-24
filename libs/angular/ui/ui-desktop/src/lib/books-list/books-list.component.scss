@@ -2,22 +2,26 @@ bookapp-infinite-scroll {
   display: flex;
   flex-wrap: wrap;
   margin: 0 -0.75rem -1.5rem -0.75rem;
+
+  @media (max-width: 576px) {
+    margin: 0;
+    justify-content: center;
+  }
 }
 
 .list-item-wrapper {
   width: 100%;
+  max-width: 200px;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   margin-bottom: 1.5rem;
 
-  @media (min-width: 634px) {
-    flex: 0 0 50%;
+  @media (max-width: 768px) {
     max-width: 50%;
   }
 
-  @media (min-width: 970px) {
-    flex: 0 0 25%;
-    max-width: 25%;
+  @media (max-width: 576px) {
+    max-width: 85%;
   }
 }
 
@@ -26,7 +30,7 @@ bookapp-infinite-scroll {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 360px;
+  height: 320px;
   cursor: pointer;
 
   ::ng-deep &.mat-card {
