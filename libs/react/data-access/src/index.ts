@@ -6,3 +6,5 @@ export * from './lib/useUpload';
 export * from './lib/useProfile';
 export * from './lib/useAddBook';
 export * from './lib/useBooks';
+export * from './lib/useBook';
+export * from './lib/useBookmarks';

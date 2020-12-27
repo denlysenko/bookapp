@@ -75,6 +75,7 @@ export const BookFragment = gql`
     slug
     url
     comments {
+      _id
       author {
         displayName
       }

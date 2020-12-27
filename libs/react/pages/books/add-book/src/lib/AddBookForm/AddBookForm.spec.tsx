@@ -21,9 +21,11 @@ describe('AddBookForm', () => {
     jest.clearAllMocks();
   });
 
-  it('should render successfully', () => {
+  it('should render successfully', async () => {
     const { baseElement } = render(<AddBookForm {...props} />);
-    expect(baseElement).toBeTruthy();
+    await waitFor(() => {
+      expect(baseElement).toBeTruthy();
+    });
   });
 
   describe('Validations', () => {
@@ -131,7 +133,9 @@ describe('AddBookForm', () => {
       };
 
       render(<AddBookForm {...propsWithEpub} />);
-      expect(screen.getByText(/download/i)).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText(/download/i)).toBeInTheDocument();
+      });
     });
   });
 
@@ -158,7 +162,9 @@ describe('AddBookForm', () => {
 
     it('should disable button when loading prop passed', async () => {
       render(<AddBookForm {...props} loading={true} />);
-      expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
+      });
     });
   });
 

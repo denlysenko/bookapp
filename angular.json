@@ -1822,6 +1822,32 @@
           }
         }
       }
+    },
+    "react-pages-books-view-book": {
+      "root": "libs/react/pages/books/view-book",
+      "sourceRoot": "libs/react/pages/books/view-book/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/react/pages/books/view-book/tsconfig.lib.json",
+              "libs/react/pages/books/view-book/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/react/pages/books/view-book/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/react/pages/books/view-book/jest.config.js",
+            "passWithNoTests": true,
+            "setupFile": "libs/react/pages/books/view-book/src/test-setup.ts"
+          }
+        }
+      }
     }
   },
   "cli": {

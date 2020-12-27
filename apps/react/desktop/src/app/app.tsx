@@ -51,6 +51,13 @@ const BuyBooks = lazy(() =>
   }))
 );
 
+const ViewBook = lazy(() =>
+  // tslint:disable-next-line: no-shadowed-variable
+  import('@bookapp/react/pages/books/view-book').then(({ ViewBook }) => ({
+    default: ViewBook,
+  }))
+);
+
 const App = () => {
   console.log('App rendered');
 
@@ -75,7 +82,9 @@ const App = () => {
                   roles={[ROLES.ADMIN]}
                 />
                 <AuthGuard path="books/browse" element={<BrowseBooks />} />
+                <AuthGuard path="books/browse/:author/:slug" element={<ViewBook />} />
                 <AuthGuard path="books/buy" element={<BuyBooks />} />
+                <AuthGuard path="books/buy/:author/:slug" element={<ViewBook />} />
               </AuthGuard>
             </Routes>
           </Router>

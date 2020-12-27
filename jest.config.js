@@ -36,5 +36,6 @@ module.exports = {
     '<rootDir>/libs/react/shared',
     '<rootDir>/libs/react/state',
     '<rootDir>/libs/react/pages/books/buy-books',
+    '<rootDir>/libs/react/pages/books/view-book',
   ],
 };

@@ -26,7 +26,13 @@ export const BooksList = ({ books = [], onBookRate, onLoadMore }: BooksListProps
           <div key={book._id} className="list-item-wrapper" data-testid="list-item">
             <Card className="list-item">
               <div className="cover">
-                <Link to={book.paid ? '/books/buy/' + book.url : '/books/browse/' + book.url}>
+                <Link
+                  to={
+                    book.paid
+                      ? `/books/buy/${book.url}?bookId=${book._id}`
+                      : `/books/browse/${book.url}?bookId=${book._id}`
+                  }
+                >
                   <LazyImage
                     src={book.coverUrl}
                     placeholder="/assets/images/nocover.svg"
@@ -36,7 +42,11 @@ export const BooksList = ({ books = [], onBookRate, onLoadMore }: BooksListProps
               </div>
               <Link
                 className="title"
-                to={book.paid ? '/books/buy/' + book.url : '/books/browse/' + book.url}
+                to={
+                  book.paid
+                    ? `/books/buy/${book.url}?bookId=${book._id}`
+                    : `/books/browse/${book.url}?bookId=${book._id}`
+                }
               >
                 {book.title}
               </Link>
