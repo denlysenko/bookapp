@@ -11,7 +11,7 @@ import { AnonymousGuard, AuthGuard, RolesGuard } from '@bookapp/react/guards';
 import { Auth } from '@bookapp/react/pages/auth';
 import { Main } from '@bookapp/react/pages/main';
 import { FeedbackProvider, FullPageSpinner, useFeedback } from '@bookapp/react/ui';
-import { ROLES } from '@bookapp/shared/enums';
+import { BOOKMARKS, ROLES } from '@bookapp/shared/enums';
 
 import './app.scss';
 import { theme } from './theme';
@@ -58,6 +58,13 @@ const ViewBook = lazy(() =>
   }))
 );
 
+const Bookmarks = lazy(() =>
+  // tslint:disable-next-line: no-shadowed-variable
+  import('@bookapp/react/pages/bookmarks').then(({ Bookmarks }) => ({
+    default: Bookmarks,
+  }))
+);
+
 const App = () => {
   console.log('App rendered');
 
@@ -85,6 +92,18 @@ const App = () => {
                 <AuthGuard path="books/browse/:author/:slug" element={<ViewBook />} />
                 <AuthGuard path="books/buy" element={<BuyBooks />} />
                 <AuthGuard path="books/buy/:author/:slug" element={<ViewBook />} />
+                <AuthGuard
+                  path="bookmarks/favorites"
+                  element={<Bookmarks title="Favorite Books" type={BOOKMARKS.FAVORITES} />}
+                />
+                <AuthGuard
+                  path="bookmarks/mustread"
+                  element={<Bookmarks title="Must Read Titles" type={BOOKMARKS.MUSTREAD} />}
+                />
+                <AuthGuard
+                  path="bookmarks/wishlist"
+                  element={<Bookmarks title="Wishlist" type={BOOKMARKS.WISHLIST} />}
+                />
               </AuthGuard>
             </Routes>
           </Router>

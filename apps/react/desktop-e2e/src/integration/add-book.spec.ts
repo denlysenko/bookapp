@@ -19,7 +19,7 @@ describe('Add Book Page', () => {
       });
 
       it('add book link should be hidden', () => {
-        cy.contains('Add Book').should('not.be.visible');
+        cy.contains('Add Book').should('not.exist');
       });
 
       it('should guard route', () => {
@@ -35,7 +35,7 @@ describe('Add Book Page', () => {
       });
 
       it('should toggle price field', () => {
-        cy.get(priceField).should('not.be.visible');
+        cy.get(priceField).should('not.exist');
         cy.get(paidCheckbox).click();
 
         cy.get(priceField).should('be.visible');
@@ -153,48 +153,44 @@ describe('Add Book Page', () => {
     });
   });
 
-  // TODO: test this later
-  // describe('Update book', () => {
-  //   context('role user', () => {
-  //     beforeEach(() => {
-  //       cy.login('user@test.com', 'password');
-  //       cy.get('[data-test=list-item]').first().click();
-  //     });
+  describe('Update book', () => {
+    context('role user', () => {
+      beforeEach(() => {
+        cy.login('user@test.com', 'password');
+        cy.get('[data-testid=list-item]').first().click();
+      });
 
-  //     it('edit book link should be hidden', () => {
-  //       cy.get('#edit').should('not.exist');
-  //     });
+      it('edit book link should be hidden', () => {
+        cy.get('#edit').should('not.exist');
+      });
 
-  //     it('should guard route', () => {
-  //       cy.url().then((url) => {
-  //         const parts = url.split('/').slice(-2);
-  //         const path = parts.map((part) => part.replace(/\?.*/, '')).join('/');
-  //         cy.visit(`/books/add/${path}`);
-  //         cy.url().should('include', '/books/browse');
-  //       });
-  //     });
-  //   });
+      it('should guard route', () => {
+        cy.url().then((url) => {
+          const parts = url.split('/').slice(-2);
+          const path = parts.map((part) => part.replace(/\?.*/, '')).join('/');
+          cy.visit(`/books/add/${path}`);
+          cy.url().should('include', '/books/browse');
+        });
+      });
+    });
 
-  //   context('role admin', () => {
-  //     beforeEach(() => {
-  //       cy.login('admin@test.com', 'password');
-  //       cy.server().route('POST', '/graphql?updateBook').as('updateBook');
-  //       cy.get('[data-test=list-item]').first().click();
-  //       cy.get('#edit').click();
-  //     });
+    context('role admin', () => {
+      beforeEach(() => {
+        cy.login('admin@test.com', 'password');
+        cy.get('[data-testid=list-item]').first().click();
+        cy.get('[data-testid=edit]').click();
+      });
 
-  //     it('should update book', () => {
-  //       cy.get(titleField).clear().type('Updated');
-  //       cy.get(saveBtn).click();
+      it('should update book', () => {
+        cy.get(titleField).clear().type('Updated');
+        cy.get(saveBtn).click();
 
-  //       cy.wait('@updateBook');
+        cy.get('.MuiSnackbarContent-root').should('be.visible').and('contain', 'Book updated!');
 
-  //       cy.get('.mat-snack-bar-container').should('be.visible').and('contain', 'Book updated!');
-
-  //       cy.get('.logs .mat-list-item')
-  //         .should('have.length', 1)
-  //         .and('contain', 'You updated a Book');
-  //     });
-  //   });
-  // });
+        cy.get('.logs .MuiListItem-root')
+          .should('have.length', 1)
+          .and('contain', 'You updated a Book');
+      });
+    });
+  });
 });

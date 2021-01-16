@@ -8,7 +8,7 @@ import {
 } from '@bookapp/shared/queries';
 
 // tslint:disable: no-shadowed-variable
-export function useBookmarks(bookId: string) {
+export function useBookmarksByUser(bookId: string) {
   const { data, updateQuery } = useQuery<{
     userBookmarksByBook: { type: string }[];
   }>(BOOKMARKS_BY_USER_AND_BOOK_QUERY, {

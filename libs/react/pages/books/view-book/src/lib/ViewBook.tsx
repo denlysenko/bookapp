@@ -5,7 +5,7 @@ import Card from '@material-ui/core/Card';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
-import { useBook, useBookmarks } from '@bookapp/react/data-access';
+import { useBook, useBookmarksByUser } from '@bookapp/react/data-access';
 import { FullPageSpinner } from '@bookapp/react/ui';
 import { BookmarkEvent } from '@bookapp/shared/interfaces';
 import { useQueryString } from '@bookapp/utils/react';
@@ -20,7 +20,9 @@ export function ViewBook() {
   const query = useQueryString();
 
   const { book, fetching, addComment, rateBook } = useBook(slug);
-  const { bookmarks, addToBookmarks, removeFromBookmarks } = useBookmarks(query.get('bookId'));
+  const { bookmarks, addToBookmarks, removeFromBookmarks } = useBookmarksByUser(
+    query.get('bookId')
+  );
 
   const [loading, setLoading] = useState(false);
 

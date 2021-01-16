@@ -31,9 +31,10 @@ describe('View Book Page', () => {
     cy.get('[data-testid=favorites]').click();
     cy.get('.logs .MuiListItem-root').first().should('contain', 'You added a Book to Favourites');
 
-    // TODO: test it later
-    // cy.contains('Favorite').click();
-    // cy.get('[data-test=list-item]').should('have.length', 1).and('contain', 'Pride and Prejudice');
+    cy.contains('Favorite').click();
+    cy.get('[data-testid=list-item]')
+      .should('have.length', 1)
+      .and('contain', 'Pride and Prejudice');
   });
 
   it('should remove book from favorites', () => {
@@ -44,9 +45,8 @@ describe('View Book Page', () => {
       .first()
       .should('contain', 'You removed a Book from Favourites');
 
-    // TODO: test it later
-    // cy.contains('Favorite').click();
-    // cy.get('[data-test=list-item]').should('not.exist');
+    cy.contains('Favorite').click();
+    cy.get('[data-testid=list-item]').should('not.exist');
   });
 
   it('should add book to mustread', () => {
@@ -55,9 +55,10 @@ describe('View Book Page', () => {
       .first()
       .should('contain', 'You added a Book to Must Read Titles');
 
-    // TODO: test it later
-    // cy.contains('Must Read Titles').click();
-    // cy.get('[data-test=list-item]').should('have.length', 1).and('contain', 'Pride and Prejudice');
+    cy.contains('Must Read Titles').click();
+    cy.get('[data-testid=list-item]')
+      .should('have.length', 1)
+      .and('contain', 'Pride and Prejudice');
   });
 
   it('should remove book from mustread', () => {
@@ -68,9 +69,8 @@ describe('View Book Page', () => {
       .first()
       .should('contain', 'You removed a Book from Must Read Titles');
 
-    // TODO: test it later
-    // cy.contains('Must Read Titles').click();
-    // cy.get('[data-test=list-item]').should('not.exist');
+    cy.contains('Must Read Titles').click();
+    cy.get('[data-testid=list-item]').should('not.exist');
   });
 
   it('should add book to wishlist', () => {
@@ -80,11 +80,10 @@ describe('View Book Page', () => {
     cy.get('[data-testid=wishlist]').click();
     cy.get('.logs .MuiListItem-root').first().should('contain', 'You added a Book to Wishlist');
 
-    // TODO: test it later
-    // cy.contains('Wishlist').click();
-    // cy.get('[data-test=list-item]')
-    //   .should('have.length', 1)
-    //   .and('contain', 'The Hound of the Baskervilles');
+    cy.contains('Wishlist').click();
+    cy.get('[data-testid=list-item]')
+      .should('have.length', 1)
+      .and('contain', 'The Hound of the Baskervilles');
   });
 
   it('should remove book from wishlist', () => {
@@ -96,9 +95,8 @@ describe('View Book Page', () => {
     cy.get('[data-testid=wishlist]').click();
     cy.get('.logs .MuiListItem-root').first().should('contain', 'You removed a Book from Wishlist');
 
-    // TODO: test it later
-    // cy.contains('Wishlist').click();
-    // cy.get('[data-test=list-item]').should('not.exist');
+    cy.contains('Wishlist').click();
+    cy.get('[data-testid=list-item]').should('not.exist');
   });
 
   // TODO: test it later

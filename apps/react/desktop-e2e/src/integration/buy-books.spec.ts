@@ -41,11 +41,8 @@ describe('Buy Books Page', () => {
     cy.get('.logs .MuiListItem-root').first().should('contain', 'You rated a Book');
   });
 
-  // TODO: test this later
-  // it('should open book view page', () => {
-  //   cy.server().route('POST', '/graphql?book').as('book');
-  //   cy.get('[data-testid=list-item]').first().click();
-  //   cy.wait('@book');
-  //   cy.url().should('contain', 'the-hound-of-the-baskervilles');
-  // });
+  it('should open book view page', () => {
+    cy.get('[data-testid=list-item]').first().click();
+    cy.url().should('contain', 'the-hound-of-the-baskervilles');
+  });
 });

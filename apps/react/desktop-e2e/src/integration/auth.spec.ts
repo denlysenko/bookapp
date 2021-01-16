@@ -68,7 +68,7 @@ describe('Auth page', () => {
         cy.get(emailField).type('user@test.com');
         cy.get(passwordField).type('password{enter}');
 
-        cy.url().should('include', '/'); // TODO: replace with /books/browse
+        cy.url().should('include', '/books/browse');
         cy.get('#user-menu').should('contain', 'User Test');
       });
     });
