@@ -65,6 +65,13 @@ const Bookmarks = lazy(() =>
   }))
 );
 
+const BestBooks = lazy(() =>
+  // tslint:disable-next-line: no-shadowed-variable
+  import('@bookapp/react/pages/books/best-books').then(({ BestBooks }) => ({
+    default: BestBooks,
+  }))
+);
+
 const App = () => {
   console.log('App rendered');
 
@@ -91,6 +98,7 @@ const App = () => {
                 <AuthGuard path="books/browse" element={<BrowseBooks />} />
                 <AuthGuard path="books/browse/:author/:slug" element={<ViewBook />} />
                 <AuthGuard path="books/buy" element={<BuyBooks />} />
+                <AuthGuard path="books/best" element={<BestBooks />} />
                 <AuthGuard path="books/buy/:author/:slug" element={<ViewBook />} />
                 <AuthGuard
                   path="bookmarks/favorites"

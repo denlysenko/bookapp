@@ -1874,6 +1874,31 @@
           }
         }
       }
+    },
+    "react-pages-books-best-books": {
+      "root": "libs/react/pages/books/best-books",
+      "sourceRoot": "libs/react/pages/books/best-books/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/react/pages/books/best-books/tsconfig.lib.json",
+              "libs/react/pages/books/best-books/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/react/pages/books/best-books/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/react/pages/books/best-books/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

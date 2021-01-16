@@ -9,3 +9,4 @@ export * from './lib/useBooks';
 export * from './lib/useBook';
 export * from './lib/useBookmarksByType';
 export * from './lib/useBookmarksByUser';
+export * from './lib/useBestBooks';

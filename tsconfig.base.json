@@ -106,7 +106,8 @@
       "@bookapp/react/state": ["libs/react/state/src/index.ts"],
       "@bookapp/react/pages/books/buy-books": ["libs/react/pages/books/buy-books/src/index.ts"],
       "@bookapp/react/pages/books/view-book": ["libs/react/pages/books/view-book/src/index.ts"],
-      "@bookapp/react/pages/bookmarks": ["libs/react/pages/bookmarks/src/index.ts"]
+      "@bookapp/react/pages/bookmarks": ["libs/react/pages/bookmarks/src/index.ts"],
+      "@bookapp/react/pages/books/best-books": ["libs/react/pages/books/best-books/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
