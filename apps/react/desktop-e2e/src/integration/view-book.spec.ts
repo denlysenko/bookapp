@@ -99,10 +99,9 @@ describe('View Book Page', () => {
     cy.get('[data-testid=list-item]').should('not.exist');
   });
 
-  // TODO: test it later
-  // it('should open book reader', () => {
-  //   cy.get('[data-test=read]').click();
+  it('should open book reader', () => {
+    cy.get('[data-testid=read]').click();
 
-  //   cy.url().should('include', '/books/read');
-  // });
+    cy.url().should('include', '/books/read');
+  });
 });

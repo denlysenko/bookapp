@@ -233,6 +233,9 @@
     },
     "react-pages-books-best-books": {
       "tags": []
+    },
+    "react-pages-books-read-book": {
+      "tags": []
     }
   },
   "tasksRunnerOptions": {

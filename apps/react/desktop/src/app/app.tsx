@@ -72,9 +72,14 @@ const BestBooks = lazy(() =>
   }))
 );
 
-const App = () => {
-  console.log('App rendered');
+const ReadBook = lazy(() =>
+  // tslint:disable-next-line: no-shadowed-variable
+  import('@bookapp/react/pages/books/read-book').then(({ ReadBook }) => ({
+    default: ReadBook,
+  }))
+);
 
+const App = () => {
   const { showFeedback } = useFeedback();
   const client = createApollo(showFeedback);
 
@@ -98,8 +103,10 @@ const App = () => {
                 <AuthGuard path="books/browse" element={<BrowseBooks />} />
                 <AuthGuard path="books/browse/:author/:slug" element={<ViewBook />} />
                 <AuthGuard path="books/buy" element={<BuyBooks />} />
-                <AuthGuard path="books/best" element={<BestBooks />} />
                 <AuthGuard path="books/buy/:author/:slug" element={<ViewBook />} />
+                <AuthGuard path="books/read" element={<ReadBook />} />
+                <AuthGuard path="books/read/:author/:slug" element={<ReadBook />} />
+                <AuthGuard path="books/best" element={<BestBooks />} />
                 <AuthGuard
                   path="bookmarks/favorites"
                   element={<Bookmarks title="Favorite Books" type={BOOKMARKS.FAVORITES} />}

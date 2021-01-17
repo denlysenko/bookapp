@@ -71,8 +71,18 @@
                 "output": "/assets/"
               }
             ],
-            "styles": ["apps/react/desktop/src/styles.scss"],
-            "scripts": [],
+            "styles": [
+              "node_modules/epubjs-reader/reader/css/main.css",
+              "node_modules/epubjs-reader/reader/css/popup.css",
+              "apps/react/desktop/src/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/epubjs-reader/reader/js/libs/jquery.min.js",
+              "node_modules/epubjs-reader/reader/js/libs/zip.min.js",
+              "node_modules/epubjs-reader/reader/js/libs/screenfull.min.js",
+              "node_modules/epubjs-reader/reader/js/epub.min.js",
+              "node_modules/epubjs-reader/reader/js/reader.min.js"
+            ],
             "buildLibsFromSource": true
           },
           "configurations": {
@@ -1895,6 +1905,31 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/react/pages/books/best-books/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "react-pages-books-read-book": {
+      "root": "libs/react/pages/books/read-book",
+      "sourceRoot": "libs/react/pages/books/read-book/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/react/pages/books/read-book/tsconfig.lib.json",
+              "libs/react/pages/books/read-book/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/react/pages/books/read-book/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/react/pages/books/read-book/jest.config.js",
             "passWithNoTests": true
           }
         }

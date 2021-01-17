@@ -39,5 +39,6 @@ module.exports = {
     '<rootDir>/libs/react/pages/books/view-book',
     '<rootDir>/libs/react/pages/bookmarks',
     '<rootDir>/libs/react/pages/books/best-books',
+    '<rootDir>/libs/react/pages/books/read-book',
   ],
 };
