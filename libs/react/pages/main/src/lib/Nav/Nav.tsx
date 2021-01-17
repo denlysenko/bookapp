@@ -11,6 +11,7 @@ import { useLastLogs, useMe } from '@bookapp/react/data-access';
 import { categories, navs } from '@bookapp/shared/constants';
 import { UserActionsDesc } from '@bookapp/shared/enums';
 import { User } from '@bookapp/shared/interfaces';
+import { dateToPeriod } from '@bookapp/utils/react';
 
 import { useNavStyles } from './useNavStyles';
 
@@ -85,7 +86,7 @@ export const Nav = () => {
                     <br />
                     <span> by {log.book.author}</span>
                   </p>
-                  <p className={classes.footnote}>{log.createdAt}</p>
+                  <p className={classes.footnote}>{dateToPeriod(log.createdAt)}</p>
                 </ListItemText>
               </ListItem>
             </div>
