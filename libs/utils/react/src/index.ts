@@ -3,3 +3,4 @@ export * from './lib/getCroppedImage';
 export * from './lib/handleValidationErrors';
 export * from './lib/useQueryString';
 export * from './lib/dateToPeriod';
+export * from './lib/formatDate';

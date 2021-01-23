@@ -79,6 +79,13 @@ const ReadBook = lazy(() =>
   }))
 );
 
+const History = lazy(() =>
+  // tslint:disable-next-line: no-shadowed-variable
+  import('@bookapp/react/pages/history').then(({ History }) => ({
+    default: History,
+  }))
+);
+
 const App = () => {
   const { showFeedback } = useFeedback();
   const client = createApollo(showFeedback);
@@ -94,6 +101,7 @@ const App = () => {
                 <Route path="" element={<Navigate to="/books/browse" />} />
                 <AuthGuard path="password" element={<Password />} />
                 <AuthGuard path="profile" element={<Profile />} />
+                <AuthGuard path="history" element={<History />} />
                 <RolesGuard path="books/add" element={<AddBook />} roles={[ROLES.ADMIN]} />
                 <RolesGuard
                   path="books/add/:author/:slug"

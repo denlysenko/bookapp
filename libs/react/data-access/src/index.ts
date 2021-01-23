@@ -11,3 +11,4 @@ export * from './lib/useBookmarksByType';
 export * from './lib/useBookmarksByUser';
 export * from './lib/useBestBooks';
 export * from './lib/useReadBook';
+export * from './lib/useHistory';

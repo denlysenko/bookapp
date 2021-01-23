@@ -108,7 +108,8 @@
       "@bookapp/react/pages/books/view-book": ["libs/react/pages/books/view-book/src/index.ts"],
       "@bookapp/react/pages/bookmarks": ["libs/react/pages/bookmarks/src/index.ts"],
       "@bookapp/react/pages/books/best-books": ["libs/react/pages/books/best-books/src/index.ts"],
-      "@bookapp/react/pages/books/read-book": ["libs/react/pages/books/read-book/src/index.ts"]
+      "@bookapp/react/pages/books/read-book": ["libs/react/pages/books/read-book/src/index.ts"],
+      "@bookapp/react/pages/history": ["libs/react/pages/history/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

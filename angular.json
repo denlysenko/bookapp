@@ -1934,6 +1934,32 @@
           }
         }
       }
+    },
+    "react-pages-history": {
+      "root": "libs/react/pages/history",
+      "sourceRoot": "libs/react/pages/history/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/react/pages/history/tsconfig.lib.json",
+              "libs/react/pages/history/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/react/pages/history/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/react/pages/history/jest.config.js",
+            "passWithNoTests": true,
+            "setupFile": "libs/react/pages/history/src/test-setup.ts"
+          }
+        }
+      }
     }
   },
   "cli": {

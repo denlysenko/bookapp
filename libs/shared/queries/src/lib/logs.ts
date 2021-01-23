@@ -5,6 +5,7 @@ export const LOGS_QUERY = gql`
     logs(skip: $skip, first: $first, orderBy: $orderBy) {
       count
       rows {
+        _id
         action
         createdAt
         book {

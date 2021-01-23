@@ -7,6 +7,8 @@
     "start": "nx serve",
     "start:server:dev": "nx serve api",
     "start:server:testing": "ENV=testing nx serve api",
+    "start:angular-desktop": "nx run-many --target=serve --projects=api,angular-desktop --parallel=true",
+    "start:react-desktop": "nx run-many --target=serve --projects=api,react-desktop --parallel=true",
     "seed:db": "seed -u $(grep DB_URI .env.testing | cut -d '=' -f 2-) --drop-database ./seed-data",
     "build": "nx build",
     "test": "nx test",

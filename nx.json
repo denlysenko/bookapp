@@ -236,6 +236,9 @@
     },
     "react-pages-books-read-book": {
       "tags": []
+    },
+    "react-pages-history": {
+      "tags": []
     }
   },
   "tasksRunnerOptions": {
