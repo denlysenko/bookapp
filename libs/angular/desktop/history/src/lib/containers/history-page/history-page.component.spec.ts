@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HAMMER_LOADER } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -15,32 +15,34 @@ describe('HistoryPageComponent', () => {
   let fixture: ComponentFixture<HistoryPageComponent>;
   let logsService: LogsService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [HistoryModule, NoopAnimationsModule, RouterTestingModule],
-      providers: [
-        {
-          provide: HAMMER_LOADER,
-          useValue: () => new Promise(() => {}),
-        },
-        {
-          provide: StoreService,
-          useValue: MockStoreService,
-        },
-      ],
-    })
-      .overrideComponent(HistoryPageComponent, {
-        set: {
-          providers: [
-            {
-              provide: LogsService,
-              useValue: MockAngularLogsService,
-            },
-          ],
-        },
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [HistoryModule, NoopAnimationsModule, RouterTestingModule],
+        providers: [
+          {
+            provide: HAMMER_LOADER,
+            useValue: () => new Promise(() => {}),
+          },
+          {
+            provide: StoreService,
+            useValue: MockStoreService,
+          },
+        ],
       })
-      .compileComponents();
-  }));
+        .overrideComponent(HistoryPageComponent, {
+          set: {
+            providers: [
+              {
+                provide: LogsService,
+                useValue: MockAngularLogsService,
+              },
+            ],
+          },
+        })
+        .compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HistoryPageComponent);

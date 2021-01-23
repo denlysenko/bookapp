@@ -67,7 +67,7 @@ export class BookmarksService {
     }
 
     // BOOK_REMOVED_FROM_MUSTREAD
-    await bookmark.remove();
+    bookmark.remove();
     await this.logsService.create(
       new LogDto(userId, UserActions[`BOOK_REMOVED_FROM_${BOOKMARKS[type]}`], bookId)
     );

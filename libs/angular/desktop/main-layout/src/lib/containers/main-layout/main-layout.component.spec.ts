@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -13,28 +13,30 @@ describe('MainLayoutComponent', () => {
   let fixture: ComponentFixture<MainLayoutComponent>;
   let logsService: LogsService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [MainLayoutModule, NoopAnimationsModule, RouterTestingModule],
-      providers: [
-        {
-          provide: AuthService,
-          useValue: MockAngularAuthService,
-        },
-      ],
-    })
-      .overrideComponent(MainLayoutComponent, {
-        set: {
-          providers: [
-            {
-              provide: LogsService,
-              useValue: MockAngularLogsService,
-            },
-          ],
-        },
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [MainLayoutModule, NoopAnimationsModule, RouterTestingModule],
+        providers: [
+          {
+            provide: AuthService,
+            useValue: MockAngularAuthService,
+          },
+        ],
       })
-      .compileComponents();
-  }));
+        .overrideComponent(MainLayoutComponent, {
+          set: {
+            providers: [
+              {
+                provide: LogsService,
+                useValue: MockAngularLogsService,
+              },
+            ],
+          },
+        })
+        .compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MainLayoutComponent);

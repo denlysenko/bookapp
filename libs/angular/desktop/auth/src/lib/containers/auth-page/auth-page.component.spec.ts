@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
 import { RouterExtensions } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
@@ -19,28 +19,30 @@ describe('AuthPageComponent', () => {
   let authService: AuthService;
   let router: RouterExtensions;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [AuthPageComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-      providers: [
-        {
-          provide: AuthService,
-          useValue: {
-            login: jest.fn().mockImplementation(() => of({ data: authPayload })),
-            signup: jest.fn().mockImplementation(() => of({ data: authPayload })),
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [AuthPageComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+        providers: [
+          {
+            provide: AuthService,
+            useValue: {
+              login: jest.fn().mockImplementation(() => of({ data: authPayload })),
+              signup: jest.fn().mockImplementation(() => of({ data: authPayload })),
+            },
           },
-        },
-        {
-          provide: RouterExtensions,
-          useValue: MockRouterExtensions,
-        },
-      ],
-    }).compileComponents();
+          {
+            provide: RouterExtensions,
+            useValue: MockRouterExtensions,
+          },
+        ],
+      }).compileComponents();
 
-    authService = TestBed.inject(AuthService);
-    router = TestBed.inject(RouterExtensions);
-  }));
+      authService = TestBed.inject(AuthService);
+      router = TestBed.inject(RouterExtensions);
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AuthPageComponent);

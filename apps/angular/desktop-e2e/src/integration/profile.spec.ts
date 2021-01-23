@@ -15,7 +15,7 @@ describe('Profile page', () => {
   beforeEach(() => {
     cy.exec('npm run seed:db');
     cy.login('user@test.com', 'password');
-    cy.server().route('POST', '/graphql?updateUser').as('updateUser');
+    cy.intercept('POST', '/graphql?updateUser').as('updateUser');
     cy.get('#user-menu-toggler').click();
     cy.contains('Edit Profile').click({ force: true });
   });

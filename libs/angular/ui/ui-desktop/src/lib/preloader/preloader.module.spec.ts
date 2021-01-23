@@ -1,12 +1,14 @@
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { PreloaderModule } from './preloader.module';
 
 describe('PreloaderModule', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [PreloaderModule],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [PreloaderModule],
+      }).compileComponents();
+    })
+  );
 
   it('should create', () => {
     expect(PreloaderModule).toBeDefined();

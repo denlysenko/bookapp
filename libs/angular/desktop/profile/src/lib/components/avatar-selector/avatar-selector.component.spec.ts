@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 
 import { clickOnBtn, user } from '@bookapp/testing';
@@ -15,22 +15,24 @@ describe('AvatarSelectorComponent', () => {
   let fixture: ComponentFixture<AvatarSelectorComponent>;
   let dialog: MatDialog;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [AvatarSelectorComponent],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-        {
-          provide: MatDialog,
-          useValue: {
-            open: jest.fn().mockImplementation(() => ({
-              afterClosed: jest.fn().mockReturnValue(of(avatarUrl)),
-            })),
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [AvatarSelectorComponent],
+        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+        providers: [
+          {
+            provide: MatDialog,
+            useValue: {
+              open: jest.fn().mockImplementation(() => ({
+                afterClosed: jest.fn().mockReturnValue(of(avatarUrl)),
+              })),
+            },
           },
-        },
-      ],
-    }).compileComponents();
-  }));
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AvatarSelectorComponent);

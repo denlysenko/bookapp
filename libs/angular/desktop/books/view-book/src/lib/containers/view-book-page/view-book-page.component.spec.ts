@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
@@ -26,53 +26,55 @@ describe('ViewBookPageComponent', () => {
   let bookService: BookService;
   let bookmarksService: BookmarksService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, FormsModule, RatingModule, MatIconModule, RouterTestingModule],
-      declarations: [ViewBookPageComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            snapshot: {
-              paramMap: {
-                get: jest.fn(() => book.slug),
-              },
-              queryParamMap: {
-                get: jest.fn(() => book._id),
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, FormsModule, RatingModule, MatIconModule, RouterTestingModule],
+        declarations: [ViewBookPageComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              snapshot: {
+                paramMap: {
+                  get: jest.fn(() => book.slug),
+                },
+                queryParamMap: {
+                  get: jest.fn(() => book._id),
+                },
               },
             },
           },
-        },
-        {
-          provide: AuthService,
-          useValue: MockAngularAuthService,
-        },
-        {
-          provide: PaymentRequestService,
-          useValue: {
-            request: jest.fn().mockResolvedValue({ complete: jest.fn }),
+          {
+            provide: AuthService,
+            useValue: MockAngularAuthService,
           },
-        },
-      ],
-    })
-      .overrideComponent(ViewBookPageComponent, {
-        set: {
-          providers: [
-            {
-              provide: BookService,
-              useValue: MockAngularBookService,
+          {
+            provide: PaymentRequestService,
+            useValue: {
+              request: jest.fn().mockResolvedValue({ complete: jest.fn }),
             },
-            {
-              provide: BookmarksService,
-              useValue: MockAngularBookmarksService,
-            },
-          ],
-        },
+          },
+        ],
       })
-      .compileComponents();
-  }));
+        .overrideComponent(ViewBookPageComponent, {
+          set: {
+            providers: [
+              {
+                provide: BookService,
+                useValue: MockAngularBookService,
+              },
+              {
+                provide: BookmarksService,
+                useValue: MockAngularBookmarksService,
+              },
+            ],
+          },
+        })
+        .compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ViewBookPageComponent);

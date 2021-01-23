@@ -2,6 +2,7 @@ import { User } from '@bookapp/shared/interfaces';
 import { Document } from 'mongoose';
 
 export interface UserModel extends User, Document {
+  _id: any;
   password: string;
   salt: string;
   resetPasswordToken?: string;
@@ -9,5 +10,8 @@ export interface UserModel extends User, Document {
   avatar?: string;
   authenticate: (password: string) => boolean;
   makeSalt: (byteSize: number, callback: (err: any, salt: string) => void) => void;
-  encryptPassword: (password: string, callback: (err: any, hashedPassword: string) => void) => void;
+  encryptPassword: (
+    password: string,
+    callback?: (err: any, hashedPassword: string) => void
+  ) => void | string;
 }

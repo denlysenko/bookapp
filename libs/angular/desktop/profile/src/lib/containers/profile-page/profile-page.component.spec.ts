@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { AuthService, ProfileService } from '@bookapp/angular/data-access';
@@ -16,28 +16,30 @@ describe('ProfilePageComponent', () => {
   let fixture: ComponentFixture<ProfilePageComponent>;
   let profileService: ProfileService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ProfilePageComponent],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-        {
-          provide: AuthService,
-          useValue: MockAngularAuthService,
-        },
-        {
-          provide: FeedbackPlatformService,
-          useValue: MockFeedbackPlatformService,
-        },
-        {
-          provide: ProfileService,
-          useValue: {
-            update: jest.fn().mockImplementation(() => of({ data: { updateProfile: user } })),
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ProfilePageComponent],
+        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+        providers: [
+          {
+            provide: AuthService,
+            useValue: MockAngularAuthService,
           },
-        },
-      ],
-    }).compileComponents();
-  }));
+          {
+            provide: FeedbackPlatformService,
+            useValue: MockFeedbackPlatformService,
+          },
+          {
+            provide: ProfileService,
+            useValue: {
+              update: jest.fn().mockImplementation(() => of({ data: { updateProfile: user } })),
+            },
+          },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfilePageComponent);

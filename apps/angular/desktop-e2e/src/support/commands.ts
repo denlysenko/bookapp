@@ -18,8 +18,7 @@ Cypress.Commands.add('login', (email, password) => {
 });
 
 Cypress.Commands.add('uploadOnServer', (response) => {
-  cy.server();
-  cy.route('POST', 'http://localhost:3333/files', response);
+  cy.intercept('POST', 'http://localhost:3333/files', response);
 });
 
 Cypress.Commands.add('searchBooks', (query) => {

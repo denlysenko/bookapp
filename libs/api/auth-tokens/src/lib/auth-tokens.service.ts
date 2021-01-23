@@ -11,7 +11,9 @@ import { Connection, Document, Model } from 'mongoose';
 import { AuthTokenModel } from './interfaces/auth-token';
 
 // do not import from @bookapp/users to avoid circular dependency
-interface UserModel extends User, Document {}
+interface UserModel extends User, Document {
+  _id: any;
+}
 
 @Injectable()
 export class AuthTokensService {

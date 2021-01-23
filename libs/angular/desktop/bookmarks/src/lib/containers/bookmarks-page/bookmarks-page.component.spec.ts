@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -26,37 +26,39 @@ describe('BookmarksPageComponent', () => {
     }));
   });
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, RouterTestingModule, BookmarksModule],
-      providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            snapshot: {
-              data: {
-                type: BOOKMARKS.FAVORITES,
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NoopAnimationsModule, RouterTestingModule, BookmarksModule],
+        providers: [
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              snapshot: {
+                data: {
+                  type: BOOKMARKS.FAVORITES,
+                },
               },
+              data: of({
+                title,
+              }),
             },
-            data: of({
-              title,
-            }),
           },
-        },
-      ],
-    })
-      .overrideComponent(BookmarksPageComponent, {
-        set: {
-          providers: [
-            {
-              provide: BookmarksService,
-              useValue: MockAngularBookmarksService,
-            },
-          ],
-        },
+        ],
       })
-      .compileComponents();
-  }));
+        .overrideComponent(BookmarksPageComponent, {
+          set: {
+            providers: [
+              {
+                provide: BookmarksService,
+                useValue: MockAngularBookmarksService,
+              },
+            ],
+          },
+        })
+        .compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BookmarksPageComponent);

@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   MAT_DIALOG_DATA,
   MatDialogContent,
@@ -19,27 +19,29 @@ describe('ConfirmDialogComponent', () => {
   let fixture: ComponentFixture<ConfirmDialogComponent>;
   let dialog: MatDialogRef<ConfirmDialogComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [MatDialogModule],
-      declarations: [ConfirmDialogComponent],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: {
-            close: jest.fn(),
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [MatDialogModule],
+        declarations: [ConfirmDialogComponent],
+        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+        providers: [
+          {
+            provide: MatDialogRef,
+            useValue: {
+              close: jest.fn(),
+            },
           },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: {
-            text,
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+              text,
+            },
           },
-        },
-      ],
-    }).compileComponents();
-  }));
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmDialogComponent);

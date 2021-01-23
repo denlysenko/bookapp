@@ -1,12 +1,14 @@
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { PasswordModule } from './password.module';
 
 describe('PasswordModule', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [PasswordModule],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [PasswordModule],
+      }).compileComponents();
+    })
+  );
 
   it('should create', () => {
     expect(PasswordModule).toBeDefined();

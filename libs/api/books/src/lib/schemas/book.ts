@@ -9,12 +9,12 @@ import { BookModel } from '../interfaces/book';
 export const BookSchema = new Schema({
   title: {
     type: String,
-    required: BOOK_VALIDATION_ERRORS.TITLE_REQUIRED_ERR,
+    required: [true, BOOK_VALIDATION_ERRORS.TITLE_REQUIRED_ERR],
     trim: true,
   },
   author: {
     type: String,
-    required: BOOK_VALIDATION_ERRORS.AUTHOR_REQUIRED_ERR,
+    required: [true, BOOK_VALIDATION_ERRORS.AUTHOR_REQUIRED_ERR],
     trim: true,
   },
   coverUrl: String,

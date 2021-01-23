@@ -6,7 +6,7 @@ describe('Browse Books Page', () => {
   beforeEach(() => {
     cy.exec('npm run seed:db');
     cy.login('user@test.com', 'password');
-    cy.server().route('POST', '/graphql?freeBooks').as('freeBooks');
+    cy.intercept('POST', '/graphql?freeBooks').as('freeBooks');
   });
 
   it('should display list of free books', () => {
@@ -32,14 +32,14 @@ describe('Browse Books Page', () => {
   });
 
   it('should rate a book', () => {
-    cy.server().route('POST', '/graphql?rateBook').as('rateBook');
+    cy.intercept('POST', '/graphql?rateBook').as('rateBook');
     cy.rateBook(3, 5);
     cy.wait('@rateBook');
     cy.get('.logs .mat-list-item').first().should('contain', 'You rated a Book');
   });
 
   it('should open book view page', () => {
-    cy.server().route('POST', '/graphql?book').as('book');
+    cy.intercept('POST', '/graphql?book').as('book');
     cy.get('[data-test=list-item]').first().click();
     cy.wait('@book');
     cy.url().should('contain', 'pride-and-prejudice');

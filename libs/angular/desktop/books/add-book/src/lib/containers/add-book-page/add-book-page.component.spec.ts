@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
@@ -34,39 +34,41 @@ describe('AddBookPageComponent', () => {
   let addBookService: AddBookService;
   let feedbackService: FeedbackPlatformService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, MatCheckboxModule],
-      declarations: [AddBookPageComponent, AddBookFormComponent],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-        {
-          provide: FeedbackPlatformService,
-          useValue: MockFeedbackPlatformService,
-        },
-        {
-          provide: MatDialog,
-          useValue: MockMatDialog,
-        },
-        {
-          provide: AddBookService,
-          useValue: MockAngularAddBookService,
-        },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            data: of({ book: null }),
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [ReactiveFormsModule, MatCheckboxModule],
+        declarations: [AddBookPageComponent, AddBookFormComponent],
+        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+        providers: [
+          {
+            provide: FeedbackPlatformService,
+            useValue: MockFeedbackPlatformService,
           },
-        },
-        {
-          provide: UploadPlatformService,
-          useValue: {
-            deleteFile: jest.fn().mockImplementation(() => of(true)),
+          {
+            provide: MatDialog,
+            useValue: MockMatDialog,
           },
-        },
-      ],
-    }).compileComponents();
-  }));
+          {
+            provide: AddBookService,
+            useValue: MockAngularAddBookService,
+          },
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              data: of({ book: null }),
+            },
+          },
+          {
+            provide: UploadPlatformService,
+            useValue: {
+              deleteFile: jest.fn().mockImplementation(() => of(true)),
+            },
+          },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddBookPageComponent);

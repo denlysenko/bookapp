@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -22,22 +22,24 @@ describe('BestBooksPageComponent', () => {
     }));
   });
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, RouterTestingModule, BestBooksModule],
-    })
-      .overrideComponent(BestBooksPageComponent, {
-        set: {
-          providers: [
-            {
-              provide: BestBooksService,
-              useValue: MockAngularBestBooksService,
-            },
-          ],
-        },
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NoopAnimationsModule, RouterTestingModule, BestBooksModule],
       })
-      .compileComponents();
-  }));
+        .overrideComponent(BestBooksPageComponent, {
+          set: {
+            providers: [
+              {
+                provide: BestBooksService,
+                useValue: MockAngularBestBooksService,
+              },
+            ],
+          },
+        })
+        .compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BestBooksPageComponent);

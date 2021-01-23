@@ -1,7 +1,7 @@
 // tslint:disable: no-duplicate-string
 // tslint:disable: no-big-function
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
@@ -35,33 +35,35 @@ describe('AddBookFormComponent', () => {
   let dialog: MatDialog;
   let uploadService: UploadPlatformService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, MatCheckboxModule],
-      declarations: [AddBookFormComponent],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-        {
-          provide: FeedbackPlatformService,
-          useValue: MockFeedbackPlatformService,
-        },
-        {
-          provide: UploadPlatformService,
-          useValue: {
-            deleteFile: jest.fn().mockImplementation(() => of(true)),
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [ReactiveFormsModule, MatCheckboxModule],
+        declarations: [AddBookFormComponent],
+        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+        providers: [
+          {
+            provide: FeedbackPlatformService,
+            useValue: MockFeedbackPlatformService,
           },
-        },
-        {
-          provide: MatDialog,
-          useValue: {
-            open: jest.fn().mockImplementation(() => ({
-              afterClosed: jest.fn().mockReturnValue(of(publicUrl)),
-            })),
+          {
+            provide: UploadPlatformService,
+            useValue: {
+              deleteFile: jest.fn().mockImplementation(() => of(true)),
+            },
           },
-        },
-      ],
-    }).compileComponents();
-  }));
+          {
+            provide: MatDialog,
+            useValue: {
+              open: jest.fn().mockImplementation(() => ({
+                afterClosed: jest.fn().mockReturnValue(of(publicUrl)),
+              })),
+            },
+          },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddBookFormComponent);

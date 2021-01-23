@@ -1,6 +1,6 @@
 // tslint:disable: no-identical-functions
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { UploadPlatformService } from '@bookapp/angular/core';
@@ -18,27 +18,29 @@ describe('FileSelectorComponent', () => {
   let uploadService: UploadPlatformService;
   let dialog: MatDialogRef<any>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [MatDialogModule],
-      declarations: [FileSelectorComponent],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-        {
-          provide: UploadPlatformService,
-          useValue: {
-            upload: jest.fn().mockImplementation(() => of(JSON.stringify({ publicUrl }))),
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [MatDialogModule],
+        declarations: [FileSelectorComponent],
+        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+        providers: [
+          {
+            provide: UploadPlatformService,
+            useValue: {
+              upload: jest.fn().mockImplementation(() => of(JSON.stringify({ publicUrl }))),
+            },
           },
-        },
-        {
-          provide: MatDialogRef,
-          useValue: {
-            close: jest.fn(),
+          {
+            provide: MatDialogRef,
+            useValue: {
+              close: jest.fn(),
+            },
           },
-        },
-      ],
-    }).compileComponents();
-  }));
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FileSelectorComponent);

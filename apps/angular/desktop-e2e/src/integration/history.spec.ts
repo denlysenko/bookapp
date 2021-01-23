@@ -3,7 +3,7 @@ describe('History Page', () => {
   beforeEach(() => {
     cy.exec('npm run seed:db');
     cy.login('user@test.com', 'password');
-    cy.server().route('POST', '/graphql?logs').as('logs');
+    cy.intercept('POST', '/graphql?logs').as('logs');
     cy.contains('History').click();
   });
 
@@ -32,7 +32,7 @@ describe('History Page', () => {
   });
 
   it('should redirect to book page', () => {
-    cy.server().route('POST', '/graphql?book').as('book');
+    cy.intercept('POST', '/graphql?book').as('book');
     cy.get('.mat-row').first().find('a').click();
     cy.wait('@book');
     cy.url().should('include', 'pride-and-prejudice');

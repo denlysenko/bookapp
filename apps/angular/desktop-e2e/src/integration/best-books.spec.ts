@@ -2,7 +2,7 @@ describe('Best Books Page', () => {
   beforeEach(() => {
     cy.exec('npm run seed:db');
     cy.login('user@test.com', 'password');
-    cy.server().route('POST', '/graphql?bestBooks').as('bestBooks');
+    cy.intercept('POST', '/graphql?bestBooks').as('bestBooks');
     cy.contains('List of the Best').click();
   });
 

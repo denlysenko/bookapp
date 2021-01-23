@@ -155,7 +155,8 @@ export class UsersService {
       await this.filesService.deleteFromBucket(extractFileKey(user.avatar));
     }
 
-    await user.remove();
+    user.remove();
+
     return user;
   }
 }

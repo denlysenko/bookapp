@@ -5,8 +5,8 @@ describe('View Book Page', () => {
   beforeEach(() => {
     cy.exec('npm run seed:db');
     cy.login('user@test.com', 'password');
-    cy.server().route('POST', '/graphql?addToBookmarks').as('addToBookmarks');
-    cy.server().route('POST', '/graphql?removeFromBookmarks').as('removeFromBookmarks');
+    cy.intercept('POST', '/graphql?addToBookmarks').as('addToBookmarks');
+    cy.intercept('POST', '/graphql?removeFromBookmarks').as('removeFromBookmarks');
     cy.get('[data-test=list-item]').first().click();
   });
 
@@ -15,7 +15,7 @@ describe('View Book Page', () => {
   });
 
   it('should rate book', () => {
-    cy.server().route('POST', '/graphql?rateBook').as('rateBook');
+    cy.intercept('POST', '/graphql?rateBook').as('rateBook');
     cy.get('.rating-star').then(($stars) => {
       cy.wrap($stars[4]).click();
     });
@@ -24,7 +24,7 @@ describe('View Book Page', () => {
   });
 
   it('should send a comment', () => {
-    cy.server().route('POST', '/graphql?addComment').as('addComment');
+    cy.intercept('POST', '/graphql?addComment').as('addComment');
     cy.get('[data-test=comment]').type('A short comment');
     cy.get('[data-test=submit-comment]').click();
     cy.wait('@addComment');

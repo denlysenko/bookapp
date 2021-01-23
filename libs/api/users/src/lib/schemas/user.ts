@@ -16,7 +16,7 @@ const validatePassword = function (password) {
 
 const defaultByteSize = 16;
 
-export const UserSchema = new Schema({
+export const UserSchema = new Schema<UserModel>({
   firstName: {
     type: String,
     trim: true,
@@ -35,7 +35,12 @@ export const UserSchema = new Schema({
     type: String,
     trim: true,
     required: [true, USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR],
-    match: [/.+\@.+\..+/, USER_VALIDATION_ERRORS.EMAIL_INVALID_ERR],
+    validate: {
+      validator: (value: string) => {
+        return /.+\@.+\..+/.test(value);
+      },
+      message: () => USER_VALIDATION_ERRORS.EMAIL_INVALID_ERR,
+    },
   },
   password: {
     type: String,

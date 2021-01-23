@@ -61,7 +61,7 @@ describe('Add Book Page', () => {
 
       context('valid form', () => {
         beforeEach(() => {
-          cy.server().route('POST', '/graphql?createBook').as('createBook');
+          cy.intercept('POST', '/graphql?createBook').as('createBook');
         });
 
         it('should save free book', () => {
@@ -192,7 +192,7 @@ describe('Add Book Page', () => {
     context('role admin', () => {
       beforeEach(() => {
         cy.login('admin@test.com', 'password');
-        cy.server().route('POST', '/graphql?updateBook').as('updateBook');
+        cy.intercept('POST', '/graphql?updateBook').as('updateBook');
         cy.get('[data-test=list-item]').first().click();
         cy.get('#edit').click();
       });
