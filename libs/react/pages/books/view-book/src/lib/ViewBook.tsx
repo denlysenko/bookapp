@@ -5,9 +5,10 @@ import Card from '@material-ui/core/Card';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
+import { pay } from '@bookapp/react/core';
 import { useBook, useBookmarksByUser } from '@bookapp/react/data-access';
 import { FullPageSpinner } from '@bookapp/react/ui';
-import { BookmarkEvent } from '@bookapp/shared/interfaces';
+import { Book, BookmarkEvent } from '@bookapp/shared/interfaces';
 import { useQueryString } from '@bookapp/utils/react';
 
 import BookComments from './BookComments/BookComments';
@@ -47,6 +48,21 @@ export function ViewBook() {
     [book]
   );
 
+  const requestPayment = async ({ price, title, author }: Book) => {
+    try {
+      const response = await pay({
+        total: {
+          amount: {
+            currency: 'USD',
+            value: price.toString(),
+          },
+          label: `${title} by ${author}`,
+        },
+      });
+      response.complete();
+    } catch {}
+  };
+
   return (
     <div className={classes.root}>
       <Toolbar disableGutters={true}>
@@ -62,6 +78,7 @@ export function ViewBook() {
               onBookRate={rate}
               onBookmarkAdd={addBookmark}
               onBookmarkRemove={removeBookmark}
+              onPaymentRequest={requestPayment}
             />
             <BookComments comments={book.comments} loading={loading} onCommentAdd={submitComment} />
           </Card>

@@ -19,6 +19,7 @@ export interface BookDetailsProps {
   onBookmarkAdd: (event: BookmarkEvent) => void;
   onBookmarkRemove: (event: BookmarkEvent) => void;
   onBookRate: (event: { bookId: string; rate: number }) => void;
+  onPaymentRequest: (book: Book) => void;
 }
 
 // tslint:disable-next-line: cognitive-complexity
@@ -28,6 +29,7 @@ export function BookDetails({
   onBookmarkAdd,
   onBookmarkRemove,
   onBookRate,
+  onPaymentRequest,
 }: BookDetailsProps) {
   const classes = useBookDetailsStyles();
   const { me } = useMe();
@@ -101,7 +103,12 @@ export function BookDetails({
           )}
           {book.paid && (
             <Tooltip title="Buy book">
-              <IconButton color="secondary" data-testid="buy">
+              <IconButton
+                color="secondary"
+                data-testid="buy"
+                // tslint:disable-next-line: jsx-no-lambda
+                onClick={() => onPaymentRequest(book)}
+              >
                 <Icon color="secondary">credit_card</Icon>
               </IconButton>
             </Tooltip>
