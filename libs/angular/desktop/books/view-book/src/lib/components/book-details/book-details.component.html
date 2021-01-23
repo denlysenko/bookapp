@@ -14,7 +14,14 @@
       >
         <mat-icon>book</mat-icon>
       </a>
-      <button *ngIf="book.paid" type="button" mat-icon-button matTooltip="Buy book" color="accent">
+      <button
+        *ngIf="book.paid"
+        type="button"
+        mat-icon-button
+        matTooltip="Buy book"
+        color="accent"
+        (click)="paymentRequested.emit(book)"
+      >
         <mat-icon>credit_card</mat-icon>
       </button>
       <button
@@ -78,9 +85,7 @@
       </a>
     </div>
     <div class="view-num">
-      <i class="material-icons">
-        visibility
-      </i>
+      <i class="material-icons"> visibility </i>
       <span>{{ book.views }}</span>
     </div>
   </div>

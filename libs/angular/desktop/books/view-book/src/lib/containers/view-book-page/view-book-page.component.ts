@@ -2,7 +2,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ViewBookPageBase } from '@bookapp/angular/base';
+import { PaymentRequestService } from '@bookapp/angular/core';
 import { AuthService, BookmarksService, BookService } from '@bookapp/angular/data-access';
+import { Book } from '@bookapp/shared/interfaces';
 
 import { map } from 'rxjs/operators';
 
@@ -20,8 +22,24 @@ export class ViewBookPageComponent extends ViewBookPageBase {
     route: ActivatedRoute,
     bookService: BookService,
     bookmarksService: BookmarksService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly paymentRequestService: PaymentRequestService
   ) {
     super(route, bookService, bookmarksService);
+  }
+
+  async pay(book: Book) {
+    try {
+      const response = await this.paymentRequestService.request({
+        total: {
+          amount: {
+            currency: 'USD',
+            value: book.price.toString(),
+          },
+          label: `${book.title} by ${book.author}`,
+        },
+      });
+      response.complete();
+    } catch {}
   }
 }

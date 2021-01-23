@@ -1,7 +1,5 @@
 <section>
-  <mat-toolbar>
-    Book Details
-  </mat-toolbar>
+  <mat-toolbar> Book Details </mat-toolbar>
   <div *ngIf="book$ | async as book" class="view-content">
     <mat-card>
       <bookapp-book-details
@@ -11,6 +9,7 @@
         (bookRated)="rate($event, book.slug)"
         (bookmarkAdded)="addToBookmarks($event)"
         (bookmarkRemoved)="removeFromBookmarks($event)"
+        (paymentRequested)="pay($event)"
       ></bookapp-book-details>
       <bookapp-book-comments
         [comments]="book.comments"

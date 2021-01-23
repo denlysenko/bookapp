@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { BookDetailsBase } from '@bookapp/angular/base';
 import { ROLES } from '@bookapp/shared/enums';
-import { User } from '@bookapp/shared/interfaces';
+import { Book, User } from '@bookapp/shared/interfaces';
 
 @Component({
   selector: 'bookapp-book-details',
@@ -17,6 +17,9 @@ export class BookDetailsComponent extends BookDetailsBase {
       this._isAdmin = user.roles.includes(ROLES.ADMIN);
     }
   }
+
+  @Output()
+  paymentRequested = new EventEmitter<Book>();
 
   private _isAdmin: boolean;
 
