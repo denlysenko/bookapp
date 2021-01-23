@@ -10,6 +10,7 @@ import Rating from '@material-ui/lab/Rating';
 import { useMe } from '@bookapp/react/data-access';
 import { BOOKMARKS, ROLES } from '@bookapp/shared/enums';
 import { Book, BookmarkEvent } from '@bookapp/shared/interfaces';
+import { formatCurrency } from '@bookapp/utils/react';
 
 import { useBookDetailsStyles } from './useBookDetailsStyles';
 
@@ -82,7 +83,7 @@ export function BookDetails({
     <div className={classes.root}>
       <div className="cover">
         <img src={book.coverUrl ? book.coverUrl : '/assets/images/nocover.svg'} alt={book.title} />
-        {book.paid && <div>{book.price}</div>}
+        {book.paid && <div>{formatCurrency(book.price)}</div>}
         <Rating
           name="rating"
           value={book.rating}

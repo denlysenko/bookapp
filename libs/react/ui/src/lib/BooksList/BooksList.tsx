@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card';
 import Rating from '@material-ui/lab/Rating';
 
 import { Book } from '@bookapp/shared/interfaces';
+import { formatCurrency } from '@bookapp/utils/react';
 
 import { InfiniteScroll } from '../InfiniteScroll';
 import { LazyImage } from '../LazyImage';
@@ -51,7 +52,7 @@ export const BooksList = ({ books = [], onBookRate, onLoadMore }: BooksListProps
                 {book.title}
               </Link>
               <span className="author">by {book.author}</span>
-              {book.paid && <div>{book.price}</div>}
+              {book.paid && <div>{formatCurrency(book.price)}</div>}
               <Rating
                 name="rating"
                 value={book.rating}
