@@ -10,6 +10,7 @@ async function bootstrap() {
       'http://localhost:4200',
       'https://bookapp-angular.netlify.com',
       'https://bookapp-angular.netlify.app',
+      'https://bookapp-react.netlify.app',
     ],
   });
 
