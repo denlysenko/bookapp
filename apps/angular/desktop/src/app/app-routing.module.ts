@@ -56,8 +56,8 @@ import { BOOKMARKS, ROLES } from '@bookapp/shared/enums';
               path: 'books/add',
               loadChildren: () =>
                 import('@bookapp/angular/desktop/books/add-book').then((m) => m.AddBookModule),
-              canLoad: [AuthGuard, RolesGuard],
-              canActivate: [AuthGuard, RolesGuard],
+              canLoad: [RolesGuard],
+              canActivate: [RolesGuard],
               data: {
                 roles: [ROLES.ADMIN],
               },

@@ -1,9 +1,15 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { InMemoryCache } from '@apollo/client/core';
 import { addTypenameToDocument } from '@apollo/client/utilities';
 
-import { RouterExtensions, StoragePlatformService, StoreService } from '@bookapp/angular/core';
+import {
+  Environment,
+  RouterExtensions,
+  StoragePlatformService,
+  StoreService,
+} from '@bookapp/angular/core';
 import { ME_QUERY, UPDATE_USER_MUTATION } from '@bookapp/shared/queries';
 import {
   MockRouterExtensions,
@@ -73,7 +79,7 @@ describe('ProfileService', () => {
     beforeEach(() => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        imports: [ApolloTestingModule],
+        imports: [ApolloTestingModule, HttpClientTestingModule],
         providers: [
           ProfileService,
           AuthService,
@@ -92,6 +98,10 @@ describe('ProfileService', () => {
           {
             provide: APOLLO_TESTING_CACHE,
             useValue: new InMemoryCache({ addTypename: true }),
+          },
+          {
+            provide: Environment,
+            useValue: {},
           },
         ],
       });

@@ -1,20 +1,13 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad } from '@angular/router';
 
-import {
-  Environment,
-  RouterExtensions,
-  StoragePlatformService,
-  StoreService,
-} from '@bookapp/angular/core';
+import { RouterExtensions, StoragePlatformService, StoreService } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
-import { AUTH_TOKEN, REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
-import { AuthPayload, EnvConfig } from '@bookapp/shared/interfaces';
+import { AUTH_TOKEN } from '@bookapp/shared/constants';
 
 import { isNil } from 'lodash';
 import { Observable, of } from 'rxjs';
-import { catchError, filter, map, mapTo, switchMapTo, take, tap } from 'rxjs/operators';
+import { catchError, filter, map, mapTo, switchMapTo, take } from 'rxjs/operators';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad {
@@ -22,9 +15,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     private readonly storeService: StoreService,
     private readonly storagePlatformService: StoragePlatformService,
     private readonly authService: AuthService,
-    private readonly routerExtensions: RouterExtensions,
-    private readonly http: HttpClient,
-    @Inject(Environment) private readonly environment: EnvConfig
+    private readonly routerExtensions: RouterExtensions
   ) {}
 
   canActivate(): Observable<boolean> | boolean {
@@ -44,18 +35,10 @@ export class AuthGuard implements CanActivate, CanLoad {
     }
 
     if (!accessToken && refreshToken) {
-      return this.http
-        .post<AuthPayload>(this.environment.refreshTokenUrl, null, {
-          headers: new HttpHeaders().set(REFRESH_TOKEN_HEADER, refreshToken),
-        })
-        .pipe(
-          tap((payload) => {
-            this.storeService.set(AUTH_TOKEN, payload.accessToken);
-            this.storagePlatformService.setItem(AUTH_TOKEN, payload.refreshToken);
-          }),
-          switchMapTo(this.waitForUser()),
-          catchError(() => of(false))
-        );
+      return this.authService.refreshTokens().pipe(
+        switchMapTo(this.waitForUser()),
+        catchError(() => of(false))
+      );
     }
 
     this.routerExtensions.navigate(['auth'], {

@@ -10,6 +10,7 @@ describe('Add Book Page', () => {
 
   beforeEach(() => {
     cy.exec('npm run seed:db');
+    cy.intercept('POST', '/graphql?freeBooks').as('freeBooks');
   });
 
   describe('Create book', () => {
@@ -19,10 +20,11 @@ describe('Add Book Page', () => {
       });
 
       it('add book link should be hidden', () => {
-        cy.contains('Add Book').should('not.be.visible');
+        cy.contains('Add Book').should('not.exist');
       });
 
       it('should guard route', () => {
+        cy.wait('@freeBooks');
         cy.visit('/books/add');
         cy.url().should('include', '/books/browse');
       });
@@ -35,7 +37,7 @@ describe('Add Book Page', () => {
       });
 
       it('should toggle price field', () => {
-        cy.get(priceField).should('not.be.visible');
+        cy.get(priceField).should('not.exist');
         cy.get(paidCheckbox).click();
 
         cy.get(priceField).should('be.visible');

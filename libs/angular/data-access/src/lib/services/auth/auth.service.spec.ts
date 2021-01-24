@@ -1,9 +1,15 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { InMemoryCache } from '@apollo/client/core';
 import { addTypenameToDocument } from '@apollo/client/utilities';
 
-import { RouterExtensions, StoragePlatformService, StoreService } from '@bookapp/angular/core';
+import {
+  Environment,
+  RouterExtensions,
+  StoragePlatformService,
+  StoreService,
+} from '@bookapp/angular/core';
 import { AUTH_TOKEN } from '@bookapp/shared/constants';
 import {
   LOGIN_MUTATION,
@@ -40,7 +46,7 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ApolloTestingModule],
+      imports: [ApolloTestingModule, HttpClientTestingModule],
       providers: [
         AuthService,
         {
@@ -54,6 +60,10 @@ describe('AuthService', () => {
         {
           provide: StoreService,
           useValue: MockStoreService,
+        },
+        {
+          provide: Environment,
+          useValue: {},
         },
       ],
     });
@@ -162,7 +172,7 @@ describe('AuthService', () => {
     beforeEach(() => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        imports: [ApolloTestingModule],
+        imports: [ApolloTestingModule, HttpClientTestingModule],
         providers: [
           AuthService,
           {
@@ -180,6 +190,10 @@ describe('AuthService', () => {
           {
             provide: APOLLO_TESTING_CACHE,
             useValue: new InMemoryCache({ addTypename: true }),
+          },
+          {
+            provide: Environment,
+            useValue: {},
           },
         ],
       });

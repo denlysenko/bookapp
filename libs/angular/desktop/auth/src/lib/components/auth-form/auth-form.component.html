@@ -86,6 +86,7 @@
           >{{ isLoggingIn ? "Don't have an account?" : 'Already have an account?' }}
           <button
             mat-button
+            type="button"
             (click)="toggleAuthMode()"
             [disabled]="loading"
             data-test="toggle"

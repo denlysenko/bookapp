@@ -1,8 +1,14 @@
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
 
-import { RouterExtensions, StoragePlatformService, StoreService } from '@bookapp/angular/core';
-import { AUTH_TOKEN } from '@bookapp/shared/constants';
-import { AuthPayload, SignupCredentials, User } from '@bookapp/shared/interfaces';
+import {
+  Environment,
+  RouterExtensions,
+  StoragePlatformService,
+  StoreService,
+} from '@bookapp/angular/core';
+import { AUTH_TOKEN, REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
+import { AuthPayload, EnvConfig, SignupCredentials, User } from '@bookapp/shared/interfaces';
 import {
   LOGIN_MUTATION,
   LOGOUT_MUTATION,
@@ -19,7 +25,9 @@ export class AuthService {
     private readonly apollo: Apollo,
     private readonly storagePlatformService: StoragePlatformService,
     private readonly routerExtensions: RouterExtensions,
-    private readonly storeService: StoreService
+    private readonly storeService: StoreService,
+    private readonly http: HttpClient,
+    @Inject(Environment) private readonly environment: EnvConfig
   ) {}
 
   login(email: string, password: string) {
@@ -71,6 +79,21 @@ export class AuthService {
     return this.apollo.query<{ me: User }>({
       query: ME_QUERY,
     });
+  }
+
+  refreshTokens() {
+    const refreshToken = this.storagePlatformService.getItem(AUTH_TOKEN);
+
+    return this.http
+      .post<AuthPayload>(this.environment.refreshTokenUrl, null, {
+        headers: new HttpHeaders().set(REFRESH_TOKEN_HEADER, refreshToken),
+      })
+      .pipe(
+        tap((payload) => {
+          this.storeService.set(AUTH_TOKEN, payload.accessToken);
+          this.storagePlatformService.setItem(AUTH_TOKEN, payload.refreshToken);
+        })
+      );
   }
 
   logout() {
