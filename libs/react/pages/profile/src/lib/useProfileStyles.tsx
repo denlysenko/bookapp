@@ -3,11 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 export const useProfileStyles = makeStyles({
   root: {
     maxWidth: 780,
-    height: 'calc(100% - 128px)',
+    height: 'calc(100vh - 128px)',
     overflowY: 'auto',
 
     ['@media (max-width: 576px)']: {
-      height: 'calc(100% - 112px)',
+      height: 'calc(100vh - 112px)',
     },
 
     '& .MuiCardHeader-root': {

@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 export const usePasswordStyles = makeStyles({
   root: {
     maxWidth: 600,
-    height: 'calc(100% - 128px)',
+    height: 'calc(100vh - 128px)',
     overflowY: 'auto',
 
     ['@media (max-width: 576px)']: {
