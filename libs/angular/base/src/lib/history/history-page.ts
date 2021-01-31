@@ -7,9 +7,11 @@ import { isNil } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map, shareReplay, startWith, take, tap } from 'rxjs/operators';
 
+import { BaseComponent } from '../core/base-component';
+
 const FILTER_KEY = 'HISTORY';
 
-export abstract class HistoryPageBase {
+export abstract class HistoryPageBase extends BaseComponent {
   hasMoreItems = false;
 
   readonly filter = new BehaviorSubject<LogsFilter>(this.storeService.get(FILTER_KEY));
@@ -81,7 +83,9 @@ export abstract class HistoryPageBase {
   constructor(
     protected readonly logsService: LogsService,
     private readonly storeService: StoreService
-  ) {}
+  ) {
+    super();
+  }
 
   protected updateFilterInStore() {
     this.storeService.set(FILTER_KEY, this.filter.getValue());

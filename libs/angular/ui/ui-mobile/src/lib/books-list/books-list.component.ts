@@ -14,9 +14,7 @@ import { RadListViewComponent } from 'nativescript-ui-listview/angular';
 
 import { BehaviorSubject } from 'rxjs';
 
-import { Color } from 'tns-core-modules/color';
-import { ObservableArray } from 'tns-core-modules/data/observable-array';
-import { isIOS } from 'tns-core-modules/platform';
+import { Color, ObservableArray, isIOS } from '@nativescript/core';
 
 @Component({
   moduleId: module.id,

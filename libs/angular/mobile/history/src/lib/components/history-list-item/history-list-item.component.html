@@ -1,4 +1,4 @@
-<StackLayout *ngIf="log" class="m-5" [shadow]="2">
+<CardView *ngIf="log" margin="5" elevation="4" shadowOffsetHeight="1">
   <StackLayout class="mat-card">
     <Label class="date" [text]="log.createdAt | date: 'dd.MM.yyyy HH:mm:ss'"></Label>
     <Label class="action" [text]="actions[log.action]"></Label>
@@ -13,4 +13,4 @@
       <Label class="author" [text]="'by ' + log.book.author"></Label>
     </StackLayout>
   </StackLayout>
-</StackLayout>
+</CardView>

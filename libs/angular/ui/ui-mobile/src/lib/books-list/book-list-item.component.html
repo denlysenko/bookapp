@@ -1,4 +1,4 @@
-<StackLayout *ngIf="book" class="m-5" [shadow]="2">
+<CardView *ngIf="book" margin="5" elevation="4" shadowOffsetHeight="1">
   <FlexboxLayout
     class="mat-card"
     flexDirection="column"
@@ -24,7 +24,6 @@
     <StarRating
       #rating
       emptyBorderColor="#ffab00"
-      emptyColor="white"
       filledBorderColor="#ffab00"
       filledColor="#ffab00"
       max="5"
@@ -32,6 +31,7 @@
       android:scaleX=".5"
       android:scaleY=".5"
       android:style="width: 240"
+      android:style="background: #eeeeee"
     ></StarRating>
   </FlexboxLayout>
-</StackLayout>
+</CardView>

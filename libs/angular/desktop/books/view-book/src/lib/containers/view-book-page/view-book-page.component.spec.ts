@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { PaymentRequestService } from '@bookapp/angular/core';
+import { PaymentRequestPlatformService } from '@bookapp/angular/core';
 import { AuthService, BookmarksService, BookService } from '@bookapp/angular/data-access';
 import { RatingModule } from '@bookapp/angular/ui-desktop';
 import { BOOKMARKS } from '@bookapp/shared/enums';
@@ -51,7 +51,7 @@ describe('ViewBookPageComponent', () => {
             useValue: MockAngularAuthService,
           },
           {
-            provide: PaymentRequestService,
+            provide: PaymentRequestPlatformService,
             useValue: {
               request: jest.fn().mockResolvedValue({ complete: jest.fn }),
             },

@@ -4,14 +4,13 @@ import { BaseComponent } from '@bookapp/angular/base';
 import { BooksService } from '@bookapp/angular/data-access';
 import { Book } from '@bookapp/shared/interfaces';
 
-import { ModalDialogParams } from 'nativescript-angular/modal-dialog';
+import { ModalDialogParams } from '@nativescript/angular';
 
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
 
-import * as application from 'tns-core-modules/application';
-import { ObservableArray } from 'tns-core-modules/data/observable-array/observable-array';
-import { SearchBar } from 'tns-core-modules/ui/search-bar';
+import * as application from '@nativescript/core/application';
+import { ObservableArray, SearchBar } from '@nativescript/core';
 
 const SEARCH_FIELD = 'title';
 
@@ -42,12 +41,11 @@ export class BookSearchComponent extends BaseComponent implements OnInit {
       .pipe(
         debounceTime(500),
         distinctUntilChanged(),
-        switchMap(
-          (searchValue) =>
-            this.booksService.getBooks(this.params.context.paid, {
-              field: SEARCH_FIELD,
-              search: searchValue,
-            }).valueChanges
+        switchMap((searchValue) =>
+          this.booksService.getBooks(this.params.context.paid, {
+            field: SEARCH_FIELD,
+            search: searchValue,
+          })
         ),
         map(({ data: { books } }) => books.rows),
         takeUntil(this.destroy$)

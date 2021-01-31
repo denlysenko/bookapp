@@ -4,10 +4,12 @@ import {
   CoreModule,
   Environment,
   FeedbackPlatformService,
+  LoaderPlatformService,
   RouterExtensions,
   StoragePlatformService,
   UploadPlatformService,
   WebSocketImpl,
+  WINDOW,
 } from '@bookapp/angular/core';
 import { DataAccessModule } from '@bookapp/angular/data-access';
 import { GraphQLModule } from '@bookapp/angular/graphql';
@@ -17,11 +19,13 @@ import { MainLayoutModule } from '@bookapp/angular/mobile/main-layout';
 import { AuthGuard } from '@bookapp/angular/shared';
 import { environment } from '@bookapp/shared/environments';
 
-import { NativeScriptAnimationsModule } from 'nativescript-angular/animations';
-import { registerElement } from 'nativescript-angular/element-registry';
-import { NativeScriptHttpClientModule } from 'nativescript-angular/http-client';
-import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
-import { RouterExtensions as TNSRouterExtensions } from 'nativescript-angular/router';
+import {
+  NativeScriptAnimationsModule,
+  registerElement,
+  NativeScriptHttpClientModule,
+  NativeScriptModule,
+  RouterExtensions as TNSRouterExtensions,
+} from '@nativescript/angular';
 import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -32,11 +36,11 @@ import { StorageService } from './services/storage.service';
 import { UploadService } from './services/upload.service';
 
 // tslint:disable-next-line: no-var-requires
-require('nativescript-websockets');
+const WS = require('nativescript-websockets');
 
 registerElement(
   'PreviousNextView',
-  () => require('nativescript-iqkeyboardmanager').PreviousNextView
+  () => require('@nativescript/iqkeyboardmanager').PreviousNextView
 );
 
 @NgModule({
@@ -62,11 +66,15 @@ registerElement(
     AuthGuard,
     {
       provide: WebSocketImpl,
-      useValue: WebSocket,
+      useValue: WS,
     },
     {
       provide: Environment,
       useValue: environment,
+    },
+    {
+      provide: WINDOW,
+      useValue: null,
     },
     {
       provide: StoragePlatformService,
@@ -83,6 +91,10 @@ registerElement(
     {
       provide: UploadPlatformService,
       useClass: UploadService,
+    },
+    {
+      provide: LoaderPlatformService,
+      useClass: LoaderService,
     },
   ],
   schemas: [NO_ERRORS_SCHEMA],

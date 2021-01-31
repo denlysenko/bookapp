@@ -10,12 +10,11 @@ import {
 import { Log } from '@bookapp/shared/interfaces';
 
 import { ListViewLoadOnDemandMode } from 'nativescript-ui-listview';
-import { RadListViewComponent } from 'nativescript-ui-listview/angular/listview-directives';
+import { RadListViewComponent } from 'nativescript-ui-listview/angular';
 
 import { BehaviorSubject } from 'rxjs';
 
-import { ObservableArray } from 'tns-core-modules/data/observable-array/observable-array';
-import { Color, isIOS } from 'tns-core-modules/ui/page/page';
+import { ObservableArray, Color, isIOS } from '@nativescript/core';
 
 @Component({
   selector: 'bookapp-history-list',

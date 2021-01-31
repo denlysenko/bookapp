@@ -5,14 +5,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AuthErrorInterceptor } from '@bookapp/angular/shared';
 
-import { NativeScriptFormsModule } from 'nativescript-angular/forms';
-import { NgShadowModule } from 'nativescript-ngx-shadow';
+import { NativeScriptFormsModule } from '@nativescript/angular';
 
 import { AuthFormComponent } from './components/auth-form/auth-form.component';
 import { AuthPageComponent } from './containers/auth-page/auth-page.component';
 
 @NgModule({
-  imports: [CommonModule, NativeScriptFormsModule, ReactiveFormsModule, NgShadowModule],
+  imports: [CommonModule, NativeScriptFormsModule, ReactiveFormsModule],
   declarations: [AuthPageComponent, AuthFormComponent],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [

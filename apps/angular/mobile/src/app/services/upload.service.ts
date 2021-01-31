@@ -10,7 +10,7 @@ import {
   Request,
   ResultEventData,
   session,
-} from 'nativescript-background-http';
+} from '@nativescript/background-http';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 

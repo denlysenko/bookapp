@@ -3,10 +3,9 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { DateToPeriodPipe } from '@bookapp/angular/shared';
 
-import { NativeScriptCommonModule } from 'nativescript-angular/common';
-import { NativeScriptRouterModule } from 'nativescript-angular/router';
+import { NativeScriptCommonModule, NativeScriptRouterModule } from '@nativescript/angular';
+
 import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
-import { NgShadowModule } from 'nativescript-ngx-shadow';
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular';
 
 import { AppMenuComponent } from './components/app-menu/app-menu.component';
@@ -19,7 +18,6 @@ import { MainLayoutComponent } from './containers/main-layout/main-layout.compon
     NativeScriptRouterModule,
     NativeScriptUISideDrawerModule,
     CommonModule,
-    NgShadowModule,
     TNSFontIconModule,
   ],
   declarations: [AppMenuComponent, UserMenuComponent, MainLayoutComponent, DateToPeriodPipe],

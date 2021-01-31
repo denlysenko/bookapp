@@ -1,12 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { BestBooksBase } from '@bookapp/angular/base';
+import { LoaderPlatformService } from '@bookapp/angular/core';
 import { BestBooksService } from '@bookapp/angular/data-access';
 
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 
-import * as app from 'tns-core-modules/application';
-import { getViewById } from 'tns-core-modules/ui/page/page';
+import { takeUntil } from 'rxjs/operators';
+
+import { getViewById } from '@nativescript/core';
+import { getRootView } from '@nativescript/core/application';
 
 @Component({
   moduleId: module.id,
@@ -17,12 +20,18 @@ import { getViewById } from 'tns-core-modules/ui/page/page';
   providers: [BestBooksService],
 })
 export class BestBooksPageComponent extends BestBooksBase {
-  constructor(booksService: BestBooksService) {
+  constructor(
+    booksService: BestBooksService,
+    private readonly loaderService: LoaderPlatformService
+  ) {
     super(booksService);
+    this.loading$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((loading) => (loading ? this.loaderService.start() : this.loaderService.stop()));
   }
 
   onDrawerButtonTap() {
-    const sideDrawer = getViewById(app.getRootView(), 'drawer') as RadSideDrawer;
+    const sideDrawer = getViewById(getRootView() as any, 'drawer') as RadSideDrawer;
     sideDrawer.toggleDrawerState();
   }
 }

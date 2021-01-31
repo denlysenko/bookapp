@@ -6,7 +6,7 @@ import { MainLayoutComponent } from '@bookapp/angular/mobile/main-layout';
 import { AuthGuard } from '@bookapp/angular/shared';
 import { BOOKMARKS } from '@bookapp/shared/enums';
 
-import { NativeScriptRouterModule } from 'nativescript-angular/router';
+import { NativeScriptRouterModule } from '@nativescript/angular';
 
 // tslint:disable: no-duplicate-string
 @NgModule({

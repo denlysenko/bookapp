@@ -7,9 +7,8 @@ import { ProfileService } from '@bookapp/angular/data-access';
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { WebViewInterface } from 'nativescript-webview-interface';
 
-import * as application from 'tns-core-modules/application';
-import { EventData, getViewById } from 'tns-core-modules/ui/page/page';
-import { WebView } from 'tns-core-modules/ui/web-view';
+import * as application from '@nativescript/core/application';
+import { getViewById, LoadEventData, WebView } from '@nativescript/core';
 
 @Component({
   selector: 'bookapp-read-book-page',
@@ -33,8 +32,8 @@ export class ReadBookPageComponent extends ReadBookBase implements OnDestroy {
   onLoaded() {
     this.webViewInterface = new WebViewInterface(this.epubWebView, '~/assets/www/index.html');
 
-    this.epubWebView.on('loadFinished', (args: EventData) => {
-      const webview: WebView = args.object;
+    this.epubWebView.on('loadFinished', (args: LoadEventData) => {
+      const webview = args.object as WebView;
 
       if (webview.android) {
         this.epubWebView.android.getSettings().setAllowContentAccess(true);
@@ -65,7 +64,7 @@ export class ReadBookPageComponent extends ReadBookBase implements OnDestroy {
   }
 
   onDrawerButtonTap() {
-    const sideDrawer = getViewById(application.getRootView(), 'drawer') as RadSideDrawer;
+    const sideDrawer = getViewById(application.getRootView() as any, 'drawer') as RadSideDrawer;
     sideDrawer.toggleDrawerState();
   }
 

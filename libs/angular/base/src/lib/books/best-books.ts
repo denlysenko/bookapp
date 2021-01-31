@@ -5,7 +5,9 @@ import { Book, RateBookEvent } from '@bookapp/shared/interfaces';
 import { Observable } from 'rxjs';
 import { filter, map, shareReplay, startWith, tap } from 'rxjs/operators';
 
-export abstract class BestBooksBase {
+import { BaseComponent } from '../core/base-component';
+
+export abstract class BestBooksBase extends BaseComponent {
   hasMoreItems = false;
 
   readonly source$ = this.booksService
@@ -29,7 +31,9 @@ export abstract class BestBooksBase {
     })
   );
 
-  constructor(private readonly booksService: BestBooksService) {}
+  constructor(private readonly booksService: BestBooksService) {
+    super();
+  }
 
   private skip = 0;
   private pending = false;

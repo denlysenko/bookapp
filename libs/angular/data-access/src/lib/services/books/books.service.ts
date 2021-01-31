@@ -48,6 +48,25 @@ export class BooksService {
     return this.booksQueryRef.valueChanges;
   }
 
+  getBooks(
+    paid: boolean,
+    filter?: BooksFilterInput,
+    orderBy = DEFAULT_SORT_VALUE,
+    skip = 0,
+    first = DEFAULT_LIMIT
+  ) {
+    return this.apollo.query<{ books: ApiResponse<Book> }>({
+      query: paid ? PAID_BOOKS_QUERY : FREE_BOOKS_QUERY,
+      variables: {
+        paid,
+        filter,
+        skip,
+        first,
+        orderBy,
+      },
+    });
+  }
+
   loadMore(skip: number) {
     if (isNil(this.booksQueryRef)) {
       return;

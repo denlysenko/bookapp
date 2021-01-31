@@ -1,26 +1,26 @@
 <StackLayout>
-  <GridLayout
-    *ngFor="let item of navMenu"
-    columns="auto, *"
-    class="menu-item"
-    [nsRouterLink]="'/' + item.path"
-    nsRouterLinkActive="selected"
-    pageTransition="fade"
-  >
-    <Label col="0" [text]="item.icon" class="mdi"></Label>
-    <Label col="1" [text]="item.label" class="p-r-10"></Label>
+  <GridLayout *ngFor="let item of navMenu" nsRouterLinkActive="selected">
+    <GridLayout
+      columns="auto, *"
+      class="menu-item"
+      [nsRouterLink]="'/' + item.path"
+      pageTransition="fade"
+    >
+      <Label col="0" [text]="item.icon" class="mdi"></Label>
+      <Label col="1" [text]="item.label" class="p-r-10"></Label>
+    </GridLayout>
   </GridLayout>
   <StackLayout class="divider"></StackLayout>
-  <GridLayout
-    *ngFor="let item of categoryMenu"
-    columns="auto, *"
-    class="menu-item"
-    [nsRouterLink]="'/' + item.path"
-    nsRouterLinkActive="selected"
-    pageTransition="fade"
-  >
-    <Label col="0" [text]="item.icon" class="mdi" [style.color]="item.color"></Label>
-    <Label col="1" [text]="item.label" class="p-r-10"></Label>
+  <GridLayout *ngFor="let item of categoryMenu" nsRouterLinkActive="selected">
+    <GridLayout
+      columns="auto, *"
+      class="menu-item"
+      [nsRouterLink]="'/' + item.path"
+      pageTransition="fade"
+    >
+      <Label col="0" [text]="item.icon" class="mdi" [style.color]="item.color"></Label>
+      <Label col="1" [text]="item.label" class="p-r-10"></Label>
+    </GridLayout>
   </GridLayout>
   <StackLayout class="divider"></StackLayout>
   <GridLayout *ngFor="let log of logs" columns="auto, *" class="menu-item">

@@ -1,16 +1,17 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 
 import { HistoryPageBase } from '@bookapp/angular/base';
-import { StoreService } from '@bookapp/angular/core';
+import { LoaderPlatformService, StoreService } from '@bookapp/angular/core';
 import { LogsService } from '@bookapp/angular/data-access';
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { LogsFilter } from '@bookapp/shared/interfaces';
 
+import { takeUntil } from 'rxjs/operators';
+
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 
-import * as app from 'tns-core-modules/application';
-import { action } from 'tns-core-modules/ui/dialogs';
-import { getViewById } from 'tns-core-modules/ui/page/page';
+import { getViewById, action } from '@nativescript/core';
+import { getRootView } from '@nativescript/core/application';
 
 import { HistoryListComponent } from '../../components/history-list/history-list.component';
 
@@ -22,17 +23,24 @@ import { HistoryListComponent } from '../../components/history-list/history-list
   providers: [LogsService],
 })
 export class HistoryPageComponent extends HistoryPageBase {
-  @ViewChild(HistoryListComponent, { static: false })
+  @ViewChild(HistoryListComponent)
   historyListView: HistoryListComponent;
 
   private skip = 0;
 
-  constructor(logsService: LogsService, storeService: StoreService) {
+  constructor(
+    logsService: LogsService,
+    storeService: StoreService,
+    private readonly loaderService: LoaderPlatformService
+  ) {
     super(logsService, storeService);
+    this.loading$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((loading) => (loading ? this.loaderService.start() : this.loaderService.stop()));
   }
 
   onDrawerButtonTap() {
-    const sideDrawer = getViewById(app.getRootView(), 'drawer') as RadSideDrawer;
+    const sideDrawer = getViewById(getRootView() as any, 'drawer') as RadSideDrawer;
     sideDrawer.toggleDrawerState();
   }
 

@@ -4,16 +4,20 @@ import { PasswordService } from '@bookapp/angular/data-access';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
+import { BaseComponent } from '../core/base-component';
+
 const PASSWORD_CHANGE_SUCCESS = 'Password changed!';
 
-export abstract class PasswordPageBase {
+export abstract class PasswordPageBase extends BaseComponent {
   private error = new BehaviorSubject<any | null>(null);
   private loading = new BehaviorSubject<boolean>(false);
 
   constructor(
     private readonly passwordService: PasswordService,
     private readonly feedbackService: FeedbackPlatformService
-  ) {}
+  ) {
+    super();
+  }
 
   get loading$(): Observable<boolean> {
     return this.loading.asObservable();

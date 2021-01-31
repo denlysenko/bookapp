@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ViewBookPageBase } from '@bookapp/angular/base';
-import { PaymentRequestService } from '@bookapp/angular/core';
+import { PaymentRequestPlatformService } from '@bookapp/angular/core';
 import { AuthService, BookmarksService, BookService } from '@bookapp/angular/data-access';
 import { Book } from '@bookapp/shared/interfaces';
 
@@ -23,7 +23,7 @@ export class ViewBookPageComponent extends ViewBookPageBase {
     bookService: BookService,
     bookmarksService: BookmarksService,
     private readonly authService: AuthService,
-    private readonly paymentRequestService: PaymentRequestService
+    private readonly paymentRequestService: PaymentRequestPlatformService
   ) {
     super(route, bookService, bookmarksService);
   }

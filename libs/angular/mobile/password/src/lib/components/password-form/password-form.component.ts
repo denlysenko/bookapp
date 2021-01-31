@@ -5,8 +5,9 @@ import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { PasswordForm } from '@bookapp/shared/interfaces';
 
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
-import * as app from 'tns-core-modules/application';
-import { getViewById } from 'tns-core-modules/ui/page/page';
+
+import { getViewById } from '@nativescript/core';
+import { getRootView } from '@nativescript/core/application';
 
 @Component({
   selector: 'bookapp-password-form',
@@ -44,7 +45,7 @@ export class PasswordFormComponent extends NsBaseForm {
   }
 
   onDrawerButtonTap() {
-    const sideDrawer = getViewById(app.getRootView(), 'drawer') as RadSideDrawer;
+    const sideDrawer = getViewById(getRootView() as any, 'drawer') as RadSideDrawer;
     sideDrawer.toggleDrawerState();
   }
 }

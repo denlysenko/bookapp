@@ -3,7 +3,7 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { BooksListModule } from '@bookapp/angular/ui-mobile';
 
-import { NativeScriptCommonModule } from 'nativescript-angular/common';
+import { NativeScriptCommonModule } from '@nativescript/angular';
 
 import { BestBooksRoutingModule } from './best-books-routing.module';
 import { BestBooksPageComponent } from './containers/best-books-page/best-books-page.component';

@@ -32,7 +32,7 @@ export class BookListItemComponent implements AfterViewInit, OnDestroy {
     return this._book;
   }
 
-  @ViewChild('rating', { static: false })
+  @ViewChild('rating')
   ratingElemRef: ElementRef;
 
   @Output()

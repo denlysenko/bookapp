@@ -4,18 +4,15 @@ import { NsBaseForm } from '@bookapp/angular/base';
 import { FeedbackPlatformService, UploadPlatformService } from '@bookapp/angular/core';
 import { ProfileForm, User } from '@bookapp/shared/interfaces';
 
-import { requestPermissions, takePicture } from 'nativescript-camera';
+import { requestPermissions, takePicture } from '@nativescript/camera';
 import { ImageCropper } from 'nativescript-imagecropper';
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import * as app from 'tns-core-modules/application';
-import { knownFolders, path } from 'tns-core-modules/file-system';
-import { ImageSource } from 'tns-core-modules/image-source';
-import { isAndroid, isIOS } from 'tns-core-modules/platform';
-import { getViewById } from 'tns-core-modules/ui/page/page';
+import { knownFolders, path, ImageSource, isAndroid, isIOS, getViewById } from '@nativescript/core';
+import { getRootView } from '@nativescript/core/application';
 
 @Component({
   selector: 'bookapp-profile-form',
@@ -157,7 +154,7 @@ export class ProfileFormComponent extends NsBaseForm {
   }
 
   onDrawerButtonTap() {
-    const sideDrawer = getViewById(app.getRootView(), 'drawer') as RadSideDrawer;
+    const sideDrawer = getViewById(getRootView() as any, 'drawer') as RadSideDrawer;
     sideDrawer.toggleDrawerState();
   }
 

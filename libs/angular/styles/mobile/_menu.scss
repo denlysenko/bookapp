@@ -15,12 +15,12 @@
   .mdi {
     margin-right: 10;
   }
+}
 
-  &.selected {
-    background-color: $light-blue;
+.selected .menu-item {
+  background-color: $light-blue;
 
-    label {
-      color: white;
-    }
+  label {
+    color: white;
   }
 }

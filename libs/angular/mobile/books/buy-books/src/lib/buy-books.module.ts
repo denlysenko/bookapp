@@ -3,7 +3,7 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { BookSearchModule, BooksListModule } from '@bookapp/angular/ui-mobile';
 
-import { NativeScriptCommonModule } from 'nativescript-angular/common';
+import { NativeScriptCommonModule } from '@nativescript/angular';
 
 import { BuyBooksRoutingModule } from './buy-books-routing.module';
 import { BuyBooksPageComponent } from './containers/buy-books-page/buy-books-page.component';

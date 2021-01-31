@@ -9,9 +9,11 @@ import {
   CoreModule,
   Environment,
   FeedbackPlatformService,
+  PaymentRequestPlatformService,
   StoragePlatformService,
   UploadPlatformService,
   WebSocketImpl,
+  WINDOW,
 } from '@bookapp/angular/core';
 import { DataAccessModule } from '@bookapp/angular/data-access';
 import { AuthModule } from '@bookapp/angular/desktop/auth';
@@ -24,6 +26,7 @@ import { environment } from '@bookapp/shared/environments';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FeedbackService } from './services/feedback.service';
+import { PaymentRequestService } from './services/payment-request.service';
 import { StorageService } from './services/storage.service';
 import { UploadService } from './services/upload.service';
 
@@ -56,6 +59,10 @@ import { UploadService } from './services/upload.service';
       useValue: environment,
     },
     {
+      provide: WINDOW,
+      useValue: window,
+    },
+    {
       provide: StoragePlatformService,
       useClass: StorageService,
     },
@@ -66,6 +73,10 @@ import { UploadService } from './services/upload.service';
     {
       provide: UploadPlatformService,
       useClass: UploadService,
+    },
+    {
+      provide: PaymentRequestPlatformService,
+      useClass: PaymentRequestService,
     },
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,

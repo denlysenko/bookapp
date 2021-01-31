@@ -1,6 +1,8 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, inject, Injectable, InjectionToken } from '@angular/core';
 
+import { PaymentRequestPlatformService } from '@bookapp/angular/core';
+
 export const PAYMENT_REQUEST_SUPPORT = new InjectionToken<boolean>(
   'Is Payment Request Api supported?',
   {
@@ -13,8 +15,10 @@ export const PAYMENT_REQUEST_SUPPORT = new InjectionToken<boolean>(
 );
 
 @Injectable()
-export class PaymentRequestService {
-  constructor(@Inject(PAYMENT_REQUEST_SUPPORT) private readonly supported: boolean) {}
+export class PaymentRequestService extends PaymentRequestPlatformService {
+  constructor(@Inject(PAYMENT_REQUEST_SUPPORT) private readonly supported: boolean) {
+    super();
+  }
 
   async request(
     details: PaymentDetailsInit,

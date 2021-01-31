@@ -1,5 +1,5 @@
 <StackLayout>
-  <StackLayout class="m-10" [shadow]="2">
+  <CardView margin="10" elevation="4" shadowOffsetHeight="1">
     <FlexboxLayout flexDirection="column" height="100%">
       <GridLayout class="mat-card" flexGrow="1">
         <ScrollView>
@@ -14,6 +14,10 @@
                 filledColor="#ffab00"
                 max="5"
                 isindicator="false"
+                android:scaleX=".5"
+                android:scaleY=".5"
+                android:style="width: 240"
+                android:style="background: #eeeeee"
               ></StarRating>
               <FlexboxLayout class="actions" justifyContent="center">
                 <Button *ngIf="!book.paid" nsRouterLink="/books/read/{{ book.url }}">
@@ -99,5 +103,5 @@
         </ScrollView>
       </GridLayout>
     </FlexboxLayout>
-  </StackLayout>
+  </CardView>
 </StackLayout>

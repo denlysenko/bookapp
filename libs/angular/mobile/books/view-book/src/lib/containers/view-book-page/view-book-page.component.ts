@@ -2,9 +2,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ViewBookPageBase } from '@bookapp/angular/base';
+import { LoaderPlatformService } from '@bookapp/angular/core';
 import { BookmarksService, BookService } from '@bookapp/angular/data-access';
 
-import { TabView } from 'tns-core-modules/ui/tab-view/tab-view';
+import { TabView } from '@nativescript/core';
+
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   moduleId: module.id,
@@ -17,8 +20,16 @@ import { TabView } from 'tns-core-modules/ui/tab-view/tab-view';
 export class ViewBookPageComponent extends ViewBookPageBase {
   selectedIndex = 0;
 
-  constructor(route: ActivatedRoute, bookService: BookService, bookmarksService: BookmarksService) {
+  constructor(
+    route: ActivatedRoute,
+    bookService: BookService,
+    bookmarksService: BookmarksService,
+    private readonly loaderService: LoaderPlatformService
+  ) {
     super(route, bookService, bookmarksService);
+    this.loading$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((loading) => (loading ? this.loaderService.start() : this.loaderService.stop()));
   }
 
   onIndexChanged(args: any) {

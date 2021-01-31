@@ -36,7 +36,7 @@ const defaultOptions = {
   },
 };
 
-// tslint:disable-next-line: cognitive-complexity
+// tslint:disable-next-line: parameters-max-number cognitive-complexity
 export function createApolloFactory(
   httpLink: HttpLink,
   storageService: StoragePlatformService,
@@ -44,11 +44,12 @@ export function createApolloFactory(
   webSocketImpl: any,
   environment: EnvConfig,
   httpClient: HttpClient,
-  injector: Injector
+  injector: Injector,
+  window: any
 ) {
   const http = httpLink.create({
     uri: ({ operationName }) =>
-      (window as any).Cypress
+      window && window.Cypress
         ? `${environment.endpointUrl}?${operationName}`
         : environment.endpointUrl,
   });

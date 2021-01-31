@@ -6,6 +6,7 @@ import {
   StoragePlatformService,
   StoreService,
   WebSocketImpl,
+  WINDOW,
 } from '@bookapp/angular/core';
 
 import { APOLLO_OPTIONS } from 'apollo-angular';
@@ -26,6 +27,7 @@ import { createApolloFactory } from './graphql.providers';
         Environment,
         HttpClient,
         Injector,
+        WINDOW,
       ],
     },
   ],

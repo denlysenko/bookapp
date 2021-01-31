@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-import { NativeScriptCommonModule } from 'nativescript-angular/common';
+import { NativeScriptCommonModule } from '@nativescript/angular';
 
 import { BookSearchModule, BooksListModule } from '@bookapp/angular/ui-mobile';
 

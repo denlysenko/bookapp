@@ -7,7 +7,9 @@ import { Book, RateBookEvent } from '@bookapp/shared/interfaces';
 import { Observable } from 'rxjs';
 import { filter, map, shareReplay, startWith, tap } from 'rxjs/operators';
 
-export abstract class BookmarksPageBase {
+import { BaseComponent } from '../core/base-component';
+
+export abstract class BookmarksPageBase extends BaseComponent {
   hasMoreItems = false;
 
   readonly type: string = this.route.snapshot.data.type;
@@ -40,7 +42,9 @@ export abstract class BookmarksPageBase {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly bookmarksService: BookmarksService
-  ) {}
+  ) {
+    super();
+  }
 
   loadMore() {
     if (this.pending) {

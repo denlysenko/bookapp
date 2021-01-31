@@ -5,12 +5,16 @@ import { NavigationEnd, Router } from '@angular/router';
 import { MainLayoutBase } from '@bookapp/angular/base';
 import { AuthService, LogsService } from '@bookapp/angular/data-access';
 
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
-import { RadSideDrawerComponent, SideDrawerType } from 'nativescript-ui-sidedrawer/angular';
+import {
+  DrawerTransitionBase,
+  SlideInOnTopTransition,
+  RadSideDrawer,
+} from 'nativescript-ui-sidedrawer';
+import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 
 import { takeUntil } from 'rxjs/operators';
 
-import { Page } from 'tns-core-modules/ui/page';
+import { Page } from '@nativescript/core';
 
 @Component({
   moduleId: module.id,
@@ -30,11 +34,11 @@ import { Page } from 'tns-core-modules/ui/page';
 export class MainLayoutComponent extends MainLayoutBase implements AfterViewInit {
   isUserMenuOpen = false;
 
-  @ViewChild('drawer', { static: false })
+  @ViewChild('drawer')
   drawerComponent: RadSideDrawerComponent;
 
   private _sideDrawerTransition: DrawerTransitionBase;
-  private drawer: SideDrawerType;
+  private drawer: RadSideDrawer;
 
   constructor(
     authService: AuthService,

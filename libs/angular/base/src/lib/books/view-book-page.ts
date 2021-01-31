@@ -6,7 +6,9 @@ import { Book, BookmarkEvent, RateBookEvent } from '@bookapp/shared/interfaces';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, finalize, map } from 'rxjs/operators';
 
-export abstract class ViewBookPageBase {
+import { BaseComponent } from '../core/base-component';
+
+export abstract class ViewBookPageBase extends BaseComponent {
   book$: Observable<Book> = this.bookService
     .watchBook(this.route.snapshot.paramMap.get('slug'))
     .pipe(map(({ data }) => data.book));
@@ -25,7 +27,9 @@ export abstract class ViewBookPageBase {
     private readonly route: ActivatedRoute,
     private readonly bookService: BookService,
     private readonly bookmarksService: BookmarksService
-  ) {}
+  ) {
+    super();
+  }
 
   get loading$() {
     return this.loading.asObservable();

@@ -8,8 +8,8 @@ import { BookCommentsBase } from '@bookapp/angular/base';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookCommentsComponent extends BookCommentsBase {
-  @ViewChild('listView', { static: false }) listView: ElementRef;
-  @ViewChild('textView', { static: false }) textView: ElementRef;
+  @ViewChild('listView') listView: ElementRef;
+  @ViewChild('textView') textView: ElementRef;
 
   submitComment() {
     this.commentAdded.emit(this.text);

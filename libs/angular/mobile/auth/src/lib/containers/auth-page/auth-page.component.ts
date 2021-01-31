@@ -4,7 +4,7 @@ import { AuthPageBase } from '@bookapp/angular/base';
 import { RouterExtensions } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
 
-import { Page } from 'tns-core-modules/ui/page';
+import { Page } from '@nativescript/core';
 
 @Component({
   moduleId: module.id,

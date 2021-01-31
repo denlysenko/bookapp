@@ -1,4 +1,4 @@
-import { LoadingIndicator } from 'nativescript-loading-indicator';
+import { LoadingIndicator } from '@nstudio/nativescript-loading-indicator';
 
 export class LoaderService {
   private loader: LoadingIndicator;
@@ -9,14 +9,9 @@ export class LoaderService {
 
   start() {
     const options = {
-      ios: {
-        dimBackground: true,
-        color: '#9ca5b9',
-        backgroundColor: '#2f364a'
-      },
-      android: {
-        color: '#3984b8'
-      }
+      dimBackground: true,
+      color: '#9ca5b9',
+      backgroundColor: '#2f364a',
     };
 
     this.loader.show(options);

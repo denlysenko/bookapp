@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 
+import { takeUntil } from 'rxjs/operators';
+
 import { ProfilePageBase } from '@bookapp/angular/base';
-import { FeedbackPlatformService } from '@bookapp/angular/core';
+import { FeedbackPlatformService, LoaderPlatformService } from '@bookapp/angular/core';
 import { AuthService, ProfileService } from '@bookapp/angular/data-access';
 
 @Component({
@@ -13,8 +15,12 @@ export class ProfilePageComponent extends ProfilePageBase {
   constructor(
     profileService: ProfileService,
     authService: AuthService,
-    feedbackService: FeedbackPlatformService
+    feedbackService: FeedbackPlatformService,
+    private readonly loaderService: LoaderPlatformService
   ) {
     super(profileService, authService, feedbackService);
+    this.loading$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((loading) => (loading ? this.loaderService.start() : this.loaderService.stop()));
   }
 }

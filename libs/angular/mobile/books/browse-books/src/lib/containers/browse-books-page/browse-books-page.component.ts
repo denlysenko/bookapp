@@ -1,19 +1,19 @@
 import { Component, ViewChild, ViewContainerRef, ChangeDetectionStrategy } from '@angular/core';
 
 import { BooksPageBase } from '@bookapp/angular/base';
-import { RouterExtensions, StoreService } from '@bookapp/angular/core';
+import { LoaderPlatformService, RouterExtensions, StoreService } from '@bookapp/angular/core';
 import { BooksService } from '@bookapp/angular/data-access';
 import { BookSearchComponent, BooksListComponent } from '@bookapp/angular/ui-mobile';
 import { Book, BooksFilter } from '@bookapp/shared/interfaces';
 
-import { ModalDialogOptions, ModalDialogService } from 'nativescript-angular/modal-dialog';
+import { ModalDialogOptions, ModalDialogService } from '@nativescript/angular';
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 
 import { BehaviorSubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import * as app from 'tns-core-modules/application';
-import { getViewById } from 'tns-core-modules/ui/page/page';
-import { SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
+import { getViewById, SegmentedBarItem, ViewBase } from '@nativescript/core';
+import { getRootView } from '@nativescript/core/application';
 
 interface SortOption {
   value: BooksFilter['sortValue'];
@@ -59,11 +59,15 @@ export class BrowseBooksPageComponent extends BooksPageBase {
     private readonly viewContainerRef: ViewContainerRef,
     private readonly modalService: ModalDialogService,
     private readonly routerExtensions: RouterExtensions,
+    private readonly loaderService: LoaderPlatformService,
     storeService: StoreService,
     booksService: BooksService
   ) {
     super(storeService, booksService, false);
     this.setInitialSorting();
+    this.loading$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((loading) => (loading ? this.loaderService.start() : this.loaderService.stop()));
   }
 
   get selectedOption$() {
@@ -71,7 +75,7 @@ export class BrowseBooksPageComponent extends BooksPageBase {
   }
 
   onDrawerButtonTap() {
-    const sideDrawer = getViewById(app.getRootView(), 'drawer') as RadSideDrawer;
+    const sideDrawer = getViewById(getRootView() as any, 'drawer') as RadSideDrawer;
     sideDrawer.toggleDrawerState();
   }
 
@@ -103,7 +107,7 @@ export class BrowseBooksPageComponent extends BooksPageBase {
             ? `/books/buy/${book.url}?bookId=${book._id}`
             : `/books/browse/${book.url}?bookId=${book._id}`
         );
-      });
+      }, 0);
     }
   }
 

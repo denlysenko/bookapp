@@ -1,5 +1,5 @@
 <GridLayout>
-  <StackLayout class="m-10" [shadow]="2">
+  <CardView margin="10" elevation="4" shadowOffsetHeight="1">
     <FlexboxLayout flexDirection="column" height="100%">
       <GridLayout class="mat-card" flexGrow="1" rows="*, auto">
         <Label *ngIf="!comments.length" row="0" text="No comments yet" height="100%"></Label>
@@ -30,5 +30,5 @@
         </GridLayout>
       </GridLayout>
     </FlexboxLayout>
-  </StackLayout>
+  </CardView>
 </GridLayout>
