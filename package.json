@@ -83,7 +83,7 @@
     "graphql-subscriptions": "^1.1.0",
     "graphql-tools": "^7.0.2",
     "history": "^5.0.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.20",
     "mongoose": "^5.1.13",
