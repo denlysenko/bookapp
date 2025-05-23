@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+
+import { PageRouterOutlet } from '@nativescript/angular';
 
 @Component({
-  selector: 'ns-app',
-  moduleId: module.id,
+  selector: 'bookapp-root',
+  imports: [PageRouterOutlet],
   templateUrl: './app.component.html',
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class AppComponent {}

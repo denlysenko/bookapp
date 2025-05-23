@@ -1,13 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, OnInit, output } from '@angular/core';
 
-declare var ePubReader: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare const ePubReader: any;
 
 @Component({
   selector: 'bookapp-book-reader',
@@ -16,25 +10,22 @@ declare var ePubReader: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookReaderComponent implements OnInit {
-  @Input()
-  src: string;
+  readonly src = input<string>();
+  readonly bookmark = input<string>();
 
-  @Input()
-  bookmark: string;
+  readonly locationChanged = output<string>();
 
-  @Output()
-  locationChanged = new EventEmitter<string>();
-
-  private reader: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  #reader: any;
 
   ngOnInit() {
-    this.reader = ePubReader(this.src);
+    this.#reader = ePubReader(this.src());
 
-    if (this.bookmark) {
-      this.reader.rendition.display(this.bookmark);
+    if (this.bookmark()) {
+      this.#reader.rendition.display(this.bookmark());
     }
 
-    this.reader.rendition.on('locationChanged', ({ start }) => {
+    this.#reader.rendition.on('locationChanged', ({ start }) => {
       this.locationChanged.emit(start);
     });
   }

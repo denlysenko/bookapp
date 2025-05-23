@@ -1,17 +1,15 @@
-import React from 'react';
-
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import Button from '@material-ui/core/Button';
-import CardActions from '@material-ui/core/CardActions';
-import TextField from '@material-ui/core/TextField';
+import Button from '@mui/material/Button';
+import CardActions from '@mui/material/CardActions';
+import TextField from '@mui/material/TextField';
 
 import { ERRORS } from '@bookapp/shared/constants';
 import { PasswordForm as PasswordFormValues } from '@bookapp/shared/interfaces';
 import { getFormikError } from '@bookapp/utils/react';
 
-import { usePasswordFormStyles } from './usePasswordFormStyles';
+import { StyledPasswordForm } from './StyledPasswordForm';
 
 export interface PasswordFormProps {
   loading: boolean;
@@ -24,8 +22,6 @@ const PasswordSchema = Yup.object().shape({
 });
 
 export const PasswordForm = ({ loading, onSubmit }: PasswordFormProps) => {
-  const classes = usePasswordFormStyles();
-
   const formik = useFormik<PasswordFormValues>({
     initialValues: {
       oldPassword: '',
@@ -48,7 +44,7 @@ export const PasswordForm = ({ loading, onSubmit }: PasswordFormProps) => {
   });
 
   return (
-    <form className={classes.form} noValidate={true} onSubmit={formik.handleSubmit}>
+    <StyledPasswordForm noValidate={true} onSubmit={formik.handleSubmit}>
       <TextField
         type="password"
         name="oldPassword"
@@ -84,7 +80,7 @@ export const PasswordForm = ({ loading, onSubmit }: PasswordFormProps) => {
           Save
         </Button>
       </CardActions>
-    </form>
+    </StyledPasswordForm>
   );
 };
 

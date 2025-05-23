@@ -1,114 +1,128 @@
-<ActionBar class="action-bar" flat="true">
-  <NavigationButton
-    ios:visibility="collapsed"
-    icon="res://menu"
-    (tap)="onDrawerButtonTap()"
-  ></NavigationButton>
-  <ActionItem
-    icon="res://menu"
-    android:visibility="collapsed"
-    ios.position="left"
-    (tap)="onDrawerButtonTap()"
-  >
-  </ActionItem>
-  <ActionItem
-    ios.systemIcon="3"
-    ios.position="right"
-    android.position="actionBar"
-    android.systemIcon="ic_menu_save"
-    (tap)="submit()"
-  ></ActionItem>
-  <Label class="action-bar-title" text="Edit Profile"></Label>
-</ActionBar>
-<StackLayout>
+<GridLayout class="bg-surface">
   <CardView margin="10" elevation="4" shadowOffsetHeight="1">
     <FlexboxLayout flexDirection="column" height="100%">
-      <GridLayout class="mat-card" flexGrow="1">
+      <GridLayout class="p-4 bg-white rounded-lg" flexGrow="1">
         <ScrollView>
           <StackLayout>
             <FlexboxLayout flexDirection="column" justifyContenet="center" alignItems="center">
-              <Label class="h3" text="Profile Photo"></Label>
-              <AbsoluteLayout *ngIf="user" class="avatar-block">
-                <Image
-                  class="avatar"
-                  [src]="user.avatar ? user.avatar : 'res://noavatar'"
-                  left="0"
-                  top="0"
-                ></Image>
-                <GridLayout
-                  class="avatar-btn"
-                  rows="*"
-                  columns="*"
-                  left="50"
-                  top="45"
-                  (tap)="changeAvatar()"
-                >
-                  <Label
-                    class="mdi"
-                    text="add_a_photo"
-                    style.verticalAlignment="center"
-                    style.textAlignment="center"
-                  ></Label>
-                </GridLayout>
-              </AbsoluteLayout>
-              <Progress
-                *ngIf="uploading$ | async"
-                [value]="progress$ | async"
-                maxValue="100"
-                class="m-t-20"
-              ></Progress>
+              <Label class="text-base mb-2.5" text="Profile Photo"></Label>
+
+              @let _user = user();
+
+              @if (_user) {
+                <AbsoluteLayout>
+                  <Image
+                    class="w-20 h-20 rounded-full bg-white"
+                    [src]="_user.avatar ? _user.avatar : 'res://noavatar'"
+                    left="0"
+                    top="0"
+                  ></Image>
+                  <GridLayout
+                    class="w-9 h-9 border border-deep-blue-900 rounded-full"
+                    rows="*"
+                    columns="*"
+                    left="50"
+                    top="45"
+                    (tap)="changeAvatar()"
+                  >
+                    <Label
+                      class="mdi text-xl text-deep-blue-900 text-center"
+                      text="add_a_photo"
+                      style.verticalAlignment="center"
+                      style.textAlignment="center"
+                    ></Label>
+                  </GridLayout>
+                </AbsoluteLayout>
+              }
+
+              @if (uploading()) {
+                <Progress [value]="progress$ | async" maxValue="100" color="#f16441"></Progress>
+              }
             </FlexboxLayout>
-            <RadDataForm #dataForm class="m-t-30" [source]="source$ | async">
-              <TKEntityProperty tkDataFormProperty name="firstName" displayName="First Name">
-                <TKPropertyEditor tkEntityPropertyEditor type="Text">
-                  <TKPropertyEditorStyle
-                    tkPropertyEditorStyle
-                    labelTextSize="14"
-                    labelFontStyle="Italic"
-                    labelPosition="Top"
-                  ></TKPropertyEditorStyle>
-                </TKPropertyEditor>
-                <TKNonEmptyValidator
-                  tkEntityPropertyValidators
-                  errorMessage="This field is required"
-                ></TKNonEmptyValidator>
-              </TKEntityProperty>
-              <TKEntityProperty tkDataFormProperty name="lastName" displayName="Last Name">
-                <TKPropertyEditor tkEntityPropertyEditor type="Text">
-                  <TKPropertyEditorStyle
-                    tkPropertyEditorStyle
-                    labelTextSize="14"
-                    labelFontStyle="Italic"
-                    labelPosition="Top"
-                  ></TKPropertyEditorStyle>
-                </TKPropertyEditor>
-                <TKNonEmptyValidator
-                  tkEntityPropertyValidators
-                  errorMessage="This field is required"
-                ></TKNonEmptyValidator>
-              </TKEntityProperty>
-              <TKEntityProperty tkDataFormProperty name="email" displayName="Email">
-                <TKPropertyEditor tkEntityPropertyEditor type="Email">
-                  <TKPropertyEditorStyle
-                    tkPropertyEditorStyle
-                    labelTextSize="14"
-                    labelFontStyle="Italic"
-                    labelPosition="Top"
-                  ></TKPropertyEditorStyle>
-                </TKPropertyEditor>
-                <TKNonEmptyValidator
-                  tkEntityPropertyValidators
-                  errorMessage="This field is required"
-                ></TKNonEmptyValidator>
-                <TKEmailValidator
-                  tkEntityPropertyValidators
-                  errorMessage="Not a valid email"
-                ></TKEmailValidator>
-              </TKEntityProperty>
-            </RadDataForm>
+
+            <StackLayout class="form mt-5" [formGroup]="form">
+              <PreviousNextView>
+                <StackLayout>
+                  <StackLayout
+                    class="mb-5"
+                    [class.has-error]="submitting() && form.get('firstName').invalid"
+                  >
+                    <TextField
+                      hint="First Name"
+                      class="input"
+                      autocorrect="false"
+                      autocapitalizationType="none"
+                      formControlName="firstName"
+                    ></TextField>
+
+                    @if (form.get('firstName').hasError('required')) {
+                      <Label text="This field is required" class="error"></Label>
+                    }
+
+                    @if (form.get('firstName').hasError('serverError')) {
+                      <Label [text]="errors['firstName']" class="error"></Label>
+                    }
+                  </StackLayout>
+
+                  <StackLayout
+                    class="mb-5"
+                    [class.has-error]="submitting() && form.get('lastName').invalid"
+                  >
+                    <TextField
+                      hint="Last Name"
+                      class="input"
+                      autocorrect="false"
+                      autocapitalizationType="none"
+                      formControlName="lastName"
+                    ></TextField>
+
+                    @if (form.get('lastName').hasError('required')) {
+                      <Label text="This field is required" class="error"></Label>
+                    }
+
+                    @if (form.get('lastName').hasError('serverError')) {
+                      <Label [text]="errors['lastName']" class="error"></Label>
+                    }
+                  </StackLayout>
+
+                  <StackLayout
+                    class="mb-5"
+                    [class.has-error]="submitting() && form.get('email').invalid"
+                  >
+                    <TextField
+                      hint="Email"
+                      class="input"
+                      keyboardType="email"
+                      autocorrect="false"
+                      autocapitalizationType="none"
+                      formControlName="email"
+                    ></TextField>
+
+                    @if (form.get('email').hasError('required')) {
+                      <Label text="This field is required" class="error"></Label>
+                    }
+
+                    @if (form.get('email').hasError('email')) {
+                      <Label text="Not a valid email" class="error"></Label>
+                    }
+
+                    @if (form.get('email').hasError('serverError')) {
+                      <Label [text]="errors['email']" class="error"></Label>
+                    }
+                  </StackLayout>
+                </StackLayout>
+              </PreviousNextView>
+
+              <Button
+                class="btn btn-primary btn-active w-full"
+                text="Save"
+                [isEnabled]="!loading()"
+                (tap)="submit()"
+              ></Button>
+            </StackLayout>
           </StackLayout>
         </ScrollView>
       </GridLayout>
     </FlexboxLayout>
   </CardView>
-</StackLayout>
+</GridLayout>

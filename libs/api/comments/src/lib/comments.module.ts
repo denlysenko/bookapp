@@ -1,4 +1,3 @@
-import { DataLoadersModule } from '@bookapp/api/dataloaders';
 import { LogsModule } from '@bookapp/api/logs';
 import { ModelNames } from '@bookapp/api/shared';
 
@@ -13,7 +12,6 @@ import { CommentSchema } from './schemas/comment';
   imports: [
     MongooseModule.forFeature([{ name: ModelNames.COMMENT, schema: CommentSchema }]),
     LogsModule,
-    DataLoadersModule,
   ],
   providers: [CommentsService, CommentsResolver],
   exports: [CommentsService],

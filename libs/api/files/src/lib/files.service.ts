@@ -2,7 +2,7 @@ import { UploadResponse } from '@bookapp/shared/interfaces';
 
 import { Bucket, Storage } from '@google-cloud/storage';
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { format } from 'util';
@@ -10,6 +10,7 @@ import { format } from 'util';
 @Injectable()
 export class FilesService {
   private bucket: Bucket;
+  private readonly logger = new Logger(FilesService.name);
 
   constructor(configService: ConfigService) {
     this.bucket = new Storage({
@@ -18,7 +19,7 @@ export class FilesService {
     }).bucket(configService.get('FIREBASE_BUCKET_URL'));
   }
 
-  uploadToBucket(file: any, filename: string): Promise<UploadResponse> {
+  uploadToBucket(file: Express.Multer.File, filename: string): Promise<UploadResponse> {
     return new Promise((resolve, reject) => {
       const blob = this.bucket.file(filename);
 
@@ -30,22 +31,24 @@ export class FilesService {
       });
 
       blobStream.on('error', (error) => {
+        this.logger.error(`Error uploading file to bucket: ${error}`);
         reject(error);
       });
 
       blobStream.on('finish', () => {
         const publicUrl = format(
-          // tslint:disable-next-line: prettier
           `https://firebasestorage.googleapis.com/v0/b/${this.bucket.name}/o/${blob.name}?alt=media`
         );
+        this.logger.log(`File uploaded to bucket: ${publicUrl}`);
         resolve({ publicUrl });
       });
 
-      blobStream.end(file);
+      blobStream.end(file.buffer);
     });
   }
 
-  deleteFromBucket(key: string): Promise<any> {
-    return this.bucket.file(key).delete();
+  async deleteFromBucket(key: string): Promise<void> {
+    await this.bucket.file(key).delete();
+    this.logger.log(`File deleted from bucket: ${key}`);
   }
 }

@@ -1,9 +1,9 @@
-import React, { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 import { ApolloProvider } from '@apollo/client';
 
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider } from '@mui/material/styles';
 
 import { useRefreshToken } from '@bookapp/react/core';
 import { createApollo } from '@bookapp/react/graphql';
@@ -17,70 +17,60 @@ import './app.scss';
 import { theme } from './theme';
 
 const Password = lazy(() =>
-  // tslint:disable-next-line: no-shadowed-variable
   import('@bookapp/react/pages/password').then(({ Password }) => ({
     default: Password,
   }))
 );
 
 const Profile = lazy(() =>
-  // tslint:disable-next-line: no-shadowed-variable
   import('@bookapp/react/pages/profile').then(({ Profile }) => ({
     default: Profile,
   }))
 );
 
 const AddBook = lazy(() =>
-  // tslint:disable-next-line: no-shadowed-variable
   import('@bookapp/react/pages/books/add-book').then(({ AddBook }) => ({
     default: AddBook,
   }))
 );
 
 const BrowseBooks = lazy(() =>
-  // tslint:disable-next-line: no-shadowed-variable
   import('@bookapp/react/pages/books/browse-books').then(({ BrowseBooks }) => ({
     default: BrowseBooks,
   }))
 );
 
 const BuyBooks = lazy(() =>
-  // tslint:disable-next-line: no-shadowed-variable
   import('@bookapp/react/pages/books/buy-books').then(({ BuyBooks }) => ({
     default: BuyBooks,
   }))
 );
 
 const ViewBook = lazy(() =>
-  // tslint:disable-next-line: no-shadowed-variable
   import('@bookapp/react/pages/books/view-book').then(({ ViewBook }) => ({
     default: ViewBook,
   }))
 );
 
 const Bookmarks = lazy(() =>
-  // tslint:disable-next-line: no-shadowed-variable
   import('@bookapp/react/pages/bookmarks').then(({ Bookmarks }) => ({
     default: Bookmarks,
   }))
 );
 
 const BestBooks = lazy(() =>
-  // tslint:disable-next-line: no-shadowed-variable
   import('@bookapp/react/pages/books/best-books').then(({ BestBooks }) => ({
     default: BestBooks,
   }))
 );
 
 const ReadBook = lazy(() =>
-  // tslint:disable-next-line: no-shadowed-variable
   import('@bookapp/react/pages/books/read-book').then(({ ReadBook }) => ({
     default: ReadBook,
   }))
 );
 
 const History = lazy(() =>
-  // tslint:disable-next-line: no-shadowed-variable
   import('@bookapp/react/pages/history').then(({ History }) => ({
     default: History,
   }))
@@ -96,38 +86,62 @@ const App = () => {
         <Suspense fallback={<FullPageSpinner />}>
           <Router>
             <Routes>
-              <AnonymousGuard path="/auth" element={<Auth />} />
-              <AuthGuard path="/" element={<Main />}>
+              <Route
+                path="/auth"
+                element={
+                  <AnonymousGuard>
+                    <Auth />
+                  </AnonymousGuard>
+                }
+              />
+              <Route
+                path="/"
+                element={
+                  <AuthGuard>
+                    <Main />
+                  </AuthGuard>
+                }
+              >
                 <Route path="" element={<Navigate to="/books/browse" />} />
-                <AuthGuard path="password" element={<Password />} />
-                <AuthGuard path="profile" element={<Profile />} />
-                <AuthGuard path="history" element={<History />} />
-                <RolesGuard path="books/add" element={<AddBook />} roles={[ROLES.ADMIN]} />
-                <RolesGuard
-                  path="books/add/:author/:slug"
-                  element={<AddBook />}
-                  roles={[ROLES.ADMIN]}
+                <Route path="password" element={<Password />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="history" element={<History />} />
+                <Route
+                  path="books/add"
+                  element={
+                    <RolesGuard roles={[ROLES.ADMIN]}>
+                      <AddBook />
+                    </RolesGuard>
+                  }
                 />
-                <AuthGuard path="books/browse" element={<BrowseBooks />} />
-                <AuthGuard path="books/browse/:author/:slug" element={<ViewBook />} />
-                <AuthGuard path="books/buy" element={<BuyBooks />} />
-                <AuthGuard path="books/buy/:author/:slug" element={<ViewBook />} />
-                <AuthGuard path="books/read" element={<ReadBook />} />
-                <AuthGuard path="books/read/:author/:slug" element={<ReadBook />} />
-                <AuthGuard path="books/best" element={<BestBooks />} />
-                <AuthGuard
+                <Route
+                  path="books/add/:author/:slug"
+                  element={
+                    <RolesGuard roles={[ROLES.ADMIN]}>
+                      <AddBook />
+                    </RolesGuard>
+                  }
+                />
+                <Route path="books/browse" element={<BrowseBooks />} />
+                <Route path="books/browse/:author/:slug" element={<ViewBook />} />
+                <Route path="books/buy" element={<BuyBooks />} />
+                <Route path="books/buy/:author/:slug" element={<ViewBook />} />
+                <Route path="books/read" element={<ReadBook />} />
+                <Route path="books/read/:author/:slug" element={<ReadBook />} />
+                <Route path="books/best" element={<BestBooks />} />
+                <Route
                   path="bookmarks/favorites"
                   element={<Bookmarks title="Favorite Books" type={BOOKMARKS.FAVORITES} />}
                 />
-                <AuthGuard
+                <Route
                   path="bookmarks/mustread"
                   element={<Bookmarks title="Must Read Titles" type={BOOKMARKS.MUSTREAD} />}
                 />
-                <AuthGuard
+                <Route
                   path="bookmarks/wishlist"
                   element={<Bookmarks title="Wishlist" type={BOOKMARKS.WISHLIST} />}
                 />
-              </AuthGuard>
+              </Route>
             </Routes>
           </Router>
         </Suspense>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { ApiResponse, Book, RateBookEvent, RateBookResponse } from '@bookapp/shared/interfaces';
@@ -6,17 +6,15 @@ import { BEST_BOOKS_QUERY, RATE_BOOK_MUTATION } from '@bookapp/shared/queries';
 
 import { Apollo, QueryRef } from 'apollo-angular';
 
-import { isNil } from 'lodash';
-
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BestBooksService {
-  private bestBooksQueryRef: QueryRef<{ bestBooks: ApiResponse<Book> }> | null = null;
+  readonly #apollo = inject(Apollo);
 
-  constructor(private readonly apollo: Apollo) {}
+  #bestBooksQueryRef: QueryRef<{ bestBooks: ApiResponse<Book> }> | null = null;
 
   watchBooks(skip = 0, first = DEFAULT_LIMIT) {
-    if (isNil(this.bestBooksQueryRef)) {
-      this.bestBooksQueryRef = this.apollo.watchQuery<{ bestBooks: ApiResponse<Book> }>({
+    if (!this.#bestBooksQueryRef) {
+      this.#bestBooksQueryRef = this.#apollo.watchQuery<{ bestBooks: ApiResponse<Book> }>({
         query: BEST_BOOKS_QUERY,
         variables: {
           skip,
@@ -27,15 +25,11 @@ export class BestBooksService {
       });
     }
 
-    return this.bestBooksQueryRef.valueChanges;
+    return this.#bestBooksQueryRef.valueChanges;
   }
 
   loadMore(skip: number) {
-    if (isNil(this.bestBooksQueryRef)) {
-      return;
-    }
-
-    this.bestBooksQueryRef.fetchMore({
+    this.#bestBooksQueryRef?.fetchMore({
       variables: {
         skip,
       },
@@ -58,19 +52,19 @@ export class BestBooksService {
   }
 
   rateBook({ bookId, rate }: RateBookEvent) {
-    return this.apollo.mutate<RateBookResponse>({
+    return this.#apollo.mutate<RateBookResponse>({
       mutation: RATE_BOOK_MUTATION,
       variables: {
         bookId,
         rate,
       },
       update: (_, { data: { rateBook } }) => {
-        if (isNil(this.bestBooksQueryRef)) {
+        if (!this.#bestBooksQueryRef) {
           return;
         }
 
-        this.bestBooksQueryRef.updateQuery((prevData) => {
-          const index = prevData.bestBooks.rows.findIndex(({ _id }) => _id === bookId);
+        this.#bestBooksQueryRef.updateQuery((prevData) => {
+          const index = prevData.bestBooks.rows.findIndex(({ id }) => id === bookId);
 
           if (index === -1) {
             return prevData;

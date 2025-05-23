@@ -1,32 +1,27 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { HistoryPageBase } from '@bookapp/angular/base';
-import { StoreService } from '@bookapp/angular/core';
-import { LogsService } from '@bookapp/angular/data-access';
+import { PreloaderComponent } from '@bookapp/angular/ui-desktop';
 import { LogsFilter } from '@bookapp/shared/interfaces';
 
+import { HistoryListComponent } from '../../components/history-list/history-list.component';
+
 @Component({
-  selector: 'bookapp-history-page',
+  imports: [AsyncPipe, MatToolbarModule, PreloaderComponent, HistoryListComponent],
   templateUrl: './history-page.component.html',
   styleUrls: ['./history-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [LogsService],
 })
 export class HistoryPageComponent extends HistoryPageBase {
-  constructor(logsService: LogsService, storeService: StoreService) {
-    super(logsService, storeService);
-  }
-
   sort({ active, direction }: Sort) {
     const orderBy = `${active}_${direction}` as LogsFilter['orderBy'];
 
-    this.filter.next({
-      ...this.filter.getValue(),
-      orderBy,
-    });
-
+    this.filter.update((filter) => ({ ...filter, orderBy }));
     this.logsService.refetch({ orderBy });
     this.updateFilterInStore();
   }
@@ -35,11 +30,11 @@ export class HistoryPageComponent extends HistoryPageBase {
     const skip = pageIndex * pageSize;
     const first = pageSize;
 
-    this.filter.next({
-      ...this.filter.getValue(),
+    this.filter.update((filter) => ({
+      ...filter,
       skip,
       first,
-    });
+    }));
 
     this.logsService.refetch({ skip, first });
     this.updateFilterInStore();

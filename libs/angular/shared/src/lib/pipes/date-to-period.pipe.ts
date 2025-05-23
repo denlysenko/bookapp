@@ -4,8 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'dateToPeriod',
 })
 export class DateToPeriodPipe implements PipeTransform {
-  transform(value: string): string {
-    const diff = Math.floor((Date.now() - parseInt(value, 10)) / 1000);
+  transform(value: number): string {
+    const diff = Math.floor((Date.now() - value) / 1000);
 
     let interval = Math.floor(diff / 31536000);
 

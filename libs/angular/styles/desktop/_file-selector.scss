@@ -1,5 +1,3 @@
-@import 'variables';
-
 #file {
   display: none;
 }
@@ -14,11 +12,11 @@
 
   .material-icons {
     font-size: 100px;
-    color: $dark-secondary-text;
+    color: var(--mat-sys-on-primary);
   }
 
   &.highlighted {
-    border: 2px solid $dark-secondary-text;
+    border: 2px solid var(--mat-sys-on-primary);
   }
 }
 

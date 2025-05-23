@@ -1,212 +1,104 @@
-// tslint:disable:only-arrow-functions
 import { ROLES } from '@bookapp/shared/enums';
 
-import { pbkdf2, pbkdf2Sync, randomBytes } from 'crypto';
 import { Schema } from 'mongoose';
+import { randomBytes, scrypt, timingSafeEqual } from 'node:crypto';
+import { promisify } from 'node:util';
 
 import { USER_VALIDATION_ERRORS } from '../constants';
 import { UserModel } from '../interfaces/user';
 
-/**
- * A Validation function for password
- */
-const validatePassword = function (password) {
+const scryptAsync = promisify(scrypt);
+const randomBytesAsync = promisify(randomBytes);
+
+const validatePassword = function (password: string): boolean {
   return password && password.length > 6;
 };
 
-const defaultByteSize = 16;
+const defaultByteSize = 32;
 
-export const UserSchema = new Schema<UserModel>({
-  firstName: {
-    type: String,
-    trim: true,
-    required: [true, USER_VALIDATION_ERRORS.FIRST_NAME_REQUIRED_ERR],
-  },
-  lastName: {
-    type: String,
-    trim: true,
-    required: [true, USER_VALIDATION_ERRORS.LAST_NAME_REQUIRED_ERR],
-  },
-  displayName: {
-    type: String,
-    trim: true,
-  },
-  email: {
-    type: String,
-    trim: true,
-    required: [true, USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR],
-    validate: {
-      validator: (value: string) => {
-        return /.+\@.+\..+/.test(value);
+export const UserSchema = new Schema<UserModel>(
+  {
+    firstName: {
+      type: String,
+      trim: true,
+      required: [true, USER_VALIDATION_ERRORS.FIRST_NAME_REQUIRED_ERR],
+    },
+    lastName: {
+      type: String,
+      trim: true,
+      required: [true, USER_VALIDATION_ERRORS.LAST_NAME_REQUIRED_ERR],
+    },
+    displayName: {
+      type: String,
+      trim: true,
+    },
+    email: {
+      type: String,
+      trim: true,
+      required: [true, USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR],
+      unique: [true, USER_VALIDATION_ERRORS.EMAIL_IN_USE_ERR],
+      validate: {
+        validator: (value: string) => {
+          return /.+@.+\..+/.test(value);
+        },
+        message: () => USER_VALIDATION_ERRORS.EMAIL_INVALID_ERR,
       },
-      message: () => USER_VALIDATION_ERRORS.EMAIL_INVALID_ERR,
     },
-  },
-  password: {
-    type: String,
-    default: '',
-    validate: [validatePassword, USER_VALIDATION_ERRORS.PASSWORD_LENGTH_ERR],
-  },
-  salt: String,
-  avatar: String,
-  roles: {
-    type: [{ type: String, enum: [ROLES.ADMIN, ROLES.USER] }],
-    default: [ROLES.USER],
-  },
-  updatedAt: Date,
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  reading: {
-    epubUrl: {
+    password: {
       type: String,
       default: '',
+      validate: [validatePassword, USER_VALIDATION_ERRORS.PASSWORD_LENGTH_ERR],
     },
-    bookmark: {
-      type: String,
-      default: '',
+    salt: String,
+    avatar: String,
+    roles: {
+      type: [{ type: String, enum: [ROLES.ADMIN, ROLES.USER] }],
+      default: [ROLES.USER],
     },
+    reading: {
+      epubUrl: {
+        type: String,
+        default: '',
+      },
+      bookmark: {
+        type: String,
+        default: '',
+      },
+    },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
   },
-  resetPasswordToken: String,
-  resetPasswordExpires: Date,
-});
+  { timestamps: true }
+);
 
-// Validate email is not taken
-UserSchema.path('email').validate(function (value) {
-  return this.constructor
-    .findOne({ email: value })
-    .exec()
-    .then((user) => {
-      if (user) {
-        return this._id.equals(user._id);
-      }
-      return true;
-    })
-    .catch((err) => {
-      throw err;
-    });
-}, USER_VALIDATION_ERRORS.EMAIL_IN_USE_ERR);
-
-/**
- * Pre-save hook
- */
-UserSchema.pre<UserModel>('save', function (next) {
-  // Handle new/update passwords
-  if (!this.isModified('password')) {
-    return next();
+UserSchema.pre<UserModel>('save', async function () {
+  if (this.isModified('password')) {
+    this.salt = await this.makeSalt();
+    this.password = await this.encryptPassword(this.password);
   }
-  // Make salt with a callback
-  this.makeSalt(defaultByteSize, (saltErr, salt) => {
-    if (saltErr) {
-      return next(saltErr);
-    }
-
-    this.salt = salt;
-    this.encryptPassword(this.password, (encryptErr, hashedPassword) => {
-      if (encryptErr) {
-        return next(encryptErr);
-      }
-      this.password = hashedPassword;
-      return next();
-    });
-  });
 });
 
-/**
- * Methods
- */
-UserSchema.methods = {
-  /**
-   * Authenticate - check if the passwords are the same
-   *
-   * @param {String} password
-   * @param {Function} callback
-   * @return {Boolean}
-   * @api public
-   */
-  authenticate(password, callback) {
-    if (!callback) {
-      return this.password === this.encryptPassword(password);
-    }
+UserSchema.methods.authenticate = async function (password: string): Promise<boolean> {
+  const hashedPassword = await this.encryptPassword(password);
+  return timingSafeEqual(
+    Buffer.from(this.password, 'base64'),
+    Buffer.from(hashedPassword, 'base64')
+  );
+};
 
-    this.encryptPassword(password, (err, pwdGen) => {
-      if (err) {
-        return callback(err);
-      }
+UserSchema.methods.makeSalt = async function (byteSize = defaultByteSize): Promise<string> {
+  const salt = await randomBytesAsync(byteSize);
+  return salt.toString('base64');
+};
 
-      if (this.password === pwdGen) {
-        return callback(null, true);
-      } else {
-        return callback(null, false);
-      }
-    });
-  },
+UserSchema.methods.encryptPassword = async function (password: string): Promise<string> {
+  if (!password || !this.salt) {
+    throw new Error(USER_VALIDATION_ERRORS.MISSING_PASSWORD_OR_SALT);
+  }
 
-  /**
-   * Make salt
-   *
-   * @param {Number} [byteSize] - Optional salt byte size, default to 16
-   * @param {Function} callback
-   * @return {String}
-   * @api public
-   */
-  makeSalt(byteSize, callback) {
-    if (typeof arguments[0] === 'function') {
-      callback = arguments[0];
-      byteSize = defaultByteSize;
-    } else if (typeof arguments[1] === 'function') {
-      callback = arguments[1];
-    } else {
-      throw new Error(USER_VALIDATION_ERRORS.MISSING_CALLBACK_ERR);
-    }
+  const keyLength = 64;
+  const salt = Buffer.from(this.salt, 'base64');
+  const key = (await scryptAsync(password, salt, keyLength)) as Buffer;
 
-    if (!byteSize) {
-      byteSize = defaultByteSize;
-    }
-
-    return randomBytes(byteSize, (err, salt) => {
-      if (err) {
-        return callback(err);
-      } else {
-        return callback(null, salt.toString('base64'));
-      }
-    });
-  },
-
-  /**
-   * Encrypt password
-   *
-   * @param {String} password
-   * @param {Function} callback
-   * @return {String}
-   * @api public
-   */
-  encryptPassword(password, callback) {
-    if (!password || !this.salt) {
-      if (!callback) {
-        return null;
-      } else {
-        return callback(USER_VALIDATION_ERRORS.MISSING_PASSWORD_OR_SALT);
-      }
-    }
-
-    const defaultIterations = 10000;
-    const defaultKeyLength = 64;
-    const salt = Buffer.from(this.salt, 'base64');
-
-    if (!callback) {
-      return pbkdf2Sync(password, salt, defaultIterations, defaultKeyLength, 'sha512').toString(
-        'base64'
-      );
-    }
-
-    return pbkdf2(password, salt, defaultIterations, defaultKeyLength, 'sha512', (err, key) => {
-      if (err) {
-        return callback(err);
-      } else {
-        return callback(null, key.toString('base64'));
-      }
-    });
-  },
+  return key.toString('base64');
 };

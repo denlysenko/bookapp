@@ -5,7 +5,6 @@ import { BOOKMARKS } from '@bookapp/shared/enums';
 import { ApiResponse, Bookmark, RateBookEvent, RateBookResponse } from '@bookapp/shared/interfaces';
 import { BOOKMARKS_QUERY, RATE_BOOK_MUTATION } from '@bookapp/shared/queries';
 
-// tslint:disable: no-shadowed-variable
 export function useBookmarksByType(type: BOOKMARKS) {
   const { data, loading, fetchMore, updateQuery } = useQuery<{ bookmarks: ApiResponse<Bookmark> }>(
     BOOKMARKS_QUERY,
@@ -30,7 +29,7 @@ export function useBookmarksByType(type: BOOKMARKS) {
       },
       update: (_, { data: { rateBook } }) => {
         updateQuery((prevData) => {
-          const index = prevData.bookmarks.rows.findIndex(({ book }) => book._id === bookId);
+          const index = prevData.bookmarks.rows.findIndex(({ book }) => book.id === bookId);
 
           if (index === -1) {
             return prevData;

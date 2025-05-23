@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MockLocalStorage } from '@bookapp/testing';
+import { MockLocalStorage } from '@bookapp/testing/angular';
 
 import { StorageService } from './storage.service';
 
@@ -8,9 +8,9 @@ Object.defineProperty(window, 'localStorage', { value: MockLocalStorage });
 
 describe('StorageService', () => {
   let service: StorageService;
-  let getItemSpy: jest.SpyInstance<any>;
-  let setItemSpy: jest.SpyInstance<any>;
-  let removeItemSpy: jest.SpyInstance<any>;
+  let getItemSpy: jest.SpyInstance<string>;
+  let setItemSpy: jest.SpyInstance<void>;
+  let removeItemSpy: jest.SpyInstance<void>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

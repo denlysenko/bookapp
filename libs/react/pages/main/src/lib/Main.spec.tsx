@@ -1,11 +1,10 @@
-import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import { MockedProvider } from '@apollo/client/testing';
 
 import { ME_QUERY } from '@bookapp/shared/queries';
-import { userWithTypename } from '@bookapp/testing';
+import { userWithTypename } from '@bookapp/testing/react';
 
 import Main from './Main';
 

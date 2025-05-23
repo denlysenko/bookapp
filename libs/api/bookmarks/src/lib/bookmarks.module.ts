@@ -1,4 +1,3 @@
-import { DataLoadersModule } from '@bookapp/api/dataloaders';
 import { LogsModule } from '@bookapp/api/logs';
 import { ModelNames } from '@bookapp/api/shared';
 
@@ -13,7 +12,6 @@ import { BookmarkSchema } from './schemas/bookmark';
   imports: [
     MongooseModule.forFeature([{ name: ModelNames.BOOKMARK, schema: BookmarkSchema }]),
     LogsModule,
-    DataLoadersModule,
   ],
   providers: [BookmarksService, BookmarksResolver],
 })

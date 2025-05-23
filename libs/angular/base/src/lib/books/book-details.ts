@@ -1,32 +1,35 @@
-import { EventEmitter, Input, Output, Directive } from '@angular/core';
+import { computed, Directive, input, output } from '@angular/core';
 
 import { BOOKMARKS } from '@bookapp/shared/enums';
 import { Book, BookmarkEvent } from '@bookapp/shared/interfaces';
 
 @Directive()
 export abstract class BookDetailsBase {
+  readonly book = input<Book>();
+  readonly bookmarks = input<string[]>();
+
+  readonly bookmarkAdded = output<BookmarkEvent>();
+  readonly bookmarkRemoved = output<BookmarkEvent>();
+  readonly bookRated = output<{ bookId: string; rate: number }>();
+
   readonly BOOKMARKS = BOOKMARKS;
 
-  @Input() book: Book;
-  @Input() bookmarks: string[];
+  readonly inFavorites = computed(() => {
+    const bookmarks = this.bookmarks();
+    return bookmarks && bookmarks.includes(BOOKMARKS.FAVORITES);
+  });
 
-  @Output() bookmarkAdded = new EventEmitter<BookmarkEvent>();
-  @Output() bookmarkRemoved = new EventEmitter<BookmarkEvent>();
-  @Output() bookRated = new EventEmitter<{ bookId: string; rate: number }>();
+  readonly inWishlist = computed(() => {
+    const bookmarks = this.bookmarks();
+    return bookmarks && bookmarks.includes(BOOKMARKS.WISHLIST);
+  });
 
-  get inFavorites(): boolean {
-    return this.bookmarks && this.bookmarks.includes(BOOKMARKS.FAVORITES);
-  }
-
-  get inWishlist(): boolean {
-    return this.bookmarks && this.bookmarks.includes(BOOKMARKS.WISHLIST);
-  }
-
-  get inMustread(): boolean {
-    return this.bookmarks && this.bookmarks.includes(BOOKMARKS.MUSTREAD);
-  }
+  readonly inMustread = computed(() => {
+    const bookmarks = this.bookmarks();
+    return bookmarks && bookmarks.includes(BOOKMARKS.MUSTREAD);
+  });
 
   rate(rate: number) {
-    this.bookRated.emit({ bookId: this.book._id, rate });
+    this.bookRated.emit({ bookId: this.book().id, rate });
   }
 }

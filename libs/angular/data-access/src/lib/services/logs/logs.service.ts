@@ -1,36 +1,39 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { ApiResponse, Log, LogsFilter } from '@bookapp/shared/interfaces';
-import { LAST_LOGS_QUERY, LOGS_QUERY, LOG_CREATED_SUBSCRIPTION } from '@bookapp/shared/queries';
+import { LAST_LOGS_QUERY, LOG_CREATED_SUBSCRIPTION, LOGS_QUERY } from '@bookapp/shared/queries';
 
 import { Apollo, QueryRef } from 'apollo-angular';
-import { EmptyObject } from 'apollo-angular/types';
-
-import { isNil } from 'lodash';
 
 export const DEFAULT_ORDER_BY = 'createdAt_desc';
 
-@Injectable()
-export class LogsService {
-  private lastLogsQueryRef: QueryRef<{ logs: ApiResponse<Log> }> | null = null;
-  private allLogsQueryRef: QueryRef<{ logs: ApiResponse<Log> }> | null = null;
+interface Variables {
+  skip?: number;
+  first?: number;
+  orderBy?: string;
+}
 
-  constructor(private readonly apollo: Apollo) {}
+@Injectable({ providedIn: 'root' })
+export class LogsService {
+  readonly #apollo = inject(Apollo);
+
+  #lastLogsQueryRef: QueryRef<{ logs: ApiResponse<Log> }> | null = null;
+  #allLogsQueryRef: QueryRef<{ logs: ApiResponse<Log> }, Variables> | null = null;
 
   watchLastLogs() {
-    if (isNil(this.lastLogsQueryRef)) {
-      this.lastLogsQueryRef = this.apollo.watchQuery<{ logs: ApiResponse<Log> }>({
+    if (!this.#lastLogsQueryRef) {
+      this.#lastLogsQueryRef = this.#apollo.watchQuery<{ logs: ApiResponse<Log> }>({
         query: LAST_LOGS_QUERY,
       });
     }
 
-    return this.lastLogsQueryRef.valueChanges;
+    return this.#lastLogsQueryRef.valueChanges;
   }
 
   watchAllLogs(logsFilter: LogsFilter = {}) {
-    if (isNil(this.allLogsQueryRef)) {
-      this.allLogsQueryRef = this.apollo.watchQuery<{ logs: ApiResponse<Log> }>({
+    if (!this.#allLogsQueryRef) {
+      this.#allLogsQueryRef = this.#apollo.watchQuery({
         query: LOGS_QUERY,
         variables: {
           skip: logsFilter.skip || 0,
@@ -42,15 +45,11 @@ export class LogsService {
       });
     }
 
-    return this.allLogsQueryRef.valueChanges;
+    return this.#allLogsQueryRef.valueChanges;
   }
 
   subscribeToNewLogs(userId: string) {
-    if (isNil(this.lastLogsQueryRef)) {
-      return;
-    }
-
-    return this.lastLogsQueryRef.subscribeToMore({
+    return this.#lastLogsQueryRef?.subscribeToMore<{ logCreated: Log }>({
       document: LOG_CREATED_SUBSCRIPTION,
       variables: { userId },
       updateQuery: (prev, { subscriptionData }) => {
@@ -76,11 +75,7 @@ export class LogsService {
   }
 
   loadMore(skip: number) {
-    if (isNil(this.allLogsQueryRef)) {
-      return;
-    }
-
-    this.allLogsQueryRef.fetchMore({
+    this.#allLogsQueryRef?.fetchMore({
       variables: {
         skip,
       },
@@ -102,11 +97,7 @@ export class LogsService {
     });
   }
 
-  refetch(variables: EmptyObject) {
-    if (isNil(this.allLogsQueryRef)) {
-      return;
-    }
-
-    this.allLogsQueryRef.refetch(variables);
+  refetch(variables: Partial<Variables>) {
+    this.#allLogsQueryRef?.refetch(variables);
   }
 }

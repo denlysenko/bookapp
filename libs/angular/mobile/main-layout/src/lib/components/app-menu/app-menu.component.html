@@ -1,38 +1,52 @@
-<StackLayout>
-  <GridLayout *ngFor="let item of navMenu" nsRouterLinkActive="selected">
+@for (item of navMenu; track item.path) {
+  <GridLayout class="group" nsRouterLinkActive="selected">
     <GridLayout
       columns="auto, *"
-      class="menu-item"
-      [nsRouterLink]="'/' + item.path"
+      class="group-[.selected]:bg-light-blue group-[.selected]:text-white px-3 py-4"
+      [nsRouterLink]="`/${item.path}`"
       pageTransition="fade"
     >
       <Label col="0" [text]="item.icon" class="mdi"></Label>
-      <Label col="1" [text]="item.label" class="p-r-10"></Label>
+      <Label col="1" [text]="item.label" class="pl-2 text-base"></Label>
     </GridLayout>
   </GridLayout>
-  <StackLayout class="divider"></StackLayout>
-  <GridLayout *ngFor="let item of categoryMenu" nsRouterLinkActive="selected">
+}
+
+<StackLayout class="divider"></StackLayout>
+
+@for (item of categoryMenu; track item.path) {
+  <GridLayout class="group" nsRouterLinkActive="selected">
     <GridLayout
       columns="auto, *"
-      class="menu-item"
-      [nsRouterLink]="'/' + item.path"
+      class="group-[.selected]:bg-light-blue group-[.selected]:text-white px-3 py-4"
+      [nsRouterLink]="`/${item.path}`"
       pageTransition="fade"
     >
       <Label col="0" [text]="item.icon" class="mdi" [style.color]="item.color"></Label>
-      <Label col="1" [text]="item.label" class="p-r-10"></Label>
+      <Label col="1" [text]="item.label" class="pl-2 text-base"></Label>
     </GridLayout>
   </GridLayout>
-  <StackLayout class="divider"></StackLayout>
-  <GridLayout *ngFor="let log of logs" columns="auto, *" class="menu-item">
-    <Label col="0" text="access_time" class="mdi"></Label>
-    <StackLayout col="1" class="p-r-10">
-      <Label [text]="actions[log.action]" textWrap="true"></Label>
-      <Label
-        [text]="log.book.title + ' by ' + log.book.author"
-        class="note"
-        textWrap="true"
-      ></Label>
-      <Label [text]="log.createdAt | dateToPeriod" class="note"></Label>
-    </StackLayout>
+}
+
+<StackLayout class="divider"></StackLayout>
+
+@for (log of logs(); track log.id) {
+  <GridLayout columns="auto, *" rows="auto, auto, auto" class="px-3 py-4">
+    <Label rowSpan="3" col="0" text="access_time" class="mdi" verticalAlignment="top"></Label>
+    <Label
+      row="0"
+      col="1"
+      [text]="actions[log.action]"
+      textWrap="true"
+      class="pl-2 pb-1 text-base"
+    ></Label>
+    <Label
+      row="1"
+      col="1"
+      [text]="`${log.book.title} by ${log.book.author}`"
+      class="text-sm pl-2 pb-1"
+      textWrap="true"
+    ></Label>
+    <Label row="2" col="1" [text]="log.createdAt | dateToPeriod" class="text-xs pl-2"></Label>
   </GridLayout>
-</StackLayout>
+}

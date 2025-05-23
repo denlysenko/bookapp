@@ -1,17 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
 import { ReadBookBase } from '@bookapp/angular/base';
-import { ProfileService } from '@bookapp/angular/data-access';
+
+import { BookReaderComponent } from '../../components/book-reader/book-reader.component';
 
 @Component({
-  selector: 'bookapp-read-book-page',
+  imports: [BookReaderComponent],
   templateUrl: './read-book-page.component.html',
-  styleUrls: ['./read-book-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ReadBookPageComponent extends ReadBookBase {
-  constructor(route: ActivatedRoute, profileService: ProfileService) {
-    super(route, profileService);
-  }
-}
+export class ReadBookPageComponent extends ReadBookBase {}

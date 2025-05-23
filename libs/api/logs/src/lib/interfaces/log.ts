@@ -1,6 +1,4 @@
 import { Log } from '@bookapp/shared/interfaces';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
-export interface LogModel extends Log, Document {
-  _id: any;
-}
+export interface LogModel extends Omit<Log, 'id'>, Document<Types.ObjectId> {}

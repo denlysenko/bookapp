@@ -1,13 +1,15 @@
-FROM node:12.13.1-alpine
-LABEL author="denlysenko"
-WORKDIR /var/www/bookapp-api
-COPY dist/apps/api/package.json .
-COPY dist/apps/api/package-lock.json .
-COPY libs/api/graphql/src/lib/schemas/ ./libs/api/graphql/src/lib/schemas/
+FROM node:24.4.0-bullseye AS build
+WORKDIR /app
+COPY package*.json .
+RUN npm install
+COPY . .
+RUN npm run build -- api
+
+FROM node:24.4.0-bullseye-slim AS final
+USER node
+WORKDIR /app
+COPY --chown=node:node --from=build /app/dist/apps/api .
 RUN npm install --production
-COPY .env.production .
-COPY bookapp-adminsdk.json .
-COPY dist/apps/api/ .
-ENV ENV production
-EXPOSE 3333
+ENV NODE_ENV production
+EXPOSE 3000
 CMD ["node", "main.js"]

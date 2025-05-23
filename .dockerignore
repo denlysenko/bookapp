@@ -1,1 +1,15 @@
 node_modules
+dist
+coverage
+.dockerignore
+.git
+.gitignore
+.vscode
+.angular
+.nx
+.netlify
+netlify
+docker-compose*.yml
+*.md
+.env
+.env.*

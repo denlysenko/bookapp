@@ -1,0 +1,19 @@
+{
+  "name": "api-books",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/books/src",
+  "projectType": "library",
+  "tags": ["scope:api", "type:feature", "platform:server"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/api/books/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/api/books"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

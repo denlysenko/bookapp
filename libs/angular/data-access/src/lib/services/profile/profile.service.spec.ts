@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { InMemoryCache } from '@apollo/client/core';
@@ -16,12 +17,12 @@ import {
   MockStoragePlatformService,
   MockStoreService,
   user,
-} from '@bookapp/testing';
+} from '@bookapp/testing/angular';
 
 import {
+  APOLLO_TESTING_CACHE,
   ApolloTestingController,
   ApolloTestingModule,
-  APOLLO_TESTING_CACHE,
 } from 'apollo-angular/testing';
 
 import { AuthService } from '../auth/auth.service';
@@ -55,14 +56,14 @@ describe('ProfileService', () => {
     it('should update profile', (done) => {
       const updatedUser = { firstName: 'Updated' };
 
-      service.update(user._id, updatedUser).subscribe(({ data: { updateUser } }) => {
+      service.update(user.id, updatedUser).subscribe(({ data: { updateUser } }) => {
         expect(updateUser).toEqual(userWithTypename);
         done();
       });
 
       const op = controller.expectOne(UPDATE_USER_MUTATION);
 
-      expect(op.operation.variables.id).toEqual(user._id);
+      expect(op.operation.variables.id).toEqual(user.id);
       expect(op.operation.variables.user).toEqual(updatedUser);
 
       op.flush({
@@ -79,7 +80,7 @@ describe('ProfileService', () => {
     beforeEach(() => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        imports: [ApolloTestingModule, HttpClientTestingModule],
+        imports: [ApolloTestingModule],
         providers: [
           ProfileService,
           AuthService,
@@ -103,6 +104,8 @@ describe('ProfileService', () => {
             provide: Environment,
             useValue: {},
           },
+          provideHttpClient(),
+          provideHttpClientTesting(),
         ],
       });
 
@@ -116,9 +119,11 @@ describe('ProfileService', () => {
 
       authService.watchMe().subscribe();
 
-      service.saveReading(user._id, reading).subscribe(({ data: { updateUser } }) => {
+      service.saveReading(user.id, reading).subscribe(({ data: { updateUser } }) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { avatarUrl, createdAt, updatedAt, ...me } = userWithTypename;
         expect(updateUser).toEqual({
-          ...userWithTypename,
+          ...me,
           reading: { ...userWithTypename.reading, __typename: 'Reading' },
         });
         done();
@@ -135,7 +140,7 @@ describe('ProfileService', () => {
 
       const op = controller.expectOne(addTypenameToDocument(UPDATE_USER_MUTATION));
 
-      expect(op.operation.variables.id).toEqual(user._id);
+      expect(op.operation.variables.id).toEqual(user.id);
       expect(op.operation.variables.user).toEqual({ reading });
 
       op.flush({

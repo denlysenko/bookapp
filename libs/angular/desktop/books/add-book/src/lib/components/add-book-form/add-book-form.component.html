@@ -1,32 +1,37 @@
 <div class="book-form">
   <div class="cover">
     <mat-card>
-      <img [src]="coverUrl || '/assets/images/add-photo.svg'" alt="cover" data-test="cover" />
+      <mat-card-content>
+        <img [src]="coverUrl || '/assets/images/add-photo.svg'" alt="cover" data-test="cover" />
+      </mat-card-content>
     </mat-card>
+
     <button
       id="cover-btn"
       type="button"
-      mat-raised-button
-      color="primary"
+      matButton="filled"
       data-test="cover-selector"
-      [disabled]="loading"
+      [disabled]="loading()"
       (click)="showCoverSelector()"
     >
       Change Cover
     </button>
   </div>
+
   <form id="bookForm" [formGroup]="form" class="form" (submit)="submit()">
-    <mat-form-field appearance="outline">
+    <mat-form-field>
       <mat-label>Title</mat-label>
       <input matInput placeholder="Title" formControlName="title" data-test="title" />
       <mat-error>This field is required</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="outline">
+
+    <mat-form-field>
       <mat-label>Author</mat-label>
       <input matInput placeholder="Author" formControlName="author" data-test="author" />
       <mat-error>This field is required</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="outline">
+
+    <mat-form-field>
       <mat-label>Description</mat-label>
       <textarea
         matInput
@@ -38,40 +43,52 @@
       ></textarea>
       <mat-error>This field is required</mat-error>
     </mat-form-field>
+
     <div class="mat-form-field-wrapper epub">
       <button
         id="epub-btn"
         type="button"
-        mat-raised-button
-        color="primary"
+        matButton="filled"
         data-test="file-selector"
-        [disabled]="loading"
+        [disabled]="loading()"
         (click)="showFileSelector()"
       >
-        CHANGE EPUB
+        Change EPUB
       </button>
-      <a *ngIf="epubUrl" [href]="epubUrl" mat-button target="_blank" data-test="download"
-        >DOWNLOAD</a
-      >
+
+      @if (epubUrl) {
+        <a [href]="epubUrl" matButton target="_blank" data-test="download">Download</a>
+      }
     </div>
+
     <div class="mat-form-field-wrapper">
       <mat-checkbox formControlName="paid" data-test="paid">Paid</mat-checkbox>
     </div>
-    <mat-form-field *ngIf="isPaid" appearance="outline" class="price">
-      <mat-label>Price</mat-label>
-      <input type="number" matInput placeholder="Price" formControlName="price" data-test="price" />
-      <mat-error>This field is required</mat-error>
-    </mat-form-field>
+
+    @if (isPaid) {
+      <mat-form-field class="price">
+        <mat-label>Price</mat-label>
+        <input
+          type="number"
+          matInput
+          placeholder="Price"
+          formControlName="price"
+          data-test="price"
+        />
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+    }
+
     <mat-card-actions>
       <button
         type="submit"
         form="bookForm"
-        mat-raised-button
-        color="accent"
+        matButton="filled"
+        class="accent"
         data-test="save"
-        [disabled]="loading"
+        [disabled]="loading()"
       >
-        SAVE
+        Save
       </button>
     </mat-card-actions>
   </form>

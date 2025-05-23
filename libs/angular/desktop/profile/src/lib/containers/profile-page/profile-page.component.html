@@ -1,21 +1,24 @@
-<div *ngIf="user$ | async as user" class="view-content">
-  <mat-card>
-    <mat-card-title>Edit Profile</mat-card-title>
-    <mat-card-content class="profile-page">
-      <div class="avatar">
-        <bookapp-avatar-selector
-          [user]="user"
-          (avatarSaved)="updateProfile($event)"
-        ></bookapp-avatar-selector>
-      </div>
-      <div class="profile">
-        <bookapp-profile-form
-          [user]="user"
-          [loading]="loading$ | async"
-          [error]="error$ | async"
-          (formSubmitted)="updateProfile($event)"
-        ></bookapp-profile-form>
-      </div>
-    </mat-card-content>
-  </mat-card>
-</div>
+@let user = user$ | async;
+
+@if (user) {
+  <div class="view-content">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Edit Profile</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="profile-page">
+        <div class="avatar">
+          <bookapp-avatar-selector [user]="user" (avatarSaved)="updateProfile($event)" />
+        </div>
+        <div class="profile">
+          <bookapp-profile-form
+            [user]="user"
+            [loading]="loading()"
+            [error]="error()"
+            (formSubmitted)="updateProfile($event)"
+          />
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+}

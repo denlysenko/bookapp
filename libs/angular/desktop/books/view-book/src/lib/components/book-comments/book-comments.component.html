@@ -1,39 +1,47 @@
-<div class="book-comments">
-  <h4>Comments</h4>
-  <mat-list *ngIf="comments.length" #list class="comments">
-    <mat-list-item *ngFor="let comment of comments">
-      <div mat-line>
-        <span class="author">{{ comment.author.displayName }}</span>
-        <span class="metadata">{{ comment.createdAt | date }}</span>
-      </div>
-      <p mat-line class="text">
-        {{ comment.text }}
-      </p>
-    </mat-list-item>
-  </mat-list>
-  <p *ngIf="!comments.length">No comments yet</p>
-  <h4>Submit a Comment</h4>
-  <mat-form-field appearance="outline">
-    <textarea
-      matInput
-      placeholder="Write a short comment..."
-      name="text"
-      [(ngModel)]="text"
-      cdkAutosizeMinRows="4"
-      cdkTextareaAutosize
-      data-test="comment"
-    ></textarea>
-  </mat-form-field>
-  <mat-card-actions>
-    <button
-      type="submit"
-      mat-raised-button
-      color="accent"
-      [disabled]="loading"
-      (click)="commentAdded.emit(text)"
-      data-test="submit-comment"
-    >
-      SUBMIT COMMENT
-    </button>
-  </mat-card-actions>
-</div>
+<mat-card-content>
+  <div class="book-comments">
+    <h4>Comments</h4>
+
+    @if (comments().length) {
+      <mat-list #list class="comments">
+        @for (comment of comments(); track comment.id) {
+          <mat-list-item>
+            <div matListItemTitle>
+              <span class="author">{{ comment.author.displayName }}</span>
+              <span class="metadata">{{ comment.createdAt | date }}</span>
+            </div>
+            <p matListItemLine class="text">{{ comment.text }}</p>
+          </mat-list-item>
+        }
+      </mat-list>
+    } @else {
+      <p>No comments yet</p>
+    }
+
+    <h4>Submit a Comment</h4>
+    <mat-form-field>
+      <textarea
+        matInput
+        placeholder="Write a short comment..."
+        name="text"
+        [(ngModel)]="text"
+        cdkAutosizeMinRows="4"
+        cdkTextareaAutosize
+        data-test="comment"
+      ></textarea>
+    </mat-form-field>
+
+    <mat-card-actions>
+      <button
+        type="submit"
+        matButton="filled"
+        class="accent"
+        [disabled]="loading()"
+        (click)="commentAdded.emit(text); text = ''"
+        data-test="submit-comment"
+      >
+        Submit Comment
+      </button>
+    </mat-card-actions>
+  </div>
+</mat-card-content>

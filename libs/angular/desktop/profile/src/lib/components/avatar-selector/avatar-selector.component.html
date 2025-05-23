@@ -1,12 +1,12 @@
 <div class="avatar-selector">
   <mat-card>
     <img
-      [src]="user.avatar ? user.avatar : '/assets/images/no-avatar.svg'"
+      [src]="user().avatar ? user().avatar : '/assets/images/no-avatar.svg'"
       alt="avatar"
       data-test="avatar"
     />
   </mat-card>
-  <button mat-raised-button color="primary" (click)="showSelector()" data-test="showSelector">
+  <button matButton="filled" (click)="showSelector()" data-test="showSelector">
     Change Avatar
   </button>
 </div>

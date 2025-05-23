@@ -1,39 +1,38 @@
-<mat-toolbar color="primary" [class.is-mobile]="isMobile">
+<mat-toolbar [class.is-mobile]="isMobile()">
   <button mat-icon-button class="menu-toggler" (click)="doToggleSidenav()">
-    <i class="material-icons">
-      menu
-    </i>
+    <i class="material-icons">menu</i>
   </button>
-  <a [routerLink]="['/']" class="brand mat-button">
-    <span class="mat-button-wrapper">
-      <i class="material-icons">
-        book
-      </i>
-      {{ title }}</span
-    >
+  <a [routerLink]="['/']" class="brand">
+    <i class="material-icons">book</i>
+    <span>{{ title }}</span>
   </a>
-  <div *ngIf="user" class="user-menu">
-    <button mat-button id="user-menu-toggler" [matMenuTriggerFor]="menu">
-      <img
-        class="avatar"
-        [src]="user.avatar ? user.avatar : '/assets/images/no-avatar.svg'"
-        alt="avatar"
-      />
-      {{ user.displayName }}
-      <i class="material-icons">
-        expand_more
-      </i>
-    </button>
-    <mat-menu #menu="matMenu">
-      <a
-        *ngFor="let item of userMenu"
-        mat-menu-item
-        [routerLink]="['/', item.path]"
-        routerLinkActive="active"
-        >{{ item.label }}</a
-      >
-      <mat-divider></mat-divider>
-      <a mat-menu-item id="logout" (click)="doLogout()">Signout</a>
-    </mat-menu>
-  </div>
+
+  @if (user(); as user) {
+    <div class="user-menu">
+      <button matButton id="user-menu-toggler" [matMenuTriggerFor]="menu">
+        <img
+          class="avatar"
+          [src]="user.avatar ? user.avatar : '/assets/images/no-avatar.svg'"
+          alt="avatar"
+        />
+        <i class="material-icons">expand_more</i>
+      </button>
+
+      <mat-menu #menu="matMenu">
+        <span mat-menu-item>{{ user.displayName }}</span>
+
+        <mat-divider />
+
+        @for (item of userMenu; track item.path) {
+          <a mat-menu-item [routerLink]="['/', item.path]" routerLinkActive="active">
+            {{ item.label }}
+          </a>
+        }
+
+        <mat-divider />
+
+        <button mat-menu-item id="logout" type="button" (click)="doLogout()">Signout</button>
+      </mat-menu>
+    </div>
+  }
 </mat-toolbar>

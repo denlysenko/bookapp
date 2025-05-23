@@ -1,6 +1,5 @@
-import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import { MockedProvider } from '@apollo/client/testing';
 
@@ -8,23 +7,22 @@ import { store } from '@bookapp/react/core';
 import { DEFAULT_SORT_VALUE } from '@bookapp/react/data-access';
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { PAID_BOOKS_QUERY } from '@bookapp/shared/queries';
-import { book } from '@bookapp/testing';
+import { book } from '@bookapp/testing/react';
 
 import BuyBooks from './BuyBooks';
 
 jest.mock('lodash', () => ({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ...jest.requireActual<any>('lodash'),
   debounce: jest.fn((fn) => fn),
 }));
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).IntersectionObserver = jest.fn(() => ({
   observe: () => null,
   disconnect: () => null,
 }));
 
 const b = {
-  _id: book._id,
+  id: book.id,
   title: book.title,
   author: book.author,
   coverUrl: book.coverUrl,
@@ -36,7 +34,6 @@ const b = {
   __typename: 'Book',
 };
 
-// tslint:disable: no-duplicate-string
 const mock = {
   request: {
     query: PAID_BOOKS_QUERY,

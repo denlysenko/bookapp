@@ -1,27 +1,29 @@
-<ActionBar class="action-bar" flat="true">
-  <Label class="action-bar-title" text="Book Details"></Label>
+<ActionBar class="bg-deep-blue-900" flat="true">
+  <Label class="text-dark-primary-text font-semibold" text="Book Details"></Label>
 </ActionBar>
-<GridLayout *ngIf="book$ | async as book">
-  <TabView
-    [(ngModel)]="selectedIndex"
-    androidTabsPosition="bottom"
-    (selectedIndexChange)="onIndexChanged($event)"
-  >
-    <StackLayout *tabItem="{ title: 'Details', iconSource: 'res://details' }">
+
+@let book = book$ | async;
+
+<TabView androidTabsPosition="bottom">
+  <StackLayout *tabItem="{ title: 'Details', iconSource: 'res://details' }">
+    @if (book) {
       <bookapp-book-details
         [book]="book"
         [bookmarks]="bookmarks$ | async"
         (bookRated)="rate($event, book.slug)"
         (bookmarkAdded)="addToBookmarks($event)"
         (bookmarkRemoved)="removeFromBookmarks($event)"
-      ></bookapp-book-details>
-    </StackLayout>
-    <StackLayout *tabItem="{ title: 'Comments', iconSource: 'res://comment' }">
+      />
+    }
+  </StackLayout>
+
+  <StackLayout *tabItem="{ title: 'Comments', iconSource: 'res://comment' }">
+    @if (book) {
       <bookapp-book-comments
         [comments]="book.comments"
-        [loading]="loading$ | async"
-        (commentAdded)="submitComment(book._id, $event, book.slug)"
-      ></bookapp-book-comments>
-    </StackLayout>
-  </TabView>
-</GridLayout>
+        [loading]="loading()"
+        (commentAdded)="submitComment(book.id, $event)"
+      />
+    }
+  </StackLayout>
+</TabView>

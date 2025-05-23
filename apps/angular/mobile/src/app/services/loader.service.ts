@@ -1,11 +1,8 @@
+import { LoaderPlatformService } from '@bookapp/angular/core';
 import { LoadingIndicator } from '@nstudio/nativescript-loading-indicator';
 
-export class LoaderService {
-  private loader: LoadingIndicator;
-
-  constructor() {
-    this.loader = new LoadingIndicator();
-  }
+export class LoaderService implements LoaderPlatformService {
+  readonly #loader = new LoadingIndicator();
 
   start() {
     const options = {
@@ -14,10 +11,10 @@ export class LoaderService {
       backgroundColor: '#2f364a',
     };
 
-    this.loader.show(options);
+    this.#loader.show(options);
   }
 
   stop() {
-    this.loader.hide();
+    this.#loader.hide();
   }
 }

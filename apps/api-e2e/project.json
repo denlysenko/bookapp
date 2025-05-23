@@ -1,0 +1,20 @@
+{
+  "name": "api-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/api-e2e/src",
+  "projectType": "application",
+  "prefix": "api-e2e",
+  "tags": [],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "apps/api-e2e/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/apps/api-e2e"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

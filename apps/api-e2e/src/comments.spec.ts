@@ -3,17 +3,17 @@ import { CommentsModule, CommentsService } from '@bookapp/api/comments';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
-import { comment, MockConfigService, mockConnection, MockModel, user } from '@bookapp/testing';
+import { comment, MockConfigService, mockConnection, MockModel, user } from '@bookapp/testing/api';
 
-import { HttpStatus, INestApplication } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getConnectionToken, getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
-import * as jwt from 'jsonwebtoken';
-import * as request from 'supertest';
+import jwt from 'jsonwebtoken';
+import request from 'supertest';
 
-const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
+const authToken = jwt.sign({ id: user.id }, 'ACCESS_TOKEN_SECRET');
 
 const MockCommentsService = {
   saveForBook: jest.fn().mockResolvedValue(comment),
@@ -21,7 +21,6 @@ const MockCommentsService = {
 
 describe('CommentsModule', () => {
   let app: INestApplication;
-  let commentsService: CommentsService;
   let usersService: UsersService;
 
   beforeAll(async () => {
@@ -38,6 +37,8 @@ describe('CommentsModule', () => {
     })
       .overrideProvider(getConnectionToken())
       .useValue(mockConnection)
+      .overrideProvider(getModelToken(ModelNames.AUTH_TOKEN))
+      .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.COMMENT))
       .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.USER))
@@ -50,9 +51,9 @@ describe('CommentsModule', () => {
       .useValue(MockCommentsService)
       .compile();
 
-    commentsService = module.get<CommentsService>(CommentsService);
     usersService = module.get<UsersService>(UsersService);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     jest.spyOn(usersService, 'findById').mockResolvedValue(user as any);
 
     app = module.createNestApplication();
@@ -67,34 +68,32 @@ describe('CommentsModule', () => {
         .send({
           query: `mutation {
             addComment(bookId: "book_id", text: "test comment") {
-              _id
+              id
             }
           }`,
         })
         .expect({
           data: {
             addComment: {
-              _id: comment._id,
+              id: comment.id,
             },
           },
         });
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `mutation {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
             addComment(bookId: "book_id", text: "test comment") {
-              _id
+              id
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
   });
 

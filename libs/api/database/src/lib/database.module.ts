@@ -11,9 +11,6 @@ mongoose.set('debug', process.env.NODE_ENV !== 'production');
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get('DB_URI'),
-        useNewUrlParser: true,
-        useFindAndModify: false,
-        useUnifiedTopology: true,
       }),
       inject: [ConfigService],
     }),

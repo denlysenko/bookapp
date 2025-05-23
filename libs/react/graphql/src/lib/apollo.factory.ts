@@ -8,7 +8,7 @@ import {
 } from '@apollo/client/core';
 import { onError } from '@apollo/client/link/error';
 import { RetryLink } from '@apollo/client/link/retry';
-import { WebSocketLink } from '@apollo/client/link/ws';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 
 import { storage, store } from '@bookapp/react/core';
@@ -17,7 +17,8 @@ import { environment } from '@bookapp/shared/environments';
 import { AuthPayload } from '@bookapp/shared/interfaces';
 
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
-import jwtDecode from 'jwt-decode';
+import { createClient } from 'graphql-ws';
+import { jwtDecode } from 'jwt-decode';
 import { of } from 'rxjs';
 
 interface Definition {
@@ -37,24 +38,23 @@ const defaultOptions: DefaultOptions = {
   },
 };
 
-// tslint:disable-next-line: cognitive-complexity
 export function createApollo(showFeedback: (msg: string) => void) {
   const http = new HttpLink({
     uri: ({ operationName }) =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).Cypress
         ? `${environment.endpointUrl}?${operationName}`
         : environment.endpointUrl,
   });
 
-  const ws = new WebSocketLink({
-    uri: environment.subscriptionsEndpoint,
-    options: {
-      reconnect: true,
+  const ws = new GraphQLWsLink(
+    createClient({
+      url: environment.subscriptionsEndpoint,
       connectionParams: {
         authToken: store.get(AUTH_TOKEN),
       },
-    },
-  });
+    })
+  );
 
   const auth = new ApolloLink((operation, forward) => {
     operation.setContext(({ headers = {} }) => ({
@@ -101,30 +101,22 @@ export function createApollo(showFeedback: (msg: string) => void) {
 
     if (graphQLErrors) {
       const [error] = graphQLErrors;
+      const errorCode = (error.extensions as { code: string })?.code;
 
-      if (
-        error.extensions &&
-        error.extensions.exception &&
-        error.extensions.exception.response &&
-        error.extensions.exception.response.statusCode === HTTP_STATUS.UNAUTHORIZED
-      ) {
+      if (errorCode === 'UNAUTHENTICATED') {
         // TODO: replace with actual implementation
         const authService = {
           logout: () => of({}),
         };
-
-        showFeedback(error.extensions.exception.response.message);
+        // TODO: add human readable error message
+        showFeedback('UNAUTHENTICATED');
         authService.logout().subscribe();
         return;
       }
 
-      if (
-        error.extensions &&
-        error.extensions.exception &&
-        error.extensions.exception.response &&
-        error.extensions.exception.response.statusCode === HTTP_STATUS.FORBIDDEN
-      ) {
-        showFeedback(error.extensions.exception.response.error);
+      if (errorCode === 'FORBIDDEN') {
+        // TODO: add human readable error message
+        showFeedback('FORBIDDEN');
         return;
       }
     }
@@ -144,9 +136,9 @@ export function createApollo(showFeedback: (msg: string) => void) {
     },
   });
 
-  const refreshTokenLink: any = new TokenRefreshLink({
+  const refreshTokenLink = new TokenRefreshLink({
     accessTokenField: 'accessToken',
-    isTokenValidOrUndefined: () => {
+    isTokenValidOrUndefined: async () => {
       const token = store.get(AUTH_TOKEN);
 
       if (!token) {
@@ -156,7 +148,7 @@ export function createApollo(showFeedback: (msg: string) => void) {
       try {
         const { exp } = jwtDecode<{ exp: number }>(token);
         return Date.now() < exp * 1000;
-      } catch (err) {
+      } catch {
         return false;
       }
     },

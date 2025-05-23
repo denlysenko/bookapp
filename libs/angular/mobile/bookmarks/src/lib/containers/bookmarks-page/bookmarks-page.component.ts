@@ -1,39 +1,42 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { AsyncPipe } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  NO_ERRORS_SCHEMA,
+  OnInit,
+} from '@angular/core';
 
 import { BookmarksPageBase } from '@bookapp/angular/base';
 import { LoaderPlatformService } from '@bookapp/angular/core';
 import { BookmarksService } from '@bookapp/angular/data-access';
+import { BooksListComponent } from '@bookapp/angular/ui-mobile';
+
+import { Drawer } from '@nativescript-community/ui-drawer';
+
+import { NativeScriptCommonModule } from '@nativescript/angular';
+import { Application, getViewById } from '@nativescript/core';
 
 import { takeUntil } from 'rxjs/operators';
 
-import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
-
-import { getViewById } from '@nativescript/core';
-import { getRootView } from '@nativescript/core/application';
-
 @Component({
-  moduleId: module.id,
-  selector: 'bookapp-bookmarks-page',
+  imports: [NativeScriptCommonModule, AsyncPipe, BooksListComponent],
   templateUrl: './bookmarks-page.component.html',
-  styleUrls: ['./bookmarks-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [BookmarksService],
+  schemas: [NO_ERRORS_SCHEMA],
 })
-export class BookmarksPageComponent extends BookmarksPageBase {
-  constructor(
-    route: ActivatedRoute,
-    bookmarksService: BookmarksService,
-    private readonly loaderService: LoaderPlatformService
-  ) {
-    super(route, bookmarksService);
+export class BookmarksPageComponent extends BookmarksPageBase implements OnInit {
+  readonly #loaderService = inject(LoaderPlatformService);
+
+  ngOnInit() {
     this.loading$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((loading) => (loading ? this.loaderService.start() : this.loaderService.stop()));
+      .subscribe((loading) => (loading ? this.#loaderService.start() : this.#loaderService.stop()));
   }
 
   onDrawerButtonTap() {
-    const sideDrawer = getViewById(getRootView() as any, 'drawer') as RadSideDrawer;
-    sideDrawer.toggleDrawerState();
+    const sideDrawer = getViewById(Application.getRootView(), 'drawer') as Drawer;
+    sideDrawer.toggle();
   }
 }

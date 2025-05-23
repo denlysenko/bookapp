@@ -1,11 +1,6 @@
 type Query {
   me: User!
-  users(
-    filter: FilterInput
-    skip: Int
-    first: Int
-    orderBy: UserOrderByInput
-  ): UserResponse!
+  users(filter: FilterInput, skip: Int, first: Int, orderBy: UserOrderByInput): UserResponse!
   user(id: ID!): User
 }
 
@@ -18,7 +13,7 @@ type Mutation {
 }
 
 type User {
-  _id: ID
+  id: ID
   email: String!
   firstName: String!
   lastName: String!

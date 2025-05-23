@@ -1,9 +1,8 @@
-// tslint:disable: no-big-function
-// tslint:disable: no-duplicate-string
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AuthModule } from '@bookapp/api/auth';
-import { BooksModule, BooksService, BOOK_VALIDATION_ERRORS } from '@bookapp/api/books';
+import { BOOK_VALIDATION_ERRORS, BooksModule, BooksService } from '@bookapp/api/books';
 import { GraphqlModule } from '@bookapp/api/graphql';
-import { ModelNames } from '@bookapp/api/shared';
+import { ModelNames, MongooseValidationFilter } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
 import { ROLES } from '@bookapp/shared/enums';
 import {
@@ -13,18 +12,18 @@ import {
   mockConnection,
   MockModel,
   user,
-} from '@bookapp/testing';
+} from '@bookapp/testing/api';
 
-import { HttpStatus, INestApplication, NotFoundException } from '@nestjs/common';
+import { INestApplication, NotFoundException } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getConnectionToken, getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
-import * as jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { ValidationError } from 'mongoose/lib/error';
-import * as request from 'supertest';
+import request from 'supertest';
 
-const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
+const authToken = jwt.sign({ id: user.id }, 'ACCESS_TOKEN_SECRET');
 
 const validationError = new ValidationError();
 validationError.errors = {
@@ -55,6 +54,8 @@ describe('BooksModule', () => {
     })
       .overrideProvider(getConnectionToken())
       .useValue(mockConnection)
+      .overrideProvider(getModelToken(ModelNames.AUTH_TOKEN))
+      .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.BOOK))
       .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.USER))
@@ -78,6 +79,7 @@ describe('BooksModule', () => {
     } as any);
 
     app = module.createNestApplication();
+    app.useGlobalFilters(new MongooseValidationFilter());
     await app.init();
   });
 
@@ -90,7 +92,7 @@ describe('BooksModule', () => {
           query: `query {
             books(paid: false) {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -100,7 +102,7 @@ describe('BooksModule', () => {
             books: {
               rows: [
                 {
-                  _id: book._id,
+                  id: book.id,
                 },
               ],
             },
@@ -116,7 +118,7 @@ describe('BooksModule', () => {
           query: `query {
             books(paid: false, filter: { field: "test", search: "query" }) {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -138,7 +140,7 @@ describe('BooksModule', () => {
           query: `query {
             books(paid: false, skip: 10) {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -160,7 +162,7 @@ describe('BooksModule', () => {
           query: `query {
             books(paid: false, first: 10) {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -182,7 +184,7 @@ describe('BooksModule', () => {
           query: `query {
             books(paid: false, orderBy: title_asc) {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -191,28 +193,26 @@ describe('BooksModule', () => {
       expect(booksService.findAll).toHaveBeenCalledWith({
         filter: { paid: false },
         first: null,
-        order: { title: 1 },
+        order: { title: 'asc' },
         skip: null,
       });
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `query {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `query {
             books(paid: false) {
               rows {
-                _id
+                id
               }
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
   });
 
@@ -225,7 +225,7 @@ describe('BooksModule', () => {
           query: `query {
             bestBooks {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -235,7 +235,7 @@ describe('BooksModule', () => {
             bestBooks: {
               rows: [
                 {
-                  _id: book._id,
+                  id: book.id,
                 },
               ],
             },
@@ -251,7 +251,7 @@ describe('BooksModule', () => {
           query: `query {
             bestBooks(skip: 10) {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -273,7 +273,7 @@ describe('BooksModule', () => {
           query: `query {
             bestBooks(first: 10) {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -287,23 +287,21 @@ describe('BooksModule', () => {
       });
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `query {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `query {
             bestBooks {
               rows {
-                _id
+                  id
               }
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
   });
 
@@ -315,34 +313,32 @@ describe('BooksModule', () => {
         .send({
           query: `query {
             book(slug: "book-title") {
-              _id
+              id
             }
           }`,
         })
         .expect({
           data: {
             book: {
-              _id: book._id,
+              id: book.id,
             },
           },
         });
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `query {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `query {
             book(slug: "book-title") {
-              _id
+              id
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
   });
 
@@ -361,14 +357,14 @@ describe('BooksModule', () => {
               epubUrl: "uploads/book.epub",
               paid: false
             }) {
-              _id
+              id
             }
           }`,
         })
         .expect({
           data: {
             createBook: {
-              _id: book._id,
+              id: book.id,
             },
           },
         });
@@ -382,7 +378,7 @@ describe('BooksModule', () => {
           epubUrl: 'uploads/book.epub',
           paid: false,
         },
-        user._id
+        user.id
       );
     });
 
@@ -404,22 +400,24 @@ describe('BooksModule', () => {
               epubUrl: "uploads/book.epub",
               paid: false
             }) {
-              _id
+              id
             }
           }`,
         });
 
       const [error] = res.body.errors;
 
-      expect(error).toEqual({
+      expect(error.extensions.errors).toEqual({
         title: { message: BOOK_VALIDATION_ERRORS.TITLE_REQUIRED_ERR },
         author: { message: BOOK_VALIDATION_ERRORS.AUTHOR_REQUIRED_ERR },
       });
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `mutation {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
             createBook(book: {
               title: "Test Book",
               author: "Test Author",
@@ -428,17 +426,13 @@ describe('BooksModule', () => {
               epubUrl: "uploads/book.epub",
               paid: false
             }) {
-              _id
+              id
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
 
     it('should return FORBIDDEN error', async () => {
@@ -459,18 +453,13 @@ describe('BooksModule', () => {
               epubUrl: "uploads/book.epub",
               paid: false
             }) {
-              _id
+              id
             }
           }`,
         });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        error: 'Forbidden',
-        message: 'Forbidden resource',
-        statusCode: HttpStatus.FORBIDDEN,
-      });
+      expect(error.extensions.code).toEqual('FORBIDDEN');
     });
   });
 
@@ -485,14 +474,14 @@ describe('BooksModule', () => {
               coverUrl: "uploads/cover2.png",
               epubUrl: "uploads/book2.epub"
             }) {
-              _id
+              id
             }
           }`,
         })
         .expect({
           data: {
             updateBook: {
-              _id: book._id,
+              id: book.id,
             },
           },
         });
@@ -503,11 +492,11 @@ describe('BooksModule', () => {
           coverUrl: 'uploads/cover2.png',
           epubUrl: 'uploads/book2.epub',
         },
-        user._id
+        user.id
       );
     });
 
-    it('should not create book if there are errors', async () => {
+    it('should not update book if there are errors', async () => {
       jest
         .spyOn(booksService, 'update')
         .mockImplementationOnce(() => Promise.reject(validationError));
@@ -521,37 +510,35 @@ describe('BooksModule', () => {
               coverUrl: "uploads/cover2.png",
               epubUrl: "uploads/book2.epub"
             }) {
-              _id
+              id
             }
           }`,
         });
 
       const [error] = res.body.errors;
 
-      expect(error).toEqual({
+      expect(error.extensions.errors).toEqual({
         title: { message: BOOK_VALIDATION_ERRORS.TITLE_REQUIRED_ERR },
         author: { message: BOOK_VALIDATION_ERRORS.AUTHOR_REQUIRED_ERR },
       });
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `mutation {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
             updateBook(id: "book_id", book: {
               coverUrl: "uploads/cover2.png",
               epubUrl: "uploads/book2.epub"
             }) {
-              _id
+              id
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
 
     it('should return FORBIDDEN error', async () => {
@@ -568,18 +555,13 @@ describe('BooksModule', () => {
               coverUrl: "uploads/cover2.png",
               epubUrl: "uploads/book2.epub"
             }) {
-              _id
+              id
             }
           }`,
         });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        error: 'Forbidden',
-        message: 'Forbidden resource',
-        statusCode: HttpStatus.FORBIDDEN,
-      });
+      expect(error.extensions.code).toEqual('FORBIDDEN');
     });
   });
 
@@ -591,14 +573,14 @@ describe('BooksModule', () => {
         .send({
           query: `mutation {
             rateBook(id: "book_id", rate: 5) {
-              _id
+              id
             }
           }`,
         })
         .expect({
           data: {
             rateBook: {
-              _id: book._id,
+              id: book.id,
             },
           },
         });
@@ -617,35 +599,28 @@ describe('BooksModule', () => {
         .send({
           query: `mutation {
             rateBook(id: "book_id", rate: 5) {
-              _id
+              id
             }
           }`,
         });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        error: 'Not Found',
-        message: BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR,
-        statusCode: HttpStatus.NOT_FOUND,
-      });
+      expect(error.message).toEqual(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR);
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `mutation {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
             rateBook(id: "book_id", rate: 5) {
-              _id
+              id
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
   });
 

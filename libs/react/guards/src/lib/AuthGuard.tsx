@@ -1,28 +1,26 @@
-import React, { ReactElement, useEffect } from 'react';
-import { RouteProps } from 'react-router';
-import { Navigate, Route } from 'react-router-dom';
-
-import { isNil } from 'lodash';
+import { useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 
 import { store } from '@bookapp/react/core';
 import { useAuth } from '@bookapp/react/data-access';
 import { AUTH_TOKEN } from '@bookapp/shared/constants';
 
-export const AuthGuard: React.FC<RouteProps> = (props): ReactElement | null => {
+export const AuthGuard = ({ children }) => {
   const accessToken = store.get(AUTH_TOKEN);
   const { getMe, me, fetchingMe } = useAuth();
 
   useEffect(() => {
-    if (!isNil(accessToken) && isNil(me)) {
+    if (accessToken && !me) {
       getMe();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (isNil(accessToken)) {
+  if (!accessToken) {
     return <Navigate to="/auth" />;
   }
 
-  if (isNil(me)) {
+  if (!me) {
     return null;
   }
 
@@ -30,5 +28,5 @@ export const AuthGuard: React.FC<RouteProps> = (props): ReactElement | null => {
     return null;
   }
 
-  return <Route {...props} />;
+  return children;
 };

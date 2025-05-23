@@ -1,0 +1,19 @@
+{
+  "name": "react-pages-history",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/react/pages/history/src",
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/react/pages/history/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/react/pages/history"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": ["scope:react"]
+}

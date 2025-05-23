@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-
-import { isNil } from 'lodash';
+import { useCallback, useEffect, useRef } from 'react';
 
 interface InfiniteScrollProps {
+  children: React.ReactNode;
   onLoadMore: () => void;
 }
 // based on https://medium.com/@swatisucharita94/react-infinite-scroll-with-intersection-observer-api-db3998e52d63
@@ -10,7 +9,7 @@ export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({ children, onLoad
   const anchor = useRef<HTMLDivElement>(null);
 
   const callback = useCallback(
-    ([entry]) => {
+    ([entry]: IntersectionObserverEntry[]) => {
       if (entry.isIntersecting) {
         onLoadMore();
       }
@@ -19,7 +18,7 @@ export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({ children, onLoad
   );
 
   useEffect(() => {
-    if (isNil(anchor.current)) {
+    if (!anchor.current) {
       return;
     }
 

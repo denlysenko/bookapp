@@ -1,17 +1,16 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 import { useBestBooks } from '@bookapp/react/data-access';
 import { BooksList, FullPageSpinner } from '@bookapp/react/ui';
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { ApiResponse, Book } from '@bookapp/shared/interfaces';
 
-import { useBestBooksStyles } from './useBestBooksStyles';
+import { StyledBestBooks } from './StyledBestBooks';
 
 export function BestBooks() {
-  const classes = useBestBooksStyles();
   const hasMoreItems = useRef(false);
   const skip = useRef(0);
   const { books, loading, loadMore, rateBook } = useBestBooks();
@@ -35,7 +34,7 @@ export function BestBooks() {
   return (
     <>
       {loading && <FullPageSpinner />}
-      <div className={classes.root}>
+      <StyledBestBooks>
         <Toolbar disableGutters={true}>
           <Typography component="span">List Of The Best</Typography>
         </Toolbar>
@@ -46,7 +45,7 @@ export function BestBooks() {
             onBookRate={rateBook}
           />
         </div>
-      </div>
+      </StyledBestBooks>
     </>
   );
 }

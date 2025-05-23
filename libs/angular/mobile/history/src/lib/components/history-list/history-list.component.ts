@@ -1,64 +1,77 @@
+/* eslint-disable no-unused-private-class-members */
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
+  computed,
+  effect,
+  input,
+  NO_ERRORS_SCHEMA,
+  output,
+  viewChild,
 } from '@angular/core';
 
 import { Log } from '@bookapp/shared/interfaces';
 
+import { NativeScriptCommonModule } from '@nativescript/angular';
+import { ObservableArray } from '@nativescript/core';
+
 import { ListViewLoadOnDemandMode } from 'nativescript-ui-listview';
-import { RadListViewComponent } from 'nativescript-ui-listview/angular';
+import {
+  NativeScriptUIListViewModule,
+  RadListViewComponent,
+} from 'nativescript-ui-listview/angular';
 
-import { BehaviorSubject } from 'rxjs';
-
-import { ObservableArray, Color, isIOS } from '@nativescript/core';
+import { HistoryListItemComponent } from '../history-list-item/history-list-item.component';
 
 @Component({
   selector: 'bookapp-history-list',
+  imports: [NativeScriptCommonModule, NativeScriptUIListViewModule, HistoryListItemComponent],
   templateUrl: './history-list.component.html',
-  styleUrls: ['./history-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class HistoryListComponent {
-  @Input()
-  set logs(logs: Log[]) {
-    if (logs) {
-      this._logs.next(new ObservableArray(logs));
-      try {
-        this.listViewComponent.listView.notifyLoadOnDemandFinished();
-      } catch {}
+  readonly logs = input<Log[]>();
+  readonly hasMoreItems = input<boolean>();
+
+  readonly loadMore = output<void>();
+
+  readonly #logsEffect = effect(() => {
+    const logs = this.logs();
+
+    if (!logs) {
+      return;
     }
-  }
 
-  @Input()
-  set hasMoreItems(hasMoreItems: boolean) {
-    this.listViewComponent.listView.loadOnDemandMode =
-      ListViewLoadOnDemandMode[hasMoreItems ? 'Auto' : 'None'];
-  }
-
-  @Output()
-  loadMore = new EventEmitter<void>();
-
-  @ViewChild('listView', { static: true })
-  listViewComponent: RadListViewComponent;
-
-  private _logs = new BehaviorSubject<ObservableArray<Log> | null>(null);
-
-  get logs$() {
-    return this._logs.asObservable();
-  }
-
-  onItemLoading(args: any) {
-    if (isIOS) {
-      const newcolor = new Color('#eeeeee');
-      args.ios.backgroundView.backgroundColor = newcolor.ios;
+    try {
+      this.listViewComponent()?.listView.notifyLoadOnDemandFinished();
+    } catch {
+      //
     }
-  }
+  });
+
+  readonly #hasMoreItemsEffect = effect(() => {
+    const hasMoreItems = this.hasMoreItems();
+
+    if (this.listViewComponent()) {
+      this.listViewComponent().listView.loadOnDemandMode =
+        ListViewLoadOnDemandMode[hasMoreItems ? 'Auto' : 'None'];
+    }
+  });
+
+  readonly listViewComponent = viewChild<RadListViewComponent>('listView');
+
+  readonly _logs = computed(() => {
+    const logs = this.logs();
+
+    if (!logs) {
+      return null;
+    }
+
+    return new ObservableArray(logs);
+  });
 
   scrollToIndex(index: number) {
-    this.listViewComponent.listView.scrollToIndex(index);
+    this.listViewComponent()?.listView.scrollToIndex(index);
   }
 }

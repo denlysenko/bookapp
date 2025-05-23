@@ -1,7 +1,9 @@
-<bookapp-preloader [visible]="loading$ | async"></bookapp-preloader>
-<mat-toolbar>
+<bookapp-preloader [visible]="loading$ | async" />
+
+<mat-toolbar class="page-toolbar">
   <span>History</span>
 </mat-toolbar>
+
 <div class="view-content">
   <bookapp-history-list
     [sorting]="sorting$ | async"
@@ -10,5 +12,5 @@
     [totalCount]="count$ | async"
     (sortChanged)="sort($event)"
     (pageChanged)="paginate($event)"
-  ></bookapp-history-list>
+  />
 </div>

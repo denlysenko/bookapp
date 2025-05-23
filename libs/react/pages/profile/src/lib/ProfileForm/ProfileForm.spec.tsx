@@ -1,8 +1,7 @@
-import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { ERRORS } from '@bookapp/shared/constants';
-import { user } from '@bookapp/testing';
+import { user } from '@bookapp/testing/react';
 
 import ProfileForm from './ProfileForm';
 
@@ -17,9 +16,6 @@ const props = {
   onSubmit: jest.fn(),
 };
 
-// tslint:disable: no-duplicate-string
-
-// tslint:disable: no-identical-functions
 describe('ProfileForm', () => {
   afterEach(() => {
     jest.clearAllMocks();

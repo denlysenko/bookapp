@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { useEffect } from 'react';
 
-import { useBookReaderStyles } from './useBookReaderStyles';
+import { StyledBookReader } from './StyledBookReader';
 
-declare var ePubReader: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare const ePubReader: any;
 
 export interface BookReaderProps {
   src: string;
@@ -11,8 +13,6 @@ export interface BookReaderProps {
 }
 
 export function BookReader({ src, bookmark, onLocationChange }: BookReaderProps) {
-  const classes = useBookReaderStyles();
-
   useEffect(() => {
     if (src) {
       const reader = ePubReader(src);
@@ -25,10 +25,11 @@ export function BookReader({ src, bookmark, onLocationChange }: BookReaderProps)
         onLocationChange(start);
       });
     }
-  }, [src]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [src, bookmark]);
 
   return (
-    <div className={classes.root}>
+    <StyledBookReader>
       <div id="sidebar">
         <div id="panels">
           <a id="show-Toc" className="show_view icon-list-1 active" data-view="Toc">
@@ -80,11 +81,11 @@ export function BookReader({ src, bookmark, onLocationChange }: BookReaderProps)
           ›
         </div>
         <div id="loader">
-          <img src="/assets/images/loader.gif" />
+          <img src="/images/loader.gif" alt="Loading" />
         </div>
       </div>
       <div className="overlay" />
-    </div>
+    </StyledBookReader>
   );
 }
 

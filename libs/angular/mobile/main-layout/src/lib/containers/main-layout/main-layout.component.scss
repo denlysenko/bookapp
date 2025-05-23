@@ -1,46 +1,28 @@
-@import '~@bookapp/angular-styles/mobile/variables';
+.menu {
+  opacity: 0;
+  transform: translateY(-100%);
 
-.sidedrawer {
-  background-color: $sidenav-background;
-  color: $dark-primary-text;
-
-  .sidedrawer-header {
-    background-color: $sidenav-background;
+  &.visible {
+    animation: slideIn 150ms ease-out forwards;
   }
 
-  .avatar {
-    width: 60;
-    height: 60;
-    border-width: 2;
-    border-color: white;
-    border-radius: 50%;
+  &:not(.visible) {
+    animation: slideOut 150ms ease-out forwards;
   }
+}
 
-  .user {
-    padding-bottom: 10;
-
-    .name {
-      font-size: 18;
+.user {
+  .mdi {
+    &.opened {
+      animation-name: open;
+      animation-duration: 0.3s;
+      animation-fill-mode: forwards;
     }
 
-    .email {
-      font-size: 16;
-    }
-
-    .mdi {
-      font-size: 22;
-
-      &.opened {
-        animation-name: open;
-        animation-duration: 0.3s;
-        animation-fill-mode: forwards;
-      }
-
-      &.closed {
-        animation-name: close;
-        animation-duration: 0.3s;
-        animation-fill-mode: forwards;
-      }
+    &.closed {
+      animation-name: close;
+      animation-duration: 0.3s;
+      animation-fill-mode: forwards;
     }
   }
 }
@@ -60,5 +42,27 @@
   }
   to {
     transform: rotate(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
   }
 }

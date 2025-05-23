@@ -1,3 +1,4 @@
+export * from './lib/api-error';
 export * from './lib/api-response';
 export * from './lib/auth-payload';
 export * from './lib/book';

@@ -4,7 +4,6 @@ import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { ApiResponse, Book, RateBookEvent, RateBookResponse } from '@bookapp/shared/interfaces';
 import { BEST_BOOKS_QUERY, RATE_BOOK_MUTATION } from '@bookapp/shared/queries';
 
-// tslint:disable: no-shadowed-variable
 export function useBestBooks() {
   const { data, loading, fetchMore, updateQuery } = useQuery<{ bestBooks: ApiResponse<Book> }>(
     BEST_BOOKS_QUERY,
@@ -28,7 +27,7 @@ export function useBestBooks() {
       },
       update: (_, { data: { rateBook } }) => {
         updateQuery((prevData) => {
-          const index = prevData.bestBooks.rows.findIndex((book) => book._id === bookId);
+          const index = prevData.bestBooks.rows.findIndex((book) => book.id === bookId);
 
           if (index === -1) {
             return prevData;

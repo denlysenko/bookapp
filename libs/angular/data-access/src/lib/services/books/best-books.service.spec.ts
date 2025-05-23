@@ -5,20 +5,18 @@ import { addTypenameToDocument } from '@apollo/client/utilities';
 
 import { Book } from '@bookapp/shared/interfaces';
 import { BEST_BOOKS_QUERY, RATE_BOOK_MUTATION } from '@bookapp/shared/queries';
-import { book } from '@bookapp/testing';
+import { book } from '@bookapp/testing/angular';
 
 import {
+  APOLLO_TESTING_CACHE,
   ApolloTestingController,
   ApolloTestingModule,
-  APOLLO_TESTING_CACHE,
 } from 'apollo-angular/testing';
 
 import { BestBooksService } from './best-books.service';
 
 const bookWithTypename = { ...book, __typename: 'Book' };
 
-// tslint:disable: no-identical-functions
-// tslint:disable: no-big-function
 describe('BestBooksService', () => {
   let controller: ApolloTestingController;
   let service: BestBooksService;
@@ -47,7 +45,7 @@ describe('BestBooksService', () => {
     it('should watch on best book', (done) => {
       service.watchBooks().subscribe(({ data }) => {
         const [b] = data.bestBooks.rows;
-        expect(b._id).toEqual(book._id);
+        expect(b.id).toEqual(book.id);
         done();
       });
 
@@ -83,7 +81,7 @@ describe('BestBooksService', () => {
       controller.expectOne(addTypenameToDocument(BEST_BOOKS_QUERY)).flush({
         data: {
           bestBooks: {
-            rows: [{ ...bookWithTypename, _id: '1213' }],
+            rows: [{ ...bookWithTypename, id: '1213' }],
             count: 1,
             __typename: 'BestBooks',
           },
@@ -124,7 +122,7 @@ describe('BestBooksService', () => {
       controller.expectOne(addTypenameToDocument(BEST_BOOKS_QUERY)).flush({
         data: {
           bestBooks: {
-            rows: [{ ...bookWithTypename, _id: '1213' }],
+            rows: [{ ...bookWithTypename, id: '1213' }],
             count: 1,
             __typename: 'BestBooks',
           },
@@ -174,7 +172,7 @@ describe('BestBooksService', () => {
 
       tick();
 
-      service.rateBook({ bookId: book._id, rate: 3 }).subscribe();
+      service.rateBook({ bookId: book.id, rate: 3 }).subscribe();
 
       controller.expectOne(addTypenameToDocument(RATE_BOOK_MUTATION)).flush({
         data: {
@@ -210,7 +208,7 @@ describe('BestBooksService', () => {
 
       tick();
 
-      service.rateBook({ bookId: book._id, rate: 5 }).subscribe();
+      service.rateBook({ bookId: book.id, rate: 5 }).subscribe();
 
       controller.expectOne(addTypenameToDocument(RATE_BOOK_MUTATION)).flush({
         data: {

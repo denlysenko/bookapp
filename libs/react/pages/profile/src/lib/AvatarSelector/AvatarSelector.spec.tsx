@@ -1,7 +1,7 @@
-import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-import { user } from '@bookapp/testing';
+import { user } from '@bookapp/testing/react';
+
 import AvatarSelector from './AvatarSelector';
 
 const onSave = jest.fn();

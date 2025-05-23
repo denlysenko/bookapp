@@ -1,75 +1,72 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import ReactCrop, { Crop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Divider from '@material-ui/core/Divider';
-import Icon from '@material-ui/core/Icon';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import Button from '@mui/material/Button';
+
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Divider from '@mui/material/Divider';
+import Icon from '@mui/material/Icon';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import { useUpload } from '@bookapp/react/data-access';
+import { errorsMap } from '@bookapp/shared/constants';
 import { getCroppedImg } from '@bookapp/utils/react';
 
 import { useDropZone } from '../dropzone';
-import { useImageSelectorStyles } from './useImageSelectorStyles';
+import { StyledDialog } from './StyledDialog';
 
-// tslint:disable-next-line: interface-over-type-literal
 type ImageSelectorProps = {
   open: boolean;
   onImageUpload: (publicUrl: string) => void;
   onClose: () => void;
 };
 
-// tslint:disable: jsx-no-lambda
 export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorProps) => {
-  const classes = useImageSelectorStyles();
-
   const imgRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
-  const [upImg, setUpImg] = useState<string>();
+  const [imgSrc, setImgSrc] = useState<string>();
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState(null);
   const [error, setError] = useState(null);
   const { dropElemRef } = useDropZone(onFileDrop);
   const { progress, uploadFile } = useUpload();
 
-  function onSelectFile(event: any) {
+  function onSelectFile(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.files && event.target.files.length > 0) {
       const reader = new FileReader();
 
       reader.addEventListener('load', () => {
-        setUpImg(reader.result as string);
+        setImgSrc(reader.result as string);
       });
       reader.readAsDataURL(event.target.files[0]);
     }
   }
 
-  function onFileDrop(event: any) {
+  function onFileDrop(event: DragEvent) {
     setError(null);
     onSelectFile({
       target: { files: event.dataTransfer.files },
-    });
+    } as ChangeEvent<HTMLInputElement>);
   }
 
-  const onLoad = useCallback((img) => {
-    imgRef.current = img;
+  const onLoad = useCallback((event: SyntheticEvent<HTMLImageElement, Event>) => {
+    imgRef.current = event.target;
     setError(null);
     setReady(true);
   }, []);
 
   const onError = () => {
     setReady(false);
-    setError('INVALID_IMG_ERR');
+    setError(errorsMap.INVALID_IMG_ERR);
   };
 
   const reset = () => {
-    setUpImg(null);
+    setImgSrc(null);
     setCompletedCrop(null);
     setError(null);
     imgRef.current = null;
@@ -82,6 +79,10 @@ export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorPro
   };
 
   const handleUpload = async () => {
+    if (!imgRef.current) {
+      return;
+    }
+
     const img = await getCroppedImg(imgRef.current, completedCrop);
 
     try {
@@ -105,7 +106,7 @@ export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorPro
   }, [ready]);
 
   return (
-    <Dialog className={classes.root} open={open} onClose={handleClose}>
+    <StyledDialog open={open} onClose={handleClose}>
       <DialogTitle>Select File</DialogTitle>
       <Divider />
       <DialogContent>
@@ -116,14 +117,18 @@ export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorPro
         )}
         <ReactCrop
           style={{ display: ready ? 'inline-block' : 'none' }}
-          src={upImg}
-          imageAlt="image"
-          onImageLoaded={onLoad}
-          onImageError={onError}
           crop={crop}
           onChange={(c) => setCrop(c)}
           onComplete={(c) => setCompletedCrop(c)}
-        />
+        >
+          <img
+            src={imgSrc}
+            onLoad={onLoad}
+            onError={onError}
+            alt="selected-image"
+            data-testid="selected-image"
+          />
+        </ReactCrop>
         {!ready && (
           <div className="dropzone" ref={dropElemRef}>
             <input type="file" id="file" data-testid="file-input" onChange={onSelectFile} />
@@ -139,13 +144,13 @@ export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorPro
       <Divider />
       <DialogActions>
         <Button variant="contained" onClick={handleClose} data-testid="cancel">
-          CANCEL
+          Cancel
         </Button>
         <Button variant="contained" onClick={handleUpload} color="secondary" data-testid="upload">
-          UPLOAD
+          Upload
         </Button>
       </DialogActions>
-    </Dialog>
+    </StyledDialog>
   );
 };
 

@@ -1,14 +1,9 @@
-// tslint:disable: no-identical-functions
-// tslint:disable: no-big-function
-// tslint:disable: no-hardcoded-credentials
-// tslint:disable: no-duplicate-string
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AbstractControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { MockFeedbackPlatformService } from '@bookapp/testing';
+import { MockFeedbackPlatformService } from '@bookapp/testing/angular';
 
 import { AuthFormComponent } from './auth-form.component';
 
@@ -16,21 +11,17 @@ describe('AuthFormComponent', () => {
   let component: AuthFormComponent;
   let fixture: ComponentFixture<AuthFormComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule],
-        declarations: [AuthFormComponent],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-        providers: [
-          {
-            provide: FeedbackPlatformService,
-            useValue: MockFeedbackPlatformService,
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [AuthFormComponent],
+      providers: [
+        {
+          provide: FeedbackPlatformService,
+          useValue: MockFeedbackPlatformService,
+        },
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AuthFormComponent);
@@ -43,27 +34,27 @@ describe('AuthFormComponent', () => {
   });
 
   it('should init form', () => {
-    expect(component.form.value).toEqual({ email: null, password: null });
+    expect(component.form.value).toEqual({ email: '', password: '' });
   });
 
   describe('toggleAuthMode()', () => {
     it('should toggle auth mode', () => {
-      expect(component.isLoggingIn).toEqual(true);
+      expect(component.isLoggingIn()).toEqual(true);
       component.toggleAuthMode();
-      expect(component.isLoggingIn).toEqual(false);
+      expect(component.isLoggingIn()).toEqual(false);
     });
 
     it('should enable fields in signup mode', () => {
       const firstNameField = component.form.get('firstName');
       const lastNameField = component.form.get('lastName');
 
-      expect(firstNameField.enabled).toEqual(false);
-      expect(lastNameField.enabled).toEqual(false);
+      expect(firstNameField?.enabled).toEqual(false);
+      expect(lastNameField?.enabled).toEqual(false);
 
       component.toggleAuthMode();
 
-      expect(firstNameField.enabled).toEqual(true);
-      expect(lastNameField.enabled).toEqual(true);
+      expect(firstNameField?.enabled).toEqual(true);
+      expect(lastNameField?.enabled).toEqual(true);
     });
   });
 
@@ -78,7 +69,7 @@ describe('AuthFormComponent', () => {
       });
 
       it('should have required error', () => {
-        expect(emailField.hasError('required')).toEqual(true);
+        expect(emailField?.hasError('required')).toEqual(true);
       });
 
       it('should not have required error', () => {
@@ -132,8 +123,9 @@ describe('AuthFormComponent', () => {
         component.toggleAuthMode();
         fixture.detectChanges();
         firstNameField = component.form.get('firstName');
-        input = fixture.debugElement.query(By.css('input[formcontrolname=firstName]'))
-          .nativeElement;
+        input = fixture.debugElement.query(
+          By.css('input[formcontrolname=firstName]')
+        ).nativeElement;
       });
 
       it('should have required error', () => {

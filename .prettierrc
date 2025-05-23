@@ -4,5 +4,16 @@
   "useTabs": false,
   "semi": true,
   "singleQuote": true,
-  "bracketSpacing": true
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "htmlWhitespaceSensitivity": "ignore",
+  "trailingComma": "es5",
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "parser": "angular"
+      }
+    }
+  ]
 }

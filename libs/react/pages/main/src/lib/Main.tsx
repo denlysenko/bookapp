@@ -1,19 +1,27 @@
-import React, { useCallback, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 
-import Drawer from '@material-ui/core/Drawer';
-import Toolbar from '@material-ui/core/Toolbar';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { GlobalStyles } from '@mui/material';
+import Drawer from '@mui/material/Drawer';
+import Toolbar from '@mui/material/Toolbar';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Footer from './Footer/Footer';
 import Header from './Header/Header';
 import Nav from './Nav/Nav';
-import { useMainStyles } from './useMainStyles';
+import { StyledMain } from './StyledMain';
 
 export const Main = () => {
-  const classes = useMainStyles();
   const matches = useMediaQuery('(min-width:600px)');
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!matches) {
+      setDrawerOpen(false);
+    }
+  }, [location, matches]);
+
   const toggleDrawer = useCallback(() => {
     setDrawerOpen((prevDrawerOpen) => !prevDrawerOpen);
   }, []);
@@ -23,32 +31,52 @@ export const Main = () => {
   };
 
   return (
-    <div className={classes.root}>
-      <Header toggleDrawer={toggleDrawer} />
-      <Drawer
-        className={classes.drawer}
-        variant={matches ? 'permanent' : 'temporary'}
-        open={drawerOpen}
-        ModalProps={{
-          BackdropProps: {
-            onClick: handleBackDropClick,
+    <>
+      <GlobalStyles
+        styles={{
+          '.drawer': {
+            width: 250,
+            flexShrink: 0,
+          },
+
+          '.drawerPaper': {
+            width: 250,
+            backgroundColor: '#1f2637 !important',
+          },
+
+          '.drawerContainer': {
+            height: 'calc(100% - 128px)',
+            overflow: 'auto',
           },
         }}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <Toolbar />
-        <div className={classes.drawerContainer}>
-          <Nav />
-        </div>
-      </Drawer>
-      <main className={classes.content}>
-        <Toolbar />
-        <Outlet />
-      </main>
-      <Footer />
-    </div>
+      />
+      <StyledMain>
+        <Header toggleDrawer={toggleDrawer} />
+        <Drawer
+          className="drawer"
+          variant={matches ? 'permanent' : 'temporary'}
+          open={drawerOpen}
+          ModalProps={{
+            BackdropProps: {
+              onClick: handleBackDropClick,
+            },
+          }}
+          classes={{
+            paper: 'drawerPaper',
+          }}
+        >
+          <Toolbar />
+          <div className="drawerContainer">
+            <Nav />
+          </div>
+        </Drawer>
+        <main className="content">
+          <Toolbar />
+          <Outlet />
+        </main>
+        <Footer />
+      </StyledMain>
+    </>
   );
 };
 

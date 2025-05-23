@@ -1,6 +1,4 @@
 import { Comment } from '@bookapp/shared/interfaces';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
-export interface CommentModel extends Comment, Document {
-  _id: any;
-}
+export interface CommentModel extends Omit<Comment, 'id'>, Document<Types.ObjectId> {}

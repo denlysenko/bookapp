@@ -6,12 +6,11 @@ import { UserActions } from '@bookapp/shared/enums';
 import { ApiResponse } from '@bookapp/shared/interfaces';
 import { extractFileKey } from '@bookapp/utils/api';
 
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { PubSub } from 'graphql-subscriptions';
-import { extend } from 'lodash';
 import { Model } from 'mongoose';
 
 import { BOOK_VALIDATION_ERRORS } from './constants';
@@ -20,6 +19,8 @@ import { BookModel } from './interfaces/book';
 
 @Injectable()
 export class BooksService {
+  private readonly logger = new Logger(BooksService.name);
+
   constructor(
     @InjectModel(ModelNames.BOOK) private readonly bookModel: Model<BookModel>,
     private readonly configService: ConfigService,
@@ -30,14 +31,16 @@ export class BooksService {
 
   async findAll(query?: ApiQuery): Promise<ApiResponse<BookModel>> {
     const { filter, skip, first, order } = query;
-    const where = filter || {};
-    const count = await this.bookModel.countDocuments(where).exec();
-    const rows = await this.bookModel
-      .find(where)
-      .skip(skip || 0)
-      .limit(first || parseInt(this.configService.get('DEFAULT_LIMIT'), 10))
-      .sort(order)
-      .exec();
+    const where = filter ?? {};
+    const [count, rows] = await Promise.all([
+      this.bookModel.countDocuments(where).exec(),
+      this.bookModel
+        .find(where)
+        .skip(skip ?? 0)
+        .limit(first ?? parseInt(this.configService.get('DEFAULT_LIMIT'), 10))
+        .sort(order)
+        .exec(),
+    ]);
 
     return {
       count,
@@ -56,12 +59,14 @@ export class BooksService {
   async findBestBooks(query?: ApiQuery): Promise<ApiResponse<BookModel>> {
     const { skip, first } = query;
     const where = { rating: 5 };
-    const count = await this.bookModel.countDocuments(where).exec();
-    const rows = await this.bookModel
-      .find(where)
-      .skip(skip || 0)
-      .limit(first || parseInt(this.configService.get('DEFAULT_LIMIT'), 10))
-      .exec();
+    const [count, rows] = await Promise.all([
+      this.bookModel.countDocuments(where).exec(),
+      this.bookModel
+        .find(where)
+        .skip(skip ?? 0)
+        .limit(first ?? parseInt(this.configService.get('DEFAULT_LIMIT'), 10))
+        .exec(),
+    ]);
 
     return {
       count,
@@ -73,7 +78,8 @@ export class BooksService {
     const newBook = new this.bookModel(book);
 
     await newBook.save();
-    await this.logsService.create(new LogDto(userId, UserActions.BOOK_CREATED, newBook._id));
+    await this.logsService.create(new LogDto(userId, UserActions.BOOK_CREATED, newBook.id));
+    this.logger.log(`Book: ${newBook.id} created`);
 
     return newBook;
   }
@@ -82,6 +88,7 @@ export class BooksService {
     const book = await this.bookModel.findById(id).exec();
 
     if (!book) {
+      this.logger.error(`Book not found with id: ${id}`);
       throw new NotFoundException(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR);
     }
 
@@ -99,14 +106,16 @@ export class BooksService {
       try {
         await Promise.all(filePromises);
       } catch (err) {
+        this.logger.error(`Error deleting files from bucket: ${err}`);
         throw new BadRequestException(err);
       }
     }
 
-    extend(book, updatedBook);
+    Object.assign(book, updatedBook);
 
     await book.save();
-    await this.logsService.create(new LogDto(userId, UserActions.BOOK_UPDATED, book._id));
+    await this.logsService.create(new LogDto(userId, UserActions.BOOK_UPDATED, book.id));
+    this.logger.log(`Book ${book.id} updated`);
 
     return book;
   }
@@ -115,6 +124,7 @@ export class BooksService {
     const book = await this.bookModel.findById(id).exec();
 
     if (!book) {
+      this.logger.error(`Book ${id} not found`);
       throw new NotFoundException(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR);
     }
 
@@ -127,8 +137,9 @@ export class BooksService {
     book.rating = rating;
 
     await book.save();
-    await this.logsService.create(new LogDto(userId, UserActions.BOOK_RATED, book._id));
+    await this.logsService.create(new LogDto(userId, UserActions.BOOK_RATED, book.id));
     this.pubSub.publish('bookRated', { bookRated: book });
+    this.logger.log(`Book ${book.id} rated`);
 
     return book;
   }

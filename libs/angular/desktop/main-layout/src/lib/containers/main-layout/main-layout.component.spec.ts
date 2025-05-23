@@ -1,11 +1,14 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { AuthService, LogsService } from '@bookapp/angular/data-access';
-import { log, MockAngularAuthService, MockAngularLogsService, user } from '@bookapp/testing';
+import {
+  log,
+  MockAngularAuthService,
+  MockAngularLogsService,
+  user,
+} from '@bookapp/testing/angular';
 
-import { MainLayoutModule } from '../../main-layout.module';
 import { MainLayoutComponent } from './main-layout.component';
 
 describe('MainLayoutComponent', () => {
@@ -13,36 +16,28 @@ describe('MainLayoutComponent', () => {
   let fixture: ComponentFixture<MainLayoutComponent>;
   let logsService: LogsService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [MainLayoutModule, NoopAnimationsModule, RouterTestingModule],
-        providers: [
-          {
-            provide: AuthService,
-            useValue: MockAngularAuthService,
-          },
-        ],
-      })
-        .overrideComponent(MainLayoutComponent, {
-          set: {
-            providers: [
-              {
-                provide: LogsService,
-                useValue: MockAngularLogsService,
-              },
-            ],
-          },
-        })
-        .compileComponents();
-    })
-  );
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [MainLayoutComponent],
+      providers: [
+        provideRouter([]),
+        {
+          provide: AuthService,
+          useValue: MockAngularAuthService,
+        },
+        {
+          provide: LogsService,
+          useValue: MockAngularLogsService,
+        },
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MainLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    logsService = fixture.debugElement.injector.get(LogsService);
+    logsService = TestBed.inject(LogsService);
   });
 
   it('should create', () => {

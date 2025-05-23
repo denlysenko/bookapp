@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { StoragePlatformService, StoreService } from '@bookapp/angular/core';
 import { AUTH_TOKEN } from '@bookapp/shared/constants';
@@ -8,16 +8,14 @@ import { CHANGE_PASSWORD_MUTATION } from '@bookapp/shared/queries';
 import { Apollo } from 'apollo-angular';
 import { tap } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PasswordService {
-  constructor(
-    private readonly apollo: Apollo,
-    private readonly storagePlatformService: StoragePlatformService,
-    private readonly storeService: StoreService
-  ) {}
+  readonly #apollo = inject(Apollo);
+  readonly #storagePlatformService = inject(StoragePlatformService);
+  readonly #storeService = inject(StoreService);
 
   changePassword(newPassword: string, oldPassword: string) {
-    return this.apollo
+    return this.#apollo
       .mutate<{ changePassword: AuthPayload }>({
         mutation: CHANGE_PASSWORD_MUTATION,
         variables: {
@@ -31,8 +29,8 @@ export class PasswordService {
             const {
               changePassword: { accessToken, refreshToken },
             } = data;
-            this.storagePlatformService.setItem(AUTH_TOKEN, refreshToken);
-            this.storeService.set(AUTH_TOKEN, accessToken);
+            this.#storagePlatformService.setItem(AUTH_TOKEN, refreshToken);
+            this.#storeService.set(AUTH_TOKEN, accessToken);
           }
         })
       );

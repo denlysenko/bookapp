@@ -1,17 +1,15 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { MatToolbarModule } from '@angular/material/toolbar';
+
 import { BestBooksBase } from '@bookapp/angular/base';
-import { BestBooksService } from '@bookapp/angular/data-access';
+import { BooksListComponent, PreloaderComponent } from '@bookapp/angular/ui-desktop';
 
 @Component({
-  selector: 'bookapp-best-books-page',
+  imports: [AsyncPipe, MatToolbarModule, PreloaderComponent, BooksListComponent],
   templateUrl: './best-books-page.component.html',
   styleUrls: ['./best-books-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [BestBooksService],
 })
-export class BestBooksPageComponent extends BestBooksBase {
-  constructor(booksService: BestBooksService) {
-    super(booksService);
-  }
-}
+export class BestBooksPageComponent extends BestBooksBase {}

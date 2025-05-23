@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
 
 import { usePassword } from '@bookapp/react/data-access';
 import { useFeedback } from '@bookapp/react/ui';
 import { PasswordForm as PasswordFormValues } from '@bookapp/shared/interfaces';
 
+import { errorsMap } from '@bookapp/shared/constants';
 import PasswordForm from './PasswordForm/PasswordForm';
-import { usePasswordStyles } from './usePasswordStyles';
+import { StyledPassword } from './StyledPassword';
 
 export const PASSWORD_CHANGE_SUCCESS = 'Password changed!';
 
 export const Password = () => {
-  const classes = usePasswordStyles();
   const [loading, setLoading] = useState(false);
   const { showFeedback } = useFeedback();
   const { changePassword } = usePassword();
@@ -28,19 +28,19 @@ export const Password = () => {
       showFeedback(PASSWORD_CHANGE_SUCCESS);
     } catch (err) {
       setLoading(false);
-      showFeedback(err[0].message);
+      showFeedback(errorsMap[err[0].message] ?? err[0].message);
     }
   };
 
   return (
-    <div className={`${classes.root} view-content`}>
+    <StyledPassword className="view-content">
       <Card>
         <CardHeader title="Change Password" />
         <CardContent>
           <PasswordForm loading={loading} onSubmit={submitForm} />
         </CardContent>
       </Card>
-    </div>
+    </StyledPassword>
   );
 };
 

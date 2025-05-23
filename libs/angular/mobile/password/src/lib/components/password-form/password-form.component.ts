@@ -1,51 +1,65 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+/* eslint-disable no-unused-private-class-members */
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  input,
+  NO_ERRORS_SCHEMA,
+  output,
+  signal,
+} from '@angular/core';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { NsBaseForm } from '@bookapp/angular/base';
-import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { PasswordForm } from '@bookapp/shared/interfaces';
+import { BaseForm } from '@bookapp/angular/base';
+import { ApiError, PasswordForm } from '@bookapp/shared/interfaces';
 
-import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
+import { NativeScriptCommonModule, NativeScriptFormsModule } from '@nativescript/angular';
 
-import { getViewById } from '@nativescript/core';
-import { getRootView } from '@nativescript/core/application';
+interface Form {
+  readonly oldPassword: FormControl<string>;
+  readonly password: FormControl<string>;
+}
 
 @Component({
   selector: 'bookapp-password-form',
+  imports: [NativeScriptCommonModule, NativeScriptFormsModule, ReactiveFormsModule],
   templateUrl: './password-form.component.html',
-  styleUrls: ['./password-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [NO_ERRORS_SCHEMA],
 })
-export class PasswordFormComponent extends NsBaseForm {
-  source = {
-    oldPassword: '',
-    password: '',
-  };
+export class PasswordFormComponent extends BaseForm<Form> {
+  readonly loading = input(false);
+  readonly error = input<ApiError>();
 
-  @Input() loading: boolean;
+  readonly formSubmitted = output<PasswordForm>();
 
-  @Input()
-  set error(error: any) {
+  readonly #fb = inject(FormBuilder);
+  readonly #errorEffect = effect(() => {
+    const error = this.error();
+
     if (error) {
       this.handleError(error);
     }
-  }
+  });
 
-  @Output() formSubmitted = new EventEmitter<PasswordForm>();
+  readonly form = this.#fb.group({
+    oldPassword: ['', Validators.required],
+    password: ['', Validators.required],
+  });
 
-  constructor(feedbackService: FeedbackPlatformService) {
-    super(feedbackService);
-  }
+  readonly submitting = signal(false);
 
-  async submit() {
-    const valid = await this.dataForm.dataForm.validateAll();
+  submit() {
+    this.submitting.set(true);
 
-    if (valid) {
-      this.formSubmitted.emit(this.source);
+    if (this.form.valid) {
+      const { oldPassword, password } = this.form.value;
+
+      this.formSubmitted.emit({
+        oldPassword,
+        password,
+      });
     }
-  }
-
-  onDrawerButtonTap() {
-    const sideDrawer = getViewById(getRootView() as any, 'drawer') as RadSideDrawer;
-    sideDrawer.toggleDrawerState();
   }
 }

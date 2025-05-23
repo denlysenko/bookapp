@@ -1,14 +1,17 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { AddBookService } from '@bookapp/angular/data-access';
 import { ConfirmDialogComponent } from '@bookapp/angular/ui-desktop';
-import { Book, BookFormModel } from '@bookapp/shared/interfaces';
+import { ApiError, Book, BookFormModel } from '@bookapp/shared/interfaces';
 
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { pluck, switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 import { AddBookFormComponent } from '../../components/add-book-form/add-book-form.component';
 
@@ -18,43 +21,32 @@ const UNSAVED_CHANGES_WARNING =
   'There are unsaved changes on the page. Are you sure you want to leave?';
 
 @Component({
-  selector: 'bookapp-add-book-page',
+  imports: [AsyncPipe, MatCardModule, AddBookFormComponent],
   templateUrl: './add-book-page.component.html',
   styleUrls: ['./add-book-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddBookPageComponent {
-  book$: Observable<Book> = this.route.data.pipe(pluck('book'));
+  readonly bookFormComponent = viewChild(AddBookFormComponent);
 
-  @ViewChild(AddBookFormComponent)
-  private readonly bookFormComponent: AddBookFormComponent;
+  readonly #feedbackService = inject(FeedbackPlatformService);
+  readonly #dialog = inject(MatDialog);
+  readonly #booksService = inject(AddBookService);
+  readonly #activatedRoute = inject(ActivatedRoute);
 
-  private loading = new BehaviorSubject<boolean>(false);
-  private error = new BehaviorSubject<any | null>(null);
+  readonly book$: Observable<Book> = this.#activatedRoute.data.pipe(map((data) => data.book));
 
-  constructor(
-    protected feedbackService: FeedbackPlatformService,
-    private readonly dialog: MatDialog,
-    private readonly booksService: AddBookService,
-    private readonly route: ActivatedRoute
-  ) {}
-
-  get loading$(): Observable<boolean> {
-    return this.loading.asObservable();
-  }
-
-  get error$(): Observable<any | null> {
-    return this.error.asObservable();
-  }
+  readonly loading = signal(false);
+  readonly error = signal<ApiError>(null);
 
   save(book: BookFormModel) {
-    const { _id, ...rest } = book;
-    return _id ? this.update(_id, rest) : this.create(rest);
+    const { id, ...rest } = book;
+    return id ? this.#update(id, rest) : this.#create(rest);
   }
 
   canDeactivate(): Observable<boolean> | boolean {
-    if (this.bookFormComponent.hasChanges()) {
-      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    if (this.bookFormComponent()?.hasChanges()) {
+      const dialogRef = this.#dialog.open(ConfirmDialogComponent, {
         width: '300px',
         data: {
           text: UNSAVED_CHANGES_WARNING,
@@ -64,7 +56,9 @@ export class AddBookPageComponent {
       return dialogRef.afterClosed().pipe(
         switchMap((result: boolean) => {
           if (result) {
-            return this.bookFormComponent.removeUploadedFiles().pipe(switchMapTo(of(true)));
+            return this.bookFormComponent()
+              ?.removeUploadedFiles()
+              .pipe(map(() => true));
           }
 
           return of(false);
@@ -75,42 +69,42 @@ export class AddBookPageComponent {
     return true;
   }
 
-  private create(book: BookFormModel) {
-    this.loading.next(true);
-    this.booksService
+  #create(book: BookFormModel) {
+    this.loading.set(true);
+    this.#booksService
       .create(book)
       .pipe(
         tap(() => {
-          this.loading.next(false);
+          this.loading.set(false);
         })
       )
       .subscribe(({ data, errors }) => {
         if (data) {
-          this.feedbackService.success(BOOK_CREATED);
+          this.#feedbackService.success(BOOK_CREATED);
         }
 
         if (errors) {
-          this.error.next(errors[errors.length - 1]);
+          this.error.set(errors[errors.length - 1]);
         }
       });
   }
 
-  private update(id: string, book: Partial<BookFormModel>) {
-    this.loading.next(true);
-    this.booksService
+  #update(id: string, book: Partial<BookFormModel>) {
+    this.loading.set(true);
+    this.#booksService
       .update(id, book)
       .pipe(
         tap(() => {
-          this.loading.next(false);
+          this.loading.set(false);
         })
       )
       .subscribe(({ data, errors }) => {
         if (data) {
-          this.feedbackService.success(BOOK_UPDATED);
+          this.#feedbackService.success(BOOK_UPDATED);
         }
 
         if (errors) {
-          this.error.next(errors[errors.length - 1]);
+          this.error.set(errors[errors.length - 1]);
         }
       });
   }

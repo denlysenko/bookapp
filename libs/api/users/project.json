@@ -1,0 +1,19 @@
+{
+  "name": "api-users",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/users/src",
+  "projectType": "library",
+  "tags": ["scope:api", "type:feature", "platform:server"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/api/users/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/api/users"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

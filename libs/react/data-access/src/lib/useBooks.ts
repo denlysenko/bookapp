@@ -35,7 +35,6 @@ export function useBooks(
     }
   );
 
-  // tslint:disable-next-line: no-shadowed-variable
   const loadMore = (skip: number) => {
     fetchMore({
       variables: {
@@ -65,10 +64,9 @@ export function useBooks(
         bookId,
         rate,
       },
-      // tslint:disable-next-line: no-shadowed-variable
       update: (_, { data: { rateBook } }) => {
         updateQuery((prevData) => {
-          const index = prevData.books.rows.findIndex(({ _id }) => _id === bookId);
+          const index = prevData.books.rows.findIndex(({ id }) => id === bookId);
 
           if (index === -1) {
             return prevData;

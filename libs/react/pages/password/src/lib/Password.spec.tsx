@@ -1,15 +1,14 @@
-import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import { GraphQLError } from 'graphql';
 import { MockedProvider } from '@apollo/client/testing';
 
 import { FeedbackProvider } from '@bookapp/react/ui';
 import { CHANGE_PASSWORD_MUTATION } from '@bookapp/shared/queries';
 
+import { GraphQLError } from 'graphql';
+
 import Password, { PASSWORD_CHANGE_SUCCESS } from './Password';
 
-// tslint:disable-next-line: no-hardcoded-credentials
 const password = 'password';
 const token = 'token';
 const errorMessage = 'Error';

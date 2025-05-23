@@ -1,42 +1,39 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Card from '@material-ui/core/Card';
-import Rating from '@material-ui/lab/Rating';
+import Card from '@mui/material/Card';
+import Rating from '@mui/material/Rating';
 
 import { Book } from '@bookapp/shared/interfaces';
 import { formatCurrency } from '@bookapp/utils/react';
 
 import { InfiniteScroll } from '../InfiniteScroll';
 import { LazyImage } from '../LazyImage';
-import { useBooksListStyles } from './useBooksListStyles';
+import { StyledBooksList } from './StyledBooksList';
 
 export interface BooksListProps {
   books: Book[];
-  onBookRate: ({ bookId: string, rate: number }) => void;
+  onBookRate: (output: { bookId: string; rate: number }) => void;
   onLoadMore: () => void;
 }
 
 export const BooksList = ({ books = [], onBookRate, onLoadMore }: BooksListProps) => {
-  const classes = useBooksListStyles();
-
   return (
-    <div className={classes.root}>
+    <StyledBooksList>
       <InfiniteScroll onLoadMore={onLoadMore}>
         {books.map((book) => (
-          <div key={book._id} className="list-item-wrapper" data-testid="list-item">
+          <div key={book.id} className="list-item-wrapper" data-testid="list-item">
             <Card className="list-item">
               <div className="cover">
                 <Link
                   to={
                     book.paid
-                      ? `/books/buy/${book.url}?bookId=${book._id}`
-                      : `/books/browse/${book.url}?bookId=${book._id}`
+                      ? `/books/buy/${book.url}?bookId=${book.id}`
+                      : `/books/browse/${book.url}?bookId=${book.id}`
                   }
                 >
                   <LazyImage
-                    src={book.coverUrl}
-                    placeholder="/assets/images/nocover.svg"
+                    src={book.coverUrl ?? '/images/nocover.svg'}
+                    placeholder="/images/nocover.svg"
                     alt={book.title}
                   />
                 </Link>
@@ -45,8 +42,8 @@ export const BooksList = ({ books = [], onBookRate, onLoadMore }: BooksListProps
                 className="title"
                 to={
                   book.paid
-                    ? `/books/buy/${book.url}?bookId=${book._id}`
-                    : `/books/browse/${book.url}?bookId=${book._id}`
+                    ? `/books/buy/${book.url}?bookId=${book.id}`
+                    : `/books/browse/${book.url}?bookId=${book.id}`
                 }
               >
                 {book.title}
@@ -56,16 +53,15 @@ export const BooksList = ({ books = [], onBookRate, onLoadMore }: BooksListProps
               <Rating
                 name="rating"
                 value={book.rating}
-                // tslint:disable-next-line: jsx-no-lambda
                 onChange={(_, value) => {
-                  onBookRate({ bookId: book._id, rate: value });
+                  onBookRate({ bookId: book.id, rate: value });
                 }}
               />
             </Card>
           </div>
         ))}
       </InfiniteScroll>
-    </div>
+    </StyledBooksList>
   );
 };
 

@@ -1,50 +1,87 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  Injector,
+  input,
+  OnInit,
+  output,
+} from '@angular/core';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 import { BaseForm } from '@bookapp/angular/base';
-import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { ProfileForm, User } from '@bookapp/shared/interfaces';
+import { ApiError, ProfileForm, User } from '@bookapp/shared/interfaces';
+
+interface Form {
+  readonly firstName: FormControl<string>;
+  readonly lastName: FormControl<string>;
+  readonly email: FormControl<string>;
+}
 
 @Component({
   selector: 'bookapp-profile-form',
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    MatButtonModule,
+  ],
   templateUrl: './profile-form.component.html',
   styleUrls: ['./profile-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileFormComponent extends BaseForm {
-  form = this.fb.group({
-    firstName: [null, Validators.required],
-    lastName: [null, Validators.required],
-    email: [null, [Validators.required, Validators.email]],
+export class ProfileFormComponent extends BaseForm<Form> implements OnInit {
+  readonly loading = input(false);
+  readonly error = input<ApiError>();
+  readonly user = input<User>();
+
+  readonly formSubmitted = output<ProfileForm>();
+
+  readonly #fb = inject(FormBuilder);
+  readonly #injector = inject(Injector);
+
+  readonly form = this.#fb.group({
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
   });
 
-  @Input() loading: boolean;
+  #userId: string;
 
-  @Input()
-  set user(user: User) {
-    if (user) {
-      this._userId = user._id;
-      this.form.patchValue(user);
-    }
-  }
+  ngOnInit() {
+    effect(
+      () => {
+        const error = this.error();
 
-  @Input()
-  set error(error: any) {
-    if (error) {
-      this.handleError(error);
-    }
-  }
+        if (error) {
+          this.handleError(error);
+        }
+      },
+      { injector: this.#injector }
+    );
 
-  @Output() formSubmitted = new EventEmitter<ProfileForm>();
+    effect(
+      () => {
+        const user = this.user();
 
-  private _userId: any;
-
-  constructor(feedbackService: FeedbackPlatformService, private readonly fb: FormBuilder) {
-    super(feedbackService);
+        if (user) {
+          this.#userId = user.id;
+          this.form.patchValue(user);
+        }
+      },
+      { injector: this.#injector }
+    );
   }
 
   get userId() {
-    return this._userId;
+    return this.#userId;
   }
 
   submit() {

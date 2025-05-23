@@ -1,8 +1,6 @@
-import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { HTTP_STATUS } from '@bookapp/shared/constants';
-
 import ImageSelector from './ImageSelector';
 
 jest.mock('@bookapp/utils/react', () => ({
@@ -13,7 +11,7 @@ const onClose = jest.fn();
 const onImageUpload = jest.fn();
 const publicUrl = 'publicUrl';
 
-function mockFetch(status: number, data: any) {
+function mockFetch(status: number, data: unknown) {
   const xhrMockObj = {
     open: jest.fn(),
     send: jest.fn(),
@@ -23,13 +21,10 @@ function mockFetch(status: number, data: any) {
     response: JSON.stringify(data),
   };
 
-  const xhrMockClass = () => xhrMockObj;
-
-  // @ts-ignore
-  window.XMLHttpRequest = jest.fn().mockImplementation(xhrMockClass);
+  // @ts-expect-error mock XMLHttpRequest
+  window.XMLHttpRequest = jest.fn().mockImplementation(() => xhrMockObj);
 
   setTimeout(() => {
-    // @ts-ignore
     xhrMockObj['onreadystatechange']();
   }, 0);
 }
@@ -62,13 +57,18 @@ describe('ImageSelector', () => {
       const file = new File(['userAvatar'], 'avatar.png', { type: 'image/png' });
       const fileInput = screen.getByLabelText(/click to select/i);
 
-      Object.defineProperty(fileInput, 'files', {
-        value: [file],
+      fireEvent.change(fileInput, {
+        target: {
+          files: [file],
+        },
       });
 
-      fireEvent.change(fileInput);
+      // await waitFor(() => expect(screen.getByAltText('selected-image')).toBeVisible());
 
-      await waitFor(() => screen.getByAltText('image'));
+      await act(async () => {
+        const img = screen.getByAltText('selected-image');
+        fireEvent.load(img);
+      });
 
       fireEvent.click(screen.getByRole('button', { name: /upload/i }));
 

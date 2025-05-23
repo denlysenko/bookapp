@@ -1,7 +1,8 @@
-// tslint:disable-next-line: no-namespace
+// eslint-disable-next-line @typescript-eslint/no-namespace
 declare namespace Cypress {
   interface Chainable {
     login(email: string, password: string): Chainable;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     uploadOnServer(response: any): Chainable;
     searchBooks(query: string): Chainable;
     filterBooks(filter: 'all' | 'recent' | 'popular'): Chainable;
@@ -18,7 +19,7 @@ Cypress.Commands.add('login', (email, password) => {
 });
 
 Cypress.Commands.add('uploadOnServer', (response) => {
-  cy.intercept('POST', 'http://localhost:3333/files', response);
+  cy.intercept('POST', 'http://localhost:3000/files', response);
 });
 
 Cypress.Commands.add('searchBooks', (query) => {
@@ -30,11 +31,8 @@ Cypress.Commands.add('filterBooks', (filter) => {
 });
 
 Cypress.Commands.add('rateBook', (bookIndex, rate) => {
-  cy.get('[data-testid=list-item]').then(($books) => {
-    cy.wrap($books[bookIndex])
-      .find('.MuiRating-label')
-      .then(($stars) => {
-        cy.wrap($stars[rate - 1]).click();
-      });
-  });
+  cy.get('[data-testid=list-item]')
+    .eq(bookIndex)
+    .find(`input[name=rating][value=${rate}]`)
+    .click({ force: true });
 });

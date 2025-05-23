@@ -1,16 +1,15 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
+import { MatCardModule } from '@angular/material/card';
 
 import { PasswordPageBase } from '@bookapp/angular/base';
-import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { PasswordService } from '@bookapp/angular/data-access';
+
+import { PasswordFormComponent } from '../../components/password-form/password-form.component';
 
 @Component({
-  selector: 'bookapp-password-page',
+  imports: [MatCardModule, PasswordFormComponent],
   templateUrl: './password-page.component.html',
   styleUrls: ['./password-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PasswordPageComponent extends PasswordPageBase {
-  constructor(passwordService: PasswordService, feedbackService: FeedbackPlatformService) {
-    super(passwordService, feedbackService);
-  }
-}
+export class PasswordPageComponent extends PasswordPageBase {}

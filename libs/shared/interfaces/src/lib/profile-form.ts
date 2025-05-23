@@ -1,6 +1,6 @@
 import { User } from './user';
 
 export interface ProfileForm {
-  id: any;
+  id: string;
   user: Partial<User>;
 }

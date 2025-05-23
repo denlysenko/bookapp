@@ -2,47 +2,60 @@
   <mat-card>
     <form [formGroup]="form" (submit)="submit()" novalidate>
       <mat-card-header>
-        <mat-card-title>{{ isLoggingIn ? 'Login into account' : 'Create account' }}</mat-card-title>
+        <mat-card-title>
+          {{ isLoggingIn() ? 'Login into account' : 'Create account' }}
+        </mat-card-title>
       </mat-card-header>
+
       <mat-card-content>
-        <div *ngIf="!isLoggingIn">
-          <mat-form-field appearance="outline">
-            <mat-label>First Name</mat-label>
-            <input
-              matInput
-              placeholder="First Name"
-              formControlName="firstName"
-              required
-              data-test="firstName"
-            />
-            <mat-error *ngIf="form.get('firstName').hasError('required')"
-              >This field is required</mat-error
-            >
-            <mat-error *ngIf="form.get('firstName').hasError('serverError')">{{
-              errors['firstName']
-            }}</mat-error>
-          </mat-form-field>
-        </div>
-        <div *ngIf="!isLoggingIn">
-          <mat-form-field appearance="outline">
-            <mat-label>Last Name</mat-label>
-            <input
-              matInput
-              placeholder="Last Name"
-              formControlName="lastName"
-              required
-              data-test="lastName"
-            />
-            <mat-error *ngIf="form.get('lastName').hasError('required')"
-              >This field is required</mat-error
-            >
-            <mat-error *ngIf="form.get('lastName').hasError('serverError')">{{
-              errors['lastName']
-            }}</mat-error>
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field appearance="outline">
+        @if (!isLoggingIn()) {
+          <div class="auth-form__row">
+            <mat-form-field>
+              <mat-label>First Name</mat-label>
+              <input
+                matInput
+                placeholder="First Name"
+                formControlName="firstName"
+                required
+                data-test="firstName"
+              />
+
+              @if (form.get('firstName')?.hasError('required')) {
+                <mat-error>This field is required</mat-error>
+              }
+
+              @if (form.get('firstName')?.hasError('serverError')) {
+                <mat-error>{{ errors['firstName'] }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        }
+
+        @if (!isLoggingIn()) {
+          <div class="auth-form__row">
+            <mat-form-field>
+              <mat-label>Last Name</mat-label>
+              <input
+                matInput
+                placeholder="Last Name"
+                formControlName="lastName"
+                required
+                data-test="lastName"
+              />
+
+              @if (form.get('lastName')?.hasError('required')) {
+                <mat-error>This field is required</mat-error>
+              }
+
+              @if (form.get('lastName')?.hasError('serverError')) {
+                <mat-error>{{ errors['lastName'] }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        }
+
+        <div class="auth-form__row">
+          <mat-form-field>
             <mat-label>Email</mat-label>
             <input
               type="email"
@@ -52,17 +65,23 @@
               required
               data-test="email"
             />
-            <mat-error *ngIf="form.get('email').hasError('required')"
-              >This field is required</mat-error
-            >
-            <mat-error *ngIf="form.get('email').hasError('email')">Not a valid email</mat-error>
-            <mat-error *ngIf="form.get('email').hasError('serverError')">{{
-              errors['email']
-            }}</mat-error>
+
+            @if (form.get('email')?.hasError('required')) {
+              <mat-error>This field is required</mat-error>
+            }
+
+            @if (form.get('email')?.hasError('email')) {
+              <mat-error>Not a valid email</mat-error>
+            }
+
+            @if (form.get('email')?.hasError('serverError')) {
+              <mat-error>{{ errors['email'] }}</mat-error>
+            }
           </mat-form-field>
         </div>
-        <div>
-          <mat-form-field appearance="outline">
+
+        <div class="auth-form__row">
+          <mat-form-field>
             <mat-label>Password</mat-label>
             <input
               type="password"
@@ -72,29 +91,33 @@
               required
               data-test="password"
             />
-            <mat-error *ngIf="form.get('password').hasError('required')"
-              >This field is required</mat-error
-            >
-            <mat-error *ngIf="form.get('password').hasError('serverError')">{{
-              errors['password']
-            }}</mat-error>
+
+            @if (form.get('password')?.hasError('required')) {
+              <mat-error>This field is required</mat-error>
+            }
+
+            @if (form.get('password')?.hasError('serverError')) {
+              <mat-error>{{ errors['password'] }}</mat-error>
+            }
           </mat-form-field>
         </div>
       </mat-card-content>
+
       <mat-card-actions>
-        <span
-          >{{ isLoggingIn ? "Don't have an account?" : 'Already have an account?' }}
+        <span>
+          {{ isLoggingIn() ? "Don't have an account?" : 'Already have an account?' }}
           <button
-            mat-button
+            matButton
             type="button"
             (click)="toggleAuthMode()"
-            [disabled]="loading"
+            [disabled]="loading()"
             data-test="toggle"
-            >{{ isLoggingIn ? 'Create one' : 'Back to Login' }}</button
           >
+            {{ isLoggingIn() ? 'Create one' : 'Back to Login' }}
+          </button>
         </span>
-        <button mat-raised-button color="primary" data-test="submit" [disabled]="loading">
-          {{ isLoggingIn ? 'Login' : 'Create' }}
+        <button matButton="filled" data-test="submit" [disabled]="loading()">
+          {{ isLoggingIn() ? 'Login' : 'Create' }}
         </button>
       </mat-card-actions>
     </form>

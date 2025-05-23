@@ -1,7 +1,7 @@
 import { comment } from './comment';
 
 export const book = {
-  _id: 'book_id',
+  id: 'book_id',
   title: 'Book Title',
   author: 'Book Author',
   coverUrl: 'uploads/cover.png',

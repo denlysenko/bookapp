@@ -1,10 +1,10 @@
 import { ModelNames } from '@bookapp/api/shared';
-import { User } from '@bookapp/shared/interfaces';
+import type { User } from '@bookapp/shared/interfaces';
 
-import * as DataLoader from 'dataloader';
-import { Connection } from 'mongoose';
+import DataLoader from 'dataloader';
+import type { Connection } from 'mongoose';
 
-import { IDataLoader } from './interfaces/dataloader';
+import type { IDataLoader } from './interfaces/dataloader';
 
 const EXCLUDED_FIELDS = '-salt -password';
 

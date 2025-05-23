@@ -1,18 +1,14 @@
-import React, { ReactElement } from 'react';
-import { RouteProps } from 'react-router';
-import { Navigate, Route } from 'react-router-dom';
-
-import { isNil } from 'lodash';
+import { Navigate } from 'react-router-dom';
 
 import { store } from '@bookapp/react/core';
 import { AUTH_TOKEN } from '@bookapp/shared/constants';
 
-export const AnonymousGuard: React.FC<RouteProps> = (props): ReactElement | null => {
+export const AnonymousGuard = ({ children }) => {
   const accessToken = store.get(AUTH_TOKEN);
 
-  if (!isNil(accessToken)) {
+  if (accessToken) {
     return <Navigate to="/" />;
   }
 
-  return <Route {...props} />;
+  return children;
 };

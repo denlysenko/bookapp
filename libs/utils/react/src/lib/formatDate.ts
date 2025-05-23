@@ -1,5 +1,5 @@
-export function formatDate(date: any): string {
-  const d = new Date(parseInt(date, 10));
+export function formatDate(date: number | string): string {
+  const d = new Date(typeof date === 'string' ? parseInt(date, 10) : date);
 
   return d.toLocaleDateString('de-DE', {
     year: 'numeric',

@@ -1,36 +1,53 @@
-import { ChangeDetectionStrategy, Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  NO_ERRORS_SCHEMA,
+  OnInit,
+  signal,
+  viewChild,
+  ViewContainerRef,
+} from '@angular/core';
 
-import { BooksPageBase } from '@bookapp/angular/base';
-import { LoaderPlatformService, RouterExtensions, StoreService } from '@bookapp/angular/core';
+import { BuyBooksPageBase } from '@bookapp/angular/base';
+import { LoaderPlatformService, RouterExtensions } from '@bookapp/angular/core';
 import { BooksService } from '@bookapp/angular/data-access';
 import { BookSearchComponent, BooksListComponent } from '@bookapp/angular/ui-mobile';
 import { Book, BooksFilter } from '@bookapp/shared/interfaces';
 
-import { ModalDialogOptions, ModalDialogService } from '@nativescript/angular';
-import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
+import { Drawer } from '@nativescript-community/ui-drawer';
 
-import { BehaviorSubject } from 'rxjs';
+import {
+  ModalDialogOptions,
+  ModalDialogService,
+  NativeScriptCommonModule,
+} from '@nativescript/angular';
+import { Application, getViewById, SegmentedBarItem } from '@nativescript/core';
+
 import { takeUntil } from 'rxjs/operators';
-
-import { getViewById, SegmentedBarItem } from '@nativescript/core';
-import { getRootView } from '@nativescript/core/application';
 
 interface SortOption {
   value: BooksFilter['sortValue'];
   label: string;
 }
 
-/* TODO: move common of this class and browse books class logic to the base class. didn't do during the development because jest could not transform Nativescript files, and threw errors */
 @Component({
-  moduleId: module.id,
-  selector: 'bookapp-buy-books-page',
+  imports: [NativeScriptCommonModule, AsyncPipe, BooksListComponent],
   templateUrl: './buy-books-page.component.html',
-  styleUrls: ['./buy-books-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [BooksService],
+  schemas: [NO_ERRORS_SCHEMA],
 })
-export class BuyBooksPageComponent extends BooksPageBase {
-  sortOptions: SortOption[] = [
+export class BuyBooksPageComponent extends BuyBooksPageBase implements OnInit {
+  readonly booksList = viewChild(BooksListComponent);
+
+  readonly #viewContainerRef = inject(ViewContainerRef);
+  readonly #modalService = inject(ModalDialogService);
+  readonly #routerExtensions = inject(RouterExtensions);
+  readonly #loaderService = inject(LoaderPlatformService);
+
+  readonly sortOptions: SortOption[] = [
     {
       value: 'rating_desc',
       label: 'All books',
@@ -45,80 +62,68 @@ export class BuyBooksPageComponent extends BooksPageBase {
     },
   ];
 
-  sortItems: SegmentedBarItem[] = this.sortOptions.map((option) => {
+  readonly sortItems: SegmentedBarItem[] = this.sortOptions.map((option) => {
     const item = new SegmentedBarItem();
     item.title = option.label;
     return item;
   });
 
-  @ViewChild(BooksListComponent, { static: true })
-  booksList: BooksListComponent;
+  readonly selectedOption = signal(0);
 
-  private selectedOption = new BehaviorSubject<number>(0);
-
-  constructor(
-    private readonly viewContainerRef: ViewContainerRef,
-    private readonly modalService: ModalDialogService,
-    private readonly routerExtensions: RouterExtensions,
-    private readonly loaderService: LoaderPlatformService,
-    storeService: StoreService,
-    booksService: BooksService
-  ) {
-    super(storeService, booksService, true);
-    this.setInitialSorting();
+  ngOnInit() {
+    this.#setInitialSorting();
     this.loading$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((loading) => (loading ? this.loaderService.start() : this.loaderService.stop()));
-  }
-
-  get selectedOption$() {
-    return this.selectedOption.asObservable();
+      .subscribe((loading) => (loading ? this.#loaderService.start() : this.#loaderService.stop()));
   }
 
   onDrawerButtonTap() {
-    const sideDrawer = getViewById(getRootView() as any, 'drawer') as RadSideDrawer;
-    sideDrawer.toggleDrawerState();
+    const sideDrawer = getViewById(Application.getRootView(), 'drawer') as Drawer;
+    sideDrawer.toggle();
   }
 
-  onSelectedIndexChange(args: any) {
+  onSelectedIndexChange(args: { object: { selectedIndex: number } }) {
     const selectedIndex = args.object.selectedIndex;
-    this.selectedOption.next(selectedIndex);
+    this.selectedOption.set(selectedIndex);
 
     const { value } = this.sortOptions[selectedIndex];
 
     super.sort(value);
-    this.booksList.scrollToIndex(0);
+    this.booksList()?.scrollToIndex(0);
   }
 
   async onSearchButtonTap() {
     const options: ModalDialogOptions = {
       context: { paid: true },
       fullscreen: true,
-      animated: false,
-      viewContainerRef: this.viewContainerRef,
+      animated: true,
+      viewContainerRef: this.#viewContainerRef,
+      ios: {
+        presentationStyle: 6, // UIModalPresentationOverCurrentContext
+      },
     };
 
-    const book: Book = await this.modalService.showModal(BookSearchComponent, options);
+    const book: Book = await this.#modalService.showModal(BookSearchComponent, options);
 
     if (book) {
       // wait when modal close
       setTimeout(() => {
-        this.routerExtensions.navigateByUrl(
+        this.#routerExtensions.navigateByUrl(
           book.paid
-            ? `/books/buy/${book.url}?bookId=${book._id}`
-            : `/books/browse/${book.url}?bookId=${book._id}`
+            ? `/books/buy/${book.url}?bookId=${book.id}`
+            : `/books/browse/${book.url}?bookId=${book.id}`
         );
       }, 0);
     }
   }
 
-  private setInitialSorting() {
-    const filter = this.filter.getValue();
+  #setInitialSorting() {
+    const filter = this.filter();
 
     if (filter) {
       const { sortValue } = filter;
       const index = this.sortOptions.findIndex((option) => option.value === sortValue);
-      this.selectedOption.next(index !== -1 ? index : 0);
+      this.selectedOption.set(index !== -1 ? index : 0);
     }
   }
 }

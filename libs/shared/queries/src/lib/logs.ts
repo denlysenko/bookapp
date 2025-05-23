@@ -5,11 +5,11 @@ export const LOGS_QUERY = gql`
     logs(skip: $skip, first: $first, orderBy: $orderBy) {
       count
       rows {
-        _id
+        id
         action
         createdAt
         book {
-          _id
+          id
           title
           author
           url
@@ -24,6 +24,7 @@ export const LAST_LOGS_QUERY = gql`
   query lastLogs {
     logs(skip: 0, first: 3, orderBy: createdAt_desc) {
       rows {
+        id
         action
         createdAt
         book {
@@ -36,8 +37,9 @@ export const LAST_LOGS_QUERY = gql`
 `;
 
 export const LOG_CREATED_SUBSCRIPTION = gql`
-  subscription($userId: ID!) {
+  subscription ($userId: ID!) {
     logCreated(userId: $userId) {
+      id
       action
       createdAt
       book {

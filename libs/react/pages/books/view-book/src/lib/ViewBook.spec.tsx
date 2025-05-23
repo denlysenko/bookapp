@@ -1,6 +1,5 @@
-import React from 'react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { fireEvent, render, waitFor } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { InMemoryCache } from '@apollo/client/core';
 import { MockedProvider } from '@apollo/client/testing';
@@ -15,7 +14,7 @@ import {
   RATE_BOOK_MUTATION,
   REMOVE_FROM_BOOKMARKS_MUTATION,
 } from '@bookapp/shared/queries';
-import { book, user } from '@bookapp/testing';
+import { book, user } from '@bookapp/testing/react';
 
 import ViewBook from './ViewBook';
 
@@ -42,7 +41,7 @@ const bookMock = {
         ...b,
         comments: [
           {
-            _id: book.comments[0]._id,
+            id: book.comments[0].id,
             text: book.comments[0].text,
             createdAt: book.comments[0].createdAt,
             author: {
@@ -62,7 +61,7 @@ const bookmarksMock = {
   request: {
     query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
     variables: {
-      bookId: book._id,
+      bookId: book.id,
     },
   },
   result: {
@@ -82,7 +81,7 @@ const addToBookmarksMock = {
     query: ADD_TO_BOOKMARKS_MUTATION,
     variables: {
       type: BOOKMARKS.MUSTREAD,
-      bookId: book._id,
+      bookId: book.id,
     },
   },
   result: {
@@ -100,7 +99,7 @@ const removeFromBookmarksMock = {
     query: REMOVE_FROM_BOOKMARKS_MUTATION,
     variables: {
       type: BOOKMARKS.FAVORITES,
-      bookId: book._id,
+      bookId: book.id,
     },
   },
   result: {
@@ -118,7 +117,7 @@ const rateBookMock = {
     query: RATE_BOOK_MUTATION,
     variables: {
       rate: 3,
-      bookId: book._id,
+      bookId: book.id,
     },
   },
   result: {
@@ -138,13 +137,13 @@ const submitCommentMock = {
     query: ADD_COMMENT_MUTATION,
     variables: {
       text: comment,
-      bookId: book._id,
+      bookId: book.id,
     },
   },
   result: {
     data: {
       addComment: {
-        _id: `${book.comments[0]._id}123`,
+        id: `${book.comments[0].id}123`,
         text: comment,
         createdAt: book.comments[0].createdAt,
         author: {
@@ -168,7 +167,7 @@ function renderWithRouter(additionalMocks = []) {
 
   return render(
     <MockedProvider cache={cache} mocks={[bookMock, bookmarksMock, ...additionalMocks]}>
-      <MemoryRouter initialEntries={[`/books/browse/${author}/${slug}?bookId=${book._id}`]}>
+      <MemoryRouter initialEntries={[`/books/browse/${author}/${slug}?bookId=${book.id}`]}>
         <Routes>
           <Route path="/books/browse/:author/:slug" element={<ViewBook />} />
         </Routes>

@@ -1,5 +1,3 @@
-// tslint:disable: max-union-size
-
 export interface BooksFilter {
   searchQuery: string;
   sortValue:

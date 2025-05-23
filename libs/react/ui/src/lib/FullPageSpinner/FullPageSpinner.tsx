@@ -1,6 +1,6 @@
-import React from 'react';
+import { CSSProperties } from 'react';
 
-const styles: React.CSSProperties = {
+const styles: CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -16,7 +16,7 @@ const styles: React.CSSProperties = {
 
 export const FullPageSpinner = () => (
   <div style={styles}>
-    <img src="/assets/images/loader.gif" alt="loader" />
+    <img src="/images/loader.gif" alt="loader" />
   </div>
 );
 

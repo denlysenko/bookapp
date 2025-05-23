@@ -1,10 +1,9 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AbstractControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { MockFeedbackPlatformService } from '@bookapp/testing';
+import { MockFeedbackPlatformService } from '@bookapp/testing/angular';
 
 import { PasswordFormComponent } from './password-form.component';
 
@@ -12,21 +11,17 @@ describe('PasswordFormComponent', () => {
   let component: PasswordFormComponent;
   let fixture: ComponentFixture<PasswordFormComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule],
-        declarations: [PasswordFormComponent],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-        providers: [
-          {
-            provide: FeedbackPlatformService,
-            useValue: MockFeedbackPlatformService,
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [PasswordFormComponent],
+      providers: [
+        {
+          provide: FeedbackPlatformService,
+          useValue: MockFeedbackPlatformService,
+        },
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PasswordFormComponent);
@@ -40,8 +35,8 @@ describe('PasswordFormComponent', () => {
 
   it('should init form', () => {
     expect(component.form.value).toEqual({
-      oldPassword: null,
-      password: null,
+      oldPassword: '',
+      password: '',
     });
   });
 
@@ -52,8 +47,9 @@ describe('PasswordFormComponent', () => {
 
       beforeEach(() => {
         oldPasswordField = component.form.get('oldPassword');
-        input = fixture.debugElement.query(By.css('input[formcontrolname=oldPassword]'))
-          .nativeElement;
+        input = fixture.debugElement.query(
+          By.css('input[formcontrolname=oldPassword]')
+        ).nativeElement;
       });
 
       it('should have required error', () => {
@@ -103,7 +99,6 @@ describe('PasswordFormComponent', () => {
     it('should emit formSubmitted if form is valid', () => {
       const formValue = {
         oldPassword: 'oldPassword',
-        // tslint:disable-next-line: no-hardcoded-credentials
         password: 'newPassword',
       };
       component.form.patchValue(formValue);

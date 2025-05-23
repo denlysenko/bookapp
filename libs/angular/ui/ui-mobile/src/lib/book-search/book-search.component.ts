@@ -1,48 +1,49 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  NO_ERRORS_SCHEMA,
+  OnInit,
+  signal,
+} from '@angular/core';
 
 import { BaseComponent } from '@bookapp/angular/base';
 import { BooksService } from '@bookapp/angular/data-access';
 import { Book } from '@bookapp/shared/interfaces';
 
-import { ModalDialogParams } from '@nativescript/angular';
+import { ModalDialogParams, NativeScriptCommonModule } from '@nativescript/angular';
+import { isIOS, ObservableArray, SearchBar } from '@nativescript/core';
 
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
-
-import * as application from '@nativescript/core/application';
-import { ObservableArray, SearchBar } from '@nativescript/core';
 
 const SEARCH_FIELD = 'title';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare const UIColor: any;
+
 @Component({
-  moduleId: module.id,
   selector: 'bookapp-book-search',
+  imports: [NativeScriptCommonModule],
   templateUrl: './book-search.component.html',
-  styleUrls: ['./book-search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class BookSearchComponent extends BaseComponent implements OnInit {
-  private searchText$ = new Subject<string>();
-  private books = new BehaviorSubject<ObservableArray<Book> | null>(null);
+  readonly #params = inject(ModalDialogParams);
+  readonly #booksService = inject(BooksService);
 
-  constructor(
-    private readonly params: ModalDialogParams,
-    private readonly booksService: BooksService
-  ) {
-    super();
-  }
+  readonly #searchText$ = new Subject<string>();
 
-  get books$() {
-    return this.books.asObservable();
-  }
+  readonly books = signal<ObservableArray<Book> | null>(null);
 
   ngOnInit() {
-    this.searchText$
+    this.#searchText$
       .pipe(
         debounceTime(500),
         distinctUntilChanged(),
         switchMap((searchValue) =>
-          this.booksService.getBooks(this.params.context.paid, {
+          this.#booksService.getBooks(this.#params.context.paid, {
             field: SEARCH_FIELD,
             search: searchValue,
           })
@@ -50,32 +51,33 @@ export class BookSearchComponent extends BaseComponent implements OnInit {
         map(({ data: { books } }) => books.rows),
         takeUntil(this.destroy$)
       )
-      .subscribe((books) => this.books.next(new ObservableArray<Book>(books)));
+      .subscribe((books) => this.books.set(new ObservableArray<Book>(books)));
   }
 
-  onSearchLoaded(args: any) {
-    const sb = args.object as SearchBar;
+  onSearchLoaded(args: { object: SearchBar }) {
+    const sb = args.object;
 
-    if (application.ios) {
-      sb.focus();
+    if (isIOS) {
+      sb.ios.backgroundColor = UIColor.whiteColor;
       sb.ios.showsCancelButton = true;
+      sb.focus();
     }
   }
 
   onClear() {
-    this.params.closeCallback(null);
+    this.#params.closeCallback(null);
   }
 
-  onTextChanged(args: any) {
+  onTextChanged(args: { object: SearchBar }) {
     const searchValue = args.object.text;
-    this.searchText$.next(searchValue);
+    this.#searchText$.next(searchValue);
   }
 
   onItemSelect({ index }) {
-    this.params.closeCallback(this.books.getValue().getItem(index));
+    this.#params.closeCallback(this.books().getItem(index));
   }
 
   onSubmit() {
-    this.params.closeCallback(null);
+    this.#params.closeCallback(null);
   }
 }

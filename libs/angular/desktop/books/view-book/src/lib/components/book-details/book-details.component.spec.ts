@@ -1,13 +1,8 @@
-import { CommonModule } from '@angular/common';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
-import { RatingModule } from '@bookapp/angular/ui-desktop';
 import { BOOKMARKS, ROLES } from '@bookapp/shared/enums';
-import { book, user } from '@bookapp/testing';
+import { book, user } from '@bookapp/testing/angular';
 
 import { BookDetailsComponent } from './book-details.component';
 
@@ -15,21 +10,18 @@ describe('BookDetailsComponent', () => {
   let component: BookDetailsComponent;
   let fixture: ComponentFixture<BookDetailsComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [CommonModule, FormsModule, RatingModule, MatIconModule, RouterTestingModule],
-        declarations: [BookDetailsComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [BookDetailsComponent],
+      providers: [provideRouter([])],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BookDetailsComponent);
     component = fixture.componentInstance;
-    component.book = book;
-    component.bookmarks = [];
+    fixture.componentRef.setInput('book', book);
+    fixture.componentRef.setInput('bookmarks', []);
     fixture.detectChanges();
   });
 
@@ -49,7 +41,7 @@ describe('BookDetailsComponent', () => {
     it('should emit bookmarkAdded event', () => {
       expect(component.bookmarkAdded.emit).toHaveBeenCalledWith({
         type: BOOKMARKS.FAVORITES,
-        bookId: book._id,
+        bookId: book.id,
       });
     });
   });
@@ -59,7 +51,7 @@ describe('BookDetailsComponent', () => {
 
     beforeEach(() => {
       jest.spyOn(component.bookmarkRemoved, 'emit');
-      component.bookmarks = [BOOKMARKS.FAVORITES];
+      fixture.componentRef.setInput('bookmarks', [BOOKMARKS.FAVORITES]);
       fixture.detectChanges();
       button = fixture.nativeElement.querySelector('#favorites');
       button.click();
@@ -68,7 +60,7 @@ describe('BookDetailsComponent', () => {
     it('should emit bookmarkRemoved event', () => {
       expect(component.bookmarkRemoved.emit).toHaveBeenCalledWith({
         type: BOOKMARKS.FAVORITES,
-        bookId: book._id,
+        bookId: book.id,
       });
     });
   });
@@ -83,7 +75,7 @@ describe('BookDetailsComponent', () => {
       fixture.detectChanges();
 
       expect(component.bookRated.emit).toHaveBeenCalledWith({
-        bookId: book._id,
+        bookId: book.id,
         rate: 3,
       });
     });
@@ -95,7 +87,7 @@ describe('BookDetailsComponent', () => {
     });
 
     it('should show edit link', () => {
-      component.user = { ...user, roles: [ROLES.ADMIN] };
+      fixture.componentRef.setInput('user', { ...user, roles: [ROLES.ADMIN] });
       fixture.detectChanges();
 
       expect(fixture.nativeElement.querySelector('#edit')).not.toBeNull();

@@ -1,22 +1,18 @@
-<GridLayout class="p-5 list">
+<GridLayout class="pt-[5] px-[5]">
   <RadListView
     #listView
     loadOnDemandMode="Auto"
-    backgroundColor="transparent"
-    [items]="books$ | async"
-    (itemLoading)="onItemLoading($event)"
+    [items]="_books()"
     (loadMoreDataRequested)="loadMore.emit()"
   >
     <ListViewGridLayout
       tkListViewLayout
       scrollDirection="Vertical"
       spanCount="2"
-      ios:itemHeight="330"
+      [itemHeight]="itemHeight()"
     ></ListViewGridLayout>
-    <ng-template tkListItemTemplate android:height="330" let-book="item">
-      <StackLayout class="list-item">
-        <bookapp-book-list-item [book]="book" (rate)="rate.emit($event)"></bookapp-book-list-item>
-      </StackLayout>
+    <ng-template tkListItemTemplate let-book="item">
+      <bookapp-book-list-item [book]="book" (rate)="rate.emit($event)" />
     </ng-template>
   </RadListView>
 </GridLayout>

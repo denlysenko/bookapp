@@ -1,13 +1,11 @@
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 
 import { BestBooksService } from '@bookapp/angular/data-access';
-import { book, MockAngularBestBooksService } from '@bookapp/testing';
+import { book, MockAngularBestBooksService } from '@bookapp/testing/angular';
 
 import { of } from 'rxjs';
 
-import { BestBooksModule } from '../../best-books.module';
 import { BestBooksPageComponent } from './best-books-page.component';
 
 describe('BestBooksPageComponent', () => {
@@ -16,30 +14,25 @@ describe('BestBooksPageComponent', () => {
   let booksService: BestBooksService;
 
   beforeAll(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).IntersectionObserver = jest.fn(() => ({
       observe: () => null,
       disconnect: () => null,
     }));
   });
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, RouterTestingModule, BestBooksModule],
-      })
-        .overrideComponent(BestBooksPageComponent, {
-          set: {
-            providers: [
-              {
-                provide: BestBooksService,
-                useValue: MockAngularBestBooksService,
-              },
-            ],
-          },
-        })
-        .compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BestBooksPageComponent],
+      providers: [
+        provideRouter([]),
+        {
+          provide: BestBooksService,
+          useValue: MockAngularBestBooksService,
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BestBooksPageComponent);
@@ -68,11 +61,10 @@ describe('BestBooksPageComponent', () => {
     });
 
     it('should loadMore books', () => {
-      jest
-        .spyOn(booksService, 'watchBooks')
-        .mockImplementationOnce(() =>
-          of({ data: { bestBooks: { rows: [book], count: 2 } } } as any)
-        );
+      jest.spyOn(booksService, 'watchBooks').mockImplementationOnce(() =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        of({ data: { bestBooks: { rows: [book], count: 2 } } } as any)
+      );
 
       fixture = TestBed.createComponent(BestBooksPageComponent);
       component = fixture.componentInstance;
@@ -85,7 +77,7 @@ describe('BestBooksPageComponent', () => {
 
   describe('rate()', () => {
     it('should rate book', fakeAsync(() => {
-      const event = { bookId: book._id, rate: 5 };
+      const event = { bookId: book.id, rate: 5 };
       component.rate(event);
       tick();
       expect(booksService.rateBook).toHaveBeenCalled();

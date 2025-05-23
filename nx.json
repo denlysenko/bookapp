@@ -1,252 +1,126 @@
 {
-  "npmScope": "bookapp",
-  "implicitDependencies": {
-    "angular.json": "*",
-    "package.json": "*",
-    "tsconfig.json": "*",
-    "tslint.json": "*",
-    "nx.json": "*",
-    ".eslintrc.json": "*"
-  },
-  "projects": {
-    "api": {
-      "tags": ["type:app", "scope:api", "platform:server"]
-    },
-    "api-e2e": {
-      "tags": []
-    },
-    "react-desktop": {
-      "tags": []
-    },
-    "react-desktop-e2e": {
-      "tags": []
-    },
-    "angular-desktop-e2e": {
-      "tags": []
-    },
-    "angular-desktop": {
-      "tags": []
-    },
-    "api-graphql": {
-      "tags": ["scope:api", "type:feature", "platform:server"]
-    },
-    "api-auth": {
-      "tags": ["scope:api", "type:feature", "platform:server"]
-    },
-    "api-users": {
-      "tags": ["scope:api", "type:feature", "platform:server"]
-    },
-    "api-shared": {
-      "tags": ["scope:api", "type:shared", "platform:server"]
-    },
-    "api-database": {
-      "tags": ["scope:api", "type:feature", "platform:server"]
-    },
-    "testing": {
-      "tags": []
-    },
-    "api-files": {
-      "tags": ["scope:api", "type:feature", "platform:server"]
-    },
-    "api-logs": {
-      "tags": ["scope:api", "type:feature", "platform:server"]
-    },
-    "api-bookmarks": {
-      "tags": ["scope:api", "type:feature", "platform:server"]
-    },
-    "api-books": {
-      "tags": ["scope:api", "type:feature", "platform:server"]
-    },
-    "api-comments": {
-      "tags": ["scope:api", "type:feature", "platform:server"]
-    },
-    "api-dataloaders": {
-      "tags": ["scope:api.type:feature", "platform:server"]
-    },
-    "angular-mobile": {
-      "tags": []
-    },
-    "angular-core": {
-      "tags": ["scope:angular"]
-    },
-    "angular-graphql": {
-      "tags": ["scope:angular"]
-    },
-    "angular-data-access": {
-      "tags": ["scope:angular", "type:data-access"]
-    },
-    "angular-base": {
-      "tags": []
-    },
-    "angular-desktop-auth": {
-      "tags": []
-    },
-    "angular-mobile-auth": {
-      "tags": []
-    },
-    "angular-desktop-main-layout": {
-      "tags": []
-    },
-    "angular-shared": {
-      "tags": []
-    },
-    "angular-mobile-main-layout": {
-      "tags": []
-    },
-    "angular-desktop-password": {
-      "tags": []
-    },
-    "angular-mobile-password": {
-      "tags": []
-    },
-    "angular-desktop-profile": {
-      "tags": []
-    },
-    "angular-ui-desktop": {
-      "tags": []
-    },
-    "angular-mobile-profile": {
-      "tags": []
-    },
-    "angular-desktop-books-add-book": {
-      "tags": []
-    },
-    "angular-desktop-books-browse-books": {
-      "tags": []
-    },
-    "angular-desktop-books-buy-books": {
-      "tags": []
-    },
-    "api-auth-tokens": {
-      "tags": ["scope:api", "type:feature", "platform:server"]
-    },
-    "angular-mobile-books-browse-books": {
-      "tags": []
-    },
-    "angular-ui-mobile": {
-      "tags": []
-    },
-    "angular-mobile-books-buy-books": {
-      "tags": []
-    },
-    "angular-desktop-books-view-book": {
-      "tags": []
-    },
-    "angular-mobile-books-view-book": {
-      "tags": []
-    },
-    "angular-desktop-bookmarks": {
-      "tags": []
-    },
-    "angular-desktop-books-best-books": {
-      "tags": []
-    },
-    "angular-desktop-history": {
-      "tags": []
-    },
-    "angular-mobile-bookmarks": {
-      "tags": []
-    },
-    "angular-mobile-books-best-books": {
-      "tags": []
-    },
-    "angular-mobile-history": {
-      "tags": []
-    },
-    "angular-desktop-books-read-book": {
-      "tags": []
-    },
-    "angular-mobile-books-read-book": {
-      "tags": []
-    },
-    "shared-interfaces": {
-      "tags": []
-    },
-    "shared-enums": {
-      "tags": []
-    },
-    "shared-queries": {
-      "tags": []
-    },
-    "shared-constants": {
-      "tags": []
-    },
-    "react-core": {
-      "tags": []
-    },
-    "shared-services": {
-      "tags": []
-    },
-    "react-graphql": {
-      "tags": []
-    },
-    "react-data-access": {
-      "tags": []
-    },
-    "react-pages-auth": {
-      "tags": []
-    },
-    "react-ui": {
-      "tags": []
-    },
-    "react-guards": {
-      "tags": []
-    },
-    "react-pages-main": {
-      "tags": []
-    },
-    "react-pages-password": {
-      "tags": []
-    },
-    "react-pages-profile": {
-      "tags": []
-    },
-    "shared-environments": {
-      "tags": []
-    },
-    "utils-api": {
-      "tags": []
-    },
-    "utils-angular": {
-      "tags": []
-    },
-    "utils-react": {
-      "tags": []
-    },
-    "react-pages-books-add-book": {
-      "tags": []
-    },
-    "react-pages-books-browse-books": {
-      "tags": []
-    },
-    "react-state": {
-      "tags": []
-    },
-    "react-pages-books-buy-books": {
-      "tags": []
-    },
-    "react-pages-books-view-book": {
-      "tags": []
-    },
-    "react-pages-bookmarks": {
-      "tags": []
-    },
-    "react-pages-books-best-books": {
-      "tags": []
-    },
-    "react-pages-books-read-book": {
-      "tags": []
-    },
-    "react-pages-history": {
-      "tags": []
+  "cli": {
+    "warnings": {
+      "typescriptMismatch": false,
+      "versionMismatch": false
     }
   },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
+  "defaultProject": "angular-desktop",
+  "generators": {
+    "@nx/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nx/angular:library": {
+      "linter": "none",
+      "unitTestRunner": "jest"
+    },
+    "@nx/angular:component": {
+      "style": "scss",
+      "type": "component"
+    },
+    "@nx/react": {
+      "library": {
+        "unitTestRunner": "jest"
       }
+    },
+    "@schematics/angular:component": {
+      "type": "component"
+    },
+    "@nx/angular:directive": {
+      "type": "directive"
+    },
+    "@schematics/angular:directive": {
+      "type": "directive"
+    },
+    "@nx/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@nx/angular:scam": {
+      "type": "component"
+    },
+    "@nx/angular:scam-directive": {
+      "type": "directive"
+    },
+    "@nx/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@nx/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@nx/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@nx/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@nx/angular:resolver": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
     }
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"],
+      "cache": true
+    },
+    "e2e": {
+      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+      "cache": true
+    },
+    "@nx/jest:jest": {
+      "cache": true,
+      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+      "options": {
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "@nativescript/nx:build": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    }
+  },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [
+      "{workspaceRoot}/tsconfig.json",
+      "{workspaceRoot}/nx.json",
+      "{workspaceRoot}/babel.config.json"
+    ],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/src/test-setup.[jt]s"
+    ]
+  },
+  "parallel": 1,
+  "defaultBase": "master"
 }

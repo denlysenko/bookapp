@@ -1,0 +1,19 @@
+{
+  "name": "react-pages-main",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/react/pages/main/src",
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/react/pages/main/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/react/pages/main"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": ["scope:react"]
+}

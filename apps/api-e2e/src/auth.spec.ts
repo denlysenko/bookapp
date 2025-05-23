@@ -1,23 +1,24 @@
-import { AuthModule, AuthService } from '@bookapp/api/auth';
+import { AuthModule } from '@bookapp/api/auth';
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
 import { GraphqlModule } from '@bookapp/api/graphql';
-import { AUTH_ERRORS, ModelNames } from '@bookapp/api/shared';
-import { UsersService, USER_VALIDATION_ERRORS } from '@bookapp/api/users';
+import { AUTH_ERRORS, ModelNames, MongooseValidationFilter } from '@bookapp/api/shared';
+import { USER_VALIDATION_ERRORS, UsersService } from '@bookapp/api/users';
 import {
   authPayload,
   MockAuthTokensService,
   MockConfigService,
+  mockConnection,
   MockModel,
   MockUsersService,
-} from '@bookapp/testing';
+} from '@bookapp/testing/api';
 
 import { INestApplication } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { getModelToken } from '@nestjs/mongoose';
+import { getConnectionToken, getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
 import { ValidationError } from 'mongoose/lib/error';
-import * as request from 'supertest';
+import request from 'supertest';
 
 const validationError = new ValidationError();
 validationError.errors = {
@@ -35,20 +36,22 @@ validationError.errors = {
 describe('AuthModule', () => {
   let app: INestApplication;
   let usersService: UsersService;
-  let authService: AuthService;
 
   beforeAll(async () => {
-    const module = await Test.createTestingModule({
+    const moduleBuilder = Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
           isGlobal: true,
         }),
+        MongooseModule.forRoot('test'),
         AuthModule,
         GraphqlModule,
       ],
     })
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
+      .overrideProvider(getConnectionToken())
+      .useValue(mockConnection)
       .overrideProvider(getModelToken(ModelNames.USER))
       .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.AUTH_TOKEN))
@@ -56,13 +59,14 @@ describe('AuthModule', () => {
       .overrideProvider(UsersService)
       .useValue(MockUsersService)
       .overrideProvider(AuthTokensService)
-      .useValue(MockAuthTokensService)
-      .compile();
+      .useValue(MockAuthTokensService);
+
+    const module = await moduleBuilder.compile();
 
     usersService = module.get<UsersService>(UsersService);
-    authService = module.get<AuthService>(AuthService);
 
     app = module.createNestApplication();
+    app.useGlobalFilters(new MongooseValidationFilter());
     await app.init();
   });
 
@@ -88,35 +92,40 @@ describe('AuthModule', () => {
     it('should not login if email is not found', async () => {
       jest.spyOn(usersService, 'findByEmail').mockImplementationOnce(() => Promise.resolve(null));
 
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `mutation { 
-            login(email: "test@test.com", password: "password") { 
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
+            login(email: "test@test.com", password: "password") {
               accessToken
               refreshToken
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-      expect(error.message).toEqual(AUTH_ERRORS.INCORRECT_EMAIL_ERR);
+      expect(error.message).toEqual(AUTH_ERRORS.INCORRECT_EMAIL_OR_PASSWORD_ERR);
     });
 
     it('should not login if password is incorrect', async () => {
       jest
         .spyOn(usersService, 'findByEmail')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .mockImplementationOnce(() => Promise.resolve({ authenticate: () => false } as any));
 
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `mutation { 
-            login(email: "test@test.com", password: "password") { 
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
+            login(email: "test@test.com", password: "password") {
               accessToken
               refreshToken
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-      expect(error.message).toEqual(AUTH_ERRORS.INCORRECT_PASSWORD_ERR);
+      expect(error.message).toEqual(AUTH_ERRORS.INCORRECT_EMAIL_OR_PASSWORD_ERR);
     });
   });
 
@@ -149,8 +158,10 @@ describe('AuthModule', () => {
         .spyOn(usersService, 'create')
         .mockImplementationOnce(() => Promise.reject(validationError));
 
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `mutation {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
             signup(user: {
               firstName: "",
               lastName: "",
@@ -161,11 +172,11 @@ describe('AuthModule', () => {
               refreshToken
             }
           }`,
-      });
+        });
 
       const [errors] = res.body.errors;
 
-      expect(errors).toEqual({
+      expect(errors.extensions.errors).toEqual({
         lastName: { message: USER_VALIDATION_ERRORS.LAST_NAME_REQUIRED_ERR },
         firstName: { message: USER_VALIDATION_ERRORS.FIRST_NAME_REQUIRED_ERR },
         email: { message: USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR },

@@ -4,11 +4,11 @@ import { getString, remove, setString } from '@nativescript/core/application-set
 
 @Injectable()
 export class StorageService {
-  getItem(key: string): any {
+  getItem(key: string): string {
     return getString(key);
   }
 
-  setItem(key: string, value: any) {
+  setItem(key: string, value: string) {
     setString(key, value);
   }
 

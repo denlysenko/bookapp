@@ -1,6 +1,5 @@
-import React from 'react';
-import { Link, MemoryRouter, Route, Routes } from 'react-router-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { Link, MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { MockedProvider } from '@apollo/client/testing';
 
@@ -23,8 +22,16 @@ describe('AnonymousGuard', () => {
         <MemoryRouter initialEntries={['/test']}>
           <Link to="/protected">Protected</Link>
           <Routes>
+            <Route element={<div>root</div>} path="/" />
             <Route element={<div>test</div>} path="/test" />
-            <AnonymousGuard element={<TestRoute />} path="/protected" />
+            <Route
+              element={
+                <AnonymousGuard>
+                  <TestRoute />
+                </AnonymousGuard>
+              }
+              path="/protected"
+            />
           </Routes>
         </MemoryRouter>
       </MockedProvider>
@@ -43,8 +50,16 @@ describe('AnonymousGuard', () => {
         <MemoryRouter initialEntries={['/test']}>
           <Link to="/protected">Protected</Link>
           <Routes>
+            <Route element={<div>root</div>} path="/" />
             <Route element={<div>test</div>} path="/test" />
-            <AnonymousGuard element={<TestRoute />} path="/protected" />
+            <Route
+              element={
+                <AnonymousGuard>
+                  <TestRoute />
+                </AnonymousGuard>
+              }
+              path="/protected"
+            />
           </Routes>
         </MemoryRouter>
       </MockedProvider>

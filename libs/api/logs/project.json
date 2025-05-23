@@ -1,0 +1,19 @@
+{
+  "name": "api-logs",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/logs/src",
+  "projectType": "library",
+  "tags": ["scope:api", "type:feature", "platform:server"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/api/logs/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/api/logs"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

@@ -1,18 +1,17 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { BookmarksPageBase } from '@bookapp/angular/base';
 import { BookmarksService } from '@bookapp/angular/data-access';
+import { BooksListComponent, PreloaderComponent } from '@bookapp/angular/ui-desktop';
 
 @Component({
-  selector: 'bookapp-bookmarks-page',
+  imports: [AsyncPipe, MatToolbarModule, PreloaderComponent, BooksListComponent],
   templateUrl: './bookmarks-page.component.html',
   styleUrls: ['./bookmarks-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [BookmarksService],
 })
-export class BookmarksPageComponent extends BookmarksPageBase {
-  constructor(route: ActivatedRoute, bookmarksService: BookmarksService) {
-    super(route, bookmarksService);
-  }
-}
+export class BookmarksPageComponent extends BookmarksPageBase {}

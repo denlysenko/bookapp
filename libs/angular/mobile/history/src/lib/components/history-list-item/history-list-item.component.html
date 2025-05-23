@@ -1,16 +1,19 @@
-<CardView *ngIf="log" margin="5" elevation="4" shadowOffsetHeight="1">
-  <StackLayout class="mat-card">
-    <Label class="date" [text]="log.createdAt | date: 'dd.MM.yyyy HH:mm:ss'"></Label>
-    <Label class="action" [text]="actions[log.action]"></Label>
-    <StackLayout
-      class="info"
-      nsRouterLink="{{
-        log.book.paid ? '/books/buy/' + log.book.url : '/books/browse/' + log.book.url
-      }}"
-      [queryParams]="{ bookId: log.book._id }"
-    >
-      <Label class="title" [text]="log.book.title"> </Label>
-      <Label class="author" [text]="'by ' + log.book.author"></Label>
+@let _log = log();
+
+@if (_log) {
+  <CardView margin="5" elevation="4" shadowOffsetHeight="1">
+    <StackLayout class="p-4 bg-white rounded-lg">
+      <Label class="mb-2.5 text-xs" [text]="_log.createdAt | date: 'dd.MM.yyyy HH:mm:ss'"></Label>
+      <Label class="mb-2.5" [text]="actions[_log.action]"></Label>
+      <StackLayout
+        nsRouterLink="{{
+          _log.book.paid ? `/books/buy/${_log.book.url}` : `/books/browse/${_log.book.url}`
+        }}"
+        [queryParams]="{ bookId: _log.book.id }"
+      >
+        <Label class="text-base capitalize mb-1.5" [text]="_log.book.title"></Label>
+        <Label class="text-xs" [text]="`by ${_log.book.author}`"></Label>
+      </StackLayout>
     </StackLayout>
-  </StackLayout>
-</CardView>
+  </CardView>
+}

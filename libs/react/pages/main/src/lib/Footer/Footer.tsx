@@ -1,27 +1,22 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 
-import AppBar from '@material-ui/core/AppBar';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
+import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
 
-import { useFooterStyles } from './useFooterStyles';
+import { StyledFooter } from './StyledFooter';
 
-export const Footer = () => {
-  const classes = useFooterStyles();
-
-  return (
-    <AppBar className={classes.appBar} position="fixed" color="primary">
-      <Toolbar className={classes.footer}>
-        <IconButton>
-          <Icon>help</Icon>
-        </IconButton>
-        <IconButton>
-          <Icon>settings</Icon>
-        </IconButton>
-      </Toolbar>
-    </AppBar>
-  );
-};
+export const Footer = () => (
+  <StyledFooter position="fixed" color="primary">
+    <Toolbar>
+      <IconButton size="large">
+        <Icon>help</Icon>
+      </IconButton>
+      <IconButton size="large">
+        <Icon>settings</Icon>
+      </IconButton>
+    </Toolbar>
+  </StyledFooter>
+);
 
 export default memo(Footer);

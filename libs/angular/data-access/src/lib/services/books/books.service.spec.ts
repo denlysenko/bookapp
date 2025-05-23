@@ -1,5 +1,3 @@
-// tslint:disable: no-big-function
-// tslint:disable: no-identical-functions
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { InMemoryCache } from '@apollo/client/core';
@@ -8,12 +6,12 @@ import { addTypenameToDocument } from '@apollo/client/utilities';
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { Book } from '@bookapp/shared/interfaces';
 import { FREE_BOOKS_QUERY, PAID_BOOKS_QUERY, RATE_BOOK_MUTATION } from '@bookapp/shared/queries';
-import { book } from '@bookapp/testing';
+import { book } from '@bookapp/testing/angular';
 
 import {
+  APOLLO_TESTING_CACHE,
   ApolloTestingController,
   ApolloTestingModule,
-  APOLLO_TESTING_CACHE,
 } from 'apollo-angular/testing';
 
 import { BooksService, DEFAULT_SORT_VALUE } from './books.service';
@@ -54,7 +52,7 @@ describe('BooksService', () => {
           },
         }) => {
           const [b] = rows;
-          expect(b._id).toEqual(book._id);
+          expect(b.id).toEqual(book.id);
           done();
         }
       );
@@ -90,7 +88,7 @@ describe('BooksService', () => {
           },
         }) => {
           const [b] = rows;
-          expect(b._id).toEqual(book._id);
+          expect(b.id).toEqual(book.id);
           done();
         }
       );
@@ -124,7 +122,7 @@ describe('BooksService', () => {
           },
         }) => {
           const [b] = rows;
-          expect(b._id).toEqual(book._id);
+          expect(b.id).toEqual(book.id);
           done();
         }
       );
@@ -161,7 +159,7 @@ describe('BooksService', () => {
           },
         }) => {
           const [b] = rows;
-          expect(b._id).toEqual(book._id);
+          expect(b.id).toEqual(book.id);
           done();
         }
       );
@@ -195,7 +193,7 @@ describe('BooksService', () => {
           },
         }) => {
           const [b] = rows;
-          expect(b._id).toEqual(book._id);
+          expect(b.id).toEqual(book.id);
           done();
         }
       );
@@ -229,7 +227,7 @@ describe('BooksService', () => {
           },
         }) => {
           const [b] = rows;
-          expect(b._id).toEqual(book._id);
+          expect(b.id).toEqual(book.id);
           done();
         }
       );
@@ -272,7 +270,7 @@ describe('BooksService', () => {
       controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY)).flush({
         data: {
           books: {
-            rows: [{ ...bookWithTypename, _id: '1213' }],
+            rows: [{ ...bookWithTypename, id: '1213' }],
             count: 1,
             __typename: 'Books',
           },
@@ -320,7 +318,7 @@ describe('BooksService', () => {
       controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY)).flush({
         data: {
           books: {
-            rows: [{ ...bookWithTypename, _id: '1213' }],
+            rows: [{ ...bookWithTypename, id: '1213' }],
             count: 1,
             __typename: 'Books',
           },
@@ -328,7 +326,7 @@ describe('BooksService', () => {
       });
 
       tick();
-      expect(rows[0]._id).toEqual('1213');
+      expect(rows[0].id).toEqual('1213');
 
       service.refetch({ orderBy });
 
@@ -346,7 +344,7 @@ describe('BooksService', () => {
       });
 
       tick();
-      expect(rows[0]._id).toEqual(book._id);
+      expect(rows[0].id).toEqual(book.id);
     }));
   });
 
@@ -411,7 +409,7 @@ describe('BooksService', () => {
 
       tick();
 
-      service.rateBook({ bookId: book._id, rate: 5 }).subscribe();
+      service.rateBook({ bookId: book.id, rate: 5 }).subscribe();
 
       controller.expectOne(addTypenameToDocument(RATE_BOOK_MUTATION)).flush({
         data: {

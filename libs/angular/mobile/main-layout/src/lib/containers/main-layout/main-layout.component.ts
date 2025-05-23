@@ -1,66 +1,91 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  NO_ERRORS_SCHEMA,
+  OnInit,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { MainLayoutBase } from '@bookapp/angular/base';
-import { AuthService, LogsService } from '@bookapp/angular/data-access';
+import { LogsService } from '@bookapp/angular/data-access';
 
-import {
-  DrawerTransitionBase,
-  SlideInOnTopTransition,
-  RadSideDrawer,
-} from 'nativescript-ui-sidedrawer';
-import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+import { Drawer } from '@nativescript-community/ui-drawer';
+import { DrawerModule } from '@nativescript-community/ui-drawer/angular';
+
+import { NativeScriptCommonModule, PageRouterOutlet } from '@nativescript/angular';
+import { Application, Color, isAndroid, Page } from '@nativescript/core';
 
 import { takeUntil } from 'rxjs/operators';
 
-import { Page } from '@nativescript/core';
+import { AppMenuComponent } from '../../components/app-menu/app-menu.component';
+import { UserMenuComponent } from '../../components/user-menu/user-menu.component';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare const android: any;
 
 @Component({
-  moduleId: module.id,
-  selector: 'bookapp-main-layout',
+  imports: [
+    NativeScriptCommonModule,
+    DrawerModule,
+    PageRouterOutlet,
+    AsyncPipe,
+    NgClass,
+    AppMenuComponent,
+    UserMenuComponent,
+  ],
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [LogsService],
-  animations: [
-    trigger('state', [
-      state('in', style({ opacity: 1, transform: 'translateY(0)' })),
-      state('out', style({ opacity: 0, transform: 'translateY(-100%)' })),
-      transition('in <=> out', [animate('300ms ease-out')]),
-    ]),
-  ],
+  schemas: [NO_ERRORS_SCHEMA],
 })
-export class MainLayoutComponent extends MainLayoutBase implements AfterViewInit {
-  isUserMenuOpen = false;
+export class MainLayoutComponent extends MainLayoutBase implements OnInit, AfterViewInit {
+  readonly drawerComponent = viewChild<ElementRef>('drawer');
 
-  @ViewChild('drawer')
-  drawerComponent: RadSideDrawerComponent;
+  readonly #router = inject(Router);
+  readonly #page = inject(Page);
+  #drawer: Drawer;
 
-  private _sideDrawerTransition: DrawerTransitionBase;
-  private drawer: RadSideDrawer;
+  readonly isUserMenuOpen = signal(false);
 
-  constructor(
-    authService: AuthService,
-    logsService: LogsService,
-    private readonly router: Router,
-    private readonly page: Page
-  ) {
-    super(authService, logsService);
-    this.page.actionBarHidden = true;
-    this._sideDrawerTransition = new SlideInOnTopTransition();
-    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((e) => {
-      if (e instanceof NavigationEnd && this.drawer) {
-        this.drawer.closeDrawer();
+  ngOnInit() {
+    this.#page.actionBarHidden = true;
+    this.#router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
+      if (event instanceof NavigationEnd && this.#drawer) {
+        this.#drawer.close();
       }
     });
+
+    if (isAndroid) {
+      this.#setNavigationBarColor('#EEEEEE');
+    }
   }
 
   ngAfterViewInit() {
-    this.drawer = this.drawerComponent.sideDrawer;
+    this.#drawer = this.drawerComponent()?.nativeElement;
   }
 
-  get sideDrawerTransition(): DrawerTransitionBase {
-    return this._sideDrawerTransition;
+  toggleUserMenu() {
+    this.isUserMenuOpen.update((open) => !open);
+  }
+
+  #setNavigationBarColor(color: string) {
+    const activity = Application.android.startActivity || Application.android.foregroundActivity;
+
+    if (activity) {
+      const window = activity.getWindow();
+
+      // Check if API level is 21 or higher (Lollipop)
+      if (android.os.Build.VERSION.SDK_INT >= 21) {
+        const androidColor = new Color(color).android;
+        window.setNavigationBarColor(androidColor);
+      }
+    }
   }
 }

@@ -1,51 +1,51 @@
 <h2 mat-dialog-title>Select File</h2>
-<mat-divider></mat-divider>
+<mat-divider />
+
 <mat-dialog-content>
-  <div *ngIf="loading$ | async" class="progress">
-    <mat-progress-bar [value]="progress$ | async" color="accent"></mat-progress-bar>
-  </div>
-  <div
-    *ngIf="(cropperReady$ | async) !== true"
-    bookappDrop
-    class="dropzone"
-    (dropped)="onFileDrop($event)"
-  >
-    <input type="file" id="file" (change)="onFileChange($event)" data-test="file-input" />
-    <label class="mat-button" for="file">Click to select</label>
-    <i class="material-icons">
-      add_photo_alternate
-    </i>
-    or drop file here
-    <small *ngIf="error$ | async as error" class="mat-error">{{ error }}</small>
-  </div>
+  @if (loading()) {
+    <div class="progress">
+      <mat-progress-bar [value]="progress$ | async" />
+    </div>
+  }
+
+  @if (!cropperReady()) {
+    <div bookappDrop class="dropzone" (dropped)="onFileDrop($event)">
+      <input type="file" id="file" (change)="onFileChange($event)" data-test="file-input" />
+      <label class="mat-button" for="file">Click to select</label>
+      <i class="material-icons">add_photo_alternate</i>
+      or drop file here
+
+      @if (error()) {
+        <small class="mat-mdc-form-field-error">{{ error() }}</small>
+      }
+    </div>
+  }
+
   <image-cropper
-    [style.display]="(cropperReady$ | async) ? null : 'none'"
-    [imageChangedEvent]="imageChangedEvent$ | async"
+    [style.display]="cropperReady() ? null : 'none'"
+    [imageFile]="file()"
     [maintainAspectRatio]="maintainAspectRatio"
     (imageCropped)="imageCropped($event)"
-    (imageLoaded)="onCropperReady()"
+    (imageLoaded)="cropperReady.set(true)"
     (loadImageFailed)="onLoadImageFail()"
-  ></image-cropper>
+  />
 </mat-dialog-content>
-<mat-divider></mat-divider>
+
+<mat-divider />
+
 <mat-dialog-actions>
-  <button
-    type="button"
-    mat-raised-button
-    mat-dialog-close
-    [disabled]="loading$ | async"
-    data-test="cancel"
-  >
-    CANCEL
+  <button type="button" matButton mat-dialog-close [disabled]="loading()" data-test="cancel">
+    Cancel
   </button>
+
   <button
     type="button"
-    mat-raised-button
-    color="accent"
+    matButton="filled"
+    class="accent"
     data-test="upload"
     (click)="save()"
-    [disabled]="loading$ | async"
+    [disabled]="loading()"
   >
-    UPLOAD
+    Upload
   </button>
 </mat-dialog-actions>

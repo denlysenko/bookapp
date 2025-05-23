@@ -16,6 +16,6 @@ describe('DateToPeriodPipe', () => {
   });
 
   it('should transform', () => {
-    expect(pipe.transform(timestamp.toString())).toEqual('1 days ago');
+    expect(pipe.transform(timestamp)).toEqual('1 days ago');
   });
 });

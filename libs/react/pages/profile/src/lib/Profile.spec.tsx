@@ -1,4 +1,3 @@
-import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { InMemoryCache } from '@apollo/client/core';
@@ -6,7 +5,7 @@ import { MockedProvider } from '@apollo/client/testing';
 
 import { FeedbackProvider } from '@bookapp/react/ui';
 import { ME_QUERY, UPDATE_USER_MUTATION } from '@bookapp/shared/queries';
-import { user } from '@bookapp/testing';
+import { user } from '@bookapp/testing/react';
 
 import Profile, { PROFILE_UPDATE_SUCCESS } from './Profile';
 
@@ -29,7 +28,7 @@ const success = {
   request: {
     query: UPDATE_USER_MUTATION,
     variables: {
-      id: user._id,
+      id: user.id,
       user: {
         email: user.email,
         firstName,

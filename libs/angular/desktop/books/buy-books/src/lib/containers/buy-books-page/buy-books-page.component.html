@@ -1,21 +1,23 @@
-<bookapp-preloader [visible]="loading$ | async"></bookapp-preloader>
-<mat-toolbar>
+<bookapp-preloader [visible]="loading$ | async" />
+
+<mat-toolbar class="page-toolbar">
   <mat-toolbar-row>
     <span>Browse Books To Buy</span>
   </mat-toolbar-row>
   <mat-toolbar-row class="mobile-height-auto">
     <bookapp-books-filter
-      [filter]="filter$ | async"
+      [filter]="filter()"
       (sortChanged)="sort($event)"
       (searchChanged)="search($event)"
-    ></bookapp-books-filter>
+    />
   </mat-toolbar-row>
 </mat-toolbar>
+
 <div class="view-content">
   <bookapp-books-list
     [books]="books$ | async"
-    [hasMoreItems]="hasMoreItems"
+    [hasMoreItems]="hasMoreItems()"
     (loadMore)="loadMore()"
     (bookRated)="rate($event)"
-  ></bookapp-books-list>
+  />
 </div>

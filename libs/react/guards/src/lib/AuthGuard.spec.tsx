@@ -1,13 +1,12 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes } from 'react-router-dom';
-import { render, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 import { InMemoryCache } from '@apollo/client/core';
 import { MockedProvider } from '@apollo/client/testing';
 
 import { store } from '@bookapp/react/core';
 import { ME_QUERY } from '@bookapp/shared/queries';
-import { user } from '@bookapp/testing';
+import { user } from '@bookapp/testing/react';
 
 import { AuthGuard } from './AuthGuard';
 
@@ -28,13 +27,24 @@ describe('AuthGuard', () => {
     render(
       <MockedProvider mocks={[]}>
         <Router>
+          <Link to="/protected">Protected</Link>
           <Routes>
-            <AuthGuard element={<TestRoute />} />
+            <Route element={<div>root</div>} path="/" />
+            <Route element={<div>auth</div>} path="/auth" />
+            <Route
+              element={
+                <AuthGuard>
+                  <TestRoute />
+                </AuthGuard>
+              }
+              path="/protected"
+            />
           </Routes>
         </Router>
       </MockedProvider>
     );
 
+    fireEvent.click(screen.getByText(/protected/i));
     expect(window.location.pathname).toBe('/auth');
   });
 
@@ -52,13 +62,23 @@ describe('AuthGuard', () => {
     const { container } = render(
       <MockedProvider mocks={[]} cache={cache}>
         <Router>
+          <Link to="/protected">Protected</Link>
           <Routes>
-            <AuthGuard element={<TestRoute />} />
+            <Route element={<div>root</div>} path="/" />
+            <Route
+              element={
+                <AuthGuard>
+                  <TestRoute />
+                </AuthGuard>
+              }
+              path="/protected"
+            />
           </Routes>
         </Router>
       </MockedProvider>
     );
 
+    fireEvent.click(screen.getByText(/protected/i));
     await waitFor(() => {
       expect(container).toContainHTML('You are on the test page');
     });

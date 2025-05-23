@@ -1,0 +1,66 @@
+{
+  "name": "api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/api/src",
+  "projectType": "application",
+  "prefix": "api",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "options": {
+        "webpackConfig": "apps/api/webpack.config.js",
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/api",
+        "main": "apps/api/src/main.ts",
+        "tsConfig": "apps/api/tsconfig.app.json",
+        "assets": [
+          "apps/api/src/assets",
+          {
+            "glob": "**/*.graphql",
+            "input": "libs/api/graphql/src/lib/schemas",
+            "output": "./schemas"
+          }
+        ],
+        "generatePackageJson": true
+      },
+      "configurations": {
+        "development": {
+          "sourceMap": true
+        },
+        "production": {}
+      },
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "api:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "api:build:development"
+        },
+        "production": {
+          "buildTarget": "api:build:production"
+        },
+        "testing": {
+          "buildTarget": "api:build:development"
+        },
+        "docker": {
+          "buildTarget": "api:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "serve-testing": {
+      "command": "nx serve api -c testing",
+      "continuous": true
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": ["type:app", "scope:api", "platform:server"]
+}

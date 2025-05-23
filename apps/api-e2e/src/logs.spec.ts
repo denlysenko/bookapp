@@ -10,17 +10,17 @@ import {
   MockLogsService,
   MockModel,
   user,
-} from '@bookapp/testing';
+} from '@bookapp/testing/api';
 
-import { HttpStatus, INestApplication } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getConnectionToken, getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
-import * as jwt from 'jsonwebtoken';
-import * as request from 'supertest';
+import jwt from 'jsonwebtoken';
+import request from 'supertest';
 
-const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
+const authToken = jwt.sign({ id: user.id }, 'ACCESS_TOKEN_SECRET');
 
 describe('LogsModule', () => {
   let app: INestApplication;
@@ -41,6 +41,8 @@ describe('LogsModule', () => {
     })
       .overrideProvider(getConnectionToken())
       .useValue(mockConnection)
+      .overrideProvider(getModelToken(ModelNames.AUTH_TOKEN))
+      .useValue(MockModel)
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
       .overrideProvider(getModelToken(ModelNames.LOG))
@@ -54,6 +56,7 @@ describe('LogsModule', () => {
     logsService = module.get<LogsService>(LogsService);
     usersService = module.get<UsersService>(UsersService);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     jest.spyOn(usersService, 'findById').mockResolvedValue(user as any);
 
     app = module.createNestApplication();
@@ -69,7 +72,7 @@ describe('LogsModule', () => {
           query: `query {
             logs {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -79,7 +82,7 @@ describe('LogsModule', () => {
             logs: {
               rows: [
                 {
-                  _id: log._id,
+                  id: log.id,
                 },
               ],
             },
@@ -95,7 +98,7 @@ describe('LogsModule', () => {
           query: `query {
             logs(skip: 10) {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -117,7 +120,7 @@ describe('LogsModule', () => {
           query: `query {
             logs(first: 10) {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -139,7 +142,7 @@ describe('LogsModule', () => {
           query: `query {
             logs(orderBy: createdAt_asc) {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -148,28 +151,26 @@ describe('LogsModule', () => {
       expect(logsService.findAll).toHaveBeenCalledWith({
         filter: { userId: 'id' },
         first: null,
-        order: { createdAt: 1 },
+        order: { createdAt: 'asc' },
         skip: null,
       });
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `query {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `query {
             logs {
               rows {
-                _id
+                id
               }
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
   });
 

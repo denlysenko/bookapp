@@ -1,20 +1,29 @@
 import { Injectable } from '@angular/core';
+import { StoragePlatformService } from '@bookapp/angular/core';
 
 @Injectable()
-export class StorageService {
-  private store = {};
+export class StorageService implements StoragePlatformService {
+  #store: Record<string, string> = {};
 
-  private isLocalStorageExists = !!window.localStorage;
+  #isLocalStorageExists = !!window.localStorage;
 
-  getItem(key: string): any {
-    return this.isLocalStorageExists ? localStorage.getItem(key) : this.store[key];
+  getItem(key: string): string {
+    return this.#isLocalStorageExists ? localStorage.getItem(key) : this.#store[key];
   }
 
-  setItem(key: string, value: any) {
-    this.isLocalStorageExists ? localStorage.setItem(key, value) : (this.store[key] = value);
+  setItem(key: string, value: string) {
+    if (this.#isLocalStorageExists) {
+      localStorage.setItem(key, value);
+    } else {
+      this.#store[key] = value;
+    }
   }
 
   removeItem(key: string) {
-    this.isLocalStorageExists ? localStorage.removeItem(key) : delete this.store[key];
+    if (this.#isLocalStorageExists) {
+      localStorage.removeItem(key);
+    } else {
+      delete this.#store[key];
+    }
   }
 }

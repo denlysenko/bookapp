@@ -25,6 +25,7 @@
 !.vscode/extensions.json
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage
@@ -33,6 +34,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+.nx
 
 # System Files
 .DS_Store
@@ -44,8 +46,16 @@ deploy
 netlify
 
 # Environments
+.env
 .env.development
 .env.production
 .env.testing
 # Local Netlify folder
 .netlify
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
+
+.angular
+
+vite.config.*.timestamp*
+vitest.config.*.timestamp*

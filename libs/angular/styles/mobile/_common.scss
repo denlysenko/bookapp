@@ -1,9 +1,4 @@
-@import 'variables';
-// theme standard rulesets
-@import '~nativescript-theme-core/scss/index';
-// define our custom styles here...
-@import 'buttons';
-@import 'form';
+@use './form';
 
 Page {
   /**
@@ -11,7 +6,7 @@ Page {
     * will help prevent white flashes when changing routes
     * sample app uses a white background so just using $white here
     **/
-  background-color: $surface-backgroud;
+  background-color: var(--color-surface);
 }
 
 .mdi {
@@ -27,29 +22,8 @@ Page {
   border-bottom-color: rgba(0, 0, 0, 0.3);
 }
 
-.action-bar .action-bar-title {
-  horizontal-align: center;
-  color: $dark-primary-text;
-}
-
-.mat-card {
-  padding: 10;
-  background-color: white;
-  color: rgba(0, 0, 0, 0.87);
-}
-
-.segmented-bar {
-  selected-background-color: $primary-color;
-  color: $primary-color;
-  background-color: $white;
-}
-
-button {
-  color: $primary-color;
-}
-
 TabView {
-  tab-text-color: $primary-color;
-  selected-tab-text-color: $orange;
-  android-selected-tab-text-color: $orange;
+  tab-text-color: var(--color-deep-blue-900);
+  selected-tab-text-color: var(--color-orange-500);
+  android-selected-tab-text-color: var(--color-orange-500);
 }

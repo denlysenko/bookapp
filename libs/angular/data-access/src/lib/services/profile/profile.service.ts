@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { Reading, User } from '@bookapp/shared/interfaces';
 import { ME_QUERY, UPDATE_USER_MUTATION } from '@bookapp/shared/queries';
 
 import { Apollo } from 'apollo-angular';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ProfileService {
-  constructor(private readonly apollo: Apollo) {}
+  readonly #apollo = inject(Apollo);
 
   update(id: string, user: Partial<User>) {
-    return this.apollo.mutate<{ updateUser: User }>({
+    return this.#apollo.mutate<{ updateUser: User }>({
       mutation: UPDATE_USER_MUTATION,
       variables: {
         id,
@@ -20,14 +20,14 @@ export class ProfileService {
   }
 
   saveReading(id: string, reading: Reading) {
-    return this.apollo.mutate<{ updateUser: User }>({
+    return this.#apollo.mutate<{ updateUser: User }>({
       mutation: UPDATE_USER_MUTATION,
       variables: {
         id,
         user: { reading },
       },
       update: (store, { data: { updateUser } }) => {
-        const data: { me: User } = store.readQuery({
+        const data = store.readQuery<{ me: User }>({
           query: ME_QUERY,
         });
 

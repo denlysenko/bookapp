@@ -1,0 +1,46 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
+    env_file: .env
+    ports:
+      - '3000:3000'
+      - '9229:9229'
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0
+      - PORT=3000
+      - DB_URI=${DB_URI}
+      - FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID}
+      - FIREBASE_BUCKET_URL=${FIREBASE_BUCKET_URL}
+      - FIREBASE_KEY_FILENAME=${FIREBASE_KEY_FILENAME}
+      - REQUEST_TOKEN_EXPIRATION_TIME=3600000
+      - REFRESH_TOKEN_EXPIRATION_TIME=30d
+      - ACCESS_TOKEN_EXPIRATION_TIME=30m
+      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+      - DEFAULT_LIMIT=50
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm start -- api -c docker
+
+  mongodb:
+    image: mongo:8.0.9-noble
+    env_file: .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${DB_NAME}
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+    external: false

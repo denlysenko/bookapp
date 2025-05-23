@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, inject, input, Renderer2 } from '@angular/core';
 
 const OPTIONS = {
   threshold: 0.25,
@@ -9,30 +9,31 @@ const OPTIONS = {
   selector: '[bookappLazyImage]',
 })
 export class LazyImageDirective implements AfterViewInit {
-  @Input() bookappLazyImage = '';
+  readonly bookappLazyImage = input('');
 
-  private _intersectionObserver: IntersectionObserver;
+  readonly #renderer = inject(Renderer2);
+  readonly #elem = inject(ElementRef);
 
-  constructor(private readonly renderer: Renderer2, private readonly elem: ElementRef) {}
+  #intersectionObserver: IntersectionObserver;
 
   ngAfterViewInit() {
-    this._intersectionObserver = new IntersectionObserver((entries) => {
-      this.checkForIntersection(entries);
+    this.#intersectionObserver = new IntersectionObserver((entries) => {
+      this.#checkForIntersection(entries);
     }, OPTIONS);
-    this._intersectionObserver.observe(this.elem.nativeElement);
+    this.#intersectionObserver.observe(this.#elem.nativeElement);
   }
 
-  private checkForIntersection(entries: IntersectionObserverEntry[]) {
+  #checkForIntersection(entries: IntersectionObserverEntry[]) {
     entries.forEach((entry) => {
-      if (this.checkIfIntersecting(entry)) {
-        this.renderer.setProperty(this.elem.nativeElement, 'src', this.bookappLazyImage);
-        this._intersectionObserver.unobserve(this.elem.nativeElement);
-        this._intersectionObserver.disconnect();
+      if (this.#checkIfIntersecting(entry)) {
+        this.#renderer.setProperty(this.#elem.nativeElement, 'src', this.bookappLazyImage());
+        this.#intersectionObserver.unobserve(this.#elem.nativeElement);
+        this.#intersectionObserver.disconnect();
       }
     });
   }
 
-  private checkIfIntersecting(entry: IntersectionObserverEntry) {
-    return entry.isIntersecting && entry.target === this.elem.nativeElement;
+  #checkIfIntersecting(entry: IntersectionObserverEntry) {
+    return entry.isIntersecting && entry.target === this.#elem.nativeElement;
   }
 }

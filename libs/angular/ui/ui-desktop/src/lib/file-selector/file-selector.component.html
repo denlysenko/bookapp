@@ -1,49 +1,49 @@
 <h2 mat-dialog-title>Select File</h2>
-<mat-divider></mat-divider>
+<mat-divider />
+
 <mat-dialog-content>
-  <div *ngIf="loading$ | async" class="progress">
-    <mat-progress-bar [value]="progress$ | async" color="accent"></mat-progress-bar>
-  </div>
-  <div
-    *ngIf="(imageChangedEvent$ | async) === null"
-    class="dropzone"
-    bookappDrop
-    (dropped)="onFileDrop($event)"
-  >
-    <input type="file" id="file" (change)="onFileChange($event)" data-test="file-input" />
-    <label class="mat-button" for="file">Click to select</label>
-    <i class="material-icons">
-      add_box
-    </i>
-    or drop file here
-    <small *ngIf="error$ | async as error" class="mat-error">{{ error }}</small>
-  </div>
-  <div *ngIf="imageChangedEvent$ | async as imageChangedEvent" class="attachment">
-    <i class="material-icons">
-      attach_file
-    </i>
-    <span>{{ imageChangedEvent.target.files[0].name }}</span>
-  </div>
+  @if (loading()) {
+    <div class="progress">
+      <mat-progress-bar [value]="progress$ | async" />
+    </div>
+  }
+
+  @if (file() === null) {
+    <div class="dropzone" bookappDrop (dropped)="onFileDrop($event)">
+      <input type="file" id="file" (change)="onFileChange($event)" data-test="file-input" />
+      <label class="mat-button" for="file">Click to select</label>
+      <i class="material-icons">add_box</i>
+      or drop file here
+
+      @if (error()) {
+        <small class="mat-mdc-form-field-error">{{ error() }}</small>
+      }
+    </div>
+  }
+
+  @if (file(); as file) {
+    <div class="attachment">
+      <i class="material-icons">attach_file</i>
+      <span>{{ file.name }}</span>
+    </div>
+  }
 </mat-dialog-content>
-<mat-divider></mat-divider>
+
+<mat-divider />
+
 <mat-dialog-actions>
-  <button
-    type="button"
-    mat-raised-button
-    mat-dialog-close
-    [disabled]="loading$ | async"
-    data-test="cancel"
-  >
-    CANCEL
+  <button type="button" matButton mat-dialog-close [disabled]="loading()" data-test="cancel">
+    Cancel
   </button>
+
   <button
     type="button"
-    mat-raised-button
-    color="accent"
+    matButton="filled"
+    class="accent"
     data-test="upload"
     (click)="save()"
-    [disabled]="loading$ | async"
+    [disabled]="loading()"
   >
-    UPLOAD
+    Upload
   </button>
 </mat-dialog-actions>

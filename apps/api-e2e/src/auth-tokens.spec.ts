@@ -6,14 +6,14 @@ import {
   MockConfigService,
   MockModel,
   refreshToken,
-} from '@bookapp/testing';
+} from '@bookapp/testing/api';
 
 import { HttpStatus, INestApplication, UnauthorizedException } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
-import * as request from 'supertest';
+import request from 'supertest';
 
 describe('AuthTokenModule', () => {
   let app: INestApplication;

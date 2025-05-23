@@ -1,81 +1,89 @@
-import { Component, ElementRef, NgZone, OnDestroy, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  NgZone,
+  NO_ERRORS_SCHEMA,
+  OnDestroy,
+  viewChild,
+} from '@angular/core';
 
 import { ReadBookBase } from '@bookapp/angular/base';
-import { ProfileService } from '@bookapp/angular/data-access';
 
-import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
+import { Drawer } from '@nativescript-community/ui-drawer';
+
+import { NativeScriptCommonModule } from '@nativescript/angular';
+import { Application, getViewById, LoadEventData, WebView } from '@nativescript/core';
+
 import { WebViewInterface } from 'nativescript-webview-interface';
 
-import * as application from '@nativescript/core/application';
-import { getViewById, LoadEventData, WebView } from '@nativescript/core';
-
 @Component({
-  selector: 'bookapp-read-book-page',
+  imports: [NativeScriptCommonModule],
+  host: {
+    '(unloaded)': 'onUnloaded()',
+  },
   templateUrl: './read-book-page.component.html',
-  styleUrls: ['./read-book-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class ReadBookPageComponent extends ReadBookBase implements OnDestroy {
-  @ViewChild('epubWebView', { static: true })
-  epubWebViewRef: ElementRef;
+  readonly epubWebViewRef = viewChild<ElementRef>('epubWebView');
 
-  private webViewInterface: WebViewInterface;
-
-  constructor(
-    route: ActivatedRoute,
-    profileService: ProfileService,
-    private readonly zone: NgZone
-  ) {
-    super(route, profileService);
-  }
+  readonly #ngZone = inject(NgZone);
+  #webViewInterface: WebViewInterface;
 
   onLoaded() {
-    this.webViewInterface = new WebViewInterface(this.epubWebView, '~/assets/www/index.html');
+    this.#webViewInterface = new WebViewInterface(this.#epubWebView, '~/assets/www/index.html');
 
-    this.epubWebView.on('loadFinished', (args: LoadEventData) => {
+    this.#epubWebView.on('loadFinished', (args: LoadEventData) => {
       const webview = args.object as WebView;
 
       if (webview.android) {
-        this.epubWebView.android.getSettings().setAllowContentAccess(true);
-        this.epubWebView.android.getSettings().setAllowFileAccess(true);
-        this.epubWebView.android.getSettings().setJavaScriptEnabled(true);
-        this.epubWebView.android.getSettings().setLoadsImagesAutomatically(true);
-        this.epubWebView.android.getSettings().setAllowUniversalAccessFromFileURLs(true);
-        this.epubWebView.android.getSettings().setBuiltInZoomControls(false);
-        this.epubWebView.android.getSettings().setDisplayZoomControls(false);
+        this.#epubWebView.android.getSettings().setAllowContentAccess(true);
+        this.#epubWebView.android.getSettings().setAllowFileAccess(true);
+        this.#epubWebView.android.getSettings().setJavaScriptEnabled(true);
+        this.#epubWebView.android.getSettings().setLoadsImagesAutomatically(true);
+        this.#epubWebView.android.getSettings().setAllowUniversalAccessFromFileURLs(true);
+        this.#epubWebView.android.getSettings().setBuiltInZoomControls(false);
+        this.#epubWebView.android.getSettings().setDisplayZoomControls(false);
       }
 
-      this.webViewInterface.emit('loadBook', {
+      this.#webViewInterface.emit('loadBook', {
         src: this.epubUrl,
         bookmark: this.bookmark,
       });
     });
 
-    this.webViewInterface.on('locationChanged', (data: string) => {
-      this.currentLocation = data;
+    this.#webViewInterface.on('locationChanged', (data: string) => {
+      this.currentLocation.set(data);
     });
 
-    application.on(application.suspendEvent, () => {
+    Application.on(Application.suspendEvent, () => {
       // only need to save current page, which is happening in Base's OnDestroy
-      this.zone.run(() => {
+      this.#ngZone.run(() => {
         super.ngOnDestroy();
       });
     });
   }
 
   onDrawerButtonTap() {
-    const sideDrawer = getViewById(application.getRootView() as any, 'drawer') as RadSideDrawer;
-    sideDrawer.toggleDrawerState();
+    const sideDrawer = getViewById(Application.getRootView(), 'drawer') as Drawer;
+    sideDrawer.toggle();
+  }
+
+  onUnloaded() {
+    this.ngOnDestroy();
   }
 
   ngOnDestroy() {
     super.ngOnDestroy();
-    this.webViewInterface.destroy();
-    this.webViewInterface = null;
-    application.off(application.suspendEvent);
+    this.#webViewInterface.destroy();
+    this.#webViewInterface = null;
+    Application.off(Application.suspendEvent);
   }
 
-  private get epubWebView(): WebView {
-    return this.epubWebViewRef.nativeElement;
+  get #epubWebView(): WebView {
+    return this.epubWebViewRef().nativeElement;
   }
 }

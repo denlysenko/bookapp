@@ -1,27 +1,29 @@
-import { Directive, OnDestroy } from '@angular/core';
+import { Directive, inject, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ProfileService } from '@bookapp/angular/data-access';
 
 @Directive()
 export abstract class ReadBookBase implements OnDestroy {
-  currentLocation: string;
+  readonly #activatedRoute = inject(ActivatedRoute);
+  readonly #profileService = inject(ProfileService);
 
-  readonly epubUrl: string = this.route.snapshot.data.reading.epubUrl;
-  readonly bookmark: string = this.route.snapshot.data.reading.bookmark;
+  readonly currentLocation = signal('');
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly profileService: ProfileService
-  ) {}
+  // TODO: move to withComponentInputBinding when Nativescript supports it
+  readonly epubUrl: string = this.#activatedRoute.snapshot.data.reading.epubUrl;
+  readonly bookmark: string = this.#activatedRoute.snapshot.data.reading.bookmark;
 
   ngOnDestroy() {
-    this.profileService
-      .saveReading(this.userId, { bookmark: this.currentLocation, epubUrl: this.epubUrl })
+    this.#profileService
+      .saveReading(this.#userId, {
+        bookmark: this.currentLocation(),
+        epubUrl: this.epubUrl,
+      })
       .subscribe();
   }
 
-  private get userId(): string {
-    return this.route.snapshot.data.reading.userId;
+  get #userId(): string {
+    return this.#activatedRoute.snapshot.data.reading.userId;
   }
 }

@@ -1,12 +1,11 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useNavigate } from 'react-router-dom';
 
 import { MockedProvider } from '@apollo/client/testing';
 
 import { storage, store } from '@bookapp/react/core';
 import { LOGOUT_MUTATION, ME_QUERY } from '@bookapp/shared/queries';
-import { userWithTypename } from '@bookapp/testing';
+import { userWithTypename } from '@bookapp/testing/react';
 
 import Header from './Header';
 

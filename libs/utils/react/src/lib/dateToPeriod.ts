@@ -1,5 +1,5 @@
-export function dateToPeriod(date: any): string {
-  const diff = Math.floor((Date.now() - parseInt(date, 10)) / 1000);
+export function dateToPeriod(date: number): string {
+  const diff = Math.floor((Date.now() - date) / 1000);
 
   let interval = Math.floor(diff / 31536000);
 

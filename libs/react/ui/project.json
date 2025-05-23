@@ -1,0 +1,19 @@
+{
+  "name": "react-ui",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/react/ui/src",
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/react/ui/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/react/ui"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": ["scope:react"]
+}

@@ -1,20 +1,28 @@
-import { Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  NO_ERRORS_SCHEMA,
+  OnInit,
+} from '@angular/core';
 
 import { AuthPageBase } from '@bookapp/angular/base';
-import { RouterExtensions } from '@bookapp/angular/core';
-import { AuthService } from '@bookapp/angular/data-access';
 
+import { NativeScriptCommonModule } from '@nativescript/angular';
 import { Page } from '@nativescript/core';
 
+import { AuthFormComponent } from '../../components/auth-form/auth-form.component';
+
 @Component({
-  moduleId: module.id,
-  selector: 'bookapp-auth-page',
+  imports: [NativeScriptCommonModule, AuthFormComponent],
   templateUrl: './auth-page.component.html',
-  styleUrls: ['./auth-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [NO_ERRORS_SCHEMA],
 })
-export class AuthPageComponent extends AuthPageBase {
-  constructor(public page: Page, authService: AuthService, routerExtensions: RouterExtensions) {
-    super(authService, routerExtensions);
-    page.actionBarHidden = true;
+export class AuthPageComponent extends AuthPageBase implements OnInit {
+  readonly #page = inject(Page);
+
+  ngOnInit() {
+    this.#page.actionBarHidden = true;
   }
 }

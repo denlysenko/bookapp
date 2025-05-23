@@ -1,4 +1,5 @@
 export const MockMongooseModel = {
+  _id: '_id',
   countDocuments: jest.fn(() => MockMongooseModel),
   find: jest.fn(() => MockMongooseModel),
   findById: jest.fn(() => MockMongooseModel),

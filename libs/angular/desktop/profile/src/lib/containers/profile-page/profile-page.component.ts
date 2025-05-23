@@ -1,21 +1,17 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { MatCardModule } from '@angular/material/card';
+
 import { ProfilePageBase } from '@bookapp/angular/base';
-import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { AuthService, ProfileService } from '@bookapp/angular/data-access';
+
+import { AvatarSelectorComponent } from '../../components/avatar-selector/avatar-selector.component';
+import { ProfileFormComponent } from '../../components/profile-form/profile-form.component';
 
 @Component({
-  selector: 'bookapp-profile-page',
+  imports: [AsyncPipe, MatCardModule, ProfileFormComponent, AvatarSelectorComponent],
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfilePageComponent extends ProfilePageBase {
-  constructor(
-    profileService: ProfileService,
-    authService: AuthService,
-    feedbackService: FeedbackPlatformService
-  ) {
-    super(profileService, authService, feedbackService);
-  }
-}
+export class ProfilePageComponent extends ProfilePageBase {}

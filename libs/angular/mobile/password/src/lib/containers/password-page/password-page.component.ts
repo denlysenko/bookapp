@@ -1,25 +1,23 @@
-import { Component } from '@angular/core';
-
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { PasswordPageBase } from '@bookapp/angular/base';
-import { FeedbackPlatformService, LoaderPlatformService } from '@bookapp/angular/core';
-import { PasswordService } from '@bookapp/angular/data-access';
+
+import { Drawer } from '@nativescript-community/ui-drawer';
+
+import { NativeScriptCommonModule } from '@nativescript/angular';
+import { Application, getViewById } from '@nativescript/core';
+
+import { PasswordFormComponent } from '../../components/password-form/password-form.component';
 
 @Component({
-  selector: 'bookapp-password-page',
+  imports: [NativeScriptCommonModule, PasswordFormComponent],
   templateUrl: './password-page.component.html',
-  styleUrls: ['./password-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class PasswordPageComponent extends PasswordPageBase {
-  constructor(
-    passwordService: PasswordService,
-    feedbackService: FeedbackPlatformService,
-    private readonly loaderService: LoaderPlatformService
-  ) {
-    super(passwordService, feedbackService);
-    this.loading$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((loading) => (loading ? this.loaderService.start() : this.loaderService.stop()));
+  onDrawerButtonTap() {
+    const sideDrawer = getViewById(Application.getRootView(), 'drawer') as Drawer;
+    sideDrawer.toggle();
   }
 }

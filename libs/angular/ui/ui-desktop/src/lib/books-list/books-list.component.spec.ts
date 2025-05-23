@@ -1,31 +1,33 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
-import { book } from '@bookapp/testing';
+import { book } from '@bookapp/testing/angular';
 
-import { RatingModule } from '../rating/rating.module';
 import { BooksListComponent } from './books-list.component';
 
 describe('BooksListComponent', () => {
   let component: BooksListComponent;
   let fixture: ComponentFixture<BooksListComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [RouterTestingModule, FormsModule, RatingModule],
-        declarations: [BooksListComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeAll(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).IntersectionObserver = jest.fn(() => ({
+      observe: () => null,
+      disconnect: () => null,
+    }));
+  });
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [BooksListComponent],
+      providers: [provideRouter([])],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BooksListComponent);
     component = fixture.componentInstance;
-    component.books = [book];
+    fixture.componentRef.setInput('books', [book]);
     fixture.detectChanges();
   });
 
@@ -42,7 +44,7 @@ describe('BooksListComponent', () => {
     fixture.detectChanges();
 
     expect(component.bookRated.emit).toHaveBeenCalledWith({
-      bookId: book._id,
+      bookId: book.id,
       rate: 3,
     });
   });

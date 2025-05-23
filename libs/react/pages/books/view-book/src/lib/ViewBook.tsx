@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import Card from '@material-ui/core/Card';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import Card from '@mui/material/Card';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 import { pay } from '@bookapp/react/core';
 import { useBook, useBookmarksByUser } from '@bookapp/react/data-access';
@@ -13,10 +13,9 @@ import { useQueryString } from '@bookapp/utils/react';
 
 import BookComments from './BookComments/BookComments';
 import BookDetails from './BookDetails/BookDetails';
-import { useViewBookStyles } from './useViewBookStyles';
+import { StyledViewBook } from './StyledViewBook';
 
 export function ViewBook() {
-  const classes = useViewBookStyles();
   const { slug } = useParams();
   const query = useQueryString();
 
@@ -27,24 +26,34 @@ export function ViewBook() {
 
   const [loading, setLoading] = useState(false);
 
-  const addBookmark = useCallback(async (event: BookmarkEvent) => {
-    await addToBookmarks(event);
-  }, []);
+  const addBookmark = useCallback(
+    async (event: BookmarkEvent) => {
+      await addToBookmarks(event);
+    },
+    [addToBookmarks]
+  );
 
-  const removeBookmark = useCallback(async (event: BookmarkEvent) => {
-    await removeFromBookmarks(event);
-  }, []);
+  const removeBookmark = useCallback(
+    async (event: BookmarkEvent) => {
+      await removeFromBookmarks(event);
+    },
+    [removeFromBookmarks]
+  );
 
-  const rate = useCallback(async (event: { bookId: string; rate: number }) => {
-    await rateBook(event);
-  }, []);
+  const rate = useCallback(
+    async (event: { bookId: string; rate: number }) => {
+      await rateBook(event);
+    },
+    [rateBook]
+  );
 
   const submitComment = useCallback(
     async (text: string) => {
       setLoading(true);
-      await addComment(book._id, text);
+      await addComment(book.id, text);
       setLoading(false);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [book]
   );
 
@@ -60,11 +69,13 @@ export function ViewBook() {
         },
       });
       response.complete();
-    } catch {}
+    } catch {
+      //
+    }
   };
 
   return (
-    <div className={classes.root}>
+    <StyledViewBook>
       <Toolbar disableGutters={true}>
         <Typography component="span">Book Details</Typography>
       </Toolbar>
@@ -84,7 +95,7 @@ export function ViewBook() {
           </Card>
         </div>
       )}
-    </div>
+    </StyledViewBook>
   );
 }
 

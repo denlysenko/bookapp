@@ -1,85 +1,84 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+/* eslint-disable no-unused-private-class-members */
+import { AsyncPipe } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  input,
+  NO_ERRORS_SCHEMA,
+  output,
+  signal,
+} from '@angular/core';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { NsBaseForm } from '@bookapp/angular/base';
-import { FeedbackPlatformService, UploadPlatformService } from '@bookapp/angular/core';
-import { ProfileForm, User } from '@bookapp/shared/interfaces';
+import { BaseForm } from '@bookapp/angular/base';
+import { UploadPlatformService } from '@bookapp/angular/core';
+import { ApiError, ProfileForm, User } from '@bookapp/shared/interfaces';
 
+import { NativeScriptCommonModule, NativeScriptFormsModule } from '@nativescript/angular';
 import { requestPermissions, takePicture } from '@nativescript/camera';
-import { ImageCropper } from 'nativescript-imagecropper';
-import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
+import { ImageAsset, ImageSource, isAndroid, isIOS, knownFolders, path } from '@nativescript/core';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { ImageCropper } from 'nativescript-imagecropper';
 import { map } from 'rxjs/operators';
 
-import { knownFolders, path, ImageSource, isAndroid, isIOS, getViewById } from '@nativescript/core';
-import { getRootView } from '@nativescript/core/application';
+interface Form {
+  readonly firstName: FormControl<string>;
+  readonly lastName: FormControl<string>;
+  readonly email: FormControl<string>;
+}
 
 @Component({
   selector: 'bookapp-profile-form',
+  imports: [NativeScriptCommonModule, NativeScriptFormsModule, ReactiveFormsModule, AsyncPipe],
   templateUrl: './profile-form.component.html',
-  styleUrls: ['./profile-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [NO_ERRORS_SCHEMA],
 })
-export class ProfileFormComponent extends NsBaseForm {
-  progress$ = this.uploadService.progress$;
+export class ProfileFormComponent extends BaseForm<Form> {
+  readonly user = input<User>();
+  readonly loading = input(false);
+  readonly error = input<ApiError>();
 
-  @Input() loading: boolean;
+  readonly formSubmitted = output<ProfileForm>();
 
-  @Input()
-  set user(user: Partial<User>) {
+  readonly #fb = inject(FormBuilder);
+  readonly #uploadService = inject(UploadPlatformService);
+  readonly #imageCropper = new ImageCropper();
+  readonly #userEffect = effect(() => {
+    const user = this.user();
+
     if (user) {
-      this._user = user;
-      this.source.next({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-      });
+      this.form.patchValue(user);
     }
-  }
-  get user(): Partial<User> {
-    return this._user;
-  }
+  });
 
-  @Input()
-  set error(error: any) {
+  readonly #errorEffect = effect(() => {
+    const error = this.error();
+
     if (error) {
       this.handleError(error);
     }
-  }
-
-  @Output() formSubmitted = new EventEmitter<ProfileForm>();
-
-  private imageCropper = new ImageCropper();
-  private _user: Partial<User>;
-  private uploading = new BehaviorSubject<boolean>(false);
-  private source = new BehaviorSubject<Partial<User>>({
-    firstName: '',
-    lastName: '',
-    email: '',
   });
 
-  constructor(
-    feedbackService: FeedbackPlatformService,
-    private readonly uploadService: UploadPlatformService
-  ) {
-    super(feedbackService);
-  }
+  readonly form = this.#fb.group({
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+  });
 
-  get source$(): Observable<Partial<User>> {
-    return this.source.asObservable();
-  }
+  readonly progress$ = this.#uploadService.progress$;
+  readonly submitting = signal(false);
+  readonly uploading = signal(false);
 
-  get uploading$(): Observable<boolean> {
-    return this.uploading.asObservable();
-  }
+  submit() {
+    this.submitting.set(true);
 
-  async submit() {
-    const valid = await this.dataForm.dataForm.validateAll();
-
-    if (valid) {
+    if (this.form.valid) {
       this.formSubmitted.emit({
-        id: this.user._id,
-        user: this.source.getValue(),
+        id: this.user().id,
+        user: this.form.value,
       });
     }
   }
@@ -87,12 +86,12 @@ export class ProfileFormComponent extends NsBaseForm {
   async changeAvatar() {
     try {
       await requestPermissions();
-    } catch (err) {
+    } catch {
       this.feedbackService.error('Permissions rejected');
       return;
     }
 
-    let imageAsset: any = null;
+    let imageAsset: ImageAsset = null;
 
     try {
       imageAsset = await takePicture({
@@ -100,7 +99,9 @@ export class ProfileFormComponent extends NsBaseForm {
         height: 300,
         keepAspectRatio: true,
       });
-    } catch (err) {}
+    } catch {
+      return;
+    }
 
     if (!imageAsset) {
       return;
@@ -110,7 +111,9 @@ export class ProfileFormComponent extends NsBaseForm {
 
     try {
       imageSource = await ImageSource.fromAsset(imageAsset);
-    } catch (err) {}
+    } catch {
+      return;
+    }
 
     if (!imageSource) {
       return;
@@ -119,46 +122,43 @@ export class ProfileFormComponent extends NsBaseForm {
     let cropped = null;
 
     try {
-      cropped = await this.imageCropper.show(imageSource, {
+      cropped = await this.#imageCropper.show(imageSource, {
         width: 300,
         height: 300,
         lockSquare: true,
       });
-    } catch (err) {}
+    } catch {
+      return;
+    }
 
     if (!cropped || !cropped.image) {
       return;
     }
 
-    const localPath = this.getImageLocalPath(cropped.image);
+    const localPath = this.#getImageLocalPath(cropped.image);
 
     if (localPath) {
-      this.uploading.next(true);
-      this.uploadService
+      this.uploading.set(true);
+      this.#uploadService
         .upload(localPath)
         .pipe(map((res) => JSON.parse(res)))
-        .subscribe(
-          ({ publicUrl }) => {
-            this.uploading.next(false);
+        .subscribe({
+          next: ({ publicUrl }) => {
+            this.uploading.set(false);
             this.formSubmitted.emit({
-              id: this.user._id,
+              id: this.user().id,
               user: { avatar: publicUrl },
             });
           },
-          ({ message }) => {
-            this.uploading.next(false);
-            this.handleError({ message: { message } });
-          }
-        );
+          error: ({ message }) => {
+            this.uploading.set(false);
+            this.handleError({ message });
+          },
+        });
     }
   }
 
-  onDrawerButtonTap() {
-    const sideDrawer = getViewById(getRootView() as any, 'drawer') as RadSideDrawer;
-    sideDrawer.toggleDrawerState();
-  }
-
-  private getImageLocalPath(image: ImageSource): string {
+  #getImageLocalPath(image: ImageSource): string {
     let localPath = null;
 
     if (isAndroid) {

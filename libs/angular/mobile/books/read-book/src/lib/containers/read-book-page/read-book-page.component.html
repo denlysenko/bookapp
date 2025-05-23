@@ -1,4 +1,4 @@
-<ActionBar class="action-bar" flat="true">
+<ActionBar class="bg-deep-blue-900" flat="true">
   <NavigationButton
     ios:visibility="collapsed"
     icon="res://menu"
@@ -9,10 +9,10 @@
     android:visibility="collapsed"
     ios.position="left"
     (tap)="onDrawerButtonTap()"
-  >
-  </ActionItem>
-  <Label class="action-bar-title" text="Read Book"></Label>
+  ></ActionItem>
+  <Label class="text-dark-primary-text font-semibold" text="Read Book"></Label>
 </ActionBar>
+
 <GridLayout>
   <WebView #epubWebView (loaded)="onLoaded()"></WebView>
 </GridLayout>

@@ -1,7 +1,7 @@
 import { User } from './user';
 
 export interface Comment {
-  _id: any;
+  id: string;
   bookId: string;
   authorId?: string;
   author: User;

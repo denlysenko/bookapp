@@ -1,13 +1,9 @@
-// tslint:disable: no-identical-functions
-
-// tslint:disable: no-duplicate-string
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AbstractControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { MockFeedbackPlatformService, user } from '@bookapp/testing';
+import { MockFeedbackPlatformService, user } from '@bookapp/testing/angular';
 
 import { ProfileFormComponent } from './profile-form.component';
 
@@ -15,26 +11,22 @@ describe('ProfileFormComponent', () => {
   let component: ProfileFormComponent;
   let fixture: ComponentFixture<ProfileFormComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule],
-        declarations: [ProfileFormComponent],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-        providers: [
-          {
-            provide: FeedbackPlatformService,
-            useValue: MockFeedbackPlatformService,
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ProfileFormComponent],
+      providers: [
+        {
+          provide: FeedbackPlatformService,
+          useValue: MockFeedbackPlatformService,
+        },
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileFormComponent);
     component = fixture.componentInstance;
-    component.user = user;
+    fixture.componentRef.setInput('user', user);
     fixture.detectChanges();
   });
 
@@ -57,8 +49,9 @@ describe('ProfileFormComponent', () => {
 
       beforeEach(() => {
         firstNameField = component.form.get('firstName');
-        input = fixture.debugElement.query(By.css('input[formcontrolname=firstName]'))
-          .nativeElement;
+        input = fixture.debugElement.query(
+          By.css('input[formcontrolname=firstName]')
+        ).nativeElement;
       });
 
       it('should have required error', () => {
@@ -162,7 +155,7 @@ describe('ProfileFormComponent', () => {
       component.submit();
 
       expect(component.formSubmitted.emit).toHaveBeenCalledWith({
-        id: user._id,
+        id: user.id,
         user: {
           email: user.email,
           firstName,

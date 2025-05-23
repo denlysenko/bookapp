@@ -1,8 +1,8 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { MatDialog } from '@angular/material/dialog';
 
-import { clickOnBtn, user } from '@bookapp/testing';
+import { clickOnBtn, user } from '@bookapp/testing/angular';
 
 import { of } from 'rxjs';
 
@@ -15,29 +15,26 @@ describe('AvatarSelectorComponent', () => {
   let fixture: ComponentFixture<AvatarSelectorComponent>;
   let dialog: MatDialog;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [AvatarSelectorComponent],
-        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-        providers: [
-          {
-            provide: MatDialog,
-            useValue: {
-              open: jest.fn().mockImplementation(() => ({
-                afterClosed: jest.fn().mockReturnValue(of(avatarUrl)),
-              })),
-            },
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [AvatarSelectorComponent],
+      providers: [
+        {
+          provide: MatDialog,
+          useValue: {
+            open: jest.fn().mockImplementation(() => ({
+              afterClosed: jest.fn().mockReturnValue(of(avatarUrl)),
+            })),
           },
-        ],
-      }).compileComponents();
-    })
-  );
+        },
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AvatarSelectorComponent);
     component = fixture.componentInstance;
-    component.user = user;
+    fixture.componentRef.setInput('user', user);
     fixture.detectChanges();
     dialog = TestBed.inject(MatDialog);
   });
@@ -50,6 +47,7 @@ describe('AvatarSelectorComponent', () => {
     beforeEach(() => {
       jest.spyOn(component.avatarSaved, 'emit');
     });
+
     it('should open dialog', () => {
       clickOnBtn(fixture);
       expect(dialog.open).toHaveBeenCalled();
@@ -58,7 +56,7 @@ describe('AvatarSelectorComponent', () => {
     it('should emit avatarSaved event', () => {
       clickOnBtn(fixture);
       expect(component.avatarSaved.emit).toHaveBeenCalledWith({
-        id: user._id,
+        id: user.id,
         user: { avatar: avatarUrl },
       });
     });

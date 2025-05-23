@@ -1,1 +1,1 @@
-export * from './lib/bookmarks.module';
+export * from './lib/bookmarks.routes';

@@ -2,21 +2,19 @@
   display: flex;
   flex-direction: column;
 
-  .mat-card {
+  .mat-mdc-card {
     margin-bottom: 1rem;
     display: flex;
-    min-height: 154px;
+    min-width: 160px;
+    min-height: 160px;
     align-items: center;
     justify-content: center;
 
     img {
       width: 150px;
       height: 150px;
+      border-radius: calc(var(--mat-sys-corner-medium) / 2);
     }
-  }
-
-  .mat-raised-button {
-    text-transform: uppercase;
   }
 
   @media (min-width: 768px) {

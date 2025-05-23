@@ -1,6 +1,7 @@
-@import 'desktop/file-selector';
+@use 'desktop/file-selector';
 
 .attachment {
+  display: inline-flex;
+  align-items: center;
   padding: 10px 0;
-  text-align: center;
 }

@@ -2,7 +2,12 @@ import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogsService } from '@bookapp/api/logs';
 import { ModelNames } from '@bookapp/api/shared';
 import { UserActions } from '@bookapp/shared/enums';
-import { MockConfigService, MockLogsService, MockModel, MockMongooseModel } from '@bookapp/testing';
+import {
+  MockConfigService,
+  MockLogsService,
+  MockModel,
+  MockMongooseModel,
+} from '@bookapp/testing/api';
 
 import { ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
@@ -18,7 +23,7 @@ const text = 'comment';
 
 describe('CommentsService', () => {
   let commentsService: CommentsService;
-  let configService: ConfigService;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let commentModel: any;
   let logsService: LogsService;
   let pubSub: PubSub;
@@ -50,7 +55,6 @@ describe('CommentsService', () => {
 
     commentsService = module.get<CommentsService>(CommentsService);
     logsService = module.get<LogsService>(LogsService);
-    configService = module.get<ConfigService>(ConfigService);
     commentModel = module.get(getModelToken(ModelNames.COMMENT));
     pubSub = module.get<PubSub>(PUB_SUB);
 

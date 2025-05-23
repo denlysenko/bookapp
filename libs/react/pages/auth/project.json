@@ -1,0 +1,19 @@
+{
+  "name": "react-pages-auth",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/react/pages/auth/src",
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/react/pages/auth/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/react/pages/auth"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": ["scope:react"]
+}

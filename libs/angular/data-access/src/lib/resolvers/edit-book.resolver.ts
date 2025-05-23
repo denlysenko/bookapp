@@ -1,20 +1,13 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
-import { Book } from '@bookapp/shared/interfaces';
-
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { BookService } from '../services/books/book.service';
 
-@Injectable()
-export class EditBookResolver implements Resolve<Book> {
-  constructor(private readonly bookService: BookService) {}
+export function editBookResolver(route: ActivatedRouteSnapshot) {
+  const bookService = inject(BookService);
+  const slug = route.paramMap.get('slug');
 
-  resolve(route: ActivatedRouteSnapshot): Observable<Book> {
-    const slug = route.paramMap.get('slug');
-
-    return this.bookService.fetchBookForEdit(slug).pipe(map((res) => res.data.book));
-  }
+  return bookService.fetchBookForEdit(slug).pipe(map((res) => res.data.book));
 }

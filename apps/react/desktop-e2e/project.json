@@ -1,0 +1,23 @@
+{
+  "name": "react-desktop-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/react/desktop-e2e/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/react/desktop-e2e/cypress.config.ts",
+        "devServerTarget": "react-desktop:serve",
+        "testingType": "e2e"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "react-desktop:serve:production"
+        }
+      },
+      "dependsOn": [{ "projects": ["api"], "target": "serve-testing" }]
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "react-pages-books-buy-books",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/react/pages/books/buy-books/src",
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/react/pages/books/buy-books/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/react/pages/books/buy-books"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": ["scope:react"]
+}

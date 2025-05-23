@@ -1,13 +1,10 @@
-import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { BooksFilter as IBooksFilter } from '@bookapp/shared/interfaces';
 
 import BooksFilter from './BooksFilter';
 
-jest.mock('lodash', () => ({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ...jest.requireActual<any>('lodash'),
+jest.mock('lodash-es', () => ({
   debounce: jest.fn((fn) => fn),
 }));
 

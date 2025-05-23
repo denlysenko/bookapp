@@ -1,25 +1,9 @@
-.mat-nav-list {
-  padding-top: 0;
+.mdc-list {
+  padding: 0;
 }
 
-.mat-list-item {
+.mat-mdc-list-item {
   text-transform: capitalize;
-  color: #78829d;
-  font-size: 14px;
-
-  &.active {
-    background: #15a4fa;
-    color: #fff;
-  }
-
-  .material-icons {
-    margin-right: 10px;
-    font-size: 20px;
-
-    &.mat-list-icon {
-      margin-right: 0;
-    }
-  }
 
   ::ng-deep .mat-list-text {
     padding-left: 0 !important;
@@ -33,16 +17,29 @@
     }
   }
 
-  .mat-line.action {
+  &.mdc-list-item--with-three-lines:hover .action,
+  &.mdc-list-item--with-three-lines:hover .mat-mdc-list-item-icon {
+    color: var(--mat-list-list-item-label-text-color);
+  }
+
+  .mat-mdc-list-item-title.action {
     white-space: normal;
   }
+}
+
+::ng-deep .mdc-list-item--activated .mdc-list-item__primary-text,
+::ng-deep .mdc-list-item--activated.mdc-list-item--with-leading-icon .mdc-list-item__start,
+::ng-deep .mdc-list-item--activated.mdc-list-item:hover .mdc-list-item__primary-text,
+::ng-deep .mdc-list-item--activated.mdc-list-item:focus .mdc-list-item__primary-text,
+::ng-deep .mdc-list-item--activated.mdc-list-item--with-leading-icon:hover .mdc-list-item__start {
+  color: #ffffff;
 }
 
 .divider {
   display: block;
   width: 100%;
   height: 5px;
-  background: #19202e;
-  border-top: inset 1px rgba(0, 0, 0, 0.3);
-  border-bottom: inset 1px rgba(0, 0, 0, 0.3);
+  background: #091023; // primary5
+  border-top: inset 1px rgba(0, 0, 0, 0.6);
+  border-bottom: inset 1px rgba(0, 0, 0, 0.6);
 }

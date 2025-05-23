@@ -1,25 +1,24 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, NO_ERRORS_SCHEMA, signal } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthFormBase } from '@bookapp/angular/base';
-import { FeedbackPlatformService } from '@bookapp/angular/core';
+
+import { NativeScriptCommonModule, NativeScriptFormsModule } from '@nativescript/angular';
 
 @Component({
-  moduleId: module.id,
   selector: 'bookapp-auth-form',
+  imports: [NativeScriptCommonModule, NativeScriptFormsModule, ReactiveFormsModule],
   templateUrl: './auth-form.component.html',
-  styleUrls: ['./auth-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class AuthFormComponent extends AuthFormBase {
-  submitting = false;
+  form: FormGroup;
 
-  constructor(feedbackService: FeedbackPlatformService, fb: FormBuilder, cdr: ChangeDetectorRef) {
-    super(feedbackService, fb, cdr);
-  }
+  readonly submitting = signal(false);
 
   submit() {
-    this.submitting = true;
+    this.submitting.set(true);
     super.submit();
   }
 }

@@ -1,14 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useReadBook } from '@bookapp/react/data-access';
 
 import BookReader from './BookReader/BookReader';
-import { useReadBookStyles } from './useReadBookStyles';
+import { StyledReadBook } from './StyledReadBook';
 
 export function ReadBook() {
-  const classes = useReadBookStyles();
-  const currentLocation = useRef<string>();
+  const currentLocation = useRef<string>('');
   const { slug } = useParams();
   const { epubUrl, bookmark, saveReading } = useReadBook(slug);
 
@@ -18,6 +17,7 @@ export function ReadBook() {
         saveReading({ epubUrl, bookmark: currentLocation.current });
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [epubUrl]);
 
   const onLocationChange = (location: string) => {
@@ -25,9 +25,9 @@ export function ReadBook() {
   };
 
   return (
-    <div className={classes.root}>
+    <StyledReadBook>
       <BookReader src={epubUrl} bookmark={bookmark} onLocationChange={onLocationChange} />
-    </div>
+    </StyledReadBook>
   );
 }
 

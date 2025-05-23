@@ -7,43 +7,24 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
+    "importHelpers": false,
+    "target": "ES2022",
     "module": "esnext",
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["es2017", "dom", "esnext.asynciterable"],
+    "lib": ["ES2022", "dom", "dom.iterable"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@bookapp/api/graphql": ["libs/api/graphql/src/index.ts"],
-      "@bookapp/api/auth": ["libs/api/auth/src/index.ts"],
-      "@bookapp/api/users": ["libs/api/users/src/index.ts"],
-      "@bookapp/api/shared": ["libs/api/shared/src/index.ts"],
-      "@bookapp/api/database": ["libs/api/database/src/index.ts"],
-      "@bookapp/testing": ["libs/testing/src/index.ts"],
-      "@bookapp/api/files": ["libs/api/files/src/index.ts"],
-      "@bookapp/api/logs": ["libs/api/logs/src/index.ts"],
-      "@bookapp/api/bookmarks": ["libs/api/bookmarks/src/index.ts"],
-      "@bookapp/api/books": ["libs/api/books/src/index.ts"],
-      "@bookapp/api/comments": ["libs/api/comments/src/index.ts"],
-      "@bookapp/api/dataloaders": ["libs/api/dataloaders/src/index.ts"],
-      "@bookapp/angular/core": ["libs/angular/core/src/index.ts"],
-      "@bookapp/angular/graphql": ["libs/angular/graphql/src/index.ts"],
-      "@bookapp/angular/data-access": ["libs/angular/data-access/src/index.ts"],
       "@bookapp/angular/base": ["libs/angular/base/src/index.ts"],
+      "@bookapp/angular/core": ["libs/angular/core/src/index.ts"],
+      "@bookapp/angular/data-access": ["libs/angular/data-access/src/index.ts"],
       "@bookapp/angular/desktop/auth": ["libs/angular/desktop/auth/src/index.ts"],
-      "@bookapp/angular/mobile/auth": ["libs/angular/mobile/auth/src/index.ts"],
-      "@bookapp/angular/desktop/main-layout": ["libs/angular/desktop/main-layout/src/index.ts"],
-      "@bookapp/angular/shared": ["libs/angular/shared/src/index.ts"],
-      "@bookapp/angular/mobile/main-layout": ["libs/angular/mobile/main-layout/src/index.ts"],
-      "@bookapp/angular/desktop/password": ["libs/angular/desktop/password/src/index.ts"],
-      "@bookapp/angular/mobile/password": ["libs/angular/mobile/password/src/index.ts"],
-      "@bookapp/angular/desktop/profile": ["libs/angular/desktop/profile/src/index.ts"],
-      "@bookapp/angular/ui-desktop": ["libs/angular/ui/ui-desktop/src/index.ts"],
-      "@bookapp/angular/mobile/profile": ["libs/angular/mobile/profile/src/index.ts"],
+      "@bookapp/angular/desktop/bookmarks": ["libs/angular/desktop/bookmarks/src/index.ts"],
       "@bookapp/angular/desktop/books/add-book": [
         "libs/angular/desktop/books/add-book/src/index.ts"
+      ],
+      "@bookapp/angular/desktop/books/best-books": [
+        "libs/angular/desktop/books/best-books/src/index.ts"
       ],
       "@bookapp/angular/desktop/books/browse-books": [
         "libs/angular/desktop/books/browse-books/src/index.ts"
@@ -51,65 +32,85 @@
       "@bookapp/angular/desktop/books/buy-books": [
         "libs/angular/desktop/books/buy-books/src/index.ts"
       ],
-      "@bookapp/api/auth-tokens": ["libs/api/auth-tokens/src/index.ts"],
-      "@bookapp/angular/mobile/books/browse-books": [
-        "libs/angular/mobile/books/browse-books/src/index.ts"
-      ],
-      "@bookapp/angular/ui-mobile": ["libs/angular/ui/ui-mobile/src/index.ts"],
-      "@bookapp/angular/mobile/books/buy-books": [
-        "libs/angular/mobile/books/buy-books/src/index.ts"
+      "@bookapp/angular/desktop/books/read-book": [
+        "libs/angular/desktop/books/read-book/src/index.ts"
       ],
       "@bookapp/angular/desktop/books/view-book": [
         "libs/angular/desktop/books/view-book/src/index.ts"
       ],
-      "@bookapp/angular/mobile/books/view-book": [
-        "libs/angular/mobile/books/view-book/src/index.ts"
-      ],
-      "@bookapp/angular/desktop/bookmarks": ["libs/angular/desktop/bookmarks/src/index.ts"],
-      "@bookapp/angular/desktop/books/best-books": [
-        "libs/angular/desktop/books/best-books/src/index.ts"
-      ],
       "@bookapp/angular/desktop/history": ["libs/angular/desktop/history/src/index.ts"],
+      "@bookapp/angular/desktop/main-layout": ["libs/angular/desktop/main-layout/src/index.ts"],
+      "@bookapp/angular/desktop/password": ["libs/angular/desktop/password/src/index.ts"],
+      "@bookapp/angular/desktop/profile": ["libs/angular/desktop/profile/src/index.ts"],
+      "@bookapp/angular/graphql": ["libs/angular/graphql/src/index.ts"],
+      "@bookapp/angular/mobile/auth": ["libs/angular/mobile/auth/src/index.ts"],
       "@bookapp/angular/mobile/bookmarks": ["libs/angular/mobile/bookmarks/src/index.ts"],
       "@bookapp/angular/mobile/books/best-books": [
         "libs/angular/mobile/books/best-books/src/index.ts"
       ],
-      "@bookapp/angular/mobile/history": ["libs/angular/mobile/history/src/index.ts"],
-      "@bookapp/angular/desktop/books/read-book": [
-        "libs/angular/desktop/books/read-book/src/index.ts"
+      "@bookapp/angular/mobile/books/browse-books": [
+        "libs/angular/mobile/books/browse-books/src/index.ts"
+      ],
+      "@bookapp/angular/mobile/books/buy-books": [
+        "libs/angular/mobile/books/buy-books/src/index.ts"
       ],
       "@bookapp/angular/mobile/books/read-book": [
         "libs/angular/mobile/books/read-book/src/index.ts"
       ],
-      "@bookapp/shared/interfaces": ["libs/shared/interfaces/src/index.ts"],
-      "@bookapp/shared/enums": ["libs/shared/enums/src/index.ts"],
-      "@bookapp/shared/queries": ["libs/shared/queries/src/index.ts"],
-      "@bookapp/shared/constants": ["libs/shared/constants/src/index.ts"],
+      "@bookapp/angular/mobile/books/view-book": [
+        "libs/angular/mobile/books/view-book/src/index.ts"
+      ],
+      "@bookapp/angular/mobile/history": ["libs/angular/mobile/history/src/index.ts"],
+      "@bookapp/angular/mobile/main-layout": ["libs/angular/mobile/main-layout/src/index.ts"],
+      "@bookapp/angular/mobile/password": ["libs/angular/mobile/password/src/index.ts"],
+      "@bookapp/angular/mobile/profile": ["libs/angular/mobile/profile/src/index.ts"],
+      "@bookapp/angular/shared": ["libs/angular/shared/src/index.ts"],
+      "@bookapp/angular/ui-desktop": ["libs/angular/ui/ui-desktop/src/index.ts"],
+      "@bookapp/angular/ui-mobile": ["libs/angular/ui/ui-mobile/src/index.ts"],
+      "@bookapp/api/auth": ["libs/api/auth/src/index.ts"],
+      "@bookapp/api/auth-tokens": ["libs/api/auth-tokens/src/index.ts"],
+      "@bookapp/api/bookmarks": ["libs/api/bookmarks/src/index.ts"],
+      "@bookapp/api/books": ["libs/api/books/src/index.ts"],
+      "@bookapp/api/comments": ["libs/api/comments/src/index.ts"],
+      "@bookapp/api/database": ["libs/api/database/src/index.ts"],
+      "@bookapp/api/dataloaders": ["libs/api/dataloaders/src/index.ts"],
+      "@bookapp/api/files": ["libs/api/files/src/index.ts"],
+      "@bookapp/api/graphql": ["libs/api/graphql/src/index.ts"],
+      "@bookapp/api/logs": ["libs/api/logs/src/index.ts"],
+      "@bookapp/api/shared": ["libs/api/shared/src/index.ts"],
+      "@bookapp/api/users": ["libs/api/users/src/index.ts"],
       "@bookapp/react/core": ["libs/react/core/src/index.ts"],
-      "@bookapp/shared/services": ["libs/shared/services/src/index.ts"],
-      "@bookapp/react/graphql": ["libs/react/graphql/src/index.ts"],
       "@bookapp/react/data-access": ["libs/react/data-access/src/index.ts"],
-      "@bookapp/react/pages/auth": ["libs/react/pages/auth/src/index.ts"],
-      "@bookapp/react/ui": ["libs/react/ui/src/index.ts"],
+      "@bookapp/react/graphql": ["libs/react/graphql/src/index.ts"],
       "@bookapp/react/guards": ["libs/react/guards/src/index.ts"],
-      "@bookapp/react/pages/main": ["libs/react/pages/main/src/index.ts"],
-      "@bookapp/react/pages/password": ["libs/react/pages/password/src/index.ts"],
-      "@bookapp/react/pages/profile": ["libs/react/pages/profile/src/index.ts"],
-      "@bookapp/shared/environments": ["libs/shared/environments/src/index.ts"],
-      "@bookapp/utils/api": ["libs/utils/api/src/index.ts"],
-      "@bookapp/utils/angular": ["libs/utils/angular/src/index.ts"],
-      "@bookapp/utils/react": ["libs/utils/react/src/index.ts"],
+      "@bookapp/react/pages/auth": ["libs/react/pages/auth/src/index.ts"],
+      "@bookapp/react/pages/bookmarks": ["libs/react/pages/bookmarks/src/index.ts"],
       "@bookapp/react/pages/books/add-book": ["libs/react/pages/books/add-book/src/index.ts"],
+      "@bookapp/react/pages/books/best-books": ["libs/react/pages/books/best-books/src/index.ts"],
       "@bookapp/react/pages/books/browse-books": [
         "libs/react/pages/books/browse-books/src/index.ts"
       ],
-      "@bookapp/react/state": ["libs/react/state/src/index.ts"],
       "@bookapp/react/pages/books/buy-books": ["libs/react/pages/books/buy-books/src/index.ts"],
-      "@bookapp/react/pages/books/view-book": ["libs/react/pages/books/view-book/src/index.ts"],
-      "@bookapp/react/pages/bookmarks": ["libs/react/pages/bookmarks/src/index.ts"],
-      "@bookapp/react/pages/books/best-books": ["libs/react/pages/books/best-books/src/index.ts"],
       "@bookapp/react/pages/books/read-book": ["libs/react/pages/books/read-book/src/index.ts"],
-      "@bookapp/react/pages/history": ["libs/react/pages/history/src/index.ts"]
+      "@bookapp/react/pages/books/view-book": ["libs/react/pages/books/view-book/src/index.ts"],
+      "@bookapp/react/pages/history": ["libs/react/pages/history/src/index.ts"],
+      "@bookapp/react/pages/main": ["libs/react/pages/main/src/index.ts"],
+      "@bookapp/react/pages/password": ["libs/react/pages/password/src/index.ts"],
+      "@bookapp/react/pages/profile": ["libs/react/pages/profile/src/index.ts"],
+      "@bookapp/react/state": ["libs/react/state/src/index.ts"],
+      "@bookapp/react/ui": ["libs/react/ui/src/index.ts"],
+      "@bookapp/shared/constants": ["libs/shared/constants/src/index.ts"],
+      "@bookapp/shared/enums": ["libs/shared/enums/src/index.ts"],
+      "@bookapp/shared/environments": ["libs/shared/environments/src/index.ts"],
+      "@bookapp/shared/interfaces": ["libs/shared/interfaces/src/index.ts"],
+      "@bookapp/shared/queries": ["libs/shared/queries/src/index.ts"],
+      "@bookapp/shared/services": ["libs/shared/services/src/index.ts"],
+      "@bookapp/testing/angular": ["libs/testing/src/angular.ts"],
+      "@bookapp/testing/api": ["libs/testing/src/api.ts"],
+      "@bookapp/testing/react": ["libs/testing/src/react.ts"],
+      "@bookapp/utils/angular": ["libs/utils/angular/src/index.ts"],
+      "@bookapp/utils/api": ["libs/utils/api/src/index.ts"],
+      "@bookapp/utils/react": ["libs/utils/react/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

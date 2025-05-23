@@ -1,7 +1,7 @@
 import { Book } from './book';
 
 export interface Log {
-  _id: any;
+  id: string;
   action: string;
   userId: string;
   createdAt: number;

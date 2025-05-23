@@ -1,13 +1,10 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { HAMMER_LOADER } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { StoreService } from '@bookapp/angular/core';
 import { LogsService } from '@bookapp/angular/data-access';
-import { log, MockAngularLogsService, MockStoreService } from '@bookapp/testing';
+import { log, MockAngularLogsService, MockStoreService } from '@bookapp/testing/angular';
 
-import { HistoryModule } from '../../history.module';
 import { HistoryPageComponent } from './history-page.component';
 
 describe('HistoryPageComponent', () => {
@@ -15,40 +12,28 @@ describe('HistoryPageComponent', () => {
   let fixture: ComponentFixture<HistoryPageComponent>;
   let logsService: LogsService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HistoryModule, NoopAnimationsModule, RouterTestingModule],
-        providers: [
-          {
-            provide: HAMMER_LOADER,
-            useValue: () => new Promise(() => {}),
-          },
-          {
-            provide: StoreService,
-            useValue: MockStoreService,
-          },
-        ],
-      })
-        .overrideComponent(HistoryPageComponent, {
-          set: {
-            providers: [
-              {
-                provide: LogsService,
-                useValue: MockAngularLogsService,
-              },
-            ],
-          },
-        })
-        .compileComponents();
-    })
-  );
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HistoryPageComponent],
+      providers: [
+        provideRouter([]),
+        {
+          provide: StoreService,
+          useValue: MockStoreService,
+        },
+        {
+          provide: LogsService,
+          useValue: MockAngularLogsService,
+        },
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HistoryPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    logsService = fixture.debugElement.injector.get(LogsService);
+    logsService = TestBed.inject(LogsService);
   });
 
   it('should create', () => {

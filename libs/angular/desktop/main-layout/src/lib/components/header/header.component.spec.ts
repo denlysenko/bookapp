@@ -1,11 +1,8 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideRouter } from '@angular/router';
 
-import { user } from '@bookapp/testing';
+import { user } from '@bookapp/testing/angular';
 
 import { HeaderComponent } from './header.component';
 
@@ -13,20 +10,17 @@ describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, MatToolbarModule, MatMenuModule],
-        declarations: [HeaderComponent],
-        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HeaderComponent],
+      providers: [provideRouter([])],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
-    component.user = user;
+    fixture.componentRef.setInput('user', user);
     fixture.detectChanges();
   });
 
@@ -36,8 +30,9 @@ describe('HeaderComponent', () => {
 
   describe('toggle sidenav', () => {
     beforeEach(() => {
-      const button: HTMLButtonElement = fixture.debugElement.query(By.css('.menu-toggler'))
-        .nativeElement;
+      const button: HTMLButtonElement = fixture.debugElement.query(
+        By.css('.menu-toggler')
+      ).nativeElement;
 
       jest.spyOn(component.toggleSidenav, 'emit');
 
@@ -52,8 +47,9 @@ describe('HeaderComponent', () => {
   describe('logout', () => {
     beforeEach(() => {
       // open menu
-      const button: HTMLButtonElement = fixture.debugElement.query(By.css('#user-menu-toggler'))
-        .nativeElement;
+      const button: HTMLButtonElement = fixture.debugElement.query(
+        By.css('#user-menu-toggler')
+      ).nativeElement;
       button.click();
 
       const anchor: HTMLAnchorElement = fixture.debugElement.query(By.css('#logout')).nativeElement;

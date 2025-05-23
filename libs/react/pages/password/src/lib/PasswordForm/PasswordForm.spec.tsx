@@ -1,5 +1,3 @@
-// tslint:disable: no-identical-functions
-import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { ERRORS } from '@bookapp/shared/constants';
@@ -7,7 +5,6 @@ import { ERRORS } from '@bookapp/shared/constants';
 import PasswordForm from './PasswordForm';
 
 const onSubmit = jest.fn();
-// tslint:disable-next-line: no-hardcoded-credentials
 const password = 'password';
 
 describe('PasswordForm', () => {

@@ -1,13 +1,12 @@
-import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { render, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import { MockedProvider } from '@apollo/client/testing';
 
 import { store } from '@bookapp/react/core';
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { LOGS_QUERY } from '@bookapp/shared/queries';
-import { book, log } from '@bookapp/testing';
+import { book, log } from '@bookapp/testing/react';
 
 import History from './History';
 
@@ -17,7 +16,7 @@ const logs = [];
 for (let i = 0; i < DEFAULT_LIMIT; i++) {
   logs.push({
     ...log,
-    _id: `${log._id}_${i}`,
+    id: `${log.id}_${i}`,
     book: { ...book, __typename: 'Book' },
     __typename: 'Log',
   });

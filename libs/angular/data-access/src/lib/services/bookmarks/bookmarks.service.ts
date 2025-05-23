@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { ApiResponse, Bookmark, RateBookEvent, RateBookResponse } from '@bookapp/shared/interfaces';
@@ -6,24 +6,22 @@ import {
   ADD_TO_BOOKMARKS_MUTATION,
   BOOKMARKS_BY_USER_AND_BOOK_QUERY,
   BOOKMARKS_QUERY,
-  REMOVE_FROM_BOOKMARKS_MUTATION,
   RATE_BOOK_MUTATION,
+  REMOVE_FROM_BOOKMARKS_MUTATION,
 } from '@bookapp/shared/queries';
 
 import { Apollo, QueryRef } from 'apollo-angular';
 
-import { isNil } from 'lodash';
-
 @Injectable()
 export class BookmarksService {
-  private bookmarksByTypeQueryRef: QueryRef<{
+  readonly #apollo = inject(Apollo);
+
+  #bookmarksByTypeQueryRef: QueryRef<{
     bookmarks: ApiResponse<Bookmark>;
   }> | null = null;
 
-  constructor(private readonly apollo: Apollo) {}
-
   watchBookmarksByBook(bookId: string) {
-    return this.apollo.watchQuery<{
+    return this.#apollo.watchQuery<{
       userBookmarksByBook: { type: string }[];
     }>({
       query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
@@ -34,28 +32,26 @@ export class BookmarksService {
   }
 
   watchBookmarksByType(type: string) {
-    if (isNil(this.bookmarksByTypeQueryRef)) {
-      this.bookmarksByTypeQueryRef = this.apollo.watchQuery<{ bookmarks: ApiResponse<Bookmark> }>({
-        query: BOOKMARKS_QUERY,
-        variables: {
-          type,
-          skip: 0,
-          first: DEFAULT_LIMIT,
-        },
-        fetchPolicy: 'network-only',
-        notifyOnNetworkStatusChange: true,
-      });
+    if (!this.#bookmarksByTypeQueryRef) {
+      this.#bookmarksByTypeQueryRef = this.#apollo.watchQuery<{ bookmarks: ApiResponse<Bookmark> }>(
+        {
+          query: BOOKMARKS_QUERY,
+          variables: {
+            type,
+            skip: 0,
+            first: DEFAULT_LIMIT,
+          },
+          fetchPolicy: 'network-only',
+          notifyOnNetworkStatusChange: true,
+        }
+      );
     }
 
-    return this.bookmarksByTypeQueryRef.valueChanges;
+    return this.#bookmarksByTypeQueryRef.valueChanges;
   }
 
   fetchMoreBookmarksByType(skip: number) {
-    if (isNil(this.bookmarksByTypeQueryRef)) {
-      return;
-    }
-
-    return this.bookmarksByTypeQueryRef.fetchMore({
+    return this.#bookmarksByTypeQueryRef?.fetchMore({
       variables: {
         skip,
       },
@@ -78,16 +74,16 @@ export class BookmarksService {
   }
 
   addToBookmarks({ type, bookId }) {
-    return this.apollo.mutate<{ addToBookmarks: Bookmark }>({
+    return this.#apollo.mutate<{ addToBookmarks: Bookmark }>({
       mutation: ADD_TO_BOOKMARKS_MUTATION,
       variables: {
         type,
         bookId,
       },
       update: (store, { data: { addToBookmarks } }) => {
-        const data: {
+        const data = store.readQuery<{
           userBookmarksByBook: { type: string }[];
-        } = store.readQuery({
+        }>({
           query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
           variables: {
             bookId,
@@ -108,16 +104,16 @@ export class BookmarksService {
   }
 
   removeFromBookmarks({ type, bookId }) {
-    return this.apollo.mutate<{ removeFromBookmarks: Bookmark }>({
+    return this.#apollo.mutate<{ removeFromBookmarks: Bookmark }>({
       mutation: REMOVE_FROM_BOOKMARKS_MUTATION,
       variables: {
         type,
         bookId,
       },
       update: (store, { data: { removeFromBookmarks } }) => {
-        const data: {
+        const data = store.readQuery<{
           userBookmarksByBook: { type: string }[];
-        } = store.readQuery({
+        }>({
           query: BOOKMARKS_BY_USER_AND_BOOK_QUERY,
           variables: {
             bookId,
@@ -140,19 +136,19 @@ export class BookmarksService {
   }
 
   rateBook({ bookId, rate }: RateBookEvent) {
-    return this.apollo.mutate<RateBookResponse>({
+    return this.#apollo.mutate<RateBookResponse>({
       mutation: RATE_BOOK_MUTATION,
       variables: {
         bookId,
         rate,
       },
       update: (_, { data: { rateBook } }) => {
-        if (isNil(this.bookmarksByTypeQueryRef)) {
+        if (!this.#bookmarksByTypeQueryRef) {
           return;
         }
 
-        this.bookmarksByTypeQueryRef.updateQuery((prevData) => {
-          const index = prevData.bookmarks.rows.findIndex(({ book }) => book._id === bookId);
+        this.#bookmarksByTypeQueryRef.updateQuery((prevData) => {
+          const index = prevData.bookmarks.rows.findIndex(({ book }) => book.id === bookId);
 
           if (index === -1) {
             return prevData;

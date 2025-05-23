@@ -1,27 +1,20 @@
-// tslint:disable: no-big-function
-// tslint:disable: no-duplicate-string
 import { AuthModule } from '@bookapp/api/auth';
-import { BookmarksModule, BookmarksService, BOOKMARK_ERRORS } from '@bookapp/api/bookmarks';
+import { BOOKMARK_ERRORS, BookmarksModule, BookmarksService } from '@bookapp/api/bookmarks';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
 import { BOOKMARKS } from '@bookapp/shared/enums';
-import { bookmark, MockConfigService, mockConnection, MockModel, user } from '@bookapp/testing';
+import { bookmark, MockConfigService, mockConnection, MockModel, user } from '@bookapp/testing/api';
 
-import {
-  BadRequestException,
-  HttpStatus,
-  INestApplication,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, INestApplication, NotFoundException } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getConnectionToken, getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
-import * as jwt from 'jsonwebtoken';
-import * as request from 'supertest';
+import jwt from 'jsonwebtoken';
+import request from 'supertest';
 
-const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
+const authToken = jwt.sign({ id: user.id }, 'ACCESS_TOKEN_SECRET');
 
 const MockBookmarksService = {
   getByType: jest.fn().mockResolvedValue({ count: 1, rows: [bookmark] }),
@@ -51,6 +44,8 @@ describe('BookmarksModule', () => {
       .useValue(mockConnection)
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
+      .overrideProvider(getModelToken(ModelNames.AUTH_TOKEN))
+      .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.BOOKMARK))
       .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.USER))
@@ -64,6 +59,7 @@ describe('BookmarksModule', () => {
     bookmarksService = module.get<BookmarksService>(BookmarksService);
     usersService = module.get<UsersService>(UsersService);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     jest.spyOn(usersService, 'findById').mockResolvedValue(user as any);
 
     app = module.createNestApplication();
@@ -112,7 +108,7 @@ describe('BookmarksModule', () => {
         });
 
       expect(bookmarksService.getByType).toHaveBeenCalledWith({
-        filter: { userId: user._id, type: BOOKMARKS.WISHLIST },
+        filter: { userId: user.id, type: BOOKMARKS.WISHLIST },
         first: null,
         order: null,
         skip: 10,
@@ -134,30 +130,28 @@ describe('BookmarksModule', () => {
         });
 
       expect(bookmarksService.getByType).toHaveBeenCalledWith({
-        filter: { userId: user._id, type: BOOKMARKS.WISHLIST },
+        filter: { userId: user.id, type: BOOKMARKS.WISHLIST },
         first: 10,
         order: null,
         skip: null,
       });
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `query {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `query {
             bookmarks(type: WISHLIST) {
               rows {
                 type
               }
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
   });
 
@@ -184,21 +178,19 @@ describe('BookmarksModule', () => {
         });
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `query {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `query {
             userBookmarksByBook(bookId: "book_id") {
               type
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
   });
 
@@ -242,29 +234,22 @@ describe('BookmarksModule', () => {
         });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.BAD_REQUEST,
-        error: 'Bad Request',
-        message: BOOKMARK_ERRORS.BOOKMARK_UNIQUE_ERR,
-      });
+      expect(error.message).toEqual(BOOKMARK_ERRORS.BOOKMARK_UNIQUE_ERR);
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `mutation {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
             addToBookmarks(type: WISHLIST, bookId: "book_id") {
               type
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
   });
 
@@ -308,29 +293,22 @@ describe('BookmarksModule', () => {
         });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.NOT_FOUND,
-        error: 'Not Found',
-        message: BOOKMARK_ERRORS.BOOKMARK_NOT_FOUND_ERR,
-      });
+      expect(error.message).toEqual(BOOKMARK_ERRORS.BOOKMARK_NOT_FOUND_ERR);
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `mutation {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
             removeFromBookmarks(type: WISHLIST, bookId: "book_id") {
               type
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
   });
 

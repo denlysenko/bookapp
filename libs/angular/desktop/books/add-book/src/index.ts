@@ -1,1 +1,1 @@
-export * from './lib/add-book.module';
+export * from './lib/add-book.routes';

@@ -1,0 +1,13 @@
+{
+  "name": "angular-mobile-password",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/angular/mobile/password/src",
+  "prefix": "bookapp",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": ["scope:angular", "platform:mobile"]
+}

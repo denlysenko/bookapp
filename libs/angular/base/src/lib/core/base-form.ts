@@ -1,29 +1,35 @@
-import { FormGroup } from '@angular/forms';
+import { inject } from '@angular/core';
+import { AbstractControl, FormGroup } from '@angular/forms';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
+import { errorsMap } from '@bookapp/shared/constants';
+import { ApiError } from '@bookapp/shared/interfaces';
 
 import { BaseComponent } from './base-component';
 
-export abstract class BaseForm extends BaseComponent {
-  form: FormGroup;
-  errors: { [key: string]: string } = {};
+// explanation here: https://github.com/angular/angular/issues/47091#issuecomment-1211152093
+type DerivedControlType<TControl> = { [key in keyof TControl]: AbstractControl<unknown> };
 
-  constructor(protected readonly feedbackService: FeedbackPlatformService) {
-    super();
-  }
+export abstract class BaseForm<T extends DerivedControlType<T>> extends BaseComponent {
+  protected readonly feedbackService = inject(FeedbackPlatformService);
 
-  protected handleError(err: any) {
-    if (err.message) {
-      this.feedbackService.error(err.message);
+  abstract form: FormGroup<T>;
+  errors: Record<string, string> = {};
+
+  protected handleError(err: ApiError) {
+    if (err.message && err.message !== 'ValidationError') {
+      this.feedbackService.error(errorsMap[err.message] ?? err.message);
       return;
     }
 
-    Object.keys(err).forEach((key) => {
+    Object.keys(err.extensions?.errors ?? {}).forEach((key) => {
       const formControl = this.form.get(key);
 
       if (formControl) {
         formControl.setErrors({ serverError: true });
-        this.errors[key] = err[key].message;
+        const errorMessage =
+          errorsMap[err.extensions.errors[key].message] ?? err.extensions.errors[key].message;
+        this.errors[key] = errorMessage;
       }
     });
   }

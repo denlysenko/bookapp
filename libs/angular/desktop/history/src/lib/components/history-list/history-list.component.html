@@ -1,53 +1,53 @@
 <section class="logs">
-  <div class="mat-elevation-z1">
-    <table
-      mat-table
-      matSort
-      [dataSource]="logs"
-      [matSortActive]="sorting.active"
-      [matSortDirection]="sorting.direction"
-      [matSortDisableClear]="true"
-      (matSortChange)="sortChanged.emit($event)"
-    >
-      <ng-container matColumnDef="createdAt">
-        <th mat-header-cell mat-sort-header *matHeaderCellDef>Created At</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.createdAt | date: 'dd.MM.yyyy HH:mm:ss' }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef>
-          Action
-        </th>
-        <td mat-cell *matCellDef="let element">{{ actions[element.action] }}</td>
-      </ng-container>
-      <ng-container matColumnDef="book">
-        <th mat-header-cell *matHeaderCellDef>Book</th>
-        <td mat-cell *matCellDef="let element">
-          <a
-            routerLink="{{
-              element.book.paid
-                ? '/books/buy/' + element.book.url
-                : '/books/browse/' + element.book.url
-            }}"
-            [queryParams]="{ bookId: element.book._id }"
-            >{{ element.book.title }}</a
-          >
-          <br />
-          <small> by {{ element.book.author }}</small>
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
+  <mat-card>
+    <mat-card-content>
+      <table
+        mat-table
+        matSort
+        [dataSource]="logs()"
+        [matSortActive]="sorting().active"
+        [matSortDirection]="sorting().direction"
+        [matSortDisableClear]="true"
+        (matSortChange)="sortChanged.emit($event)"
+      >
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Created At</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.createdAt | date: 'dd.MM.yyyy HH:mm:ss' }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let element">{{ actions[element.action] }}</td>
+        </ng-container>
+        <ng-container matColumnDef="book">
+          <th mat-header-cell *matHeaderCellDef>Book</th>
+          <td mat-cell *matCellDef="let element">
+            <a
+              routerLink="{{
+                element.book.paid
+                  ? `/books/buy/${element.book.url}`
+                  : `/books/browse/${element.book.url}`
+              }}"
+              [queryParams]="{ bookId: element.book.id }"
+            >
+              {{ element.book.title }}
+            </a>
+            <br />
+            <small>by {{ element.book.author }}</small>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
 
-    <mat-paginator
-      [length]="totalCount"
-      [pageIndex]="pagination.skip / pagination.first"
-      [pageSize]="pagination.first"
-      [pageSizeOptions]="[10, 20, 50, 100]"
-      (page)="pageChanged.emit($event)"
-    >
-    </mat-paginator>
-  </div>
+      <mat-paginator
+        [length]="totalCount()"
+        [pageIndex]="pagination().skip / pagination().first"
+        [pageSize]="pagination().first"
+        [pageSizeOptions]="[10, 20, 50, 100]"
+        (page)="pageChanged.emit($event)"
+      />
+    </mat-card-content>
+  </mat-card>
 </section>

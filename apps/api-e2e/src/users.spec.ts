@@ -1,35 +1,30 @@
-// tslint:disable: no-big-function
-// tslint:disable: no-duplicate-string
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AuthModule } from '@bookapp/api/auth';
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
 import { GraphqlModule } from '@bookapp/api/graphql';
-import { ModelNames } from '@bookapp/api/shared';
-import { UsersModule, UsersService, USER_VALIDATION_ERRORS } from '@bookapp/api/users';
+import { ModelNames, MongooseValidationFilter } from '@bookapp/api/shared';
+import { USER_VALIDATION_ERRORS, UsersModule, UsersService } from '@bookapp/api/users';
 import { ROLES } from '@bookapp/shared/enums';
 import {
   authPayload,
   MockAuthTokensService,
   MockConfigService,
+  mockConnection,
   MockModel,
   MockUsersService,
   user,
-} from '@bookapp/testing';
+} from '@bookapp/testing/api';
 
-import {
-  BadRequestException,
-  HttpStatus,
-  INestApplication,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, INestApplication, NotFoundException } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { getModelToken } from '@nestjs/mongoose';
+import { getConnectionToken, getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
-import * as jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { ValidationError } from 'mongoose/lib/error';
-import * as request from 'supertest';
+import request from 'supertest';
 
-const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
+const authToken = jwt.sign({ id: user.id }, 'ACCESS_TOKEN_SECRET');
 
 const validationError = new ValidationError();
 validationError.errors = {
@@ -48,6 +43,7 @@ describe('UsersModule', () => {
         ConfigModule.forRoot({
           isGlobal: true,
         }),
+        MongooseModule.forRoot('test'),
         UsersModule,
         AuthModule,
         GraphqlModule,
@@ -55,6 +51,10 @@ describe('UsersModule', () => {
     })
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
+      .overrideProvider(getConnectionToken())
+      .useValue(mockConnection)
+      .overrideProvider(getModelToken(ModelNames.AUTH_TOKEN))
+      .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.USER))
       .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.AUTH_TOKEN))
@@ -73,6 +73,7 @@ describe('UsersModule', () => {
     } as any);
 
     app = module.createNestApplication();
+    app.useGlobalFilters(new MongooseValidationFilter());
     await app.init();
   });
 
@@ -85,7 +86,7 @@ describe('UsersModule', () => {
           query: `query {
             users {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -95,7 +96,7 @@ describe('UsersModule', () => {
             users: {
               rows: [
                 {
-                  _id: user._id,
+                  id: user.id,
                 },
               ],
             },
@@ -111,7 +112,7 @@ describe('UsersModule', () => {
           query: `query {
             users(filter: { field: "test", search: "query" }) {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -133,7 +134,7 @@ describe('UsersModule', () => {
           query: `query {
             users(skip: 10) {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -155,7 +156,7 @@ describe('UsersModule', () => {
           query: `query {
             users(first: 10) {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -177,7 +178,7 @@ describe('UsersModule', () => {
           query: `query {
             users(orderBy: email_asc) {
               rows {
-                _id
+                id
               }
             }
           }`,
@@ -186,28 +187,26 @@ describe('UsersModule', () => {
       expect(usersService.findAll).toHaveBeenCalledWith({
         filter: null,
         first: null,
-        order: { email: 1 },
+        order: { email: 'asc' },
         skip: null,
       });
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `query {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `query {
             users {
               rows {
-                _id
+                id
               }
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
 
     it('should return FORBIDDEN error', async () => {
@@ -222,19 +221,14 @@ describe('UsersModule', () => {
           query: `query {
             users {
               rows {
-                _id
+                id
               }
             }
           }`,
         });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        error: 'Forbidden',
-        message: 'Forbidden resource',
-        statusCode: HttpStatus.FORBIDDEN,
-      });
+      expect(error.extensions.code).toEqual('FORBIDDEN');
     });
   });
 
@@ -261,21 +255,19 @@ describe('UsersModule', () => {
       expect(usersService.findById).toHaveBeenCalledWith('user_1');
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `query {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `query {
             user(id: "user_1") {
               email
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
 
     it('should return FORBIDDEN error', async () => {
@@ -295,12 +287,7 @@ describe('UsersModule', () => {
         });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        error: 'Forbidden',
-        message: 'Forbidden resource',
-        statusCode: HttpStatus.FORBIDDEN,
-      });
+      expect(error.extensions.code).toEqual('FORBIDDEN');
     });
   });
 
@@ -325,21 +312,19 @@ describe('UsersModule', () => {
         });
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `query {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `query {
             me {
               email
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
   });
 
@@ -385,27 +370,24 @@ describe('UsersModule', () => {
         });
 
       const [error] = res.body.errors;
-
-      expect(error).toEqual({
+      expect(error.extensions.errors).toEqual({
         email: { message: USER_VALIDATION_ERRORS.EMAIL_REQUIRED_ERR },
       });
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `mutation {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
             updateUser(id: "user_1", user: { email: "test2@test.com" }) {
               email
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
   });
 
@@ -429,7 +411,7 @@ describe('UsersModule', () => {
         });
 
       expect(usersService.changePassword).toHaveBeenCalledWith(
-        user._id,
+        user.id,
         'oldPassword',
         'newPassword'
       );
@@ -455,30 +437,23 @@ describe('UsersModule', () => {
         });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        error: 'Bad Request',
-        message: USER_VALIDATION_ERRORS.OLD_PASSWORD_MATCH_ERR,
-        statusCode: HttpStatus.BAD_REQUEST,
-      });
+      expect(error.message).toEqual(USER_VALIDATION_ERRORS.OLD_PASSWORD_MATCH_ERR);
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `mutation {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
             changePassword(password: "newPassword", oldPassword: "oldPassword") {
               accessToken
               refreshToken
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
   });
 
@@ -507,19 +482,16 @@ describe('UsersModule', () => {
           Promise.reject(new NotFoundException(USER_VALIDATION_ERRORS.EMAIL_NOT_FOUND_ERR))
         );
 
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `mutation {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
             requestResetPassword(email: "test@test.com")
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        error: 'Not Found',
-        message: USER_VALIDATION_ERRORS.EMAIL_NOT_FOUND_ERR,
-        statusCode: HttpStatus.NOT_FOUND,
-      });
+      expect(error.message).toEqual(USER_VALIDATION_ERRORS.EMAIL_NOT_FOUND_ERR);
     });
   });
 
@@ -548,19 +520,16 @@ describe('UsersModule', () => {
           Promise.reject(new NotFoundException(USER_VALIDATION_ERRORS.TOKEN_NOT_FOUND_ERR))
         );
 
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `mutation {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
             resetPassword(token: "token", newPassword: "password")
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        error: 'Not Found',
-        message: USER_VALIDATION_ERRORS.TOKEN_NOT_FOUND_ERR,
-        statusCode: HttpStatus.NOT_FOUND,
-      });
+      expect(error.message).toEqual(USER_VALIDATION_ERRORS.TOKEN_NOT_FOUND_ERR);
     });
   });
 
@@ -572,14 +541,14 @@ describe('UsersModule', () => {
         .send({
           query: `mutation {
             deleteUser(id: "user_1") {
-              _id
+              id
             }
           }`,
         })
         .expect({
           data: {
             deleteUser: {
-              _id: user._id,
+              id: user.id,
             },
           },
         });
@@ -600,35 +569,28 @@ describe('UsersModule', () => {
         .send({
           query: `mutation {
             deleteUser(id: "user_1") {
-              _id
+              id
             }
           }`,
         });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        error: 'Not Found',
-        message: USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR,
-        statusCode: HttpStatus.NOT_FOUND,
-      });
+      expect(error.message).toEqual(USER_VALIDATION_ERRORS.USER_NOT_FOUND_ERR);
     });
 
-    it('should return UNAUTHORIZED error', async () => {
-      const res = await request(app.getHttpServer()).post('/graphql').send({
-        query: `mutation {
+    it('should return UNAUTHENTICATED error', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
             deleteUser(id: "user_1") {
-              _id
+              id
             }
           }`,
-      });
+        });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Unauthorized',
-      });
+      expect(error.extensions.code).toEqual('UNAUTHENTICATED');
     });
 
     it('should return FORBIDDEN error', async () => {
@@ -642,18 +604,13 @@ describe('UsersModule', () => {
         .send({
           query: `mutation {
             deleteUser(id: "user_1") {
-              _id
+              id
             }
           }`,
         });
 
       const [error] = res.body.errors;
-
-      expect(error.extensions.exception.response).toEqual({
-        error: 'Forbidden',
-        message: 'Forbidden resource',
-        statusCode: HttpStatus.FORBIDDEN,
-      });
+      expect(error.extensions.code).toEqual('FORBIDDEN');
     });
   });
 

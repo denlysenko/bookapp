@@ -7,7 +7,6 @@ import { BOOK_QUERY, ME_QUERY, UPDATE_USER_MUTATION } from '@bookapp/shared/quer
 
 import { useMe } from './useMe';
 
-// tslint:disable: no-shadowed-variable
 export function useReadBook(slug?: string) {
   const [fetchBook, { data, loading }] = useLazyQuery<{ book: Book }>(BOOK_QUERY);
   const [executeUpdateMutation] = useMutation<{ updateUser: User }>(UPDATE_USER_MUTATION);
@@ -19,12 +18,12 @@ export function useReadBook(slug?: string) {
         variables: { slug },
       });
     }
-  }, [slug]);
+  }, [fetchBook, slug]);
 
   async function saveReading(reading: Reading) {
     await executeUpdateMutation({
       variables: {
-        id: me._id,
+        id: me.id,
         user: { reading },
       },
       update: (store, { data: { updateUser } }) => {

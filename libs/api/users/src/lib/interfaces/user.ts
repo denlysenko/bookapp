@@ -1,17 +1,13 @@
 import { User } from '@bookapp/shared/interfaces';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
-export interface UserModel extends User, Document {
-  _id: any;
+export interface UserModel extends Omit<User, 'id'>, Document<Types.ObjectId> {
   password: string;
   salt: string;
   resetPasswordToken?: string;
   resetPasswordExpires?: number;
   avatar?: string;
-  authenticate: (password: string) => boolean;
-  makeSalt: (byteSize: number, callback: (err: any, salt: string) => void) => void;
-  encryptPassword: (
-    password: string,
-    callback?: (err: any, hashedPassword: string) => void
-  ) => void | string;
+  authenticate(password: string): Promise<boolean>;
+  makeSalt(byteSize?: number): Promise<string>;
+  encryptPassword(password: string): Promise<string>;
 }

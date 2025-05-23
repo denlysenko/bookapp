@@ -1,1 +1,1 @@
-export * from './lib/best-books.module';
+export * from './lib/best-books.routes';

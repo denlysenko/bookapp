@@ -1,58 +1,53 @@
+import { inject, signal } from '@angular/core';
+
 import { RouterExtensions } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
-import { SignupCredentials } from '@bookapp/shared/interfaces';
+import { ApiError, SignupCredentials } from '@bookapp/shared/interfaces';
 
-import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 export abstract class AuthPageBase {
-  private error = new BehaviorSubject<any | null>(null);
-  private loading = new BehaviorSubject<boolean>(false);
+  readonly #authService = inject(AuthService);
+  readonly #routerExtensions = inject(RouterExtensions);
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly routerExtensions: RouterExtensions
-  ) {}
-
-  get loading$(): Observable<boolean> {
-    return this.loading.asObservable();
-  }
-
-  get error$(): Observable<any | null> {
-    return this.error.asObservable();
-  }
+  readonly loading = signal(false);
+  readonly error = signal<ApiError>(null);
 
   submit({ isLoggingIn, credentials }) {
-    isLoggingIn ? this.login(credentials.email, credentials.password) : this.signup(credentials);
+    if (isLoggingIn) {
+      this.#login(credentials.email, credentials.password);
+    } else {
+      this.#signup(credentials);
+    }
   }
 
-  private login(email: string, password: string) {
-    this.loading.next(true);
-    this.authService
+  #login(email: string, password: string) {
+    this.loading.set(true);
+    this.#authService
       .login(email, password)
       .pipe(
         finalize(() => {
-          this.loading.next(false);
+          this.loading.set(false);
         })
       )
-      .subscribe(this.onNext.bind(this));
+      .subscribe(this.#onNext.bind(this));
   }
 
-  private signup(credentials: SignupCredentials) {
-    this.loading.next(true);
-    this.authService
+  #signup(credentials: SignupCredentials) {
+    this.loading.set(true);
+    this.#authService
       .signup(credentials)
       .pipe(
         finalize(() => {
-          this.loading.next(false);
+          this.loading.set(false);
         })
       )
-      .subscribe(this.onNext.bind(this));
+      .subscribe(this.#onNext.bind(this));
   }
 
-  private onNext({ data, errors }) {
+  #onNext({ data, errors }) {
     if (data) {
-      this.routerExtensions.navigate([''], {
+      this.#routerExtensions.navigate([''], {
         // for nativescript
         clearHistory: true,
         transition: {
@@ -64,7 +59,7 @@ export abstract class AuthPageBase {
     }
 
     if (errors) {
-      this.error.next(errors[errors.length - 1]);
+      this.error.set(errors[errors.length - 1]);
     }
   }
 }

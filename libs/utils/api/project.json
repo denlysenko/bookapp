@@ -1,0 +1,20 @@
+{
+  "name": "utils-api",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/utils/api/src",
+  "projectType": "library",
+  "generators": {},
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/utils/api/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/utils/api"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": []
+}

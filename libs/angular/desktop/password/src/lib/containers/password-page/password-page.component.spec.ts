@@ -1,15 +1,13 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { PasswordService } from '@bookapp/angular/data-access';
-import { MockFeedbackPlatformService } from '@bookapp/testing';
+import { MockFeedbackPlatformService } from '@bookapp/testing/angular';
 
 import { of } from 'rxjs';
 
 import { PasswordPageComponent } from './password-page.component';
 
-// tslint:disable-next-line: no-hardcoded-credentials
 const password = 'newPassword';
 const oldPassword = 'oldPassword';
 
@@ -18,30 +16,27 @@ describe('PasswordPageComponent', () => {
   let fixture: ComponentFixture<PasswordPageComponent>;
   let passwordService: PasswordService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [PasswordPageComponent],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-        providers: [
-          {
-            provide: PasswordService,
-            useValue: {
-              changePassword: jest
-                .fn()
-                .mockImplementation(() => of({ data: { changePassword: true } })),
-            },
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [PasswordPageComponent],
+      providers: [
+        {
+          provide: PasswordService,
+          useValue: {
+            changePassword: jest
+              .fn()
+              .mockImplementation(() => of({ data: { changePassword: true } })),
           },
-          {
-            provide: FeedbackPlatformService,
-            useValue: MockFeedbackPlatformService,
-          },
-        ],
-      }).compileComponents();
+        },
+        {
+          provide: FeedbackPlatformService,
+          useValue: MockFeedbackPlatformService,
+        },
+      ],
+    }).compileComponents();
 
-      passwordService = TestBed.inject(PasswordService);
-    })
-  );
+    passwordService = TestBed.inject(PasswordService);
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PasswordPageComponent);
@@ -59,26 +54,20 @@ describe('PasswordPageComponent', () => {
       expect(passwordService.changePassword).toHaveBeenCalledWith(password, oldPassword);
     });
 
-    it('should propagate error', (done) => {
-      const error: any = { message: 'Error' };
+    it('should propagate error', async () => {
+      const error = { message: 'Error' };
 
       jest
         .spyOn(passwordService, 'changePassword')
         .mockImplementationOnce(() => of({ errors: [error] }));
 
-      let result: any;
-
-      component.error$.subscribe((err) => {
-        result = err;
-        done();
-      });
-
       component.changePassword({
         oldPassword,
         password,
       });
+      await fixture.whenStable();
 
-      expect(result).toEqual(error);
+      expect(component.error()).toEqual(error);
     });
   });
 });

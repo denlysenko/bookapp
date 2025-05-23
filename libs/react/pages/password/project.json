@@ -1,0 +1,19 @@
+{
+  "name": "react-pages-password",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/react/pages/password/src",
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/react/pages/password/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/react/pages/password"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": ["scope:react"]
+}

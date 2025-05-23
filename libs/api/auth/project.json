@@ -1,0 +1,19 @@
+{
+  "name": "api-auth",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/auth/src",
+  "projectType": "library",
+  "tags": ["scope:api", "type:feature", "platform:server"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/api/auth/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/api/auth"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

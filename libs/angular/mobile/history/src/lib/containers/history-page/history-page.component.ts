@@ -1,47 +1,51 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  NO_ERRORS_SCHEMA,
+  OnInit,
+  viewChild,
+} from '@angular/core';
 
 import { HistoryPageBase } from '@bookapp/angular/base';
-import { LoaderPlatformService, StoreService } from '@bookapp/angular/core';
+import { LoaderPlatformService } from '@bookapp/angular/core';
 import { LogsService } from '@bookapp/angular/data-access';
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { LogsFilter } from '@bookapp/shared/interfaces';
 
+import { Drawer } from '@nativescript-community/ui-drawer';
+
+import { NativeScriptCommonModule } from '@nativescript/angular';
+import { action, Application, getViewById } from '@nativescript/core';
+
 import { takeUntil } from 'rxjs/operators';
-
-import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
-
-import { getViewById, action } from '@nativescript/core';
-import { getRootView } from '@nativescript/core/application';
 
 import { HistoryListComponent } from '../../components/history-list/history-list.component';
 
 @Component({
-  selector: 'bookapp-history-page',
+  imports: [NativeScriptCommonModule, AsyncPipe, HistoryListComponent],
   templateUrl: './history-page.component.html',
-  styleUrls: ['./history-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [LogsService],
+  schemas: [NO_ERRORS_SCHEMA],
 })
-export class HistoryPageComponent extends HistoryPageBase {
-  @ViewChild(HistoryListComponent)
-  historyListView: HistoryListComponent;
+export class HistoryPageComponent extends HistoryPageBase implements OnInit {
+  readonly historyListView = viewChild<HistoryListComponent>(HistoryListComponent);
 
-  private skip = 0;
+  readonly #loaderService = inject(LoaderPlatformService);
 
-  constructor(
-    logsService: LogsService,
-    storeService: StoreService,
-    private readonly loaderService: LoaderPlatformService
-  ) {
-    super(logsService, storeService);
+  #skip = 0;
+
+  ngOnInit() {
     this.loading$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((loading) => (loading ? this.loaderService.start() : this.loaderService.stop()));
+      .subscribe((loading) => (loading ? this.#loaderService.start() : this.#loaderService.stop()));
   }
 
   onDrawerButtonTap() {
-    const sideDrawer = getViewById(getRootView() as any, 'drawer') as RadSideDrawer;
-    sideDrawer.toggleDrawerState();
+    const sideDrawer = getViewById(Application.getRootView(), 'drawer') as Drawer;
+    sideDrawer.toggle();
   }
 
   async onFilterTap() {
@@ -66,30 +70,30 @@ export class HistoryPageComponent extends HistoryPageBase {
     }
 
     if (this.hasMoreItems) {
-      this.skip += DEFAULT_LIMIT;
+      this.#skip += DEFAULT_LIMIT;
 
-      this.filter.next({
-        ...this.filter.getValue(),
-        skip: this.skip,
-      });
+      this.filter.update((filter) => ({
+        ...filter,
+        skip: this.#skip,
+      }));
 
-      this.logsService.loadMore(this.skip);
+      this.logsService.loadMore(this.#skip);
     }
   }
 
   private sort(direction: string) {
-    this.skip = 0;
+    this.#skip = 0;
 
-    const skip = this.skip;
+    const skip = this.#skip;
     const orderBy = `createdAt_${direction}` as LogsFilter['orderBy'];
 
-    this.filter.next({
-      ...this.filter.getValue(),
+    this.filter.update((filter) => ({
+      ...filter,
       skip,
       orderBy,
-    });
+    }));
 
     this.logsService.refetch({ skip, orderBy });
-    this.historyListView.scrollToIndex(0);
+    this.historyListView()?.scrollToIndex(0);
   }
 }

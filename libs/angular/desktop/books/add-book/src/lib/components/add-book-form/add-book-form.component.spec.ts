@@ -1,14 +1,12 @@
-// tslint:disable: no-duplicate-string
-// tslint:disable: no-big-function
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
-import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialog } from '@angular/material/dialog';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AbstractControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
+
 import { FeedbackPlatformService, UploadPlatformService } from '@bookapp/angular/core';
-import { book, clickOnBtn, MockFeedbackPlatformService } from '@bookapp/testing';
+import { book, clickOnBtn, MockFeedbackPlatformService } from '@bookapp/testing/angular';
 
 import { of } from 'rxjs';
 
@@ -17,7 +15,7 @@ import { AddBookFormComponent } from './add-book-form.component';
 const publicUrl = 'uploads/publicUrl';
 
 const formValue = {
-  _id: book._id,
+  id: book.id,
   title: book.title,
   author: book.author,
   description: book.description,
@@ -35,35 +33,31 @@ describe('AddBookFormComponent', () => {
   let dialog: MatDialog;
   let uploadService: UploadPlatformService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, MatCheckboxModule],
-        declarations: [AddBookFormComponent],
-        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-        providers: [
-          {
-            provide: FeedbackPlatformService,
-            useValue: MockFeedbackPlatformService,
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [AddBookFormComponent],
+      providers: [
+        {
+          provide: FeedbackPlatformService,
+          useValue: MockFeedbackPlatformService,
+        },
+        {
+          provide: UploadPlatformService,
+          useValue: {
+            deleteFile: jest.fn().mockImplementation(() => of(true)),
           },
-          {
-            provide: UploadPlatformService,
-            useValue: {
-              deleteFile: jest.fn().mockImplementation(() => of(true)),
-            },
+        },
+        {
+          provide: MatDialog,
+          useValue: {
+            open: jest.fn().mockImplementation(() => ({
+              afterClosed: jest.fn().mockReturnValue(of(publicUrl)),
+            })),
           },
-          {
-            provide: MatDialog,
-            useValue: {
-              open: jest.fn().mockImplementation(() => ({
-                afterClosed: jest.fn().mockReturnValue(of(publicUrl)),
-              })),
-            },
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+        },
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddBookFormComponent);
@@ -79,10 +73,10 @@ describe('AddBookFormComponent', () => {
 
   it('should init form with empty values', () => {
     expect(component.form.value).toMatchObject({
-      _id: null,
-      title: null,
-      author: null,
-      description: null,
+      id: null,
+      title: '',
+      author: '',
+      description: '',
       paid: false,
       coverUrl: null,
       epubUrl: null,
@@ -90,7 +84,7 @@ describe('AddBookFormComponent', () => {
   });
 
   it('should patch form with values from book', () => {
-    component.book = book;
+    fixture.componentRef.setInput('book', book);
     fixture.detectChanges();
     expect(component.form.value).toMatchObject(formValue);
   });
@@ -272,7 +266,7 @@ describe('AddBookFormComponent', () => {
 
   describe('hasChanges()', () => {
     beforeEach(() => {
-      component.book = book;
+      fixture.componentRef.setInput('book', book);
       fixture.detectChanges();
     });
 

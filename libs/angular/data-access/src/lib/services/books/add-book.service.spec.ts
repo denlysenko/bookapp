@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CREATE_BOOK_MUTATION, UPDATE_BOOK_MUTATION } from '@bookapp/shared/queries';
-import { book } from '@bookapp/testing';
+import { book } from '@bookapp/testing/angular';
 
 import { ApolloTestingController, ApolloTestingModule } from 'apollo-angular/testing';
 
@@ -67,14 +67,14 @@ describe('AddBookService', () => {
         coverUrl: 'uploads/new_cover.png',
       };
 
-      service.update(book._id, updatedBook).subscribe(({ data: { updateBook } }) => {
+      service.update(book.id, updatedBook).subscribe(({ data: { updateBook } }) => {
         expect(updateBook).toEqual(bookWithTypename);
         done();
       });
 
       const op = controller.expectOne(UPDATE_BOOK_MUTATION);
 
-      expect(op.operation.variables.id).toEqual(book._id);
+      expect(op.operation.variables.id).toEqual(book.id);
       expect(op.operation.variables.book).toEqual(updatedBook);
 
       op.flush({

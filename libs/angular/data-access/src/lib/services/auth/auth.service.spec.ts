@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { InMemoryCache } from '@apollo/client/core';
@@ -23,12 +24,12 @@ import {
   MockStoragePlatformService,
   MockStoreService,
   user,
-} from '@bookapp/testing';
+} from '@bookapp/testing/angular';
 
 import {
+  APOLLO_TESTING_CACHE,
   ApolloTestingController,
   ApolloTestingModule,
-  APOLLO_TESTING_CACHE,
 } from 'apollo-angular/testing';
 
 import { AuthService } from './auth.service';
@@ -36,7 +37,6 @@ import { AuthService } from './auth.service';
 const email = 'test@test.com';
 const pass = 'pass';
 
-// tslint:disable-next-line: no-big-function
 describe('AuthService', () => {
   let controller: ApolloTestingController;
   let service: AuthService;
@@ -46,7 +46,7 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ApolloTestingModule, HttpClientTestingModule],
+      imports: [ApolloTestingModule],
       providers: [
         AuthService,
         {
@@ -65,6 +65,8 @@ describe('AuthService', () => {
           provide: Environment,
           useValue: {},
         },
+        provideHttpClient(),
+        provideHttpClientTesting(),
       ],
     });
 
@@ -172,7 +174,7 @@ describe('AuthService', () => {
     beforeEach(() => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        imports: [ApolloTestingModule, HttpClientTestingModule],
+        imports: [ApolloTestingModule],
         providers: [
           AuthService,
           {
@@ -195,6 +197,8 @@ describe('AuthService', () => {
             provide: Environment,
             useValue: {},
           },
+          provideHttpClient(),
+          provideHttpClientTesting(),
         ],
       });
 
@@ -204,7 +208,7 @@ describe('AuthService', () => {
 
     it('should return logged user', (done) => {
       service.watchMe().subscribe(({ data: { me } }) => {
-        expect(me._id).toEqual(user._id);
+        expect(me.id).toEqual(user.id);
         done();
       });
 

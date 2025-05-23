@@ -1,4 +1,4 @@
-<ActionBar class="action-bar" flat="true">
+<ActionBar class="bg-deep-blue-900" flat="true" android:style="padding-right: 20">
   <NavigationButton
     ios:visibility="collapsed"
     icon="res://menu"
@@ -9,32 +9,33 @@
     android:visibility="collapsed"
     ios.position="left"
     (tap)="onDrawerButtonTap()"
-  >
-  </ActionItem>
-  <ActionItem
-    ios.position="right"
-    ios.systemIcon="12"
-    android.systemIcon="ic_menu_search"
-    (tap)="onSearchButtonTap()"
   ></ActionItem>
-  <Label class="action-bar-title" text="Browse Books"></Label>
+  <ActionItem ios.position="right" (tap)="onSearchButtonTap()">
+    <Label class="mdi text-dark-primary-text text-2xl" text="search"></Label>
+  </ActionItem>
+  <Label class="text-dark-primary-text font-semibold" text="Browse Books"></Label>
 </ActionBar>
+
 <GridLayout rows="auto, *">
-  <StackLayout row="0" class="sort" android:style="padding-bottom: 1;">
+  <StackLayout row="0" class="bg-deep-blue-900 px-5 py-2">
     <SegmentedBar
-      class="segmented-bar"
+      backgroundColor="#2f364a"
+      marginBottom="15"
+      selectedBackgroundColor="#eeeeee"
+      color="#9ca5b9"
+      selectedTextColor="#2f364a"
       ios:style="border-width: 1; border-color: #9ca5b9;"
       [items]="sortItems"
-      [selectedIndex]="selectedOption$ | async"
+      [selectedIndex]="selectedOption()"
       (selectedIndexChange)="onSelectedIndexChange($event)"
     ></SegmentedBar>
   </StackLayout>
-  <StackLayout row="1">
-    <bookapp-books-list
-      [books]="books$ | async"
-      [hasMoreItems]="hasMoreItems"
-      (loadMore)="loadMore()"
-      (rate)="rate($event)"
-    ></bookapp-books-list>
-  </StackLayout>
+
+  <bookapp-books-list
+    row="1"
+    [books]="books$ | async"
+    [hasMoreItems]="hasMoreItems()"
+    (loadMore)="loadMore()"
+    (rate)="rate($event)"
+  />
 </GridLayout>

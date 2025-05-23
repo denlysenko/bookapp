@@ -1,16 +1,11 @@
 import { Component } from '@angular/core';
 
 import { AuthPageBase } from '@bookapp/angular/base';
-import { RouterExtensions } from '@bookapp/angular/core';
-import { AuthService } from '@bookapp/angular/data-access';
+
+import { AuthFormComponent } from '../../components/auth-form/auth-form.component';
 
 @Component({
-  selector: 'bookapp-auth-page',
+  imports: [AuthFormComponent],
   templateUrl: './auth-page.component.html',
-  styleUrls: ['./auth-page.component.scss'],
 })
-export class AuthPageComponent extends AuthPageBase {
-  constructor(authService: AuthService, routerExtensions: RouterExtensions) {
-    super(authService, routerExtensions);
-  }
-}
+export class AuthPageComponent extends AuthPageBase {}

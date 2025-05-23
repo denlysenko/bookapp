@@ -1,12 +1,14 @@
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
 import { AUTH_ERRORS } from '@bookapp/api/shared';
 import { UserDto, UsersService } from '@bookapp/api/users';
 import { AuthPayload } from '@bookapp/shared/interfaces';
 
-import { BadRequestException, Injectable } from '@nestjs/common';
-
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private readonly authTokensService: AuthTokensService,
     private readonly usersService: UsersService
@@ -16,30 +18,35 @@ export class AuthService {
     const user = await this.usersService.findByEmail(email);
 
     if (!user) {
-      throw new BadRequestException(AUTH_ERRORS.INCORRECT_EMAIL_ERR);
+      this.logger.error(`User with email ${email} not found`);
+      throw new BadRequestException(AUTH_ERRORS.INCORRECT_EMAIL_OR_PASSWORD_ERR);
     }
 
-    if (!user.authenticate(password)) {
-      throw new BadRequestException(AUTH_ERRORS.INCORRECT_PASSWORD_ERR);
+    if (!(await user.authenticate(password))) {
+      this.logger.error(`Incorrect password for user with email ${email}`);
+      throw new BadRequestException(AUTH_ERRORS.INCORRECT_EMAIL_OR_PASSWORD_ERR);
     }
 
     return {
-      accessToken: this.authTokensService.createAccessToken(user._id),
-      refreshToken: await this.authTokensService.createRefreshToken(user._id),
+      accessToken: this.authTokensService.createAccessToken(user.id),
+      refreshToken: await this.authTokensService.createRefreshToken(user.id),
     };
   }
 
   async signup(user: UserDto): Promise<AuthPayload> {
     const newUser = await this.usersService.create(user);
 
+    this.logger.log(`User with email ${newUser.email} created`);
+
     return {
-      accessToken: this.authTokensService.createAccessToken(newUser._id),
-      refreshToken: await this.authTokensService.createRefreshToken(newUser._id),
+      accessToken: this.authTokensService.createAccessToken(newUser.id),
+      refreshToken: await this.authTokensService.createRefreshToken(newUser.id),
     };
   }
 
   async logout(token: string): Promise<boolean> {
     await this.authTokensService.removeRefreshToken(token);
+    this.logger.log('User logged out');
 
     return true;
   }

@@ -1,5 +1,5 @@
 import { AUTH_ERRORS } from '@bookapp/api/shared';
-import { UsersService } from '@bookapp/api/users';
+import { UserModel, UsersService } from '@bookapp/api/users';
 import { JwtPayload } from '@bookapp/shared/interfaces';
 
 import { Injectable, UnauthorizedException } from '@nestjs/common';
@@ -8,16 +8,21 @@ import { PassportStrategy } from '@nestjs/passport';
 
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
+type DoneCallback = (error: Error | null, user: UserModel | boolean) => void;
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(configService: ConfigService, private readonly usersService: UsersService) {
+  constructor(
+    configService: ConfigService,
+    private readonly usersService: UsersService
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: configService.get('ACCESS_TOKEN_SECRET'),
     });
   }
 
-  async validate(payload: JwtPayload, done: any) {
+  async validate(payload: JwtPayload, done: DoneCallback) {
     const user = await this.usersService.findById(payload.id);
 
     if (!user) {

@@ -1,0 +1,13 @@
+{
+  "name": "angular-mobile-books-buy-books",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/angular/mobile/books/buy-books/src",
+  "prefix": "bookapp",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": ["scope:angular", "platform:mobile"]
+}

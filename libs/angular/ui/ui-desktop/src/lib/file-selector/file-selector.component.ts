@@ -1,37 +1,46 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { FileSelectorBase } from '@bookapp/angular/base';
-import { UploadPlatformService } from '@bookapp/angular/core';
+
+import { DropDirective } from '../drop/drop.directive';
 
 @Component({
   selector: 'bookapp-file-selector',
+  imports: [
+    AsyncPipe,
+    MatDialogModule,
+    MatDividerModule,
+    MatProgressBarModule,
+    MatButtonModule,
+    DropDirective,
+  ],
   templateUrl: './file-selector.component.html',
   styleUrls: ['./file-selector.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileSelectorComponent extends FileSelectorBase {
-  progress$ = this.uploadService.progress$;
+  readonly #dialogRef = inject(MatDialogRef<FileSelectorComponent>);
 
-  constructor(
-    uploadService: UploadPlatformService,
-    private readonly dialogRef: MatDialogRef<FileSelectorComponent>
-  ) {
-    super(uploadService);
-  }
+  readonly progress$ = this.uploadService.progress$;
 
   save() {
-    const imageChangedEvent = this.imageChangedEvent.getValue();
+    const file = this.file();
 
-    if (!imageChangedEvent) {
+    if (!file) {
       return;
     }
 
-    this.upload(imageChangedEvent.target.files[0]).subscribe(
-      ({ publicUrl }) => {
-        this.dialogRef.close(publicUrl);
+    this.upload(file).subscribe({
+      next: ({ publicUrl }) => {
+        this.#dialogRef.close(publicUrl);
       },
-      () => this.imageChangedEvent.next(null)
-    );
+      error: () => this.file.set(null),
+    });
   }
 }

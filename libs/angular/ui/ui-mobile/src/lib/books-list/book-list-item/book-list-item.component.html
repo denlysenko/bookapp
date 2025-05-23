@@ -1,0 +1,48 @@
+@let _book = book();
+
+@if (_book) {
+  <CardView margin="5" elevation="4" shadowOffsetHeight="1">
+    <FlexboxLayout
+      class="h-full rounded-lg p-2.5 bg-white"
+      flexDirection="column"
+      justifyContent="flex-start"
+      alignItems="center"
+      height="{{ itemHeight() }}"
+    >
+      <StackLayout class="max-w-[200] mb-3">
+        <Image
+          [src]="_book.coverUrl ? _book.coverUrl : 'res://nocover'"
+          class="w-full h-[230] rounded"
+          stretch="fill"
+        ></Image>
+      </StackLayout>
+      <StackLayout
+        class="w-full text-center px-2.5"
+        nsRouterLink="{{ _book.paid ? `/books/buy/${_book.url}` : `/books/browse/${_book.url}` }}"
+        [queryParams]="{ bookId: _book.id }"
+      >
+        <Label class="capitalize mb-1" textWrap="true" [text]="_book.title"></Label>
+        <Label class="mb-2 text-xs" [text]="`by ${_book.author}`" textWrap="true"></Label>
+
+        @if (_book.paid) {
+          <Label
+            class="mb-2 text-sm"
+            [text]="_book.price | currency: 'USD' : 'symbol-narrow'"
+          ></Label>
+        }
+      </StackLayout>
+
+      <StarRating
+        #rating
+        emptyBorderColor="#ffab00"
+        filledBorderColor="#ffab00"
+        filledColor="#ffab00"
+        android:emptyColor="#eeeeee"
+        android:scaleX=".5"
+        android:scaleY=".5"
+        android:style="width: 240"
+        ios:style="background: #ffffff"
+      ></StarRating>
+    </FlexboxLayout>
+  </CardView>
+}

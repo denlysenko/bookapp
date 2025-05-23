@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 import { useBookmarksByType } from '@bookapp/react/data-access';
 import { BooksList, FullPageSpinner } from '@bookapp/react/ui';
@@ -9,7 +9,7 @@ import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { BOOKMARKS } from '@bookapp/shared/enums';
 import { ApiResponse, Book, Bookmark } from '@bookapp/shared/interfaces';
 
-import { useBookmarksStyles } from './useBookmarksStyles';
+import { StyledBookmarks } from './StyledBookmarks';
 
 export interface BookmarksProps {
   title: string;
@@ -17,7 +17,6 @@ export interface BookmarksProps {
 }
 
 export function Bookmarks({ title, type }: BookmarksProps) {
-  const classes = useBookmarksStyles();
   const hasMoreItems = useRef(false);
   const skip = useRef(0);
 
@@ -42,7 +41,7 @@ export function Bookmarks({ title, type }: BookmarksProps) {
   return (
     <>
       {loading && <FullPageSpinner />}
-      <div className={classes.root}>
+      <StyledBookmarks>
         <Toolbar disableGutters={true}>
           <Typography component="span">{title}</Typography>
         </Toolbar>
@@ -53,7 +52,7 @@ export function Bookmarks({ title, type }: BookmarksProps) {
             onBookRate={rateBook}
           />
         </div>
-      </div>
+      </StyledBookmarks>
     </>
   );
 }

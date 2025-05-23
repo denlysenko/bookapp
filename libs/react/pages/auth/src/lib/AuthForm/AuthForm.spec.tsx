@@ -1,8 +1,3 @@
-// tslint:disable: no-hardcoded-credentials
-// tslint:disable: no-big-function
-// tslint:disable: no-duplicate-string
-// tslint:disable: no-identical-functions
-import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { FeedbackProvider } from '@bookapp/react/ui';

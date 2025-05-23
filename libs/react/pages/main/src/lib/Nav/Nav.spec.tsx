@@ -1,12 +1,11 @@
-import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import { InMemoryCache } from '@apollo/client/core';
 import { MockedProvider } from '@apollo/client/testing';
 
 import { LAST_LOGS_QUERY, LOG_CREATED_SUBSCRIPTION, ME_QUERY } from '@bookapp/shared/queries';
-import { userWithTypename } from '@bookapp/testing';
+import { userWithTypename } from '@bookapp/testing/react';
 
 import Nav from './Nav';
 
@@ -24,7 +23,7 @@ const logsMock = {
 const subscriptionMock = {
   request: {
     query: LOG_CREATED_SUBSCRIPTION,
-    variables: { userId: userWithTypename._id },
+    variables: { userId: userWithTypename.id },
   },
   result: {
     data: {

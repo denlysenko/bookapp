@@ -1,51 +1,27 @@
 {
   "name": "mobile",
-  "description": "NativeScript Application",
-  "scripts": {
-    "postinstall": "node ./tools/xplat-postinstall.js && ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
-  },
+  "description": "BookApp NativeScript Application",
   "dependencies": {
-    "@angular/animations": "file:../../../node_modules/@angular/animations",
-    "@angular/common": "file:../../../node_modules/@angular/common",
-    "@angular/compiler": "file:../../../node_modules/@angular/compiler",
-    "@angular/core": "file:../../../node_modules/@angular/core",
-    "@angular/forms": "file:../../../node_modules/@angular/forms",
-    "@angular/platform-browser": "file:../../../node_modules/@angular/platform-browser",
-    "@angular/platform-browser-dynamic": "file:../../../node_modules/@angular/platform-browser-dynamic",
-    "@angular/router": "file:../../../node_modules/@angular/router",
     "@bookapp/angular-styles": "file:../../../libs/angular/styles",
-    "@nativescript/angular": "file:../../../node_modules/@nativescript/angular",
-    "@nativescript/background-http": "^5.0.1",
+    "@nativescript-community/ui-drawer": "file:../../../node_modules/@nativescript-community/ui-drawer",
+    "@nativescript/background-http": "^6.0.2",
     "@nativescript/camera": "file:../../../node_modules/@nativescript/camera",
     "@nativescript/core": "file:../../../node_modules/@nativescript/core",
-    "@nativescript/iqkeyboardmanager": "^2.0.0",
-    "@nstudio/nativescript-loading-indicator": "^4.0.0",
-    "@nstudio/nativescript-cardview": "file:../../../node_modules/@nstudio/nativescript-cardview",
-    "@triniwiz/nativescript-star-ratings": "file:../../../node_modules/@triniwiz/nativescript-star-ratings",
+    "@nativescript/iqkeyboardmanager": "^2.1.2",
+    "@nstudio/nativescript-cardview": "2.0.2",
+    "@nstudio/nativescript-loading-indicator": "^4.3.5",
+    "@triniwiz/nativescript-star-ratings": "2.0.3",
+    "@valor/nativescript-websockets": "^2.0.2",
     "nativescript-app-shortcuts": "^3.0.0",
     "nativescript-feedback": "^2.0.0",
     "nativescript-imagecropper": "file:../../../node_modules/nativescript-imagecropper",
-    "nativescript-ngx-fonticon": "file:../../../node_modules/nativescript-ngx-fonticon",
-    "nativescript-theme-core": "file:../../../node_modules/nativescript-theme-core",
-    "nativescript-ui-dataform": "^7.0.4",
-    "nativescript-ui-listview": "^9.1.0",
-    "nativescript-ui-sidedrawer": "^9.0.3",
-    "nativescript-websockets": "^1.5.6",
-    "nativescript-webview-interface": "file:../../../node_modules/nativescript-webview-interface",
-    "reflect-metadata": "file:../../../node_modules/reflect-metadata",
-    "rxjs": "file:../../../node_modules/rxjs",
-    "subscriptions-transport-ws": "^0.9.18",
-    "zone.js": "file:../../../node_modules/zone.js"
+    "nativescript-ui-listview": "file:../../../node_modules/nativescript-ui-listview",
+    "nativescript-webview-interface": "file:../../../node_modules/nativescript-webview-interface"
   },
   "devDependencies": {
-    "@angular/compiler-cli": "10.0.3",
-    "@nativescript/android": "7.0.1",
-    "@nativescript/ios": "7.1.1",
-    "@nativescript/types": "^7.1.0",
-    "@nativescript/webpack": "4.0.1",
-    "@ngtools/webpack": "10.2.1",
-    "node-sass": "file:../../../node_modules/node-sass",
-    "typescript": "3.9.7"
+    "@nativescript/android": "8.9.1",
+    "@nativescript/ios": "8.9.2",
+    "@nativescript/tailwind": "file:../../../node_modules/@nativescript/tailwind"
   },
-  "main": "main.js"
+  "main": "./src/main.ts"
 }

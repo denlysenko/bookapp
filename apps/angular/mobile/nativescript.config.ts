@@ -6,7 +6,11 @@ export default {
   android: {
     v8Flags: '--expose_gc',
     markingMode: 'none',
+    codeCache: true,
+    suppressCallJSMethodExceptions: false,
+  },
+  ios: {
+    discardUncaughtJsExceptions: false,
   },
   appPath: 'src',
-  useLegacyWorkflow: false,
 } as NativeScriptConfig;

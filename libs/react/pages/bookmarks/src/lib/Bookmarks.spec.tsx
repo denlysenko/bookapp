@@ -1,23 +1,23 @@
-import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, render, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import { MockedProvider } from '@apollo/client/testing';
 
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { BOOKMARKS } from '@bookapp/shared/enums';
 import { BOOKMARKS_QUERY, RATE_BOOK_MUTATION } from '@bookapp/shared/queries';
-import { book } from '@bookapp/testing';
+import { book } from '@bookapp/testing/react';
 
 import Bookmarks from './Bookmarks';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).IntersectionObserver = jest.fn(() => ({
   observe: () => null,
   disconnect: () => null,
 }));
 
 const b = {
-  _id: book._id,
+  id: book.id,
   title: book.title,
   author: book.author,
   coverUrl: book.coverUrl,
@@ -63,7 +63,7 @@ const rateBookMock = {
     query: RATE_BOOK_MUTATION,
     variables: {
       rate: 3,
-      bookId: book._id,
+      bookId: book.id,
     },
   },
   result: {

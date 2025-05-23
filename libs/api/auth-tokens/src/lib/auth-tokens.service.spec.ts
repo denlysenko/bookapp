@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AUTH_ERRORS, ModelNames } from '@bookapp/api/shared';
 import {
   accessToken,
@@ -7,7 +8,7 @@ import {
   MockMongooseModel,
   refreshToken,
   user,
-} from '@bookapp/testing';
+} from '@bookapp/testing/api';
 
 import { HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -53,7 +54,7 @@ describe('AuthTokensService', () => {
     jest.spyOn(userModel, 'exec').mockImplementation(() => Promise.resolve(user));
 
     jest.spyOn(jwt, 'verify').mockImplementation(() => ({
-      id: user._id,
+      id: user.id,
     }));
   });
 
@@ -63,7 +64,7 @@ describe('AuthTokensService', () => {
     });
 
     it('should create access token', () => {
-      expect(authTokensService.createAccessToken(user._id)).toEqual(accessToken);
+      expect(authTokensService.createAccessToken(user.id)).toEqual(accessToken);
     });
   });
 
@@ -73,14 +74,14 @@ describe('AuthTokensService', () => {
     });
 
     it('should create refresh token', async () => {
-      expect(await authTokensService.createRefreshToken(user._id)).toEqual(refreshToken);
+      expect(await authTokensService.createRefreshToken(user.id)).toEqual(refreshToken);
     });
 
     it('should save refresh token into DB', async () => {
-      await authTokensService.createRefreshToken(user._id);
+      await authTokensService.createRefreshToken(user.id);
       expect(tokenModel.create).toHaveBeenCalledWith({
         token: refreshToken,
-        userId: user._id,
+        userId: user.id,
       });
     });
   });
@@ -161,8 +162,8 @@ describe('AuthTokensService', () => {
 
   describe('revokeUserTokens()', () => {
     it('should remove all user tokens', async () => {
-      await authTokensService.revokeUserTokens(user._id);
-      expect(tokenModel.deleteMany).toHaveBeenCalledWith({ userId: user._id });
+      await authTokensService.revokeUserTokens(user.id);
+      expect(tokenModel.deleteMany).toHaveBeenCalledWith({ userId: user.id });
     });
   });
 

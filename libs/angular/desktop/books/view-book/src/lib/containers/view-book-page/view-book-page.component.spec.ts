@@ -1,14 +1,8 @@
-import { CommonModule } from '@angular/common';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 
 import { PaymentRequestPlatformService } from '@bookapp/angular/core';
 import { AuthService, BookmarksService, BookService } from '@bookapp/angular/data-access';
-import { RatingModule } from '@bookapp/angular/ui-desktop';
 import { BOOKMARKS } from '@bookapp/shared/enums';
 import {
   book,
@@ -16,7 +10,7 @@ import {
   MockAngularBookmarksService,
   MockAngularBookService,
   user,
-} from '@bookapp/testing';
+} from '@bookapp/testing/angular';
 
 import { ViewBookPageComponent } from './view-book-page.component';
 
@@ -26,62 +20,59 @@ describe('ViewBookPageComponent', () => {
   let bookService: BookService;
   let bookmarksService: BookmarksService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [CommonModule, FormsModule, RatingModule, MatIconModule, RouterTestingModule],
-        declarations: [ViewBookPageComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          {
-            provide: ActivatedRoute,
-            useValue: {
-              snapshot: {
-                paramMap: {
-                  get: jest.fn(() => book.slug),
-                },
-                queryParamMap: {
-                  get: jest.fn(() => book._id),
-                },
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ViewBookPageComponent],
+      providers: [
+        provideRouter([]),
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: jest.fn(() => book.slug),
+              },
+              queryParamMap: {
+                get: jest.fn(() => book.id),
               },
             },
           },
-          {
-            provide: AuthService,
-            useValue: MockAngularAuthService,
+        },
+        {
+          provide: AuthService,
+          useValue: MockAngularAuthService,
+        },
+        {
+          provide: PaymentRequestPlatformService,
+          useValue: {
+            request: jest.fn().mockResolvedValue({ complete: jest.fn }),
           },
-          {
-            provide: PaymentRequestPlatformService,
-            useValue: {
-              request: jest.fn().mockResolvedValue({ complete: jest.fn }),
-            },
-          },
-        ],
-      })
-        .overrideComponent(ViewBookPageComponent, {
-          set: {
-            providers: [
-              {
-                provide: BookService,
-                useValue: MockAngularBookService,
-              },
-              {
-                provide: BookmarksService,
-                useValue: MockAngularBookmarksService,
-              },
-            ],
-          },
-        })
-        .compileComponents();
+        },
+      ],
     })
-  );
+      .overrideComponent(ViewBookPageComponent, {
+        set: {
+          providers: [
+            {
+              provide: BookService,
+              useValue: MockAngularBookService,
+            },
+            {
+              provide: BookmarksService,
+              useValue: MockAngularBookmarksService,
+            },
+          ],
+        },
+      })
+      .compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ViewBookPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    bookService = fixture.debugElement.injector.get(BookService);
-    bookmarksService = fixture.debugElement.injector.get(BookmarksService);
+    bookService = fixture.componentRef.injector.get(BookService);
+    bookmarksService = fixture.componentRef.injector.get(BookmarksService);
   });
 
   it('should create', () => {
@@ -130,7 +121,7 @@ describe('ViewBookPageComponent', () => {
     it('should call bookmarksService.addToBookmarks()', () => {
       component.addToBookmarks({
         type: BOOKMARKS.FAVORITES,
-        bookId: book._id,
+        bookId: book.id,
       });
       expect(bookmarksService.addToBookmarks).toHaveBeenCalled();
     });
@@ -140,7 +131,7 @@ describe('ViewBookPageComponent', () => {
     it('should call bookmarksService.removeFromBookmarks()', () => {
       component.removeFromBookmarks({
         type: BOOKMARKS.FAVORITES,
-        bookId: book._id,
+        bookId: book.id,
       });
       expect(bookmarksService.removeFromBookmarks).toHaveBeenCalled();
     });

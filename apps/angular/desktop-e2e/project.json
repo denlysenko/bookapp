@@ -1,0 +1,23 @@
+{
+  "name": "angular-desktop-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/angular/desktop-e2e/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/angular/desktop-e2e/cypress.config.ts",
+        "devServerTarget": "angular-desktop:serve:testing",
+        "testingType": "e2e"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "angular-desktop:serve:production"
+        }
+      },
+      "dependsOn": [{ "projects": ["api"], "target": "serve-testing" }]
+    }
+  }
+}

@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useFormik } from 'formik';
-import { has, isEmpty, isNil, omit } from 'lodash';
+import { has, isEmpty, omit } from 'lodash-es';
 import * as Yup from 'yup';
 
-import { ERRORS } from '@bookapp/shared/constants';
 import { useFeedback } from '@bookapp/react/ui';
+import { ERRORS, errorsMap } from '@bookapp/shared/constants';
 import { getFormikError, handleValidationError } from '@bookapp/utils/react';
 
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import TextField from '@material-ui/core/TextField';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import TextField from '@mui/material/TextField';
 
-import { useAuthFormStyles } from './useAuthFormStyles';
+import { StyledAuthForm } from './StyledAuthForm';
 
 export interface AuthFormValues {
   firstName?: '';
@@ -26,6 +26,7 @@ export interface AuthFormValues {
 
 export interface AuthFormProps {
   loading: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: any | null;
   onSubmit: (isLoggingIn: boolean, values: AuthFormValues) => void;
 }
@@ -36,7 +37,6 @@ const AuthSchema = Yup.object().shape({
 });
 
 export const AuthForm = ({ loading, onSubmit, error }: AuthFormProps) => {
-  const classes = useAuthFormStyles();
   const [isLoggingIn, setIsLoggingIn] = useState(true);
   const { showFeedback } = useFeedback();
 
@@ -90,9 +90,9 @@ export const AuthForm = ({ loading, onSubmit, error }: AuthFormProps) => {
   }, [isLoggingIn]);
 
   useEffect(() => {
-    if (!isNil(error)) {
+    if (error) {
       if (error.message) {
-        showFeedback(error.message);
+        showFeedback(errorsMap[error.message] ?? error.message);
       } else {
         handleValidationError<AuthFormValues>(error, formik);
       }
@@ -141,14 +141,16 @@ export const AuthForm = ({ loading, onSubmit, error }: AuthFormProps) => {
   };
 
   return (
-    <section className={classes.host}>
-      <div className={classes.authForm}>
+    <StyledAuthForm>
+      <div className="auth-form">
         <Card>
           <form noValidate={true} onSubmit={formik.handleSubmit}>
             <CardHeader
-              className={classes.header}
+              className="auth-header"
               title={isLoggingIn ? 'Login into account' : 'Create account'}
-              titleTypographyProps={{ align: 'center', variant: 'h6' }}
+              slotProps={{
+                title: { align: 'center', variant: 'h6' },
+              }}
               data-testid="title"
             />
             <CardContent>
@@ -158,7 +160,7 @@ export const AuthForm = ({ loading, onSubmit, error }: AuthFormProps) => {
                   label="First Name"
                   variant="outlined"
                   margin="normal"
-                  className={classes.formField}
+                  className="form-field"
                   required={true}
                   error={!!firstNameError}
                   helperText={firstNameError}
@@ -172,7 +174,7 @@ export const AuthForm = ({ loading, onSubmit, error }: AuthFormProps) => {
                   label="Last Name"
                   variant="outlined"
                   margin="normal"
-                  className={classes.formField}
+                  className="form-field"
                   required={true}
                   error={!!lastNameError}
                   helperText={lastNameError}
@@ -185,7 +187,7 @@ export const AuthForm = ({ loading, onSubmit, error }: AuthFormProps) => {
                 label="Email"
                 variant="outlined"
                 margin="normal"
-                className={classes.formField}
+                className="form-field"
                 required={true}
                 error={!!emailError}
                 helperText={emailError}
@@ -198,7 +200,7 @@ export const AuthForm = ({ loading, onSubmit, error }: AuthFormProps) => {
                 label="Password"
                 variant="outlined"
                 margin="normal"
-                className={classes.formField}
+                className="form-field"
                 required={true}
                 error={!!passwordError}
                 helperText={passwordError}
@@ -206,7 +208,7 @@ export const AuthForm = ({ loading, onSubmit, error }: AuthFormProps) => {
                 onChange={handleChange}
               />
             </CardContent>
-            <CardActions className={classes.actions}>
+            <CardActions className="form-actions">
               <span>{isLoggingIn ? "Don't have an account?" : 'Already have an account?'}</span>
               <Button
                 type="button"
@@ -229,7 +231,7 @@ export const AuthForm = ({ loading, onSubmit, error }: AuthFormProps) => {
           </form>
         </Card>
       </div>
-    </section>
+    </StyledAuthForm>
   );
 };
 

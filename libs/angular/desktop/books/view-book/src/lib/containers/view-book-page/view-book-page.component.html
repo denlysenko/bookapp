@@ -1,21 +1,25 @@
 <section>
-  <mat-toolbar> Book Details </mat-toolbar>
-  <div *ngIf="book$ | async as book" class="view-content">
-    <mat-card>
-      <bookapp-book-details
-        [book]="book"
-        [bookmarks]="bookmarks$ | async"
-        [user]="user$ | async"
-        (bookRated)="rate($event, book.slug)"
-        (bookmarkAdded)="addToBookmarks($event)"
-        (bookmarkRemoved)="removeFromBookmarks($event)"
-        (paymentRequested)="pay($event)"
-      ></bookapp-book-details>
-      <bookapp-book-comments
-        [comments]="book.comments"
-        [loading]="loading$ | async"
-        (commentAdded)="submitComment(book._id, $event, book.slug)"
-      ></bookapp-book-comments>
-    </mat-card>
-  </div>
+  <mat-toolbar class="page-toolbar">Book Details</mat-toolbar>
+
+  @if (book$ | async; as book) {
+    <div class="view-content">
+      <mat-card>
+        <bookapp-book-details
+          [book]="book"
+          [bookmarks]="bookmarks$ | async"
+          [user]="user$ | async"
+          (bookRated)="rate($event)"
+          (bookmarkAdded)="addToBookmarks($event)"
+          (bookmarkRemoved)="removeFromBookmarks($event)"
+          (paymentRequested)="pay($event)"
+        />
+
+        <bookapp-book-comments
+          [comments]="book.comments"
+          [loading]="loading()"
+          (commentAdded)="submitComment(book.id, $event)"
+        />
+      </mat-card>
+    </div>
+  }
 </section>

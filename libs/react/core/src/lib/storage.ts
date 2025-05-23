@@ -3,11 +3,11 @@ class Storage {
 
   private isLocalStorageExists = !!window.localStorage;
 
-  getItem(key: string): any {
+  getItem(key: string): string {
     return this.isLocalStorageExists ? localStorage.getItem(key) : this.store[key];
   }
 
-  setItem(key: string, value: any) {
+  setItem(key: string, value: string) {
     this.isLocalStorageExists ? localStorage.setItem(key, value) : (this.store[key] = value);
   }
 

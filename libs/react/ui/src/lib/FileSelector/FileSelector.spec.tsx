@@ -1,4 +1,3 @@
-import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { HTTP_STATUS } from '@bookapp/shared/constants';
@@ -9,7 +8,7 @@ const onClose = jest.fn();
 const onFileUpload = jest.fn();
 const publicUrl = 'publicUrl';
 
-function mockFetch(status: number, data: any) {
+function mockFetch(status: number, data: unknown) {
   const xhrMockObj = {
     open: jest.fn(),
     send: jest.fn(),
@@ -21,11 +20,10 @@ function mockFetch(status: number, data: any) {
 
   const xhrMockClass = () => xhrMockObj;
 
-  // @ts-ignore
+  // @ts-expect-error mock XMLHttpRequest
   window.XMLHttpRequest = jest.fn().mockImplementation(xhrMockClass);
 
   setTimeout(() => {
-    // @ts-ignore
     xhrMockObj['onreadystatechange']();
   }, 0);
 }

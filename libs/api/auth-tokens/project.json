@@ -1,0 +1,19 @@
+{
+  "name": "api-auth-tokens",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/auth-tokens/src",
+  "projectType": "library",
+  "tags": ["scope:api", "type:feature", "platform:server"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/api/auth-tokens/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/api/auth-tokens"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

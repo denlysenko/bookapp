@@ -1,40 +1,50 @@
+/* eslint-disable no-unused-private-class-members */
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
+  computed,
+  effect,
+  input,
+  NO_ERRORS_SCHEMA,
+  output,
+  viewChild,
 } from '@angular/core';
 
 import { Book } from '@bookapp/shared/interfaces';
 
+import { NativeScriptCommonModule } from '@nativescript/angular';
+import { ObservableArray } from '@nativescript/core';
+
 import { ListViewLoadOnDemandMode } from 'nativescript-ui-listview';
-import { RadListViewComponent } from 'nativescript-ui-listview/angular';
+import {
+  NativeScriptUIListViewModule,
+  RadListViewComponent,
+} from 'nativescript-ui-listview/angular';
 
-import { BehaviorSubject } from 'rxjs';
-
-import { Color, ObservableArray, isIOS } from '@nativescript/core';
+import { BookListItemComponent } from './book-list-item/book-list-item.component';
 
 @Component({
-  moduleId: module.id,
   selector: 'bookapp-books-list',
+  imports: [NativeScriptCommonModule, NativeScriptUIListViewModule, BookListItemComponent],
   templateUrl: './books-list.component.html',
-  styleUrls: ['./books-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class BooksListComponent {
-  @Input()
-  set books(books: Book[]) {
-    if (books) {
-      this._books.next(new ObservableArray(books));
-    }
-  }
+  readonly books = input<Book[]>();
+  readonly hasMoreItems = input<boolean>();
 
-  @Input()
-  set hasMoreItems(hasMoreItems: boolean) {
-    this.listViewComponent.listView.loadOnDemandMode =
-      ListViewLoadOnDemandMode[hasMoreItems ? 'Auto' : 'None'];
+  readonly loadMore = output<void>();
+  readonly rate = output<{ bookId: string; rate: number }>();
+
+  readonly listViewComponent = viewChild<RadListViewComponent>('listView');
+
+  readonly #booksEffect = effect(() => {
+    const books = this.books();
+
+    if (!books) {
+      return;
+    }
 
     /* RadListView throws an exception on Android:
      * JS: ERROR TypeError: Cannot read property 'notifyLoadingFinished' of null
@@ -43,33 +53,44 @@ export class BooksListComponent {
      * for now use try/catch
      */
     try {
-      this.listViewComponent.listView.notifyLoadOnDemandFinished();
-    } catch (e) {}
-  }
-
-  @Output()
-  loadMore = new EventEmitter<void>();
-
-  @Output()
-  rate = new EventEmitter<{ bookId: string; rate: number }>();
-
-  @ViewChild('listView', { static: true })
-  listViewComponent: RadListViewComponent;
-
-  private _books = new BehaviorSubject<ObservableArray<Book> | null>(null);
-
-  get books$() {
-    return this._books.asObservable();
-  }
-
-  onItemLoading(args: any) {
-    if (isIOS) {
-      const newcolor = new Color('#eeeeee');
-      args.ios.backgroundView.backgroundColor = newcolor.ios;
+      this.listViewComponent()?.listView.notifyLoadOnDemandFinished();
+    } catch {
+      //
     }
-  }
+  });
+
+  readonly #hasMoreItemsEffect = effect(() => {
+    const hasMoreItems = this.hasMoreItems();
+
+    if (this.listViewComponent()) {
+      this.listViewComponent().listView.loadOnDemandMode =
+        ListViewLoadOnDemandMode[hasMoreItems ? 'Auto' : 'None'];
+    }
+  });
+
+  readonly _books = computed(() => {
+    const books = this.books();
+
+    if (!books) {
+      return null;
+    }
+
+    return new ObservableArray(books);
+  });
+
+  readonly itemHeight = computed(() => {
+    const books = this.books();
+
+    if (!books || books.length === 0) {
+      return 365;
+    }
+
+    const hasPaidBooks = books.some((book) => book.paid);
+
+    return hasPaidBooks ? 390 : 365;
+  });
 
   scrollToIndex(index: number) {
-    this.listViewComponent.listView.scrollToIndex(index);
+    this.listViewComponent()?.listView.scrollToIndex(index);
   }
 }

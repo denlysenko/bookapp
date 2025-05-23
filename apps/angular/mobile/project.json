@@ -1,0 +1,84 @@
+{
+  "name": "angular-mobile",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/angular/mobile/src",
+  "projectType": "application",
+  "prefix": "bookapp",
+  "targets": {
+    "build-app": {
+      "executor": "@nativescript/nx:build",
+      "options": {
+        "noHmr": true,
+        "production": true,
+        "uglify": true,
+        "release": true,
+        "forDevice": true
+      },
+      "configurations": {
+        "prod": {
+          "fileReplacements": [
+            {
+              "replace": "libs/shared/environments/src/lib/environment.ts",
+              "with": "libs/shared/environments/src/lib/environment.prod.ts"
+            }
+          ]
+        }
+      },
+      "dependsOn": ["^build"]
+    },
+    "debug": {
+      "executor": "@nativescript/nx:debug",
+      "options": {
+        "noHmr": true,
+        "uglify": false,
+        "release": false,
+        "forDevice": false,
+        "prepare": false
+      },
+      "configurations": {
+        "build": {
+          "copyTo": "../../../dist/apps/angular/mobile/build.ipa"
+        },
+        "prod": {
+          "fileReplacements": [
+            {
+              "replace": "../../../libs/shared/environments/src/lib/environment.ts",
+              "with": "../../../libs/shared/environments/src/lib/environment.prod.ts"
+            }
+          ]
+        }
+      },
+      "dependsOn": ["^build"]
+    },
+    "prepare": {
+      "executor": "@nativescript/nx:prepare",
+      "options": {
+        "noHmr": true,
+        "production": true,
+        "uglify": true,
+        "release": true,
+        "forDevice": true,
+        "prepare": true
+      },
+      "configurations": {
+        "prod": {
+          "fileReplacements": [
+            {
+              "replace": "libs/shared/environments/src/lib/environment.ts",
+              "with": "libs/shared/environments/src/lib/environment.prod.ts"
+            }
+          ]
+        }
+      },
+      "dependsOn": ["^build"]
+    },
+    "clean": {
+      "executor": "@nativescript/nx:clean",
+      "options": {}
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": ["scope:angular", "type:app", "platform:mobile"]
+}

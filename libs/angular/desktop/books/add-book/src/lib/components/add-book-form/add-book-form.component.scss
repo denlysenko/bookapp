@@ -1,4 +1,4 @@
-@import 'desktop/form';
+@use 'desktop/form';
 
 .book-form {
   display: flex;
@@ -13,8 +13,8 @@
   flex-direction: column;
   flex-basis: 25%;
 
-  .mat-card {
-    margin-bottom: 1rem;
+  .mat-mdc-card {
+    margin-bottom: 16px;
     display: flex;
     min-height: 212px;
     align-items: center;
@@ -23,15 +23,12 @@
     img {
       width: 150px;
       height: 212px;
+      border-radius: calc(var(--mat-sys-corner-medium) / 2);
     }
   }
 
-  .mat-raised-button {
-    text-transform: uppercase;
-  }
-
   @media (min-width: 768px) {
-    margin-right: 1.5rem;
+    margin-right: 24px;
     max-width: 180px;
   }
 }
@@ -41,19 +38,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 16px;
   }
 
-  .epub > .mat-primary,
-  .epub > .mat-button,
-  .mat-form-field.price {
+  .epub > .mdc-button,
+  .mat-mdc-form-field.price {
     width: 180px;
+    margin-top: 16px;
+
     @media (max-width: 768px) {
       width: 100%;
     }
-  }
-
-  label.mat-primary,
-  a.mat-button {
-    text-transform: uppercase;
   }
 }

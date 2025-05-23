@@ -1,25 +1,24 @@
-import { Inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 
-import { Environment, StoreService } from '@bookapp/angular/core';
+import { Environment, StoreService, UploadPlatformService } from '@bookapp/angular/core';
 import { AUTH_TOKEN, HTTP_STATUS } from '@bookapp/shared/constants';
-import { EnvConfig } from '@bookapp/shared/interfaces';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class UploadService {
-  constructor(
-    private readonly storeService: StoreService,
-    @Inject(Environment) private readonly environment: EnvConfig
-  ) {}
+export class UploadService implements UploadPlatformService {
+  readonly #http = inject(HttpClient);
+  readonly #storeService = inject(StoreService);
+  readonly #environment = inject(Environment);
 
-  private progress = new BehaviorSubject<number>(0);
+  #progress = new BehaviorSubject<number>(0);
 
   get progress$() {
-    return this.progress.asObservable();
+    return this.#progress.asObservable();
   }
 
-  upload(file: File | Blob, name: string = 'file'): Observable<string> {
+  upload(file: File | Blob, name = 'file'): Observable<string> {
     return new Observable((observer) => {
       const formData = new FormData();
       const xhr = new XMLHttpRequest();
@@ -31,7 +30,7 @@ export class UploadService {
           'progress',
           (e: ProgressEvent) => {
             if (e.lengthComputable) {
-              this.progress.next(Math.round((e.loaded * 100) / e.total));
+              this.#progress.next(Math.round((e.loaded * 100) / e.total));
             }
           },
           false
@@ -40,7 +39,7 @@ export class UploadService {
 
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
-          this.progress.next(0);
+          this.#progress.next(0);
 
           if (xhr.status === HTTP_STATUS.OK || xhr.status === HTTP_STATUS.CREATED) {
             observer.next(xhr.response);
@@ -51,33 +50,19 @@ export class UploadService {
         }
       };
 
-      const token = this.storeService.get(AUTH_TOKEN);
+      const token = this.#storeService.get(AUTH_TOKEN);
 
-      xhr.open('POST', `${this.environment.uploadUrl}`, true);
+      xhr.open('POST', `${this.#environment.uploadUrl}`, true);
       xhr.setRequestHeader('Authorization', `Bearer ${token}`);
       xhr.send(formData);
     });
   }
 
   deleteFile(key: string): Observable<string> {
-    return new Observable((observer) => {
-      const xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          if (xhr.status === HTTP_STATUS.OK || xhr.status === HTTP_STATUS.CREATED) {
-            observer.next(xhr.response);
-            observer.complete();
-          } else {
-            observer.error(xhr.response);
-          }
-        }
-      };
-
-      const token = this.storeService.get(AUTH_TOKEN);
-
-      xhr.open('DELETE', `${this.environment.uploadUrl}/${key}`, true);
-      xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-      xhr.send();
+    return this.#http.delete<string>(`${this.#environment.uploadUrl}/${key}`, {
+      headers: {
+        Authorization: `Bearer ${this.#storeService.get(AUTH_TOKEN)}`,
+      },
     });
   }
 }

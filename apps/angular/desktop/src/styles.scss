@@ -1,4 +1,4 @@
-@import './theme.scss';
+@use 'theme';
 
 * {
   padding: 0;
@@ -12,10 +12,11 @@ body {
 }
 
 body {
-  font-family: Roboto, 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande',
-    sans-serif;
+  font-family:
+    Roboto, 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
   font-size: 14px;
-  background-color: #eeeeee;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
 }
 
 a {
@@ -35,8 +36,23 @@ router-outlet.router-flex + * {
   padding: 1.5rem;
 }
 
-.mat-toolbar {
-  background: #eef1f7;
+.error-snackbar {
+  &.mat-mdc-snack-bar-container .mat-mdc-snackbar-surface {
+    background-color: var(--mat-sys-error);
+    color: var(--mat-sys-on-error);
+  }
+}
+
+.success-snackbar {
+  &.mat-mdc-snack-bar-container .mat-mdc-snackbar-surface {
+    background-color: rgb(22 163 74);
+    color: var(--mat-sys-on-error);
+  }
+}
+
+.mat-mdc-card-header {
+  padding-bottom: 16px !important;
+  color: var(--mat-sys-on-surface);
 }
 
 .mat-toolbar-row.mobile-height-auto {

@@ -1,4 +1,4 @@
-<ActionBar class="action-bar" flat="true">
+<ActionBar class="bg-deep-blue-900" flat="true">
   <NavigationButton
     ios:visibility="collapsed"
     icon="res://menu"
@@ -9,15 +9,15 @@
     android:visibility="collapsed"
     ios.position="left"
     (tap)="onDrawerButtonTap()"
-  >
-  </ActionItem>
-  <Label class="action-bar-title" text="List Of The Best"></Label>
+  ></ActionItem>
+  <Label class="text-dark-primary-text font-semibold" text="List Of The Best"></Label>
 </ActionBar>
+
 <GridLayout>
   <bookapp-books-list
     [books]="books$ | async"
-    [hasMoreItems]="hasMoreItems"
+    [hasMoreItems]="hasMoreItems()"
     (loadMore)="loadMore()"
     (rate)="rate($event)"
-  ></bookapp-books-list>
+  />
 </GridLayout>

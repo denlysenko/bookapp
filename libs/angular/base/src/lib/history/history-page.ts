@@ -1,10 +1,12 @@
+import { inject, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+
 import { StoreService } from '@bookapp/angular/core';
 import { LogsService } from '@bookapp/angular/data-access';
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
-import { Log, LogsFilter } from '@bookapp/shared/interfaces';
+import { Log, LogsFilter, Sorting } from '@bookapp/shared/interfaces';
 
-import { isNil } from 'lodash';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { filter, map, shareReplay, startWith, take, tap } from 'rxjs/operators';
 
 import { BaseComponent } from '../core/base-component';
@@ -12,32 +14,34 @@ import { BaseComponent } from '../core/base-component';
 const FILTER_KEY = 'HISTORY';
 
 export abstract class HistoryPageBase extends BaseComponent {
-  hasMoreItems = false;
+  readonly #storeService = inject(StoreService);
+  protected readonly logsService = inject(LogsService);
 
-  readonly filter = new BehaviorSubject<LogsFilter>(this.storeService.get(FILTER_KEY));
+  readonly hasMoreItems = signal(false);
+  readonly filter = signal<LogsFilter>(this.#storeService.get(FILTER_KEY));
 
-  readonly sorting$ = this.filter.asObservable().pipe(
+  readonly sorting$ = toObservable(this.filter).pipe(
     map((logsFilter) => {
-      if (!isNil(logsFilter) && !isNil(logsFilter.orderBy)) {
+      if (logsFilter?.orderBy) {
         const [active, direction] = logsFilter.orderBy.split('_');
 
         return {
           active,
           direction,
-        };
+        } as Sorting;
       }
 
       return {
         active: 'createdAt',
         direction: 'desc',
-      };
+      } as Sorting;
     }),
     take(1)
   );
 
-  readonly pagination$ = this.filter.asObservable().pipe(
+  readonly pagination$ = toObservable(this.filter).pipe(
     map((logsFilter) => {
-      if (!isNil(logsFilter)) {
+      if (logsFilter) {
         return {
           skip: logsFilter.skip || 0,
           first: logsFilter.first || DEFAULT_LIMIT,
@@ -53,14 +57,14 @@ export abstract class HistoryPageBase extends BaseComponent {
   );
 
   readonly source$ = this.logsService
-    .watchAllLogs(this.filter.getValue())
+    .watchAllLogs(this.filter())
     .pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   readonly logs$: Observable<Log[]> = this.source$.pipe(
     filter(({ data }) => !!data.logs),
     tap(({ data }) => {
       const { rows, count } = data.logs;
-      this.hasMoreItems = rows.length !== count;
+      this.hasMoreItems.set(rows.length !== count);
     }),
     map(({ data }) => data.logs.rows)
   );
@@ -80,14 +84,7 @@ export abstract class HistoryPageBase extends BaseComponent {
 
   protected pending = false;
 
-  constructor(
-    protected readonly logsService: LogsService,
-    private readonly storeService: StoreService
-  ) {
-    super();
-  }
-
   protected updateFilterInStore() {
-    this.storeService.set(FILTER_KEY, this.filter.getValue());
+    this.#storeService.set(FILTER_KEY, this.filter());
   }
 }

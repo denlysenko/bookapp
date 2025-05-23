@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
 
 import { useMe, useProfile } from '@bookapp/react/data-access';
 import { useFeedback } from '@bookapp/react/ui';
@@ -10,12 +10,11 @@ import { User } from '@bookapp/shared/interfaces';
 
 import AvatarSelector from './AvatarSelector/AvatarSelector';
 import ProfileForm from './ProfileForm/ProfileForm';
-import { useProfileStyles } from './useProfileStyles';
+import { StyledProfile } from './StyledProfile';
 
 export const PROFILE_UPDATE_SUCCESS = 'Profile updated!';
 
 export const Profile = () => {
-  const classes = useProfileStyles();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { me } = useMe();
@@ -26,17 +25,18 @@ export const Profile = () => {
     setLoading(true);
 
     try {
-      await updateProfile(me._id, user);
+      await updateProfile(me.id, user);
       setLoading(false);
       showFeedback(PROFILE_UPDATE_SUCCESS);
     } catch (errors) {
       setLoading(false);
       setError(errors[errors.length - 1]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className={`${classes.root} view-content`}>
+    <StyledProfile className="view-content">
       <Card>
         <CardHeader title="Edit Profile" />
         <CardContent className="profile-page">
@@ -48,7 +48,7 @@ export const Profile = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </StyledProfile>
   );
 };
 

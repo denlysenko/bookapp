@@ -1,17 +1,17 @@
-import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import { Book } from '@bookapp/shared/interfaces';
-import { book } from '@bookapp/testing';
+import { book } from '@bookapp/testing/react';
 
 import BooksList from './BooksList';
 
 const onBookRate = jest.fn();
 const onLoadMore = jest.fn();
 
-const books: Book[] = [book];
+const books = [book] as Book[];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).IntersectionObserver = jest.fn(() => ({
   observe: () => null,
   disconnect: () => null,
@@ -50,6 +50,6 @@ describe('BooksList', () => {
     fireEvent.click(getByText('3 Stars'));
 
     expect(onBookRate).toHaveBeenCalledTimes(1);
-    expect(onBookRate).toHaveBeenCalledWith({ bookId: book._id, rate: 3 });
+    expect(onBookRate).toHaveBeenCalledWith({ bookId: book.id, rate: 3 });
   });
 });

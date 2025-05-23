@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 
 import { useFormik } from 'formik';
 
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import TextField from '@material-ui/core/TextField';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import TextField from '@mui/material/TextField';
 
-import { has, isEmpty, isNil, omit } from 'lodash';
+import { has, isEmpty, omit } from 'lodash-es';
 import * as Yup from 'yup';
 
 import { FileSelector, ImageSelector, useFileSelector, useImageSelector } from '@bookapp/react/ui';
@@ -17,11 +17,12 @@ import { ERRORS } from '@bookapp/shared/constants';
 import { Book, BookFormModel } from '@bookapp/shared/interfaces';
 import { getFormikError, handleValidationError } from '@bookapp/utils/react';
 
-import { useAddBookFormStyles } from './useAddBookFormStyles';
+import { StyledAddBookForm } from './StyledAddBookForm';
 
 export interface AddBookFormProps {
   loading: boolean;
   book?: Book;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: any | null;
   onSubmit: (book: BookFormModel) => void;
 }
@@ -32,9 +33,7 @@ const BookSchema = Yup.object().shape({
   description: Yup.string().required(ERRORS.REQUIRED_FIELD),
 });
 
-// tslint:disable-next-line: no-big-function
 export const AddBookForm = ({ book, loading, error, onSubmit }: AddBookFormProps) => {
-  const classes = useAddBookFormStyles();
   const { isImageSelectorOpened, showImageSelector, hideImageSelector } = useImageSelector();
   const { isFileSelectorOpened, showFileSelector, hideFileSelector } = useFileSelector();
 
@@ -62,7 +61,7 @@ export const AddBookForm = ({ book, loading, error, onSubmit }: AddBookFormProps
   });
 
   useEffect(() => {
-    if (!isNil(book)) {
+    if (book) {
       formik.setValues({
         title: book.title,
         author: book.author,
@@ -75,10 +74,11 @@ export const AddBookForm = ({ book, loading, error, onSubmit }: AddBookFormProps
     } else {
       formik.resetForm();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [book]);
 
   useEffect(() => {
-    if (!isNil(error)) {
+    if (error) {
       handleValidationError<BookFormModel>(error, formik);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -150,11 +150,11 @@ export const AddBookForm = ({ book, loading, error, onSubmit }: AddBookFormProps
   };
 
   return (
-    <div className={classes.root}>
+    <StyledAddBookForm>
       <div className="cover">
         <Card>
           <img
-            src={formik.values.coverUrl || '/assets/images/add-photo.svg'}
+            src={formik.values.coverUrl || '/images/add-photo.svg'}
             alt="cover"
             data-testid="cover"
           />
@@ -201,8 +201,8 @@ export const AddBookForm = ({ book, loading, error, onSubmit }: AddBookFormProps
           label="Description"
           variant="outlined"
           multiline={true}
-          rows={4}
-          rowsMax={12}
+          minRows={4}
+          maxRows={12}
           required={true}
           margin="normal"
           error={!!descriptionError}
@@ -225,8 +225,8 @@ export const AddBookForm = ({ book, loading, error, onSubmit }: AddBookFormProps
             onClose={hideFileSelector}
           />
           {formik.values.epubUrl && (
-            <a href={formik.values.epubUrl} target="_blank" data-testid="download">
-              DOWNLOAD
+            <a href={formik.values.epubUrl} target="_blank" data-testid="download" rel="noreferrer">
+              Download
             </a>
           )}
         </div>
@@ -263,7 +263,7 @@ export const AddBookForm = ({ book, loading, error, onSubmit }: AddBookFormProps
           </Button>
         </CardActions>
       </form>
-    </div>
+    </StyledAddBookForm>
   );
 };
 

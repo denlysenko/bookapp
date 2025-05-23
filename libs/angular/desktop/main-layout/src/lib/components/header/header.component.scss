@@ -1,7 +1,11 @@
-@import 'variables';
-
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding-left: 0;
+  color: var(--mat-sys-on-primary);
+  text-decoration: none;
+  font-size: 0.875rem;
 }
 
 .menu-toggler {
@@ -14,25 +18,14 @@
   }
 }
 
-.mat-menu-item {
-  color: $black-primary-text;
-}
-
-a {
-  color: $primary-text;
-  text-decoration: none;
-  font-size: 14px;
-}
-
 .active {
-  background: rgba(0, 0, 0, 0.04);
+  background: var(--mat-menu-item-hover-state-layer-color);
 }
 
 .avatar {
   width: 36px;
   height: 36px;
-  margin-right: 10px;
-  border: 2px solid #fff;
+  border: 2px solid var(--mat-sys-surface);
   border-radius: 50%;
   vertical-align: top;
 }
@@ -42,4 +35,9 @@ a {
   flex: 1;
   justify-content: flex-end;
   height: 100%;
+
+  button {
+    height: 100%;
+    gap: 8px;
+  }
 }

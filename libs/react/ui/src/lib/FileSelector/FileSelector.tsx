@@ -1,25 +1,22 @@
-import React, { useReducer } from 'react';
+import { ChangeEvent, useReducer } from 'react';
 
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Divider from '@material-ui/core/Divider';
-import Icon from '@material-ui/core/Icon';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import Button from '@mui/material/Button';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Divider from '@mui/material/Divider';
+import Icon from '@mui/material/Icon';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import { useUpload } from '@bookapp/react/data-access';
 import {
-  initialFileSelectorState,
-  fileSelectorReducer,
   FileSelectorActionTypes,
+  fileSelectorReducer,
+  initialFileSelectorState,
 } from '@bookapp/react/state';
 
-import { isNil } from 'lodash';
-
 import { useDropZone } from '../dropzone';
-import { useFileSelectorStyles } from './useFileSelectorStyles';
+import { StyledDialog } from './StyledDialog';
 
 export interface FileSelectorProps {
   open: boolean;
@@ -28,8 +25,6 @@ export interface FileSelectorProps {
 }
 
 export const FileSelector = ({ open, onClose, onFileUpload }: FileSelectorProps) => {
-  const classes = useFileSelectorStyles();
-
   const [{ loading, file, error }, dispatch] = useReducer(
     fileSelectorReducer,
     initialFileSelectorState
@@ -37,7 +32,7 @@ export const FileSelector = ({ open, onClose, onFileUpload }: FileSelectorProps)
   const { dropElemRef } = useDropZone(onFileDrop);
   const { progress, uploadFile } = useUpload();
 
-  function onSelectFile(event: any) {
+  function onSelectFile(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.files && event.target.files.length > 0) {
       dispatch({
         type: FileSelectorActionTypes.SELECT_FILE,
@@ -46,7 +41,7 @@ export const FileSelector = ({ open, onClose, onFileUpload }: FileSelectorProps)
     }
   }
 
-  function onFileDrop(event: any) {
+  function onFileDrop(event: DragEvent) {
     dispatch({
       type: FileSelectorActionTypes.SELECT_FILE,
       payload: event.dataTransfer.files[0],
@@ -63,7 +58,7 @@ export const FileSelector = ({ open, onClose, onFileUpload }: FileSelectorProps)
   };
 
   const handleUpload = async () => {
-    if (isNil(file)) {
+    if (!file) {
       return;
     }
 
@@ -86,7 +81,7 @@ export const FileSelector = ({ open, onClose, onFileUpload }: FileSelectorProps)
   };
 
   return (
-    <Dialog className={classes.root} open={open} onClose={handleClose}>
+    <StyledDialog open={open} onClose={handleClose}>
       <DialogTitle>Select File</DialogTitle>
       <Divider />
       <DialogContent>
@@ -115,14 +110,20 @@ export const FileSelector = ({ open, onClose, onFileUpload }: FileSelectorProps)
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="contained" onClick={handleClose} data-testid="cancel">
-          CANCEL
+        <Button variant="contained" onClick={handleClose} disableElevation data-testid="cancel">
+          Cancel
         </Button>
-        <Button variant="contained" onClick={handleUpload} color="secondary" data-testid="upload">
-          UPLOAD
+        <Button
+          variant="contained"
+          onClick={handleUpload}
+          color="secondary"
+          disableElevation
+          data-testid="upload"
+        >
+          Upload
         </Button>
       </DialogActions>
-    </Dialog>
+    </StyledDialog>
   );
 };
 

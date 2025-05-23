@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getCroppedImg(image: HTMLImageElement, crop: any): Promise<Blob> {
   const canvas = document.createElement('canvas');
   const scaleX = image.naturalWidth / image.width;

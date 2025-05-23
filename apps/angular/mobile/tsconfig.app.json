@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/out-tsc",
+    "target": "es2015",
+    "types": []
+  },
+  "exclude": ["node_modules", "platforms"],
+  "include": ["../../../libs/shared/environments/**/environment.*.ts"],
+  "files": ["./references.d.ts", "src/main.ts", "src/polyfills.ts"]
+}

@@ -1,6 +1,6 @@
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
-import { log, MockConfigService, MockModel, MockMongooseModel } from '@bookapp/testing';
+import { log, MockConfigService, MockModel, MockMongooseModel } from '@bookapp/testing/api';
 
 import { ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
@@ -13,6 +13,7 @@ import { LogsService } from './logs.service';
 describe('LogsService', () => {
   let logsService: LogsService;
   let configService: ConfigService;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let logModel: any;
   let pubSub: PubSub;
 
@@ -91,7 +92,7 @@ describe('LogsService', () => {
     });
 
     it('should sort with value from query', async () => {
-      const order = { test: -1 };
+      const order = { test: 'asc' } as const;
       await logsService.findAll(new ApiQuery(null, null, null, order));
       expect(logModel.sort).toHaveBeenCalledWith(order);
     });

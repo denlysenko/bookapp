@@ -1,0 +1,20 @@
+{
+  "name": "angular-desktop-books-buy-books",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/angular/desktop/books/buy-books/src",
+  "prefix": "bookapp",
+  "tags": ["scope:angular", "type:feature", "platform:desktop"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/angular/desktop/books/buy-books/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/angular/desktop/books/buy-books"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

@@ -10,17 +10,9 @@ import { UsersModule } from '@bookapp/api/users';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-const envFilePath =
-  process.env.ENV === 'production'
-    ? '.env.production'
-    : process.env.ENV === 'testing'
-    ? '.env.testing'
-    : '.env.development';
-
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath,
       isGlobal: true,
     }),
     DatabaseModule,

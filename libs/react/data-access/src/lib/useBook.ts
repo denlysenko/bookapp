@@ -8,7 +8,6 @@ import {
 } from '@bookapp/shared/interfaces';
 import { ADD_COMMENT_MUTATION, BOOK_QUERY, RATE_BOOK_MUTATION } from '@bookapp/shared/queries';
 
-// tslint:disable: no-shadowed-variable
 export function useBook(slug: string) {
   const { data, loading, updateQuery } = useQuery<{ book: Book }>(BOOK_QUERY, {
     variables: {

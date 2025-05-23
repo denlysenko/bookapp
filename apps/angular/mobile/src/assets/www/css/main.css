@@ -1,7 +1,8 @@
 @font-face {
   font-family: 'fontello';
   src: url('../font/fontello.eot?60518104');
-  src: url('../font/fontello.eot?60518104#iefix') format('embedded-opentype'),
+  src:
+    url('../font/fontello.eot?60518104#iefix') format('embedded-opentype'),
     url('../font/fontello.woff?60518104') format('woff'),
     url('../font/fontello.ttf?60518104') format('truetype'),
     url('../font/fontello.svg?60518104#fontello') format('svg');
@@ -23,7 +24,7 @@ body {
   /* height: 500px; */
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   right: 0;
   top: 0;
   bottom: 0;
@@ -163,7 +164,7 @@ body {
   top: 0;
   min-width: 300px;
   width: 25%;
-  height: 100%;
+  height: 100vh;
   -webkit-transition: -webkit-transform 0.5s;
   -moz-transition: -moz-transform 0.5s;
   -ms-transition: -moz-transform 0.5s;

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { isNil } from 'lodash';
 
 import { AUTH_TOKEN, HTTP_STATUS, REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
 import { environment } from '@bookapp/shared/environments';
@@ -10,10 +9,10 @@ import { store } from './store';
 
 export function useRefreshToken() {
   const refreshToken = storage.getItem(AUTH_TOKEN);
-  const [loading, setLoading] = useState(() => !isNil(refreshToken));
+  const [loading, setLoading] = useState(() => !!refreshToken);
 
   useEffect(() => {
-    if (!isNil(refreshToken)) {
+    if (refreshToken) {
       fetch(environment.refreshTokenUrl, {
         method: 'POST',
         headers: {
@@ -41,6 +40,7 @@ export function useRefreshToken() {
           setLoading(false);
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {

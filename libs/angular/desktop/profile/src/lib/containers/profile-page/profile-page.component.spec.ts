@@ -1,9 +1,12 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { AuthService, ProfileService } from '@bookapp/angular/data-access';
-import { MockAngularAuthService, MockFeedbackPlatformService, user } from '@bookapp/testing';
+import {
+  MockAngularAuthService,
+  MockFeedbackPlatformService,
+  user,
+} from '@bookapp/testing/angular';
 
 import { of } from 'rxjs';
 
@@ -16,30 +19,27 @@ describe('ProfilePageComponent', () => {
   let fixture: ComponentFixture<ProfilePageComponent>;
   let profileService: ProfileService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [ProfilePageComponent],
-        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-        providers: [
-          {
-            provide: AuthService,
-            useValue: MockAngularAuthService,
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ProfilePageComponent],
+      providers: [
+        {
+          provide: AuthService,
+          useValue: MockAngularAuthService,
+        },
+        {
+          provide: FeedbackPlatformService,
+          useValue: MockFeedbackPlatformService,
+        },
+        {
+          provide: ProfileService,
+          useValue: {
+            update: jest.fn().mockImplementation(() => of({ data: { updateProfile: user } })),
           },
-          {
-            provide: FeedbackPlatformService,
-            useValue: MockFeedbackPlatformService,
-          },
-          {
-            provide: ProfileService,
-            useValue: {
-              update: jest.fn().mockImplementation(() => of({ data: { updateProfile: user } })),
-            },
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+        },
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfilePageComponent);
@@ -54,27 +54,21 @@ describe('ProfilePageComponent', () => {
 
   describe('updateProfile()', () => {
     it('should update profile', () => {
-      component.updateProfile({ id: user._id, user: { firstName } });
-      expect(profileService.update).toHaveBeenCalledWith(user._id, {
+      component.updateProfile({ id: user.id, user: { firstName } });
+      expect(profileService.update).toHaveBeenCalledWith(user.id, {
         firstName,
       });
     });
 
     it('should propagate error', fakeAsync(() => {
-      const error: any = { message: 'Error' };
+      const error = { message: 'Error' };
 
       jest.spyOn(profileService, 'update').mockImplementationOnce(() => of({ errors: [error] }));
 
-      let result: any;
-
-      component.error$.subscribe((err) => {
-        result = err;
-      });
-
-      component.updateProfile({ id: user._id, user: { firstName } });
+      component.updateProfile({ id: user.id, user: { firstName } });
       tick();
 
-      expect(result).toEqual(error);
+      expect(component.error()).toEqual(error);
     }));
   });
 });

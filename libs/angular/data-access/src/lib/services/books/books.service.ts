@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import {
@@ -12,16 +12,21 @@ import { FREE_BOOKS_QUERY, PAID_BOOKS_QUERY, RATE_BOOK_MUTATION } from '@bookapp
 
 import { Apollo, QueryRef } from 'apollo-angular';
 
-import { isNil } from 'lodash';
-import { EmptyObject } from 'apollo-angular/types';
-
 export const DEFAULT_SORT_VALUE = 'createdAt_desc';
+
+interface Variables {
+  paid: boolean;
+  filter?: BooksFilterInput;
+  orderBy?: string;
+  skip?: number;
+  first?: number;
+}
 
 @Injectable()
 export class BooksService {
-  private booksQueryRef: QueryRef<{ books: ApiResponse<Book> }> | null = null;
+  readonly #apollo = inject(Apollo);
 
-  constructor(private readonly apollo: Apollo) {}
+  #booksQueryRef: QueryRef<{ books: ApiResponse<Book> }, Variables> | null = null;
 
   watchBooks(
     paid: boolean,
@@ -30,8 +35,8 @@ export class BooksService {
     skip = 0,
     first = DEFAULT_LIMIT
   ) {
-    if (isNil(this.booksQueryRef)) {
-      this.booksQueryRef = this.apollo.watchQuery<{ books: ApiResponse<Book> }>({
+    if (!this.#booksQueryRef) {
+      this.#booksQueryRef = this.#apollo.watchQuery<{ books: ApiResponse<Book> }, Variables>({
         query: paid ? PAID_BOOKS_QUERY : FREE_BOOKS_QUERY,
         variables: {
           paid,
@@ -45,7 +50,7 @@ export class BooksService {
       });
     }
 
-    return this.booksQueryRef.valueChanges;
+    return this.#booksQueryRef.valueChanges;
   }
 
   getBooks(
@@ -55,7 +60,7 @@ export class BooksService {
     skip = 0,
     first = DEFAULT_LIMIT
   ) {
-    return this.apollo.query<{ books: ApiResponse<Book> }>({
+    return this.#apollo.query<{ books: ApiResponse<Book> }>({
       query: paid ? PAID_BOOKS_QUERY : FREE_BOOKS_QUERY,
       variables: {
         paid,
@@ -68,11 +73,7 @@ export class BooksService {
   }
 
   loadMore(skip: number) {
-    if (isNil(this.booksQueryRef)) {
-      return;
-    }
-
-    this.booksQueryRef.fetchMore({
+    this.#booksQueryRef?.fetchMore({
       variables: {
         skip,
       },
@@ -94,28 +95,24 @@ export class BooksService {
     });
   }
 
-  refetch(variables: EmptyObject) {
-    if (isNil(this.booksQueryRef)) {
-      return;
-    }
-
-    this.booksQueryRef.refetch(variables);
+  refetch(variables: Partial<Variables>) {
+    this.#booksQueryRef?.refetch(variables);
   }
 
   rateBook({ bookId, rate }: RateBookEvent) {
-    return this.apollo.mutate<RateBookResponse>({
+    return this.#apollo.mutate<RateBookResponse>({
       mutation: RATE_BOOK_MUTATION,
       variables: {
         bookId,
         rate,
       },
       update: (_, { data: { rateBook } }) => {
-        if (isNil(this.booksQueryRef)) {
+        if (!this.#booksQueryRef) {
           return;
         }
 
-        this.booksQueryRef.updateQuery((prevData) => {
-          const index = prevData.books.rows.findIndex(({ _id }) => _id === bookId);
+        this.#booksQueryRef.updateQuery((prevData) => {
+          const index = prevData.books.rows.findIndex(({ id }) => id === bookId);
 
           if (index === -1) {
             return prevData;

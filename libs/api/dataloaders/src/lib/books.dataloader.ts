@@ -1,10 +1,10 @@
 import { ModelNames } from '@bookapp/api/shared';
-import { Book } from '@bookapp/shared/interfaces';
+import type { Book } from '@bookapp/shared/interfaces';
 
-import * as DataLoader from 'dataloader';
-import { Connection } from 'mongoose';
+import DataLoader from 'dataloader';
+import type { Connection } from 'mongoose';
 
-import { IDataLoader } from './interfaces/dataloader';
+import type { IDataLoader } from './interfaces/dataloader';
 
 export class BooksDataLoader implements IDataLoader<string, Book> {
   constructor(private readonly dataLoader: DataLoader<string, Book>) {}

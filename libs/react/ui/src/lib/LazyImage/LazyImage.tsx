@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { isNil } from 'lodash';
+import { useEffect, useRef, useState } from 'react';
 
 export const LazyImage = ({ src, placeholder, ...props }) => {
   const imgRef = useRef(null);
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
-    if (isNil(imgRef.current)) {
+    if (!imgRef.current) {
       return;
     }
 
@@ -28,5 +27,5 @@ export const LazyImage = ({ src, placeholder, ...props }) => {
     return () => observer.disconnect();
   }, []);
 
-  return <img ref={imgRef} src={inView ? src : placeholder} {...props} />;
+  return <img ref={imgRef} src={inView ? src : placeholder} {...props} alt="img" />;
 };

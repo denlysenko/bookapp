@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import {
   AddCommentResponse,
@@ -15,17 +15,15 @@ import {
 
 import { Apollo, QueryRef } from 'apollo-angular';
 
-import { isNil } from 'lodash';
-
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BookService {
-  private bookQueryRef: QueryRef<{ book: Book }> | null = null;
+  readonly #apollo = inject(Apollo);
 
-  constructor(private readonly apollo: Apollo) {}
+  #bookQueryRef: QueryRef<{ book: Book }> | null = null;
 
   watchBook(slug: string) {
-    if (isNil(this.bookQueryRef)) {
-      this.bookQueryRef = this.apollo.watchQuery<{ book: Book }>({
+    if (!this.#bookQueryRef) {
+      this.#bookQueryRef = this.#apollo.watchQuery<{ book: Book }>({
         query: BOOK_QUERY,
         variables: {
           slug,
@@ -35,11 +33,11 @@ export class BookService {
       });
     }
 
-    return this.bookQueryRef.valueChanges;
+    return this.#bookQueryRef.valueChanges;
   }
 
   fetchBook(slug: string) {
-    return this.apollo.query<{ book: Book }>({
+    return this.#apollo.query<{ book: Book }>({
       query: BOOK_QUERY,
       variables: {
         slug,
@@ -48,7 +46,7 @@ export class BookService {
   }
 
   fetchBookForEdit(slug: string) {
-    return this.apollo.query<{ book: Book }>({
+    return this.#apollo.query<{ book: Book }>({
       query: BOOK_FOR_EDIT_QUERY,
       variables: {
         slug,
@@ -57,18 +55,18 @@ export class BookService {
   }
 
   rateBook({ bookId, rate }: RateBookEvent) {
-    return this.apollo.mutate<RateBookResponse>({
+    return this.#apollo.mutate<RateBookResponse>({
       mutation: RATE_BOOK_MUTATION,
       variables: {
         bookId,
         rate,
       },
       update: (_, { data: { rateBook } }) => {
-        if (isNil(this.bookQueryRef)) {
+        if (!this.#bookQueryRef) {
           return;
         }
 
-        this.bookQueryRef.updateQuery((prevData) => {
+        this.#bookQueryRef.updateQuery((prevData) => {
           return {
             book: {
               ...prevData.book,
@@ -83,18 +81,18 @@ export class BookService {
   }
 
   addComment(bookId: string, text: string) {
-    return this.apollo.mutate<AddCommentResponse>({
+    return this.#apollo.mutate<AddCommentResponse>({
       mutation: ADD_COMMENT_MUTATION,
       variables: {
         bookId,
         text,
       },
       update: (_, { data: { addComment } }) => {
-        if (isNil(this.bookQueryRef)) {
+        if (!this.#bookQueryRef) {
           return;
         }
 
-        this.bookQueryRef.updateQuery((prevData) => {
+        this.#bookQueryRef.updateQuery((prevData) => {
           return {
             book: {
               ...prevData.book,

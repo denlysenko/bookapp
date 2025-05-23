@@ -1,6 +1,5 @@
-import React from 'react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { MockedProvider } from '@apollo/client/testing';
 
@@ -10,7 +9,7 @@ import {
   CREATE_BOOK_MUTATION,
   UPDATE_BOOK_MUTATION,
 } from '@bookapp/shared/queries';
-import { book } from '@bookapp/testing';
+import { book } from '@bookapp/testing/react';
 
 import AddBook, { BOOK_CREATED, BOOK_UPDATED } from './AddBook';
 
@@ -34,7 +33,7 @@ const createBookMock = {
   result: {
     data: {
       createBook: {
-        _id: book._id,
+        id: book.id,
         title: book.title,
         author: book.author,
         description: book.description,
@@ -51,9 +50,9 @@ const updateBookMock = {
   request: {
     query: UPDATE_BOOK_MUTATION,
     variables: {
-      id: book._id,
+      id: book.id,
       book: {
-        title: book.title,
+        title: 'Updated book title',
         author: book.author,
         description: book.description,
         paid: book.paid,
@@ -66,8 +65,8 @@ const updateBookMock = {
   result: {
     data: {
       updateBook: {
-        _id: book._id,
-        title: book.title,
+        id: book.id,
+        title: 'Updated book title',
         author: book.author,
         description: book.description,
         coverUrl: book.coverUrl,
@@ -89,7 +88,7 @@ const bookForEditMock = {
   result: {
     data: {
       book: {
-        _id: book._id,
+        id: book.id,
         title: book.title,
         author: book.author,
         description: book.description,
@@ -148,7 +147,7 @@ describe('AddBook', () => {
     });
 
     it('should update book', async () => {
-      render(
+      const { container } = render(
         <MockedProvider mocks={[bookForEditMock, updateBookMock]}>
           <FeedbackProvider>
             <MemoryRouter initialEntries={[`/books/add/${slug}`]}>
@@ -162,6 +161,12 @@ describe('AddBook', () => {
 
       await waitFor(() => {
         expect(screen.getByText(/edit the book/i)).toBeInTheDocument();
+      });
+
+      fireEvent.change(container.querySelector('[name=title]'), {
+        target: {
+          value: 'Updated book title',
+        },
       });
 
       fireEvent.click(screen.getByRole('button', { name: /save/i }));

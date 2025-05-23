@@ -1,0 +1,89 @@
+@import 'tailwindcss';
+
+@source '../../../../libs/angular/mobile/auth';
+@source '../../../../libs/angular/mobile/main-layout';
+@source '../../../../libs/angular/mobile/bookmarks';
+@source '../../../../libs/angular/mobile/books/best-books';
+@source '../../../../libs/angular/mobile/books/browse-books';
+@source '../../../../libs/angular/mobile/books/buy-books';
+@source '../../../../libs/angular/mobile/books/read-book';
+@source '../../../../libs/angular/mobile/books/view-book';
+@source '../../../../libs/angular/mobile/history';
+@source '../../../../libs/angular/mobile/password';
+@source '../../../../libs/angular/mobile/profile';
+@source '../../../../libs/angular/ui/ui-mobile';
+
+@theme {
+  /* Colors */
+  --color-deep-blue-50: #edefff;
+  --color-deep-blue-100: #d1d9ee;
+  --color-deep-blue-200: #b8c0d8;
+  --color-deep-blue-300: #9da6c3;
+  --color-deep-blue-400: #8893b2;
+  --color-deep-blue-500: #7480a2;
+  --color-deep-blue-600: #657190;
+  --color-deep-blue-700: #535d79;
+  --color-deep-blue-800: #434b62;
+  --color-deep-blue-900: #2f364a; /* primary color */
+
+  /* Custom orange palette */
+  --color-orange-50: #f7eae9;
+  --color-orange-100: #f8cec3;
+  --color-orange-200: #f5af9d;
+  --color-orange-300: #f39077;
+  --color-orange-400: #f2795a;
+  --color-orange-500: #f16441; /* secondary color */
+  --color-orange-600: #e75e3c;
+  --color-orange-700: #d85738;
+  --color-orange-800: #ca5134;
+  --color-orange-900: #b1452b;
+
+  --color-danger: #f44336;
+  --color-light-blue: #15a4fa;
+  --color-surface: #eeeeee;
+  --color-toolbar: #eef1f7;
+  --color-sidenav: #1f2637;
+
+  /* Text Colors */
+  --color-primary-text: #9ca5b9;
+
+  /* Dark text variants */
+  --color-dark-primary-text: rgb(156 165 185 / 0.87);
+  --color-dark-secondary-text: rgb(156 165 185 / 0.6);
+  --color-dark-disabled-text: rgb(156 165 185 / 0.38);
+
+  /* Light text variants */
+  --color-light-primary-text: rgb(255 255 255);
+  --color-light-secondary-text: rgb(255 255 255 / 0.6);
+  --color-light-disabled-text: rgb(255 255 255 / 0.38);
+
+  /* Black text variants */
+  --color-black-primary-text: rgb(0 0 0 / 0.87);
+  --color-black-secondary-text: rgb(0 0 0 / 0.6);
+}
+
+@layer base {
+  .input {
+    @apply text-base border rounded border-neutral-500 focus:border-light-blue focus:border-2 placeholder:text-neutral-500 px-2 py-3;
+  }
+
+  .btn {
+    @apply px-2 py-3 rounded font-medium text-base;
+  }
+
+  .btn-primary {
+    @apply bg-deep-blue-900 text-dark-primary-text;
+  }
+
+  .btn-outline {
+    @apply border-2 border-deep-blue-900 text-deep-blue-900;
+  }
+
+  .btn-active:highlighted {
+    @apply bg-sidenav;
+  }
+
+  .btn[isEnabled='false'] {
+    @apply opacity-50;
+  }
+}

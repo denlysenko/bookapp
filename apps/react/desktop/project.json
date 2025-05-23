@@ -1,0 +1,49 @@
+{
+  "name": "react-desktop",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/react/desktop/src",
+  "projectType": "application",
+  "tags": ["scope:react", "type:app", "platform:desktop"],
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/react/desktop"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "react-desktop:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "react-desktop:build:development",
+          "hmr": true
+        },
+        "testing": {
+          "buildTarget": "react-desktop:build:testing",
+          "hmr": false
+        },
+        "production": {
+          "buildTarget": "react-desktop:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

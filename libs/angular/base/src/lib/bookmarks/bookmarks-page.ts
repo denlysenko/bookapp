@@ -1,3 +1,4 @@
+import { inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { BookmarksService } from '@bookapp/angular/data-access';
@@ -10,10 +11,13 @@ import { filter, map, shareReplay, startWith, tap } from 'rxjs/operators';
 import { BaseComponent } from '../core/base-component';
 
 export abstract class BookmarksPageBase extends BaseComponent {
-  hasMoreItems = false;
+  readonly #activatedRoute = inject(ActivatedRoute);
+  readonly #bookmarksService = inject(BookmarksService);
 
-  readonly type: string = this.route.snapshot.data.type;
-  readonly source$ = this.bookmarksService
+  readonly hasMoreItems = signal(false);
+
+  readonly type: string = this.#activatedRoute.snapshot.data.type;
+  readonly source$ = this.#bookmarksService
     .watchBookmarksByType(this.type)
     .pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
@@ -21,7 +25,7 @@ export abstract class BookmarksPageBase extends BaseComponent {
     filter(({ data }) => !!data.bookmarks),
     tap(({ data }) => {
       const { rows, count } = data.bookmarks;
-      this.hasMoreItems = rows.length < count;
+      this.hasMoreItems.set(rows.length < count);
     }),
     map(({ data }) => data.bookmarks.rows.map((bookmark) => bookmark.book))
   );
@@ -30,34 +34,27 @@ export abstract class BookmarksPageBase extends BaseComponent {
     startWith({ loading: true }),
     map(({ loading }) => loading),
     tap((loading) => {
-      this.pending = loading;
+      this.#pending = loading;
     })
   );
 
-  readonly title$: Observable<string> = this.route.data.pipe(map((data) => data.title));
+  readonly title$: Observable<string> = this.#activatedRoute.data.pipe(map((data) => data.title));
 
-  private skip = 0;
-  private pending = false;
-
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly bookmarksService: BookmarksService
-  ) {
-    super();
-  }
+  #skip = 0;
+  #pending = false;
 
   loadMore() {
-    if (this.pending) {
+    if (this.#pending) {
       return;
     }
 
-    if (this.hasMoreItems) {
-      this.skip += DEFAULT_LIMIT;
-      this.bookmarksService.fetchMoreBookmarksByType(this.skip);
+    if (this.hasMoreItems()) {
+      this.#skip += DEFAULT_LIMIT;
+      this.#bookmarksService.fetchMoreBookmarksByType(this.#skip);
     }
   }
 
   rate(event: RateBookEvent) {
-    this.bookmarksService.rateBook(event).subscribe();
+    this.#bookmarksService.rateBook(event).subscribe();
   }
 }

@@ -7,7 +7,7 @@ type Subscription {
 }
 
 type Comment {
-  _id: ID
+  id: ID
   bookId: ID
   author: User
   text: String

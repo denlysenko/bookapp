@@ -1,65 +1,50 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, CanLoad } from '@angular/router';
+import { inject } from '@angular/core';
 
 import { RouterExtensions, StoragePlatformService, StoreService } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
 import { AUTH_TOKEN } from '@bookapp/shared/constants';
 
-import { isNil } from 'lodash';
-import { Observable, of } from 'rxjs';
-import { catchError, filter, map, mapTo, switchMapTo, take } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
 
-@Injectable()
-export class AuthGuard implements CanActivate, CanLoad {
-  constructor(
-    private readonly storeService: StoreService,
-    private readonly storagePlatformService: StoragePlatformService,
-    private readonly authService: AuthService,
-    private readonly routerExtensions: RouterExtensions
-  ) {}
+export function authGuard() {
+  const storeService = inject(StoreService);
+  const storagePlatformService = inject(StoragePlatformService);
+  const authService = inject(AuthService);
+  const routerExtensions = inject(RouterExtensions);
 
-  canActivate(): Observable<boolean> | boolean {
-    return this.hasAccess();
-  }
-
-  canLoad(): Observable<boolean> | boolean {
-    return this.hasAccess();
-  }
-
-  private hasAccess() {
-    const accessToken = this.storeService.get(AUTH_TOKEN);
-    const refreshToken = this.storagePlatformService.getItem(AUTH_TOKEN);
-
-    if (accessToken) {
-      return this.waitForUser();
-    }
-
-    if (!accessToken && refreshToken) {
-      return this.authService.refreshTokens().pipe(
-        switchMapTo(this.waitForUser()),
-        catchError(() => of(false))
-      );
-    }
-
-    this.routerExtensions.navigate(['auth'], {
-      // for nativescript
-      clearHistory: true,
-      transition: {
-        name: 'flip',
-        duration: 300,
-        curve: 'linear',
-      },
-    });
-
-    return false;
-  }
-
-  private waitForUser() {
-    return this.authService.fetchMe().pipe(
+  const waitForUser = () => {
+    return authService.fetchMe().pipe(
       map(({ data }) => data.me),
-      filter((user) => !isNil(user)),
-      mapTo(true),
+      filter((user) => !!user),
+      map(() => true),
       take(1)
     );
+  };
+
+  const accessToken = storeService.get(AUTH_TOKEN);
+  const refreshToken = storagePlatformService.getItem(AUTH_TOKEN);
+
+  if (accessToken) {
+    return waitForUser();
   }
+
+  if (!accessToken && refreshToken) {
+    return authService.refreshTokens().pipe(
+      switchMap(() => waitForUser()),
+      catchError(() => of(false))
+    );
+  }
+
+  routerExtensions.navigate(['auth'], {
+    // for nativescript
+    clearHistory: true,
+    transition: {
+      name: 'flip',
+      duration: 300,
+      curve: 'linear',
+    },
+  });
+
+  return false;
 }

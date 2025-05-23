@@ -1,7 +1,9 @@
+import { inject, signal } from '@angular/core';
+
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { AuthService, ProfileService } from '@bookapp/angular/data-access';
+import { ApiError } from '@bookapp/shared/interfaces';
 
-import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import { BaseComponent } from '../core/base-component';
@@ -9,44 +11,32 @@ import { BaseComponent } from '../core/base-component';
 const PROFILE_UPDATE_SUCCESS = 'Profile updated!';
 
 export abstract class ProfilePageBase extends BaseComponent {
-  user$ = this.authService.watchMe().pipe(map(({ data }) => data.me));
+  readonly #profileService = inject(ProfileService);
+  readonly #authService = inject(AuthService);
+  readonly #feedbackService = inject(FeedbackPlatformService);
 
-  private error = new BehaviorSubject<any | null>(null);
-  private loading = new BehaviorSubject<boolean>(false);
+  readonly user$ = this.#authService.watchMe().pipe(map(({ data }) => data.me));
 
-  constructor(
-    private readonly profileService: ProfileService,
-    private readonly authService: AuthService,
-    private readonly feedbackService: FeedbackPlatformService
-  ) {
-    super();
-  }
-
-  get loading$(): Observable<boolean> {
-    return this.loading.asObservable();
-  }
-
-  get error$(): Observable<any | null> {
-    return this.error.asObservable();
-  }
+  readonly error = signal<ApiError | null>(null);
+  readonly loading = signal<boolean>(false);
 
   updateProfile({ id, user }) {
-    this.loading.next(true);
+    this.loading.set(true);
 
-    this.profileService
+    this.#profileService
       .update(id, user)
       .pipe(
         finalize(() => {
-          this.loading.next(false);
+          this.loading.set(false);
         })
       )
       .subscribe(({ data, errors }) => {
         if (data) {
-          this.feedbackService.success(PROFILE_UPDATE_SUCCESS);
+          this.#feedbackService.success(PROFILE_UPDATE_SUCCESS);
         }
 
         if (errors) {
-          this.error.next(errors[errors.length - 1]);
+          this.error.set(errors[errors.length - 1]);
         }
       });
   }

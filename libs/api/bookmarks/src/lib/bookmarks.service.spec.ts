@@ -1,4 +1,3 @@
-// tslint:disable: no-big-function
 import { LogsService } from '@bookapp/api/logs';
 import { ApiQuery, ModelNames } from '@bookapp/api/shared';
 import { BOOKMARKS, UserActions } from '@bookapp/shared/enums';
@@ -8,7 +7,7 @@ import {
   MockModel,
   MockMongooseModel,
   user,
-} from '@bookapp/testing';
+} from '@bookapp/testing/api';
 
 import { HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -23,6 +22,7 @@ const bookId = 'book_id';
 describe('BookmarksService', () => {
   let bookmarksService: BookmarksService;
   let configService: ConfigService;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let bookmarkModel: any;
   let logsService: LogsService;
 
@@ -69,24 +69,24 @@ describe('BookmarksService', () => {
 
     it('should get bookmarks by type for particular user', async () => {
       await bookmarksService.getByType(
-        new ApiQuery({ type: BOOKMARKS.FAVORITES, userId: user._id })
+        new ApiQuery({ type: BOOKMARKS.FAVORITES, userId: user.id })
       );
       expect(bookmarkModel.find).toHaveBeenCalledWith({
         type: BOOKMARKS.FAVORITES,
-        userId: user._id,
+        userId: user.id,
       });
     });
 
     it('should skip bookmarks with default value by type for particular user', async () => {
       await bookmarksService.getByType(
-        new ApiQuery({ type: BOOKMARKS.FAVORITES, userId: user._id })
+        new ApiQuery({ type: BOOKMARKS.FAVORITES, userId: user.id })
       );
       expect(bookmarkModel.skip).toHaveBeenCalledWith(0);
     });
 
     it('should skip bookmarks with value from query by type for particular user', async () => {
       await bookmarksService.getByType(
-        new ApiQuery({ type: BOOKMARKS.FAVORITES, userId: user._id }, null, 10)
+        new ApiQuery({ type: BOOKMARKS.FAVORITES, userId: user.id }, null, 10)
       );
       expect(bookmarkModel.skip).toHaveBeenCalledWith(10);
     });
@@ -94,14 +94,14 @@ describe('BookmarksService', () => {
     it('should limit bookmarks with default value by type for particular user', async () => {
       jest.spyOn(configService, 'get').mockReturnValue('5');
       await bookmarksService.getByType(
-        new ApiQuery({ type: BOOKMARKS.FAVORITES, userId: user._id })
+        new ApiQuery({ type: BOOKMARKS.FAVORITES, userId: user.id })
       );
       expect(bookmarkModel.limit).toHaveBeenCalledWith(5);
     });
 
     it('should limit bookmarks with value from query by type for particular user', async () => {
       await bookmarksService.getByType(
-        new ApiQuery({ type: BOOKMARKS.FAVORITES, userId: user._id }, 10)
+        new ApiQuery({ type: BOOKMARKS.FAVORITES, userId: user.id }, 10)
       );
       expect(bookmarkModel.limit).toHaveBeenCalledWith(10);
     });
@@ -109,9 +109,9 @@ describe('BookmarksService', () => {
 
   describe('getByUserAndBook()', () => {
     it('should get bookmarks by user and book', async () => {
-      await bookmarksService.getByUserAndBook(user._id, bookId);
+      await bookmarksService.getByUserAndBook(user.id, bookId);
       expect(bookmarkModel.find).toHaveBeenCalledWith({
-        userId: user._id,
+        userId: user.id,
         bookId,
       });
     });
@@ -121,17 +121,17 @@ describe('BookmarksService', () => {
     it('should try to find bookmark', async () => {
       jest.spyOn(bookmarkModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
-      await bookmarksService.addToBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
+      await bookmarksService.addToBookmarks(BOOKMARKS.FAVORITES, user.id, bookId);
       expect(bookmarkModel.findOne).toHaveBeenCalledWith({
         type: BOOKMARKS.FAVORITES,
         bookId,
-        userId: user._id,
+        userId: user.id,
       });
     });
 
     it('should throw error if bookmark was found', async () => {
       try {
-        await bookmarksService.addToBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
+        await bookmarksService.addToBookmarks(BOOKMARKS.FAVORITES, user.id, bookId);
       } catch (err) {
         expect(err.response).toEqual({
           statusCode: HttpStatus.BAD_REQUEST,
@@ -144,29 +144,29 @@ describe('BookmarksService', () => {
     it('should save if bookmark was not found', async () => {
       jest.spyOn(bookmarkModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
-      await bookmarksService.addToBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
+      await bookmarksService.addToBookmarks(BOOKMARKS.FAVORITES, user.id, bookId);
       expect(bookmarkModel.save).toHaveBeenCalled();
     });
 
     it('should create Log', async () => {
       jest.spyOn(bookmarkModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
-      await bookmarksService.addToBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
+      await bookmarksService.addToBookmarks(BOOKMARKS.FAVORITES, user.id, bookId);
       expect(logsService.create).toHaveBeenCalledWith({
         action: UserActions.BOOK_ADDED_TO_FAVORITES,
         bookId,
-        userId: user._id,
+        userId: user.id,
       });
     });
   });
 
   describe('removeFromBookmarks()', () => {
     it('should try to find bookmark', async () => {
-      await bookmarksService.removeFromBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
+      await bookmarksService.removeFromBookmarks(BOOKMARKS.FAVORITES, user.id, bookId);
       expect(bookmarkModel.findOne).toHaveBeenCalledWith({
         type: BOOKMARKS.FAVORITES,
         bookId,
-        userId: user._id,
+        userId: user.id,
       });
     });
 
@@ -174,7 +174,7 @@ describe('BookmarksService', () => {
       jest.spyOn(bookmarkModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
       try {
-        await bookmarksService.removeFromBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
+        await bookmarksService.removeFromBookmarks(BOOKMARKS.FAVORITES, user.id, bookId);
       } catch (err) {
         expect(err.response).toEqual({
           statusCode: HttpStatus.NOT_FOUND,
@@ -185,16 +185,16 @@ describe('BookmarksService', () => {
     });
 
     it('should remove if bookmark was found', async () => {
-      await bookmarksService.removeFromBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
-      expect(bookmarkModel.remove).toHaveBeenCalled();
+      await bookmarksService.removeFromBookmarks(BOOKMARKS.FAVORITES, user.id, bookId);
+      expect(bookmarkModel.deleteOne).toHaveBeenCalled();
     });
 
     it('should create Log', async () => {
-      await bookmarksService.removeFromBookmarks(BOOKMARKS.FAVORITES, user._id, bookId);
+      await bookmarksService.removeFromBookmarks(BOOKMARKS.FAVORITES, user.id, bookId);
       expect(logsService.create).toHaveBeenCalledWith({
         action: UserActions.BOOK_REMOVED_FROM_FAVORITES,
         bookId,
-        userId: user._id,
+        userId: user.id,
       });
     });
   });

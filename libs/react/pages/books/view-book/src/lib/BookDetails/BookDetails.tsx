@@ -1,18 +1,18 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import Rating from '@material-ui/lab/Rating';
+import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
+import Rating from '@mui/material/Rating';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 
 import { useMe } from '@bookapp/react/data-access';
 import { BOOKMARKS, ROLES } from '@bookapp/shared/enums';
 import { Book, BookmarkEvent } from '@bookapp/shared/interfaces';
 import { formatCurrency } from '@bookapp/utils/react';
 
-import { useBookDetailsStyles } from './useBookDetailsStyles';
+import { StyledBookDetails } from './StyledBookDetails';
 
 export interface BookDetailsProps {
   book: Book;
@@ -20,10 +20,9 @@ export interface BookDetailsProps {
   onBookmarkAdd: (event: BookmarkEvent) => void;
   onBookmarkRemove: (event: BookmarkEvent) => void;
   onBookRate: (event: { bookId: string; rate: number }) => void;
-  onPaymentRequest: (book: Book) => void;
+  onPaymentRequest?: (book: Book) => void;
 }
 
-// tslint:disable-next-line: cognitive-complexity
 export function BookDetails({
   book,
   bookmarks = [],
@@ -32,7 +31,6 @@ export function BookDetails({
   onBookRate,
   onPaymentRequest,
 }: BookDetailsProps) {
-  const classes = useBookDetailsStyles();
   const { me } = useMe();
 
   const inFavorites = () => bookmarks.includes(BOOKMARKS.FAVORITES);
@@ -47,11 +45,11 @@ export function BookDetails({
     inFavorites()
       ? onBookmarkRemove({
           type: BOOKMARKS.FAVORITES,
-          bookId: book._id,
+          bookId: book.id,
         })
       : onBookmarkAdd({
           type: BOOKMARKS.FAVORITES,
-          bookId: book._id,
+          bookId: book.id,
         });
   };
 
@@ -59,11 +57,11 @@ export function BookDetails({
     inWishlist()
       ? onBookmarkRemove({
           type: BOOKMARKS.WISHLIST,
-          bookId: book._id,
+          bookId: book.id,
         })
       : onBookmarkAdd({
           type: BOOKMARKS.WISHLIST,
-          bookId: book._id,
+          bookId: book.id,
         });
   };
 
@@ -71,25 +69,24 @@ export function BookDetails({
     inMustread()
       ? onBookmarkRemove({
           type: BOOKMARKS.MUSTREAD,
-          bookId: book._id,
+          bookId: book.id,
         })
       : onBookmarkAdd({
           type: BOOKMARKS.MUSTREAD,
-          bookId: book._id,
+          bookId: book.id,
         });
   };
 
   return (
-    <div className={classes.root}>
+    <StyledBookDetails>
       <div className="cover">
-        <img src={book.coverUrl ? book.coverUrl : '/assets/images/nocover.svg'} alt={book.title} />
+        <img src={book.coverUrl ? book.coverUrl : '/images/nocover.svg'} alt={book.title} />
         {book.paid && <div>{formatCurrency(book.price)}</div>}
         <Rating
           name="rating"
           value={book.rating}
-          // tslint:disable-next-line: jsx-no-lambda
           onChange={(_, value) => {
-            onBookRate({ bookId: book._id, rate: value });
+            onBookRate({ bookId: book.id, rate: value });
           }}
         />
         <div className="actions">
@@ -107,8 +104,7 @@ export function BookDetails({
               <IconButton
                 color="secondary"
                 data-testid="buy"
-                // tslint:disable-next-line: jsx-no-lambda
-                onClick={() => onPaymentRequest(book)}
+                onClick={() => onPaymentRequest && onPaymentRequest(book)}
               >
                 <Icon color="secondary">credit_card</Icon>
               </IconButton>
@@ -153,7 +149,7 @@ export function BookDetails({
         <Typography variant="h4">by {book.author}</Typography>
         <div className="toolbar">{book.description || 'No Description'}</div>
       </div>
-    </div>
+    </StyledBookDetails>
   );
 }
 

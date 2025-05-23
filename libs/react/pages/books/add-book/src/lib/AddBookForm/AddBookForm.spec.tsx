@@ -1,8 +1,7 @@
-import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { ERRORS } from '@bookapp/shared/constants';
-import { book } from '@bookapp/testing';
+import { book } from '@bookapp/testing/react';
 
 import AddBookForm from './AddBookForm';
 
@@ -13,9 +12,6 @@ const props = {
   onSubmit: jest.fn(),
 };
 
-// tslint:disable: no-duplicate-string
-
-// tslint:disable: no-identical-functions
 describe('AddBookForm', () => {
   afterEach(() => {
     jest.clearAllMocks();

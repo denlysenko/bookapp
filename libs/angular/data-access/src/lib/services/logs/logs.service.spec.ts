@@ -5,17 +5,16 @@ import { addTypenameToDocument } from '@apollo/client/utilities';
 
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { LAST_LOGS_QUERY, LOGS_QUERY } from '@bookapp/shared/queries';
-import { book, log } from '@bookapp/testing';
+import { book, log } from '@bookapp/testing/angular';
 
 import {
+  APOLLO_TESTING_CACHE,
   ApolloTestingController,
   ApolloTestingModule,
-  APOLLO_TESTING_CACHE,
 } from 'apollo-angular/testing';
 
 import { DEFAULT_ORDER_BY, LogsService } from './logs.service';
 
-// tslint:disable: no-identical-functions
 describe('LogsService', () => {
   let controller: ApolloTestingController;
   let service: LogsService;
@@ -110,7 +109,7 @@ describe('LogsService', () => {
                 createdAt: log.createdAt,
                 __typename: 'Log',
                 book: {
-                  _id: book._id,
+                  id: book.id,
                   title: book.title,
                   author: book.author,
                   url: book.url,

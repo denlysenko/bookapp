@@ -1,7 +1,7 @@
 import { Comment } from './comment';
 
 export interface Book {
-  _id: any;
+  id: string;
   title: string;
   author: string;
   coverUrl: string;
@@ -21,7 +21,7 @@ export interface Book {
 }
 
 export interface BookFormModel {
-  _id?: any;
+  id?: string;
   title: string;
   author: string;
   coverUrl: string;

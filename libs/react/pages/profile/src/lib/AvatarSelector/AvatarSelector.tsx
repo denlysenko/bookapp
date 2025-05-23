@@ -1,12 +1,12 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
 
-import { User } from '@bookapp/shared/interfaces';
 import { ImageSelector, useImageSelector } from '@bookapp/react/ui';
+import { User } from '@bookapp/shared/interfaces';
 
-import { useAvatarSelectorStyles } from './useAvatarSelectorStyles';
+import { StyledAvatarSelector } from './StyledAvatarSelector';
 
 export interface AvatarSelectorProps {
   user: User;
@@ -14,7 +14,6 @@ export interface AvatarSelectorProps {
 }
 
 export const AvatarSelector = ({ user, onSave }: AvatarSelectorProps) => {
-  const classes = useAvatarSelectorStyles();
   const { isImageSelectorOpened, showImageSelector, hideImageSelector } = useImageSelector();
 
   const onAvatarUpload = (publicUrl: string) => {
@@ -22,10 +21,10 @@ export const AvatarSelector = ({ user, onSave }: AvatarSelectorProps) => {
   };
 
   return (
-    <div className={classes.root}>
+    <StyledAvatarSelector>
       <Card>
         <img
-          src={user.avatar ? user.avatar : '/assets/images/no-avatar.svg'}
+          src={user.avatar ? user.avatar : '/images/no-avatar.svg'}
           alt="avatar"
           data-testid="avatar"
         />
@@ -43,7 +42,7 @@ export const AvatarSelector = ({ user, onSave }: AvatarSelectorProps) => {
         onImageUpload={onAvatarUpload}
         onClose={hideImageSelector}
       />
-    </div>
+    </StyledAvatarSelector>
   );
 };
 

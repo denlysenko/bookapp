@@ -1,10 +1,9 @@
-<GridLayout class="p-5 list">
+<GridLayout class="bg-surface pt-[5] px-[5]">
   <RadListView
     #listView
     loadOnDemandMode="Auto"
     backgroundColor="transparent"
-    [items]="logs$ | async"
-    (itemLoading)="onItemLoading($event)"
+    [items]="_logs()"
     (loadMoreDataRequested)="loadMore.emit()"
   >
     <ListViewLinearLayout
@@ -13,8 +12,8 @@
       itemHeight="130"
     ></ListViewLinearLayout>
     <ng-template tkListItemTemplate let-log="item">
-      <StackLayout class="list-item">
-        <bookapp-history-list-item [log]="log"></bookapp-history-list-item>
+      <StackLayout>
+        <bookapp-history-list-item [log]="log" />
       </StackLayout>
     </ng-template>
   </RadListView>

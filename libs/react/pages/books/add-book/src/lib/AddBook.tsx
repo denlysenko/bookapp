@@ -1,25 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
 
 import { useAddBook } from '@bookapp/react/data-access';
 import { FullPageSpinner, useFeedback } from '@bookapp/react/ui';
 import { BookFormModel } from '@bookapp/shared/interfaces';
 
-import { isNil } from 'lodash';
-
 import AddBookForm from './AddBookForm/AddBookForm';
-import { useAddBookStyles } from './useAddBookStyles';
+import { StyledAddBook } from './StyledAddBook';
 
 export const BOOK_CREATED = 'Book created!';
 export const BOOK_UPDATED = 'Book updated!';
 
 export const AddBook = () => {
-  const classes = useAddBookStyles();
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { slug } = useParams();
@@ -28,16 +24,17 @@ export const AddBook = () => {
 
   useEffect(() => {
     fetchBookForEdit(slug);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   const submitForm = async (bookFormValue: BookFormModel | Partial<BookFormModel>) => {
     setLoading(true);
     try {
-      isNil(bookForEdit)
+      !bookForEdit
         ? await createBook(bookFormValue as BookFormModel)
-        : await updateBook(bookForEdit._id, bookFormValue);
+        : await updateBook(bookForEdit.id, bookFormValue);
       setLoading(false);
-      showFeedback(isNil(bookForEdit) ? BOOK_CREATED : BOOK_UPDATED);
+      showFeedback(!bookForEdit ? BOOK_CREATED : BOOK_UPDATED);
     } catch (errors) {
       setLoading(false);
       setError(errors[errors.length - 1]);
@@ -47,14 +44,14 @@ export const AddBook = () => {
   return (
     <>
       {fetchingBook && <FullPageSpinner />}
-      <div className={`${classes.root} view-content`}>
+      <StyledAddBook className="view-content">
         <Card>
-          <CardHeader title={isNil(bookForEdit) ? 'Add a Book' : 'Edit the Book'} />
+          <CardHeader title={!bookForEdit ? 'Add a Book' : 'Edit the Book'} />
           <CardContent>
             <AddBookForm book={bookForEdit} loading={loading} error={error} onSubmit={submitForm} />
           </CardContent>
         </Card>
-      </div>
+      </StyledAddBook>
     </>
   );
 };

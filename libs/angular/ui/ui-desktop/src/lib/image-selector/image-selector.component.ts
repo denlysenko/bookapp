@@ -1,66 +1,74 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 import { FileSelectorBase } from '@bookapp/angular/base';
-import { UploadPlatformService } from '@bookapp/angular/core';
-import { dataURIToBlob } from '@bookapp/utils/angular';
+import { errorsMap } from '@bookapp/shared/constants';
 
-import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
 
-import { BehaviorSubject, Observable } from 'rxjs';
-import { shareReplay } from 'rxjs/operators';
+import { DropDirective } from '../drop/drop.directive';
+
+interface ImageSelectorData {
+  readonly maintainAspectRatio?: boolean;
+}
 
 @Component({
   selector: 'bookapp-image-selector',
+  imports: [
+    AsyncPipe,
+    MatDialogModule,
+    MatDividerModule,
+    MatProgressBarModule,
+    MatButtonModule,
+    ImageCropperComponent,
+    DropDirective,
+  ],
   templateUrl: './image-selector.component.html',
   styleUrls: ['./image-selector.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ImageSelectorComponent extends FileSelectorBase {
-  progress$ = this.uploadService.progress$;
+export class ImageSelectorComponent extends FileSelectorBase implements OnInit {
+  readonly #dialogRef = inject(MatDialogRef<ImageSelectorComponent>);
+  readonly #data = inject<ImageSelectorData>(MAT_DIALOG_DATA);
+
+  readonly progress$ = this.uploadService.progress$;
+
   maintainAspectRatio = true;
 
-  private croppedImage: string;
-  private cropperReady = new BehaviorSubject<boolean>(false);
+  readonly croppedImage = signal<Blob>(undefined);
+  readonly cropperReady = signal(false);
 
-  constructor(
-    uploadService: UploadPlatformService,
-    private readonly dialogRef: MatDialogRef<ImageSelectorComponent>,
-    @Inject(MAT_DIALOG_DATA) private readonly data: any
-  ) {
-    super(uploadService);
-    if (this.data && 'maintainAspectRatio' in this.data) {
-      this.maintainAspectRatio = data.maintainAspectRatio;
+  ngOnInit(): void {
+    if (this.#data && 'maintainAspectRatio' in this.#data) {
+      this.maintainAspectRatio = this.#data.maintainAspectRatio;
     }
-  }
-
-  get cropperReady$(): Observable<boolean> {
-    return this.cropperReady.asObservable().pipe(shareReplay(1));
-  }
-
-  onCropperReady() {
-    this.cropperReady.next(true);
   }
 
   onLoadImageFail() {
-    this.error.next('INVALID_IMG_ERR');
-    this.cropperReady.next(false);
-    this.imageChangedEvent.next(null);
+    this.error.set(errorsMap.INVALID_IMG_ERR);
+    this.cropperReady.set(false);
+    this.file.set(null);
   }
 
   imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
+    this.croppedImage.set(event.blob);
   }
 
   save() {
-    if (!this.croppedImage) {
+    if (!this.croppedImage()) {
       return;
     }
 
-    this.upload(dataURIToBlob(this.croppedImage)).subscribe(
-      ({ publicUrl }) => {
-        this.dialogRef.close(publicUrl);
+    this.upload(this.croppedImage()).subscribe({
+      next: ({ publicUrl }) => {
+        this.#dialogRef.close(publicUrl);
       },
-      () => this.cropperReady.next(false)
-    );
+      error: () => this.cropperReady.set(false),
+    });
   }
 }

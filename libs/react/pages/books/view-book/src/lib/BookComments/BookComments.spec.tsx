@@ -1,7 +1,6 @@
-import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import { comment } from '@bookapp/testing';
+import { comment } from '@bookapp/testing/react';
 
 import BookComments from './BookComments';
 

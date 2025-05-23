@@ -1,16 +1,18 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { RouterExtensions } from '@bookapp/angular/core';
+import { FeedbackPlatformService, RouterExtensions } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
-import { authPayload, MockRouterExtensions } from '@bookapp/testing';
+import {
+  authPayload,
+  MockFeedbackPlatformService,
+  MockRouterExtensions,
+} from '@bookapp/testing/angular';
 
 import { of } from 'rxjs';
 
 import { AuthPageComponent } from './auth-page.component';
 
 const email = 'test@test.com';
-// tslint:disable-next-line: no-hardcoded-credentials
 const password = 'pass';
 
 describe('AuthPageComponent', () => {
@@ -19,30 +21,31 @@ describe('AuthPageComponent', () => {
   let authService: AuthService;
   let router: RouterExtensions;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [AuthPageComponent],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-        providers: [
-          {
-            provide: AuthService,
-            useValue: {
-              login: jest.fn().mockImplementation(() => of({ data: authPayload })),
-              signup: jest.fn().mockImplementation(() => of({ data: authPayload })),
-            },
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [AuthPageComponent],
+      providers: [
+        {
+          provide: AuthService,
+          useValue: {
+            login: jest.fn().mockImplementation(() => of({ data: authPayload })),
+            signup: jest.fn().mockImplementation(() => of({ data: authPayload })),
           },
-          {
-            provide: RouterExtensions,
-            useValue: MockRouterExtensions,
-          },
-        ],
-      }).compileComponents();
+        },
+        {
+          provide: RouterExtensions,
+          useValue: MockRouterExtensions,
+        },
+        {
+          provide: FeedbackPlatformService,
+          useValue: MockFeedbackPlatformService,
+        },
+      ],
+    }).compileComponents();
 
-      authService = TestBed.inject(AuthService);
-      router = TestBed.inject(RouterExtensions);
-    })
-  );
+    authService = TestBed.inject(AuthService);
+    router = TestBed.inject(RouterExtensions);
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AuthPageComponent);
@@ -79,15 +82,9 @@ describe('AuthPageComponent', () => {
     });
 
     it('should propagate error', fakeAsync(() => {
-      const error: any = { message: 'Error' };
+      const error = { message: 'Error' };
 
       jest.spyOn(authService, 'login').mockImplementationOnce(() => of({ errors: [error] }));
-
-      let result: any;
-
-      component.error$.subscribe((err) => {
-        result = err;
-      });
 
       component.submit({
         isLoggingIn: true,
@@ -95,7 +92,7 @@ describe('AuthPageComponent', () => {
       });
       tick();
 
-      expect(result).toEqual(error);
+      expect(component.error()).toEqual(error);
     }));
   });
 });

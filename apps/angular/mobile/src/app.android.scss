@@ -1,2 +1,3 @@
-// SASS theme setup: https://docs.nativescript.org/ui/theme#sass-usage
-@import '~@bookapp/angular-styles/mobile/common';
+@use './global';
+@use '@bookapp/angular-styles/mobile/common';
+@use '@bookapp/angular-styles/mobile/android-overrides';

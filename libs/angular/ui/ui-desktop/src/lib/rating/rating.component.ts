@@ -2,14 +2,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   forwardRef,
+  inject,
   OnInit,
-  Output,
+  output,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-export const RATING_CONTROL_VALUE_ACCESSOR: any = {
+export const RATING_CONTROL_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => RatingComponent),
   multi: true,
@@ -23,53 +23,55 @@ export const RATING_CONTROL_VALUE_ACCESSOR: any = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RatingComponent implements ControlValueAccessor, OnInit {
-  // tslint:disable-next-line: no-output-on-prefix
-  @Output() onHover = new EventEmitter<number>();
-  // tslint:disable-next-line: no-output-on-prefix
-  @Output() onLeave = new EventEmitter<number>();
+  readonly onHover = output<number>();
+  readonly onLeave = output<number>();
 
-  range: any[];
+  readonly #cdr = inject(ChangeDetectorRef);
+
+  range: { index: number }[];
   value: number;
 
-  private preValue: number;
-  private max = 5;
+  #preValue: number;
+  #max = 5;
 
-  constructor(private readonly cdr: ChangeDetectorRef) {}
-
-  onChange: (_: any) => void = () => {};
-  onTouched: (_: any) => void = () => {};
+  onChange: (value: number) => void = () => {
+    //
+  };
+  onTouched: () => void = () => {
+    //
+  };
 
   ngOnInit() {
-    this.range = this.buildTemplateObjects(this.max);
+    this.range = this.#buildTemplateObjects(this.#max);
   }
 
   writeValue(value: number) {
     if (value % 1 !== value) {
       this.value = Math.round(value);
-      this.preValue = value;
-      this.cdr.markForCheck();
+      this.#preValue = value;
+      this.#cdr.markForCheck();
 
       return;
     }
 
-    this.preValue = value;
+    this.#preValue = value;
     this.value = value;
-    this.cdr.markForCheck();
+    this.#cdr.markForCheck();
   }
 
   enter(value: number) {
     this.value = value;
-    this.cdr.markForCheck();
+    this.#cdr.markForCheck();
     this.onHover.emit(value);
   }
 
   reset() {
-    this.value = this.preValue;
-    this.cdr.markForCheck();
+    this.value = this.#preValue;
+    this.#cdr.markForCheck();
     this.onLeave.emit(this.value);
   }
 
-  registerOnChange(fn: (_: any) => void) {
+  registerOnChange(fn: (value: number) => void) {
     this.onChange = fn;
   }
 
@@ -84,8 +86,8 @@ export class RatingComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  private buildTemplateObjects(max: number): any[] {
-    const result: any[] = [];
+  #buildTemplateObjects(max: number): { index: number }[] {
+    const result: { index: number }[] = [];
     for (let i = 0; i < max; i++) {
       result.push({
         index: i,

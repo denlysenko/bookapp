@@ -1,0 +1,19 @@
+{
+  "name": "react-guards",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/react/guards/src",
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/react/guards/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/react/guards"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": ["scope:react"]
+}

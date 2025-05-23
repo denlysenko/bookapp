@@ -13,13 +13,14 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import * as path from 'path';
-import { uuid } from 'uuidv4';
+import * as multer from 'multer';
+import { randomUUID } from 'node:crypto';
+import { extname } from 'node:path';
 
 import { FILE_ERRORS } from './constants';
 import { FilesService } from './files.service';
 
-function fileFilter(_, file, cb) {
+function fileFilter(_: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) {
   if (
     !file.mimetype.includes('jpeg') &&
     !file.mimetype.includes('png') &&
@@ -40,13 +41,13 @@ export class FilesController {
   @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(FileInterceptor('file', options))
   @HttpCode(HttpStatus.OK)
-  async uploadFile(@UploadedFile() file: any) {
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException(FILE_ERRORS.INVALID_MIMETYPE_ERR);
     }
 
-    const filename = `${uuid()}${path.extname(file.originalname)}`;
-    return this.filesService.uploadToBucket(file.buffer, filename);
+    const filename = `${randomUUID()}${extname(file.originalname)}`;
+    return this.filesService.uploadToBucket(file, filename);
   }
 
   @Delete(':id')

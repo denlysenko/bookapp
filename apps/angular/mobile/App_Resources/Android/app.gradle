@@ -6,13 +6,15 @@
 //}
 
 android {
-  compileSdkVersion 29
+  compileSdkVersion 34
+  buildToolsVersion "34"
   defaultConfig {
-    minSdkVersion 27
-    targetSdkVersion 29
+    minSdkVersion 23
+    targetSdkVersion 34
     generatedDensities = []
     applicationId = "org.nativescript.bookapp"
   }
+
   aaptOptions {
     additionalParameters "--no-version-vectors"
   }

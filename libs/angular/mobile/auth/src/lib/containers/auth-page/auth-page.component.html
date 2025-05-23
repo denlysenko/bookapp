@@ -1,7 +1,3 @@
 <ScrollView>
-  <bookapp-auth-form
-    [loading]="loading$ | async"
-    [error]="error$ | async"
-    (formSubmitted)="submit($event)"
-  ></bookapp-auth-form>
+  <bookapp-auth-form [loading]="loading()" [error]="error()" (formSubmitted)="submit($event)" />
 </ScrollView>

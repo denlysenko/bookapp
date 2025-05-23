@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LocationStrategy } from '@angular/common';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { NavigationExtras, Router, UrlTree } from '@angular/router';
 
 interface ExtendedNavigationExtras extends NavigationExtras {
@@ -16,9 +17,10 @@ interface ExtendedNavigationExtras extends NavigationExtras {
   // END - Options for nativescript
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class RouterExtensions {
-  constructor(public router: Router, private locationStrategy: LocationStrategy) {}
+  #locationStrategy = inject(LocationStrategy);
+  router = inject(Router);
 
   navigate(commands: any[], extras?: ExtendedNavigationExtras): Promise<boolean> {
     return this.router.navigate(commands, extras);
@@ -29,6 +31,6 @@ export class RouterExtensions {
   }
 
   back() {
-    this.locationStrategy.back();
+    this.#locationStrategy.back();
   }
 }

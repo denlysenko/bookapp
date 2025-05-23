@@ -1,107 +1,123 @@
-<StackLayout>
+@let _book = book();
+
+<GridLayout class="bg-surface">
   <CardView margin="10" elevation="4" shadowOffsetHeight="1">
     <FlexboxLayout flexDirection="column" height="100%">
-      <GridLayout class="mat-card" flexGrow="1">
+      <GridLayout class="p-4 bg-white rounded-lg" flexGrow="1">
         <ScrollView>
           <StackLayout>
-            <FlexboxLayout flexDirection="column" justifyContent="center" alignItems="center">
-              <Image class="cover" [src]="book.coverUrl ? book.coverUrl : 'res://nocover'"></Image>
-              <StarRating
-                #rating
-                emptyBorderColor="#ffab00"
-                emptyColor="white"
-                filledBorderColor="#ffab00"
-                filledColor="#ffab00"
-                max="5"
-                isindicator="false"
-                android:scaleX=".5"
-                android:scaleY=".5"
-                android:style="width: 240"
-                android:style="background: #eeeeee"
-              ></StarRating>
-              <FlexboxLayout class="actions" justifyContent="center">
-                <Button *ngIf="!book.paid" nsRouterLink="/books/read/{{ book.url }}">
-                  <FormattedString>
-                    <Span class="mdi" fontSize="24" text="book"></Span>
-                  </FormattedString>
-                </Button>
-                <Button *ngIf="book.paid">
-                  <FormattedString>
-                    <Span class="mdi" fontSize="24" text="credit_card"></Span>
-                  </FormattedString>
-                </Button>
-                <Button
-                  (tap)="
-                    (inFavorites ? bookmarkRemoved : bookmarkAdded).emit({
-                      type: BOOKMARKS.FAVORITES,
-                      bookId: book._id
-                    })
-                  "
-                >
-                  <FormattedString>
+            <GridLayout columns="*, *">
+              <StackLayout col="0" horizontalAlignment="left">
+                <Image
+                  class="w-full h-full max-h-[250] mb-2.5 rounded"
+                  [src]="_book.coverUrl ? _book.coverUrl : 'res://nocover'"
+                ></Image>
+
+                <StarRating
+                  #rating
+                  emptyBorderColor="#ffab00"
+                  filledBorderColor="#ffab00"
+                  filledColor="#ffab00"
+                  android:emptyColor="#eeeeee"
+                  android:scaleX=".5"
+                  android:scaleY=".5"
+                  ios:style="background: #ffffff"
+                  android:style="width: 240"
+                  horizontalAlignment="center"
+                  verticalAlignment="center"
+                ></StarRating>
+
+                <FlexboxLayout class="my-2.5" justifyContent="center">
+                  @if (!_book.paid) {
+                    <Button
+                      nsRouterLink="/books/read/{{ _book.url }}"
+                      class="w-12 h-12 rounded-full"
+                      android:style="z-index:0;"
+                    >
+                      <Span class="mdi text-2xl text-orange-500" text="book"></Span>
+                    </Button>
+                  } @else {
+                    <Button class="mdi w-12 h-12 rounded-full" android:style="z-index:0;">
+                      <Span class="mdi text-2xl text-orange-500" text="credit_card"></Span>
+                    </Button>
+                  }
+
+                  <Button
+                    class="mdi w-12 h-12 rounded-full"
+                    android:style="z-index:0;"
+                    (tap)="
+                      (inFavorites() ? bookmarkRemoved : bookmarkAdded).emit({
+                        type: BOOKMARKS.FAVORITES,
+                        bookId: _book.id,
+                      })
+                    "
+                  >
                     <Span
-                      class="mdi"
-                      fontSize="24"
-                      [text]="inFavorites ? 'star' : 'star_border'"
+                      class="mdi text-2xl text-orange-500"
+                      [text]="inFavorites() ? 'star' : 'star_border'"
                     ></Span>
-                  </FormattedString>
-                </Button>
-                <Button
-                  *ngIf="book.paid"
-                  (tap)="
-                    (inWishlist ? bookmarkRemoved : bookmarkAdded).emit({
-                      type: BOOKMARKS.WISHLIST,
-                      bookId: book._id
-                    })
-                  "
-                >
-                  <FormattedString>
+                  </Button>
+
+                  @if (_book.paid) {
+                    <Button
+                      class="mdi w-12 h-12 rounded-full"
+                      android:style="z-index:0;"
+                      (tap)="
+                        (inWishlist() ? bookmarkRemoved : bookmarkAdded).emit({
+                          type: BOOKMARKS.WISHLIST,
+                          bookId: _book.id,
+                        })
+                      "
+                    >
+                      <Span
+                        class="mdi text-2xl text-orange-500"
+                        [text]="inWishlist() ? 'favorite' : 'favorite_border'"
+                      ></Span>
+                    </Button>
+                  }
+
+                  <Button
+                    class="mdi w-12 h-12 rounded-full"
+                    android:style="z-index:0;"
+                    (tap)="
+                      (inMustread() ? bookmarkRemoved : bookmarkAdded).emit({
+                        type: BOOKMARKS.MUSTREAD,
+                        bookId: _book.id,
+                      })
+                    "
+                  >
                     <Span
-                      class="mdi"
-                      fontSize="24"
-                      [text]="inWishlist ? 'favorite' : 'favorite_border'"
+                      class="mdi text-2xl text-orange-500"
+                      [text]="inMustread() ? 'bookmark' : 'bookmark_border'"
                     ></Span>
-                  </FormattedString>
-                </Button>
-                <Button
-                  (tap)="
-                    (inMustread ? bookmarkRemoved : bookmarkAdded).emit({
-                      type: BOOKMARKS.MUSTREAD,
-                      bookId: book._id
-                    })
-                  "
-                >
-                  <FormattedString>
-                    <Span
-                      class="mdi"
-                      fontSize="24"
-                      [text]="inMustread ? 'bookmark' : 'bookmark_border'"
-                    ></Span>
-                  </FormattedString>
-                </Button>
-              </FlexboxLayout>
-              <FlexboxLayout class="view-num">
-                <Label class="mdi" text="visibility"></Label>
-                <Label [text]="book.views"></Label>
-              </FlexboxLayout>
-            </FlexboxLayout>
-            <StackLayout class="details">
-              <Label class="h3" [text]="book.title" textWrap="true"></Label>
-              <Label class="h4" [text]="'by ' + book.author" textWrap="true"></Label>
-              <Label
-                *ngIf="book.paid"
-                class="price"
-                [text]="book.price | currency: 'USD':'symbol-narrow'"
-              ></Label>
-              <Label
-                class="toolbar"
-                [text]="book.description || 'No Description'"
-                textWrap="true"
-              ></Label>
+                  </Button>
+                </FlexboxLayout>
+              </StackLayout>
+
+              <StackLayout col="1" horizontalAlignment="left" class="ml-4">
+                <Label class="text-2xl mb-2.5" [text]="_book.title" textWrap="true"></Label>
+                <Label class="text-lg mb-3" [text]="`by ${_book.author}`" textWrap="true"></Label>
+
+                @if (_book.paid) {
+                  <Label
+                    class="text-sm mb-3"
+                    [text]="_book.price | currency: 'USD' : 'symbol-narrow'"
+                  ></Label>
+                }
+
+                <FlexboxLayout class="text-dark-primary-text">
+                  <Label class="mdi mr-2 text-xl" text="visibility"></Label>
+                  <Label [text]="_book.views"></Label>
+                </FlexboxLayout>
+              </StackLayout>
+            </GridLayout>
+
+            <StackLayout class="my-3">
+              <Label [text]="_book.description ?? 'No Description'" textWrap="true"></Label>
             </StackLayout>
           </StackLayout>
         </ScrollView>
       </GridLayout>
     </FlexboxLayout>
   </CardView>
-</StackLayout>
+</GridLayout>

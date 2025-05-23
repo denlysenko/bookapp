@@ -1,5 +1,5 @@
 <bookapp-book-reader
   [src]="epubUrl"
   [bookmark]="bookmark"
-  (locationChanged)="currentLocation = $event"
-></bookapp-book-reader>
+  (locationChanged)="currentLocation.set($event)"
+/>

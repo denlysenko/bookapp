@@ -1,14 +1,10 @@
-module.exports = {
-  name: 'api-shared',
-  preset: '../../../jest.config.js',
-  globals: {
-    'ts-jest': {
-      tsConfig: '<rootDir>/tsconfig.spec.json',
-    },
-  },
+export default {
+  displayName: 'api-shared',
+  preset: '../../../jest.preset.js',
+  testEnvironment: 'node',
   transform: {
-    '^.+\\.[tj]sx?$': 'ts-jest',
+    '^.+\\.[tj]sx?$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html'],
+  moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../../coverage/libs/api/shared',
 };

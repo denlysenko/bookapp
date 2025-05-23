@@ -1,16 +1,16 @@
-import React, { useCallback, useState } from 'react';
+import { MouseEvent, useCallback, useState } from 'react';
 
-import Icon from '@material-ui/core/Icon';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import Icon from '@mui/material/Icon';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import { BooksFilter as IBooksFilter } from '@bookapp/shared/interfaces';
 
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 
-import { useBooksFilterStyles } from './useBooksFilterStyles';
+import { StyledBooksFilter } from './StyledBooksFilter';
 
 export interface BooksFilterProps {
   filter: IBooksFilter;
@@ -23,14 +23,14 @@ export const BooksFilter = ({
   onSearch,
   onSort,
 }: BooksFilterProps) => {
-  const classes = useBooksFilterStyles();
-
   const [searchTerm, setSearchTerm] = useState(searchQuery);
   const [sort, setSort] = useState<string>(sortValue);
 
-  const handleSortChange = (_: React.MouseEvent<HTMLElement>, sortBy: string | null) => {
-    setSort(sortBy);
-    onSort(sortBy);
+  const handleSortChange = (_: MouseEvent<HTMLElement>, sortBy: string) => {
+    if (sortBy !== null) {
+      setSort(sortBy);
+      onSort(sortBy);
+    }
   };
 
   // https://github.com/facebook/react/issues/1360#issuecomment-533847123
@@ -47,7 +47,7 @@ export const BooksFilter = ({
   };
 
   return (
-    <div className={classes.root}>
+    <StyledBooksFilter>
       <ToggleButtonGroup exclusive={true} value={sort} onChange={handleSortChange}>
         <ToggleButton value="rating_desc" data-testid="all">
           All books
@@ -62,18 +62,20 @@ export const BooksFilter = ({
       <TextField
         name="searchTerm"
         label="Enter Book Title"
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <Icon>search</Icon>
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <Icon>search</Icon>
+              </InputAdornment>
+            ),
+          },
         }}
         value={searchTerm}
         onChange={handleSearchChange}
         data-testid="search"
       />
-    </div>
+    </StyledBooksFilter>
   );
 };
 

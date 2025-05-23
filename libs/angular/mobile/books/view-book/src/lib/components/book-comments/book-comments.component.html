@@ -1,31 +1,55 @@
-<GridLayout>
+@let _comments = comments();
+
+<GridLayout class="bg-surface">
   <CardView margin="10" elevation="4" shadowOffsetHeight="1">
     <FlexboxLayout flexDirection="column" height="100%">
-      <GridLayout class="mat-card" flexGrow="1" rows="*, auto">
-        <Label *ngIf="!comments.length" row="0" text="No comments yet" height="100%"></Label>
-        <ListView *ngIf="comments.length" #listView [items]="comments" row="0" class="list-group">
-          <ng-template let-comment="item">
-            <StackLayout class="list-group-item">
-              <StackLayout orientation="horizontal">
-                <Label class="author" [text]="comment.author.displayName"></Label>
-                <Label class="metadata" [text]="comment.createdAt | date"></Label>
+      <GridLayout class="p-4 bg-white rounded-lg" flexGrow="1" rows="*, auto">
+        @if (!_comments.length) {
+          <Label row="0" text="No comments yet" height="100%"></Label>
+        } @else {
+          <ListView
+            #listView
+            [items]="_comments"
+            row="0"
+            class="mb-2.5"
+            separatorColor="transparent"
+          >
+            <ng-template let-comment="item">
+              <StackLayout class="py-2 px-4">
+                <StackLayout orientation="horizontal">
+                  <Label
+                    class="text-base font-semibold"
+                    [text]="comment.author.displayName"
+                  ></Label>
+                  <Label
+                    class="ml-2 text-sm text-neutral-500"
+                    [text]="comment.createdAt | date"
+                  ></Label>
+                </StackLayout>
+
+                <Label [text]="comment.text" textWrap="true"></Label>
               </StackLayout>
-              <Label [text]="comment.text" textWrap="true"></Label>
-            </StackLayout>
-          </ng-template>
-        </ListView>
-        <GridLayout height="80" class="form" row="1" columns="*, auto">
+            </ng-template>
+          </ListView>
+        }
+
+        <GridLayout height="80" row="1" columns="*, auto">
           <TextView
             #textView
             col="0"
             [(ngModel)]="text"
             hint="Write a short comment"
-            class="input input-border input-padding"
+            class="text-base border rounded border-neutral-500 focus:border-light-blue focus:border-2 placeholder:text-neutral-500 px-2 py-3"
           ></TextView>
-          <Button class="button" col="1" [isEnabled]="!loading" (tap)="submitComment()">
-            <FormattedString>
-              <Span class="mdi" fontSize="24" text="send"></Span>
-            </FormattedString>
+
+          <Button
+            class="mdi w-12 h-12 rounded-full"
+            col="1"
+            android:style="z-index:0;"
+            [isEnabled]="!loading()"
+            (tap)="submitComment()"
+          >
+            <Span class="mdi text-2xl text-orange-500" text="send"></Span>
           </Button>
         </GridLayout>
       </GridLayout>

@@ -1,7 +1,7 @@
-import { Document } from 'mongoose';
+import type { Document, Types } from 'mongoose';
 
 interface AuthToken {
-  userId: any;
+  userId: Types.ObjectId;
   token: string;
 }
 

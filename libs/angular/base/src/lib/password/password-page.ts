@@ -1,7 +1,9 @@
+import { inject, signal } from '@angular/core';
+
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { PasswordService } from '@bookapp/angular/data-access';
+import { ApiError } from '@bookapp/shared/interfaces';
 
-import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { BaseComponent } from '../core/base-component';
@@ -9,41 +11,29 @@ import { BaseComponent } from '../core/base-component';
 const PASSWORD_CHANGE_SUCCESS = 'Password changed!';
 
 export abstract class PasswordPageBase extends BaseComponent {
-  private error = new BehaviorSubject<any | null>(null);
-  private loading = new BehaviorSubject<boolean>(false);
+  readonly #passwordService = inject(PasswordService);
+  readonly #feedbackService = inject(FeedbackPlatformService);
 
-  constructor(
-    private readonly passwordService: PasswordService,
-    private readonly feedbackService: FeedbackPlatformService
-  ) {
-    super();
-  }
-
-  get loading$(): Observable<boolean> {
-    return this.loading.asObservable();
-  }
-
-  get error$(): Observable<any | null> {
-    return this.error.asObservable();
-  }
+  readonly error = signal<ApiError | null>(null);
+  readonly loading = signal(false);
 
   changePassword({ password, oldPassword }) {
-    this.loading.next(true);
+    this.loading.set(true);
 
-    this.passwordService
+    this.#passwordService
       .changePassword(password, oldPassword)
       .pipe(
         finalize(() => {
-          this.loading.next(false);
+          this.loading.set(false);
         })
       )
       .subscribe(({ data, errors }) => {
         if (data && data.changePassword) {
-          this.feedbackService.success(PASSWORD_CHANGE_SUCCESS);
+          this.#feedbackService.success(PASSWORD_CHANGE_SUCCESS);
         }
 
         if (errors) {
-          this.error.next(errors[errors.length - 1]);
+          this.error.set(errors[errors.length - 1]);
         }
       });
   }

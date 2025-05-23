@@ -1,4 +1,4 @@
-<ActionBar class="action-bar" flat="true">
+<ActionBar class="bg-deep-blue-900" flat="true">
   <NavigationButton
     ios:visibility="collapsed"
     icon="res://menu"
@@ -9,20 +9,21 @@
     android:visibility="collapsed"
     ios.position="left"
     (tap)="onDrawerButtonTap()"
-  >
-  </ActionItem>
+  ></ActionItem>
   <ActionItem
     ios.position="right"
     icon="res://filter"
     android.position="actionBar"
     (tap)="onFilterTap()"
   ></ActionItem>
-  <Label class="action-bar-title" text="History"></Label>
+
+  <Label class="text-dark-primary-text font-semibold" text="History"></Label>
 </ActionBar>
+
 <GridLayout>
   <bookapp-history-list
     [logs]="logs$ | async"
-    [hasMoreItems]="hasMoreItems"
+    [hasMoreItems]="hasMoreItems()"
     (loadMore)="loadMore()"
-  ></bookapp-history-list>
+  />
 </GridLayout>

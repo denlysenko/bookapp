@@ -21,7 +21,7 @@ type Subscription {
 }
 
 type Book {
-  _id: ID
+  id: ID
   title: String
   author: String
   coverUrl: String

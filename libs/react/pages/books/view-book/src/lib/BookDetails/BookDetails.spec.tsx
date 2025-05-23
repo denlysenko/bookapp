@@ -1,12 +1,11 @@
-import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import { MockedProvider } from '@apollo/client/testing';
 
 import { BOOKMARKS } from '@bookapp/shared/enums';
 import { ME_QUERY } from '@bookapp/shared/queries';
-import { book, userWithTypename } from '@bookapp/testing';
+import { book, userWithTypename } from '@bookapp/testing/react';
 
 import BookDetails from './BookDetails';
 
@@ -25,8 +24,6 @@ const userMock = {
   },
 };
 
-// tslint:disable: no-duplicate-string
-// tslint:disable-next-line: no-big-function
 describe('BookDetails', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -166,7 +163,7 @@ describe('BookDetails', () => {
       expect(onBookmarkRemove).toHaveBeenCalledTimes(1);
       expect(onBookmarkRemove).toHaveBeenCalledWith({
         type: BOOKMARKS.FAVORITES,
-        bookId: book._id,
+        bookId: book.id,
       });
     });
 
@@ -194,7 +191,7 @@ describe('BookDetails', () => {
       expect(onBookmarkAdd).toHaveBeenCalledTimes(1);
       expect(onBookmarkAdd).toHaveBeenCalledWith({
         type: BOOKMARKS.FAVORITES,
-        bookId: book._id,
+        bookId: book.id,
       });
     });
   });
@@ -224,7 +221,7 @@ describe('BookDetails', () => {
       expect(onBookmarkRemove).toHaveBeenCalledTimes(1);
       expect(onBookmarkRemove).toHaveBeenCalledWith({
         type: BOOKMARKS.WISHLIST,
-        bookId: book._id,
+        bookId: book.id,
       });
     });
 
@@ -252,7 +249,7 @@ describe('BookDetails', () => {
       expect(onBookmarkAdd).toHaveBeenCalledTimes(1);
       expect(onBookmarkAdd).toHaveBeenCalledWith({
         type: BOOKMARKS.WISHLIST,
-        bookId: book._id,
+        bookId: book.id,
       });
     });
   });
@@ -282,7 +279,7 @@ describe('BookDetails', () => {
       expect(onBookmarkRemove).toHaveBeenCalledTimes(1);
       expect(onBookmarkRemove).toHaveBeenCalledWith({
         type: BOOKMARKS.MUSTREAD,
-        bookId: book._id,
+        bookId: book.id,
       });
     });
 
@@ -310,7 +307,7 @@ describe('BookDetails', () => {
       expect(onBookmarkAdd).toHaveBeenCalledTimes(1);
       expect(onBookmarkAdd).toHaveBeenCalledWith({
         type: BOOKMARKS.MUSTREAD,
-        bookId: book._id,
+        bookId: book.id,
       });
     });
   });
@@ -338,7 +335,7 @@ describe('BookDetails', () => {
       fireEvent.click(screen.getByText('3 Stars'));
 
       expect(onBookRate).toHaveBeenCalledTimes(1);
-      expect(onBookRate).toHaveBeenCalledWith({ bookId: book._id, rate: 3 });
+      expect(onBookRate).toHaveBeenCalledWith({ bookId: book.id, rate: 3 });
     });
   });
 });

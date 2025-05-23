@@ -1,79 +1,92 @@
-import { ChangeDetectorRef, EventEmitter, Input, OnInit, Output, Directive } from '@angular/core';
-import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { Directive, effect, inject, Injector, input, OnInit, output, signal } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import { FeedbackPlatformService } from '@bookapp/angular/core';
-import { SignupCredentials } from '@bookapp/shared/interfaces';
+import { ApiError, SignupCredentials } from '@bookapp/shared/interfaces';
 
 import { BaseForm } from '../core/base-form';
 
+interface Form {
+  readonly firstName: FormControl<string>;
+  readonly lastName: FormControl<string>;
+  readonly email: FormControl<string>;
+  readonly password: FormControl<string>;
+}
+
 @Directive()
-export abstract class AuthFormBase extends BaseForm implements OnInit {
-  isLoggingIn = true;
+export abstract class AuthFormBase extends BaseForm<Form> implements OnInit {
+  readonly loading = input(false);
+  readonly error = input<ApiError>();
 
-  @Input() loading: boolean;
-
-  @Input()
-  set error(error: any) {
-    if (error) {
-      this.handleError(error);
-    }
-  }
-
-  @Output() formSubmitted = new EventEmitter<{
+  readonly formSubmitted = output<{
     isLoggingIn: boolean;
     credentials: Partial<SignupCredentials>;
   }>();
 
-  constructor(
-    feedbackService: FeedbackPlatformService,
-    private readonly fb: FormBuilder,
-    private readonly cdr: ChangeDetectorRef
-  ) {
-    super(feedbackService);
-  }
+  readonly #fb = inject(FormBuilder);
+  readonly #injector = inject(Injector);
 
-  private firstNameField: AbstractControl;
-  private lastNameField: AbstractControl;
+  readonly isLoggingIn = signal(true);
 
   ngOnInit() {
-    this.initForm();
+    effect(
+      () => {
+        const error = this.error();
+
+        if (error) {
+          this.handleError(error);
+        }
+      },
+      { injector: this.#injector }
+    );
+
+    this.#initForm();
   }
 
   toggleAuthMode() {
-    this.isLoggingIn = !this.isLoggingIn;
-    this.isLoggingIn ? this.disableFields() : this.enableFields();
-    this.cdr.markForCheck();
+    this.isLoggingIn.update((loggingIn) => !loggingIn);
+
+    if (this.isLoggingIn()) {
+      this.#disableFields();
+    } else {
+      this.#enableFields();
+    }
   }
 
   submit() {
     if (this.form.valid) {
       this.formSubmitted.emit({
         credentials: this.form.value,
-        isLoggingIn: this.isLoggingIn,
+        isLoggingIn: this.isLoggingIn(),
       });
     }
   }
 
-  private initForm() {
-    this.form = this.fb.group({
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
-      email: [null, [Validators.required, Validators.email]],
-      password: [null, Validators.required],
+  get #firstNameField(): AbstractControl {
+    return this.form.get('firstName');
+  }
+
+  get #lastNameField(): AbstractControl {
+    return this.form.get('lastName');
+  }
+
+  #initForm() {
+    this.form = this.#fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
     });
 
-    this.firstNameField = this.form.get('firstName');
-    this.lastNameField = this.form.get('lastName');
-    this.disableFields();
+    this.#disableFields();
   }
 
-  private enableFields() {
-    this.firstNameField.enable();
-    this.lastNameField.enable();
+  #enableFields() {
+    this.#firstNameField.enable();
+    this.#lastNameField.enable();
   }
 
-  private disableFields() {
-    this.firstNameField.disable();
-    this.lastNameField.disable();
+  #disableFields() {
+    this.#firstNameField.disable();
+    this.#lastNameField.disable();
   }
 }

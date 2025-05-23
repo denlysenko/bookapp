@@ -1,12 +1,11 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { FeedbackProvider } from '@bookapp/react/ui';
 import { LOGIN_MUTATION, SIGNUP_MUTATION } from '@bookapp/shared/queries';
-import { authPayload } from '@bookapp/testing';
+import { authPayload } from '@bookapp/testing/react';
 
 import Auth from './Auth';
 
@@ -15,7 +14,6 @@ jest.mock('react-router-dom');
 const firstName = 'First';
 const lastName = 'Last';
 const email = 'test@test.com';
-// tslint:disable-next-line: no-hardcoded-credentials
 const password = 'password';
 
 const loginSuccess = {

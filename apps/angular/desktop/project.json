@@ -1,0 +1,123 @@
+{
+  "name": "angular-desktop",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/angular/desktop/src",
+  "prefix": "bookapp",
+  "tags": ["scope:angular", "type:app", "platform:desktop"],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:application",
+      "options": {
+        "outputPath": "dist/apps/angular/desktop",
+        "index": "apps/angular/desktop/src/index.html",
+        "browser": "apps/angular/desktop/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/angular/desktop/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/angular/desktop/src/assets",
+          {
+            "glob": "**/*",
+            "input": "libs/shared/assets/",
+            "output": "/assets/"
+          }
+        ],
+        "styles": [
+          "node_modules/epubjs-reader/reader/css/main.css",
+          "node_modules/epubjs-reader/reader/css/popup.css",
+          "apps/angular/desktop/src/styles.scss"
+        ],
+        "stylePreprocessorOptions": {
+          "includePaths": ["libs/angular/styles/"]
+        },
+        "scripts": [
+          "node_modules/epubjs-reader/reader/js/libs/jquery.min.js",
+          "node_modules/epubjs-reader/reader/js/libs/zip.min.js",
+          "node_modules/epubjs-reader/reader/js/libs/screenfull.min.js",
+          "node_modules/epubjs-reader/reader/js/epub.min.js",
+          "node_modules/epubjs-reader/reader/js/reader.min.js"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "libs/shared/environments/src/lib/environment.ts",
+              "with": "libs/shared/environments/src/lib/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "6kb"
+            }
+          ],
+          "serviceWorker": true,
+          "ngswConfigPath": "apps/angular/desktop/ngsw-config.json"
+        },
+        "testing": {
+          "fileReplacements": [
+            {
+              "replace": "libs/shared/environments/src/lib/environment.ts",
+              "with": "libs/shared/environments/src/lib/environment.testing.ts"
+            }
+          ]
+        },
+        "development": {
+          "fileReplacements": [
+            {
+              "replace": "libs/shared/environments/src/lib/environment.ts",
+              "with": "libs/shared/environments/src/lib/environment.ts"
+            }
+          ],
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": ""
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "buildTarget": "angular-desktop:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "angular-desktop:build:production"
+        },
+        "testing": {
+          "buildTarget": "angular-desktop:build:testing"
+        },
+        "development": {
+          "buildTarget": "angular-desktop:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "angular-desktop:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "apps/angular/desktop/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/apps/angular/desktop"]
+    }
+  }
+}

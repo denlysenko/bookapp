@@ -8,7 +8,7 @@ import {
   MockUsersService,
   refreshToken,
   user,
-} from '@bookapp/testing';
+} from '@bookapp/testing/api';
 
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
@@ -16,7 +16,6 @@ import { Test } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 
 const email = 'test@test.com';
-// tslint:disable-next-line: no-hardcoded-credentials
 const password = 'password';
 
 describe('AuthService', () => {
@@ -52,6 +51,7 @@ describe('AuthService', () => {
     it('should return tokens', async () => {
       jest
         .spyOn(usersService, 'findByEmail')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .mockImplementation(() => Promise.resolve({ ...user, authenticate: () => true } as any));
 
       expect(await authService.login(email, password)).toEqual(authPayload);
@@ -63,19 +63,20 @@ describe('AuthService', () => {
       try {
         await authService.login(email, password);
       } catch (error) {
-        expect(error.message).toEqual(AUTH_ERRORS.INCORRECT_EMAIL_ERR);
+        expect(error.message).toEqual(AUTH_ERRORS.INCORRECT_EMAIL_OR_PASSWORD_ERR);
       }
     });
 
     it('should return INCORRECT_PASSWORD_ERR', async () => {
       jest
         .spyOn(usersService, 'findByEmail')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .mockImplementation(() => Promise.resolve({ ...user, authenticate: () => false } as any));
 
       try {
         await authService.login(email, password);
       } catch (error) {
-        expect(error.message).toEqual(AUTH_ERRORS.INCORRECT_PASSWORD_ERR);
+        expect(error.message).toEqual(AUTH_ERRORS.INCORRECT_EMAIL_OR_PASSWORD_ERR);
       }
     });
   });

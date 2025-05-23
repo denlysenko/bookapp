@@ -1,16 +1,15 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 
-import Snackbar from '@material-ui/core/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 
 import { FeedbackContext } from './feedback.context';
 
-// tslint:disable-next-line: interface-over-type-literal
-type FeedbackProviderProps = { children: React.ReactNode };
+type FeedbackProviderProps = { children: ReactNode };
 
 const config = {
   position: {
-    vertical: 'top' as 'top',
-    horizontal: 'right' as 'right',
+    vertical: 'top' as const,
+    horizontal: 'right' as const,
   },
   autoHideDuration: 3000,
 };

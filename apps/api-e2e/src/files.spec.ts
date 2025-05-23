@@ -1,20 +1,20 @@
 import { AuthModule } from '@bookapp/api/auth';
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
-import { FilesModule, FilesService, FILE_ERRORS } from '@bookapp/api/files';
+import { FILE_ERRORS, FilesModule, FilesService } from '@bookapp/api/files';
 import { ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
-import { MockAuthTokensService, MockConfigService, MockModel, user } from '@bookapp/testing';
+import { MockAuthTokensService, MockConfigService, MockModel, user } from '@bookapp/testing/api';
 
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
-import * as jwt from 'jsonwebtoken';
-import { resolve } from 'path';
-import * as request from 'supertest';
+import jwt from 'jsonwebtoken';
+import { resolve } from 'node:path';
+import request from 'supertest';
 
-const authToken = jwt.sign({ id: user._id }, 'ACCESS_TOKEN_SECRET');
+const authToken = jwt.sign({ id: user.id }, 'ACCESS_TOKEN_SECRET');
 const publicUrl = 'public_url';
 const filesPath = resolve(`${__dirname}`, '../test-files');
 
@@ -25,7 +25,6 @@ const MockFilesService = {
 
 describe('FilesModule', () => {
   let app: INestApplication;
-  let filesService: FilesService;
   let usersService: UsersService;
 
   beforeAll(async () => {
@@ -50,9 +49,9 @@ describe('FilesModule', () => {
       .useValue(MockAuthTokensService)
       .compile();
 
-    filesService = module.get<FilesService>(FilesService);
     usersService = module.get<UsersService>(UsersService);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     jest.spyOn(usersService, 'findById').mockResolvedValue(user as any);
 
     app = module.createNestApplication();

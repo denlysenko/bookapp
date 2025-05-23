@@ -36,7 +36,7 @@ export function useLastLogs(userId: string) {
     return () => {
       unsubscribe();
     };
-  }, [userId]);
+  }, [subscribeToMore, userId]);
 
   return {
     logs: data && data.logs.rows,

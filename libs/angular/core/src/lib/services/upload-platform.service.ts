@@ -1,18 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
-@Injectable()
-export class UploadPlatformService {
-  // all methods will be overwritten
-  get progress$(): Observable<number> {
-    return of(0);
-  }
-
-  upload(file: any, name: string = 'file'): Observable<string> {
-    return of('');
-  }
-
-  deleteFile(file: string): Observable<string> {
-    return of('');
-  }
+export abstract class UploadPlatformService {
+  abstract progress$: Observable<number>;
+  abstract upload(file: File | Blob | string, name?: string): Observable<string>;
+  abstract deleteFile(file: string): Observable<string>;
 }

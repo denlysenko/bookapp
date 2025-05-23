@@ -1,33 +1,37 @@
 import { AUTH_ERRORS, ModelNames } from '@bookapp/api/shared';
 import { AuthPayload, JwtPayload, User } from '@bookapp/shared/interfaces';
 
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { getConnectionToken, InjectModel } from '@nestjs/mongoose';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 
 import { sign, verify } from 'jsonwebtoken';
-import { Connection, Document, Model } from 'mongoose';
+import { Connection, Document, Model, Types } from 'mongoose';
 
 import { AuthTokenModel } from './interfaces/auth-token';
 
 // do not import from @bookapp/users to avoid circular dependency
-interface UserModel extends User, Document {
-  _id: any;
-}
+interface UserModel extends Omit<User, 'id'>, Document<Types.ObjectId> {}
 
 @Injectable()
 export class AuthTokensService {
+  private readonly logger = new Logger(AuthTokensService.name);
+
   constructor(
     private readonly configService: ConfigService,
-    @Inject(getConnectionToken()) private readonly connection: Connection,
+    @InjectConnection() private readonly connection: Connection,
     @InjectModel(ModelNames.AUTH_TOKEN)
     private readonly tokenModel: Model<AuthTokenModel>
   ) {}
 
   createAccessToken(id: string): string {
-    return sign({ id }, this.configService.get('ACCESS_TOKEN_SECRET'), {
+    const token = sign({ id }, this.configService.get('ACCESS_TOKEN_SECRET'), {
       expiresIn: this.configService.get('ACCESS_TOKEN_EXPIRATION_TIME'),
     });
+
+    this.logger.log(`Created access token for user ${id}`);
+
+    return token;
   }
 
   async createRefreshToken(id: string): Promise<string> {
@@ -36,18 +40,21 @@ export class AuthTokensService {
     });
 
     await this.tokenModel.create({ token, userId: id });
+    this.logger.log(`Created refresh token for user ${id}`);
 
     return token;
   }
 
   async refreshTokens(token: string): Promise<AuthPayload> {
     if (!token) {
+      this.logger.log('Refresh token is missing');
       throw new UnauthorizedException(AUTH_ERRORS.UNAUTHORIZED_ERR);
     }
 
     const existsToken = await this.tokenModel.findOne({ token }).exec();
 
     if (!existsToken) {
+      this.logger.log('Refresh token does not exist');
       throw new UnauthorizedException(AUTH_ERRORS.UNAUTHORIZED_ERR);
     }
 
@@ -56,6 +63,7 @@ export class AuthTokensService {
     try {
       payload = verify(token, this.configService.get('REFRESH_TOKEN_SECRET')) as JwtPayload;
     } catch (err) {
+      this.logger.log(`Error verifying refresh token: ${err}`);
       throw new UnauthorizedException(AUTH_ERRORS.UNAUTHORIZED_ERR);
     }
 
@@ -66,25 +74,30 @@ export class AuthTokensService {
     const user = await userModel.findById(id).exec();
 
     if (!user) {
+      this.logger.log(`User id: ${id} not found`);
       throw new UnauthorizedException(AUTH_ERRORS.UNAUTHORIZED_ERR);
     }
 
     const [refreshToken] = await Promise.all([
-      this.createRefreshToken(user._id),
+      this.createRefreshToken(user.id),
       this.tokenModel.deleteOne({ token }).exec(),
     ]);
 
+    this.logger.log(`Tokens refreshed for user id: ${id}`);
+
     return {
-      accessToken: this.createAccessToken(user._id),
+      accessToken: this.createAccessToken(user.id),
       refreshToken,
     };
   }
 
-  revokeUserTokens(userId: string) {
-    return this.tokenModel.deleteMany({ userId }).exec();
+  async revokeUserTokens(userId: string) {
+    await this.tokenModel.deleteMany({ userId }).exec();
+    this.logger.log(`Tokens revoked for user id: ${userId}`);
   }
 
-  removeRefreshToken(token: string) {
-    return this.tokenModel.deleteOne({ token }).exec();
+  async removeRefreshToken(token: string) {
+    await this.tokenModel.deleteOne({ token }).exec();
+    this.logger.log('Refresh token removed');
   }
 }

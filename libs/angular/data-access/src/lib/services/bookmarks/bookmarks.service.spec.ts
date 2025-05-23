@@ -1,4 +1,3 @@
-// tslint:disable: no-big-function
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { InMemoryCache } from '@apollo/client/core';
@@ -10,15 +9,15 @@ import {
   ADD_TO_BOOKMARKS_MUTATION,
   BOOKMARKS_BY_USER_AND_BOOK_QUERY,
   BOOKMARKS_QUERY,
-  REMOVE_FROM_BOOKMARKS_MUTATION,
   RATE_BOOK_MUTATION,
+  REMOVE_FROM_BOOKMARKS_MUTATION,
 } from '@bookapp/shared/queries';
-import { book, bookmark } from '@bookapp/testing';
+import { book, bookmark } from '@bookapp/testing/angular';
 
 import {
+  APOLLO_TESTING_CACHE,
   ApolloTestingController,
   ApolloTestingModule,
-  APOLLO_TESTING_CACHE,
 } from 'apollo-angular/testing';
 
 import { BookmarksService } from './bookmarks.service';
@@ -51,7 +50,7 @@ describe('BookmarksService', () => {
 
   describe('watchBookmarksByBook()', () => {
     it('should watch bookmarks by book', (done) => {
-      service.watchBookmarksByBook(book._id).subscribe(({ data: { userBookmarksByBook } }) => {
+      service.watchBookmarksByBook(book.id).subscribe(({ data: { userBookmarksByBook } }) => {
         expect(userBookmarksByBook.length).toEqual(1);
         expect(userBookmarksByBook[0].type).toEqual(bookmarkWithTypename.type);
         done();
@@ -59,7 +58,7 @@ describe('BookmarksService', () => {
 
       const op = controller.expectOne(addTypenameToDocument(BOOKMARKS_BY_USER_AND_BOOK_QUERY));
 
-      expect(op.operation.variables.bookId).toEqual(book._id);
+      expect(op.operation.variables.bookId).toEqual(book.id);
 
       op.flush({
         data: {
@@ -147,7 +146,7 @@ describe('BookmarksService', () => {
     it('should add new bookmark in cache', fakeAsync(() => {
       let rows: { type: string }[];
 
-      service.watchBookmarksByBook(book._id).subscribe(({ data }) => {
+      service.watchBookmarksByBook(book.id).subscribe(({ data }) => {
         rows = data.userBookmarksByBook;
       });
 
@@ -161,14 +160,14 @@ describe('BookmarksService', () => {
       expect(rows.length).toEqual(0);
 
       service
-        .addToBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id })
+        .addToBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book.id })
         .subscribe(({ data: { addToBookmarks } }) => {
           expect(addToBookmarks.type).toEqual(BOOKMARKS.FAVORITES);
         });
 
       const op = controller.expectOne(addTypenameToDocument(ADD_TO_BOOKMARKS_MUTATION));
 
-      expect(op.operation.variables.bookId).toEqual(book._id);
+      expect(op.operation.variables.bookId).toEqual(book.id);
       expect(op.operation.variables.type).toEqual(BOOKMARKS.FAVORITES);
 
       op.flush({
@@ -188,7 +187,7 @@ describe('BookmarksService', () => {
     let rows: { type: string }[];
 
     it('should remove bookmark from cache', fakeAsync(() => {
-      service.watchBookmarksByBook(book._id).subscribe(({ data }) => {
+      service.watchBookmarksByBook(book.id).subscribe(({ data }) => {
         rows = data.userBookmarksByBook;
       });
 
@@ -201,7 +200,7 @@ describe('BookmarksService', () => {
       tick();
       expect(rows.length).toEqual(1);
 
-      service.removeFromBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book._id }).subscribe();
+      service.removeFromBookmarks({ type: BOOKMARKS.FAVORITES, bookId: book.id }).subscribe();
 
       controller.expectOne(addTypenameToDocument(REMOVE_FROM_BOOKMARKS_MUTATION)).flush({
         data: {
@@ -293,7 +292,7 @@ describe('BookmarksService', () => {
 
       tick();
 
-      service.rateBook({ bookId: book._id, rate: 5 }).subscribe();
+      service.rateBook({ bookId: book.id, rate: 5 }).subscribe();
 
       controller.expectOne(addTypenameToDocument(RATE_BOOK_MUTATION)).flush({
         data: {

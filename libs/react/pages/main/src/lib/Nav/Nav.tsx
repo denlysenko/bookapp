@@ -1,11 +1,12 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import Icon from '@material-ui/core/Icon';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import Icon from '@mui/material/Icon';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 
 import { useLastLogs, useMe } from '@bookapp/react/data-access';
 import { categories, navs } from '@bookapp/shared/constants';
@@ -13,86 +14,81 @@ import { UserActionsDesc } from '@bookapp/shared/enums';
 import { User } from '@bookapp/shared/interfaces';
 import { dateToPeriod } from '@bookapp/utils/react';
 
-import { useNavStyles } from './useNavStyles';
+import { StyledNav } from './StyledNav';
 
 const isAdmin = (user: User) => user.roles.includes('admin');
 
 export const Nav = () => {
-  const classes = useNavStyles();
   const { me } = useMe();
-  const { logs } = useLastLogs(me._id);
+  const { logs } = useLastLogs(me.id);
 
   return (
-    <div className={classes.root}>
-      <List component="nav" disablePadding={true}>
+    <StyledNav>
+      <List component="nav">
         {isAdmin(me) && (
-          <NavLink to="/books/add" className={classes.listItem} activeClassName="active">
-            <ListItem button={true}>
-              <ListItemIcon>
-                <Icon>add_circle</Icon>
-              </ListItemIcon>
-              <ListItemText>Add Book</ListItemText>
+          <NavLink to="/books/add" className="list-item">
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Icon>add_circle</Icon>
+                </ListItemIcon>
+                <ListItemText>Add Book</ListItemText>
+              </ListItemButton>
             </ListItem>
           </NavLink>
         )}
-        <div className={classes.divider} />
+        <div className="divider" />
         {navs.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={classes.listItem}
-            activeClassName="active"
-          >
-            <ListItem button={true}>
-              <ListItemIcon>
-                <Icon>{item.icon}</Icon>
-              </ListItemIcon>
-              <ListItemText>{item.label}</ListItemText>
+          <NavLink key={item.path} to={item.path} className="list-item">
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Icon>{item.icon}</Icon>
+                </ListItemIcon>
+                <ListItemText>{item.label}</ListItemText>
+              </ListItemButton>
             </ListItem>
           </NavLink>
         ))}
       </List>
-      <div className={classes.divider} />
-      <List component="nav" disablePadding={true}>
+      <div className="divider" />
+      <List component="nav">
         {categories.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={classes.listItem}
-            activeClassName="active"
-          >
-            <ListItem button={true}>
-              <ListItemIcon>
-                <Icon style={{ color: item.color }}>{item.icon}</Icon>
-              </ListItemIcon>
-              <ListItemText>{item.label}</ListItemText>
+          <NavLink key={item.path} to={item.path} className="list-item">
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Icon style={{ color: item.color }}>{item.icon}</Icon>
+                </ListItemIcon>
+                <ListItemText>{item.label}</ListItemText>
+              </ListItemButton>
             </ListItem>
           </NavLink>
         ))}
       </List>
-      <div className={classes.divider} />
-      <List className="logs" component="ul" disablePadding={true}>
+      <div className="divider" />
+      <List className="logs" component="ul">
         {logs &&
           logs.map((log) => (
-            <div key={log.createdAt} className={classes.listItem}>
+            <div key={log.createdAt} className="list-item">
               <ListItem>
                 <ListItemIcon>
                   <Icon>access_time</Icon>
                 </ListItemIcon>
                 <ListItemText>
-                  <p className={classes.action}>{UserActionsDesc[log.action]}</p>
-                  <p className={classes.footnote}>
+                  <p className="action">{UserActionsDesc[log.action]}</p>
+                  <p className="footnote">
                     <span>{log.book.title}</span>
                     <br />
                     <span> by {log.book.author}</span>
                   </p>
-                  <p className={classes.footnote}>{dateToPeriod(log.createdAt)}</p>
+                  <p className="footnote">{dateToPeriod(log.createdAt)}</p>
                 </ListItemText>
               </ListItem>
             </div>
           ))}
       </List>
-    </div>
+    </StyledNav>
   );
 };
 

@@ -4,19 +4,20 @@ import { useFormik } from 'formik';
 import { has, isEmpty, isNil, omit } from 'lodash';
 import * as Yup from 'yup';
 
-import Button from '@material-ui/core/Button';
-import CardActions from '@material-ui/core/CardActions';
-import TextField from '@material-ui/core/TextField';
+import Button from '@mui/material/Button';
+import CardActions from '@mui/material/CardActions';
+import TextField from '@mui/material/TextField';
 
 import { ERRORS } from '@bookapp/shared/constants';
 import { User } from '@bookapp/shared/interfaces';
 import { getFormikError, handleValidationError } from '@bookapp/utils/react';
 
-import { useProfileFormStyles } from './useProfileFormStyles';
+import { StyledProfileForm } from './StyledProfileForm';
 
 export interface ProfileFormProps {
   user: User;
   loading: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: any | null;
   onSubmit: (user: Partial<User>) => void;
 }
@@ -28,8 +29,6 @@ const ProfileSchema = Yup.object().shape({
 });
 
 export const ProfileForm = ({ user, loading, error, onSubmit }: ProfileFormProps) => {
-  const classes = useProfileFormStyles();
-
   const formik = useFormik<Partial<User>>({
     initialValues: {
       firstName: user.firstName || '',
@@ -87,7 +86,7 @@ export const ProfileForm = ({ user, loading, error, onSubmit }: ProfileFormProps
   };
 
   return (
-    <form className={classes.form} noValidate={true} onSubmit={formik.handleSubmit}>
+    <StyledProfileForm noValidate={true} onSubmit={formik.handleSubmit}>
       <TextField
         name="firstName"
         label="First Name"
@@ -133,7 +132,7 @@ export const ProfileForm = ({ user, loading, error, onSubmit }: ProfileFormProps
           Save
         </Button>
       </CardActions>
-    </form>
+    </StyledProfileForm>
   );
 };
 

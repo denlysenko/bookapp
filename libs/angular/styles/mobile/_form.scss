@@ -5,13 +5,13 @@
 
   .has-error {
     .input {
-      border-color: $danger-color;
+      border-color: var(--color-danger);
     }
 
     .error {
       margin-top: 5;
       font-size: 12;
-      color: $danger-color;
+      color: var(--color-danger);
       visibility: visible;
     }
   }

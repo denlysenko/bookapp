@@ -1,25 +1,178 @@
-@import '~@angular/material/theming';
-@import 'variables';
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use 'theme-colors' as my-theme;
 
-@include mat-core();
+html {
+  @include mat.theme(
+    (
+      color: (
+        primary: my-theme.$primary-palette,
+        tertiary: my-theme.$tertiary-palette,
+        theme-type: light,
+      ),
+      typography: Roboto,
+      density: 0,
+    ),
+    $overrides: (
+      primary: map.get(my-theme.$primary-palette, 20),
+      on-primary: map.get(my-theme.$primary-palette, 70),
+      error: map.get(my-theme.$primary-palette, error, 50),
+      tertiary: map.get(my-theme.$tertiary-palette, 60)
+    )
+  );
 
-$custom-theme-primary: mat-palette($custom-deep-blue, 900, 800, 900);
-$custom-theme-accent: mat-palette($custom-orange);
-$custom-theme-warn: mat-palette($mat-red);
+  @include mat.card-overrides(
+    (
+      elevated-container-color: map.get(my-theme.$primary-palette, neutral, 100),
+      title-text-size: 1.125rem,
+    )
+  );
 
-$custom-theme: mat-light-theme($custom-theme-primary, $custom-theme-accent, $custom-theme-warn);
+  @include mat.button-overrides(
+    (
+      filled-container-shape: 4px,
+      outlined-container-shape: 4px,
+      text-container-shape: 4px,
+      protected-container-shape: 4px,
+    )
+  );
 
-@include angular-material-theme($custom-theme);
-
-// custom inputs border color
-.mat-form-field-appearance-outline {
-  .mat-form-field-outline-thick {
-    color: $light-blue;
+  .accent {
+    @include mat.button-overrides(
+      (
+        filled-container-color: var(--mat-sys-tertiary),
+        filled-label-text-color: var(--mat-sys-on-tertiary),
+      )
+    );
   }
 
-  &.mat-focused {
-    .mat-form-field-outline-thick {
-      color: $light-blue;
-    }
+  @include mat.icon-button-overrides(
+    (
+      icon-color: var(--mat-sys-on-primary),
+    )
+  );
+
+  .accent {
+    @include mat.icon-button-overrides(
+      (
+        icon-color: var(--mat-sys-tertiary),
+      )
+    );
   }
+
+  @include mat.button-toggle-overrides(
+    (
+      shape: 4px,
+    )
+  );
+
+  @include mat.form-field-overrides(
+    (
+      outlined-hover-outline-color: map.get(my-theme.$primary-palette, secondary, 60),
+      outlined-focus-outline-color: map.get(my-theme.$primary-palette, secondary, 60),
+      outlined-error-hover-outline-color: var(--mat-sys-error),
+      outlined-error-focus-outline-color: var(--mat-sys-error),
+      outlined-error-hover-label-text-color: var(--mat-sys-error),
+      outlined-error-focus-label-text-color: var(--mat-sys-error),
+    )
+  );
+
+  @include mat.checkbox-overrides(
+    (
+      selected-icon-color: var(--mat-sys-tertiary),
+      selected-checkmark-color: var(--mat-sys-on-tertiary),
+      selected-hover-state-layer-color: var(--mat-sys-tertiary),
+      selected-focus-state-layer-color: var(--mat-sys-tertiary),
+      selected-hover-icon-color: var(--mat-sys-tertiary),
+      selected-focus-icon-color: var(--mat-sys-tertiary),
+    )
+  );
+
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: var(--mat-sys-primary),
+      container-text-color: var(--mat-sys-on-primary),
+    )
+  );
+
+  @include mat.divider-overrides(
+    (
+      color: map.get(my-theme.$primary-palette, neutral-variant, 90),
+    )
+  );
+
+  @include mat.menu-overrides(
+    (
+      container-color: map.get(my-theme.$primary-palette, neutral, 100),
+      item-label-text-weight: 400,
+      item-hover-state-layer-color: color-mix(
+          in srgb,
+          var(--mat-sys-on-surface) calc(var(--mat-sys-hover-state-layer-opacity) * 100%),
+          transparent
+        ),
+    )
+  );
+
+  @include mat.sidenav-overrides(
+    (
+      container-shape: 0,
+      container-background-color: map.get(my-theme.$primary-palette, 10),
+      container-width: 250px,
+      content-text-color: var(--mat-sys-on-surface),
+    )
+  );
+
+  @include mat.list-overrides(
+    (
+      list-item-container-shape: 0,
+      list-item-container-color: transparent,
+      active-indicator-shape: 0,
+      list-item-label-text-size: 0.875rem,
+      list-item-label-text-color: map.get(my-theme.$primary-palette, 50),
+      list-item-hover-label-text-color: var(--mat-sys-on-primary),
+      list-item-focus-label-text-color: var(--mat-sys-on-primary),
+      list-item-hover-state-layer-color: transparent,
+      list-item-focus-state-layer-color: transparent,
+      active-indicator-color: map.get(my-theme.$primary-palette, secondary, 60),
+      list-item-leading-icon-size: 1.25rem,
+      list-item-leading-icon-end-space: 10px,
+      list-item-leading-icon-color: map.get(my-theme.$primary-palette, 50),
+      list-item-hover-leading-icon-color: var(--mat-sys-on-primary),
+      list-item-supporting-text-color: map.get(my-theme.$primary-palette, 50),
+      list-item-three-line-container-height: auto,
+    )
+  );
+
+  @include mat.dialog-overrides(
+    (
+      container-shape: var(--mat-sys-corner-medium),
+    )
+  );
+
+  @include mat.progress-bar-overrides(
+    (
+      active-indicator-color: var(--mat-sys-tertiary),
+    )
+  );
+
+  .page-toolbar {
+    @include mat.toolbar-overrides(
+      (
+        container-background-color: map.get(my-theme.$primary-palette, 95),
+        container-text-color: var(--mat-sys-on-surface),
+      )
+    );
+  }
+
+  @include mat.table-overrides(
+    (
+      background-color: map.get(my-theme.$primary-palette, neutral, 100),
+    )
+  );
+
+  @include mat.paginator-overrides(
+    (
+      container-background-color: map.get(my-theme.$primary-palette, neutral, 100),
+    )
+  );
 }

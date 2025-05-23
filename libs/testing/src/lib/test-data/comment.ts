@@ -1,7 +1,7 @@
 import { user } from './user';
 
 export const comment = {
-  _id: 'comment_id',
+  id: 'comment_id',
   bookId: 'book_id',
   author: user,
   text: 'test comment',

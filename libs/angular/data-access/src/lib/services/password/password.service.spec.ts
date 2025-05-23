@@ -3,7 +3,11 @@ import { TestBed } from '@angular/core/testing';
 import { StoragePlatformService, StoreService } from '@bookapp/angular/core';
 import { AUTH_TOKEN } from '@bookapp/shared/constants';
 import { CHANGE_PASSWORD_MUTATION } from '@bookapp/shared/queries';
-import { authPayload, MockStoragePlatformService, MockStoreService } from '@bookapp/testing';
+import {
+  authPayload,
+  MockStoragePlatformService,
+  MockStoreService,
+} from '@bookapp/testing/angular';
 
 import { ApolloTestingController, ApolloTestingModule } from 'apollo-angular/testing';
 

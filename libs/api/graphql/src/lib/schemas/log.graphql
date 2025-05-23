@@ -12,7 +12,7 @@ type LogsResponse {
 }
 
 type Log {
-  _id: ID
+  id: ID
   userId: ID
   action: String
   createdAt: String

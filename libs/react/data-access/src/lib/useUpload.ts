@@ -4,11 +4,10 @@ import { store } from '@bookapp/react/core';
 import { AUTH_TOKEN, HTTP_STATUS } from '@bookapp/shared/constants';
 import { environment } from '@bookapp/shared/environments';
 
-// tslint:disable-next-line: cognitive-complexity
 export function useUpload() {
   const [progress, setProgress] = useState(0);
 
-  const uploadFile = (file: File | Blob, name: string = 'file'): Promise<string> => {
+  const uploadFile = (file: File | Blob, name = 'file'): Promise<string> => {
     return new Promise((resolve, reject) => {
       const formData = new FormData();
       const xhr = new XMLHttpRequest();

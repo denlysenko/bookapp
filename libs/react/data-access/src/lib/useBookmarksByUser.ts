@@ -7,7 +7,6 @@ import {
   REMOVE_FROM_BOOKMARKS_MUTATION,
 } from '@bookapp/shared/queries';
 
-// tslint:disable: no-shadowed-variable
 export function useBookmarksByUser(bookId: string) {
   const { data, updateQuery } = useQuery<{
     userBookmarksByBook: { type: string }[];

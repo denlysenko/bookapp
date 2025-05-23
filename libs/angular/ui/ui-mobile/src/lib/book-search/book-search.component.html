@@ -1,27 +1,26 @@
 <GridLayout rows="auto, *">
-  <StackLayout row="0">
-    <SearchBar
-      class="m-b-30"
-      (loaded)="onSearchLoaded($event)"
-      hint="Enter Book Title"
-      (textChange)="onTextChanged($event)"
-      (submit)="onSubmit()"
-      (clear)="onClear()"
-    ></SearchBar>
-  </StackLayout>
-  <ListView row="1" [items]="books$ | async" class="list-group" (itemTap)="onItemSelect($event)">
+  <SearchBar
+    row="0"
+    (loaded)="onSearchLoaded($event)"
+    hint="Enter Book Title"
+    (textChange)="onTextChanged($event)"
+    (submit)="onSubmit()"
+    (clear)="onClear()"
+  ></SearchBar>
+
+  <ListView row="1" [items]="books()" (itemTap)="onItemSelect($event)">
     <ng-template let-book="item">
-      <GridLayout columns="auto, *" class="item list-group-item">
+      <GridLayout columns="auto, *" class="py-2 px-4">
         <Image
           col="0"
           [src]="book.coverUrl ? book.coverUrl : 'res://nocover'"
-          class="thumb"
+          class="mr-4"
           width="30"
           height="40"
         ></Image>
         <StackLayout col="1">
-          <Label class="list-group-item-heading" [text]="book.title"></Label>
-          <Label class="list-group-item-text" [text]="book.author"></Label>
+          <Label class="mb-1" [text]="book.title"></Label>
+          <Label class="text-sm" [text]="book.author"></Label>
         </StackLayout>
       </GridLayout>
     </ng-template>

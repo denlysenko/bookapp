@@ -1,26 +1,41 @@
-import { Component } from '@angular/core';
-
-import { takeUntil } from 'rxjs/operators';
+/* eslint-disable no-unused-private-class-members */
+import { AsyncPipe } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
 
 import { ProfilePageBase } from '@bookapp/angular/base';
-import { FeedbackPlatformService, LoaderPlatformService } from '@bookapp/angular/core';
-import { AuthService, ProfileService } from '@bookapp/angular/data-access';
+import { LoaderPlatformService } from '@bookapp/angular/core';
+
+import { Drawer } from '@nativescript-community/ui-drawer';
+
+import { NativeScriptCommonModule } from '@nativescript/angular';
+import { Application, getViewById } from '@nativescript/core';
+
+import { ProfileFormComponent } from '../../components/profile-form/profile-form.component';
 
 @Component({
-  selector: 'bookapp-profile-page',
+  imports: [NativeScriptCommonModule, AsyncPipe, ProfileFormComponent],
   templateUrl: './profile-page.component.html',
-  styleUrls: ['./profile-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class ProfilePageComponent extends ProfilePageBase {
-  constructor(
-    profileService: ProfileService,
-    authService: AuthService,
-    feedbackService: FeedbackPlatformService,
-    private readonly loaderService: LoaderPlatformService
-  ) {
-    super(profileService, authService, feedbackService);
-    this.loading$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((loading) => (loading ? this.loaderService.start() : this.loaderService.stop()));
+  readonly #loaderService = inject(LoaderPlatformService);
+  readonly #loadingEffect = effect(() => {
+    if (this.loading()) {
+      this.#loaderService.start();
+    } else {
+      this.#loaderService.stop();
+    }
+  });
+
+  onDrawerButtonTap() {
+    const sideDrawer = getViewById(Application.getRootView(), 'drawer') as Drawer;
+    sideDrawer.toggle();
   }
 }

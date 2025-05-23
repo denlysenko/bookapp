@@ -1,17 +1,16 @@
-import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { UserActionsDesc } from '@bookapp/shared/enums';
-import { book, log } from '@bookapp/testing';
+import { book, log } from '@bookapp/testing/react';
 
 import HistoryList, { HistoryListProps } from './HistoryList';
 
 const logs = [];
 
 for (let i = 0; i <= DEFAULT_LIMIT; i++) {
-  logs.push({ ...log, _id: `${log._id}_${i}`, book });
+  logs.push({ ...log, id: `${log.id}_${i}`, book });
 }
 
 const props: HistoryListProps = {
@@ -78,7 +77,7 @@ describe('HistoryList', () => {
         </MemoryRouter>
       );
 
-      expect(getByText('1-10 of 11')).toBeInTheDocument();
+      expect(getByText('1–10 of 11')).toBeInTheDocument();
     });
 
     it('should call onPaginate prop when next page button clicked', () => {
@@ -88,7 +87,7 @@ describe('HistoryList', () => {
         </MemoryRouter>
       );
 
-      fireEvent.click(getByTitle('Next page'));
+      fireEvent.click(getByTitle('Go to next page'));
 
       expect(props.onPaginate).toHaveBeenCalledTimes(1);
       expect(props.onPaginate).toHaveBeenCalledWith({
@@ -104,7 +103,7 @@ describe('HistoryList', () => {
         </MemoryRouter>
       );
 
-      expect(getByTitle('Next page')).toBeDisabled();
+      expect(getByTitle('Go to next page')).toBeDisabled();
     });
   });
 });

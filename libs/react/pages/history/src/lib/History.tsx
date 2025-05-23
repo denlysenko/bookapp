@@ -1,9 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-
-import { isNil } from 'lodash';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 import { store } from '@bookapp/react/core';
 import { useHistory } from '@bookapp/react/data-access';
@@ -12,37 +10,36 @@ import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { LogsFilter, Pagination, Sorting } from '@bookapp/shared/interfaces';
 
 import HistoryList from './HistoryList/HistoryList';
-import { useHistoryStyles } from './useHistoryStyles';
+import { StyledHistory } from './StyledHistory';
 
 const FILTER_KEY = 'HISTORY';
 
 export function History() {
-  const classes = useHistoryStyles();
   const filter = useRef<LogsFilter>(store.get(FILTER_KEY));
   const { loading, refetch, logs } = useHistory(filter.current);
 
   useEffect(() => {
     store.set(FILTER_KEY, filter.current);
-  }, [filter.current]);
+  }, []);
 
   const getSorting = (): Sorting => {
-    if (!isNil(filter.current) && !isNil(filter.current.orderBy)) {
+    if (filter.current && filter.current.orderBy) {
       const [active, direction] = filter.current.orderBy.split('_');
 
       return {
         active,
-        direction: direction as any,
+        direction: direction as Sorting['direction'],
       };
     }
 
     return {
       active: 'createdAt',
-      direction: 'desc',
+      direction: 'desc' as Sorting['direction'],
     };
   };
 
   const getPagination = (): Pagination => {
-    if (!isNil(filter.current)) {
+    if (filter.current) {
       return {
         skip: filter.current.skip || 0,
         first: filter.current.first || DEFAULT_LIMIT,
@@ -71,7 +68,7 @@ export function History() {
   return (
     <>
       {loading && <FullPageSpinner />}
-      <div className={classes.root}>
+      <StyledHistory>
         <Toolbar disableGutters={true}>
           <Typography component="span">History</Typography>
         </Toolbar>
@@ -85,7 +82,7 @@ export function History() {
             onPaginate={paginate}
           />
         </div>
-      </div>
+      </StyledHistory>
     </>
   );
 }

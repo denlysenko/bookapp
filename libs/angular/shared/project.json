@@ -1,0 +1,19 @@
+{
+  "name": "angular-shared",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/angular/shared/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/angular/shared/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/angular/shared"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

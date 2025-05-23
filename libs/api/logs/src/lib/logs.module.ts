@@ -1,4 +1,3 @@
-import { DataLoadersModule } from '@bookapp/api/dataloaders';
 import { ModelNames } from '@bookapp/api/shared';
 
 import { Module } from '@nestjs/common';
@@ -9,10 +8,7 @@ import { LogsService } from './logs.service';
 import { LogSchema } from './schemas/log';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: ModelNames.LOG, schema: LogSchema }]),
-    DataLoadersModule,
-  ],
+  imports: [MongooseModule.forFeature([{ name: ModelNames.LOG, schema: LogSchema }])],
   providers: [LogsService, LogsResolver],
   exports: [LogsService],
 })

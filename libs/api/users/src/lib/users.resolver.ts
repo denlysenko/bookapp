@@ -1,8 +1,8 @@
 import {
   ApiQuery,
-  FilterInput,
+  type FilterInput,
   GqlAuthGuard,
-  RequestWithUser,
+  type RequestWithUser,
   Roles,
   RolesGuard,
 } from '@bookapp/api/shared';
@@ -12,7 +12,7 @@ import { convertToMongoSortQuery } from '@bookapp/utils/api';
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { UserDto } from './dto/user';
+import type { UserDto } from './dto/user';
 import { UsersService } from './users.service';
 
 @Resolver()
@@ -63,7 +63,7 @@ export class UsersResolver {
     @Args('password') newPassword: string,
     @Context('req') req: RequestWithUser
   ) {
-    const id = req.user._id;
+    const id = req.user.id;
     return this.usersService.changePassword(id, oldPassword, newPassword);
   }
 

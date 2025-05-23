@@ -2,7 +2,7 @@ import { gql } from '@apollo/client/core';
 
 export const ProfileFragment = gql`
   fragment Profile on User {
-    _id
+    id
     email
     firstName
     lastName
@@ -18,7 +18,7 @@ export const ProfileFragment = gql`
 
 export const CreatedBookFragment = gql`
   fragment CreatedBook on Book {
-    _id
+    id
     title
     author
     description
@@ -31,7 +31,7 @@ export const CreatedBookFragment = gql`
 
 export const FreeBooksFragment = gql`
   fragment FreeBooks on Book {
-    _id
+    id
     title
     author
     coverUrl
@@ -45,7 +45,7 @@ export const FreeBooksFragment = gql`
 
 export const PaidBooksFragment = gql`
   fragment PaidBooks on Book {
-    _id
+    id
     title
     author
     coverUrl
@@ -60,7 +60,7 @@ export const PaidBooksFragment = gql`
 
 export const BookFragment = gql`
   fragment Book on Book {
-    _id
+    id
     title
     author
     coverUrl
@@ -75,7 +75,7 @@ export const BookFragment = gql`
     slug
     url
     comments {
-      _id
+      id
       author {
         displayName
       }

@@ -1,6 +1,3 @@
-// tslint:disable: no-identical-functions
-// tslint:disable: no-big-function
-// tslint:disable: no-duplicate-string
 import { FilesService } from '@bookapp/api/files';
 import { PUB_SUB } from '@bookapp/api/graphql';
 import { LogsService } from '@bookapp/api/logs';
@@ -11,7 +8,7 @@ import {
   MockLogsService,
   MockModel,
   MockMongooseModel,
-} from '@bookapp/testing';
+} from '@bookapp/testing/api';
 
 import { ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
@@ -27,6 +24,7 @@ const userId = 'user_id';
 describe('BooksService', () => {
   let booksService: BooksService;
   let configService: ConfigService;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let bookModel: any;
   let logsService: LogsService;
   let filesService: FilesService;
@@ -124,7 +122,7 @@ describe('BooksService', () => {
     });
 
     it('should sort with value from query', async () => {
-      const order = { test: -1 };
+      const order = { test: 'asc' } as const;
       await booksService.findAll(new ApiQuery(null, null, null, order));
       expect(bookModel.sort).toHaveBeenCalledWith(order);
     });
@@ -209,33 +207,33 @@ describe('BooksService', () => {
 
   describe('update()', () => {
     it('should find book by id', async () => {
-      await booksService.update(book._id, { ...book }, userId);
-      expect(bookModel.findById).toHaveBeenCalledWith(book._id);
+      await booksService.update(book.id, { ...book }, userId);
+      expect(bookModel.findById).toHaveBeenCalledWith(book.id);
     });
 
     it('should throw error if book is not found', async () => {
       jest.spyOn(bookModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
       try {
-        await booksService.update(book._id, { ...book }, userId);
+        await booksService.update(book.id, { ...book }, userId);
       } catch (err) {
         expect(err.message).toEqual(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR);
       }
     });
 
     it('should not remove old cover if it was not changed', async () => {
-      await booksService.update(book._id, { ...book }, userId);
+      await booksService.update(book.id, { ...book }, userId);
       expect(filesService.deleteFromBucket).not.toHaveBeenCalled();
     });
 
     it('should not remove old epub if it was not changed', async () => {
-      await booksService.update(book._id, { ...book }, userId);
+      await booksService.update(book.id, { ...book }, userId);
       expect(filesService.deleteFromBucket).not.toHaveBeenCalled();
     });
 
     it('should remove old cover if it was changed', async () => {
       await booksService.update(
-        book._id,
+        book.id,
         {
           ...book,
           coverUrl: 'storage/newCoverUrl',
@@ -247,7 +245,7 @@ describe('BooksService', () => {
 
     it('should remove old epub if it was changed', async () => {
       await booksService.update(
-        book._id,
+        book.id,
         {
           ...book,
           epubUrl: 'storage/newEpubUrl',
@@ -260,11 +258,11 @@ describe('BooksService', () => {
     it('should throw error if epub saving failed', async () => {
       jest
         .spyOn(filesService, 'deleteFromBucket')
-        .mockImplementationOnce(() => Promise.resolve(new Error('error')));
+        .mockImplementationOnce(() => Promise.reject(new Error('error')));
 
       try {
         await booksService.update(
-          book._id,
+          book.id,
           {
             ...book,
             epubUrl: 'storage/newEpubUrl',
@@ -277,12 +275,12 @@ describe('BooksService', () => {
     });
 
     it('should save updated book', async () => {
-      await booksService.update(book._id, { ...book }, userId);
+      await booksService.update(book.id, { ...book }, userId);
       expect(bookModel.save).toHaveBeenCalled();
     });
 
     it('should create log', async () => {
-      await booksService.update(book._id, { ...book }, userId);
+      await booksService.update(book.id, { ...book }, userId);
       expect(logsService.create).toHaveBeenCalled();
     });
 
@@ -292,7 +290,7 @@ describe('BooksService', () => {
       jest.spyOn(bookModel, 'save').mockImplementationOnce(() => Promise.reject(error));
 
       try {
-        await booksService.update(book._id, { ...book }, userId);
+        await booksService.update(book.id, { ...book }, userId);
       } catch (err) {
         expect(err).toEqual(error);
       }
@@ -301,32 +299,32 @@ describe('BooksService', () => {
 
   describe('rateBook()', () => {
     it('should find book by id', async () => {
-      await booksService.rateBook(book._id, 5, userId);
-      expect(bookModel.findById).toHaveBeenCalledWith(book._id);
+      await booksService.rateBook(book.id, 5, userId);
+      expect(bookModel.findById).toHaveBeenCalledWith(book.id);
     });
 
     it('should throw error if book is not found', async () => {
       jest.spyOn(bookModel, 'exec').mockImplementationOnce(() => Promise.resolve(null));
 
       try {
-        await booksService.rateBook(book._id, 5, userId);
+        await booksService.rateBook(book.id, 5, userId);
       } catch (err) {
         expect(err.message).toEqual(BOOK_VALIDATION_ERRORS.BOOK_NOT_FOUND_ERR);
       }
     });
 
     it('should save updated book', async () => {
-      await booksService.rateBook(book._id, 5, userId);
+      await booksService.rateBook(book.id, 5, userId);
       expect(bookModel.save).toHaveBeenCalled();
     });
 
     it('should create log', async () => {
-      await booksService.rateBook(book._id, 5, userId);
+      await booksService.rateBook(book.id, 5, userId);
       expect(logsService.create).toHaveBeenCalled();
     });
 
     it('should publish event', async () => {
-      await booksService.rateBook(book._id, 5, userId);
+      await booksService.rateBook(book.id, 5, userId);
       expect(pubSub.publish).toHaveBeenCalled();
     });
   });

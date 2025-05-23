@@ -1,97 +1,116 @@
-<div class="book-view">
-  <div class="cover">
-    <img [src]="book.coverUrl ? book.coverUrl : '/assets/images/nocover.svg'" [alt]="book.title" />
-    <div *ngIf="book.paid">{{ book.price | currency: 'USD':'symbol-narrow' }}</div>
-    <bookapp-rating [ngModel]="book.rating" (ngModelChange)="rate($event)"></bookapp-rating>
-    <div class="actions">
-      <a
-        *ngIf="!book.paid"
-        routerLink="/books/read/{{ book.url }}"
-        mat-icon-button
-        matTooltip="Read book"
-        color="accent"
-        data-test="read"
-      >
-        <mat-icon>book</mat-icon>
-      </a>
-      <button
-        *ngIf="book.paid"
-        type="button"
-        mat-icon-button
-        matTooltip="Buy book"
-        color="accent"
-        (click)="paymentRequested.emit(book)"
-      >
-        <mat-icon>credit_card</mat-icon>
-      </button>
-      <button
-        id="favorites"
-        type="button"
-        mat-icon-button
-        [matTooltip]="inFavorites ? 'Remove from Favorites' : 'Add To Favorites'"
-        color="accent"
-        data-test="favorites"
-        (click)="
-          (inFavorites ? bookmarkRemoved : bookmarkAdded).emit({
-            type: BOOKMARKS.FAVORITES,
-            bookId: book._id
-          })
-        "
-      >
-        <mat-icon>{{ inFavorites ? 'star' : 'star_border' }}</mat-icon>
-      </button>
-      <button
-        *ngIf="book.paid"
-        id="wishlist"
-        type="button"
-        mat-icon-button
-        [matTooltip]="inWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'"
-        color="accent"
-        data-test="wishlist"
-        (click)="
-          (inWishlist ? bookmarkRemoved : bookmarkAdded).emit({
-            type: BOOKMARKS.WISHLIST,
-            bookId: book._id
-          })
-        "
-      >
-        <mat-icon>{{ inWishlist ? 'favorite' : 'favorite_border' }}</mat-icon>
-      </button>
-      <button
-        id="mustread"
-        type="button"
-        mat-icon-button
-        [matTooltip]="inMustread ? 'Remove from must read' : 'Add to must read'"
-        color="accent"
-        data-test="mustread"
-        (click)="
-          (inMustread ? bookmarkRemoved : bookmarkAdded).emit({
-            type: BOOKMARKS.MUSTREAD,
-            bookId: book._id
-          })
-        "
-      >
-        <mat-icon>{{ inMustread ? 'bookmark' : 'bookmark_border' }}</mat-icon>
-      </button>
-      <a
-        *ngIf="isAdmin"
-        id="edit"
-        routerLink="/books/add/{{ book.url }}"
-        mat-icon-button
-        matTooltip="Edit book"
-        color="accent"
-      >
-        <mat-icon>edit</mat-icon>
-      </a>
+<mat-card-content>
+  <div class="book-view">
+    <div class="cover">
+      <img
+        [src]="book()?.coverUrl ? book().coverUrl : '/assets/images/nocover.svg'"
+        [alt]="book().title"
+      />
+
+      @if (book().paid) {
+        <div class="price">{{ book().price | currency: 'USD' : 'symbol-narrow' }}</div>
+      }
+
+      <bookapp-rating [ngModel]="book().rating" (ngModelChange)="rate($event)" />
+
+      <div class="actions">
+        @if (!book().paid) {
+          <a
+            routerLink="/books/read/{{ book().url }}"
+            matIconButton
+            matTooltip="Read book"
+            class="accent"
+            data-test="read"
+          >
+            <mat-icon>book</mat-icon>
+          </a>
+        } @else {
+          <button
+            type="button"
+            matIconButton
+            matTooltip="Buy book"
+            class="accent"
+            (click)="paymentRequested.emit(book())"
+          >
+            <mat-icon>credit_card</mat-icon>
+          </button>
+        }
+
+        <button
+          id="favorites"
+          type="button"
+          matIconButton
+          [matTooltip]="inFavorites() ? 'Remove from Favorites' : 'Add To Favorites'"
+          class="accent"
+          data-test="favorites"
+          (click)="
+            (inFavorites() ? bookmarkRemoved : bookmarkAdded).emit({
+              type: BOOKMARKS.FAVORITES,
+              bookId: book().id,
+            })
+          "
+        >
+          <mat-icon>{{ inFavorites() ? 'star' : 'star_border' }}</mat-icon>
+        </button>
+
+        @if (book().paid) {
+          <button
+            id="wishlist"
+            type="button"
+            matIconButton
+            [matTooltip]="inWishlist() ? 'Remove from Wishlist' : 'Add to Wishlist'"
+            class="accent"
+            data-test="wishlist"
+            (click)="
+              (inWishlist() ? bookmarkRemoved : bookmarkAdded).emit({
+                type: BOOKMARKS.WISHLIST,
+                bookId: book().id,
+              })
+            "
+          >
+            <mat-icon>{{ inWishlist() ? 'favorite' : 'favorite_border' }}</mat-icon>
+          </button>
+        }
+
+        <button
+          id="mustread"
+          type="button"
+          matIconButton
+          [matTooltip]="inMustread() ? 'Remove from must read' : 'Add to must read'"
+          class="accent"
+          data-test="mustread"
+          (click)="
+            (inMustread() ? bookmarkRemoved : bookmarkAdded).emit({
+              type: BOOKMARKS.MUSTREAD,
+              bookId: book().id,
+            })
+          "
+        >
+          <mat-icon>{{ inMustread() ? 'bookmark' : 'bookmark_border' }}</mat-icon>
+        </button>
+
+        @if (isAdmin()) {
+          <a
+            id="edit"
+            routerLink="/books/add/{{ book().url }}"
+            matIconButton
+            matTooltip="Edit book"
+            class="accent"
+          >
+            <mat-icon>edit</mat-icon>
+          </a>
+        }
+      </div>
+
+      <div class="view-num">
+        <i class="material-icons">visibility</i>
+        <span>{{ book().views }}</span>
+      </div>
     </div>
-    <div class="view-num">
-      <i class="material-icons"> visibility </i>
-      <span>{{ book.views }}</span>
+
+    <div class="details">
+      <h3 data-test="title">{{ book().title }}</h3>
+      <h4>by {{ book().author }}</h4>
+      <div class="description">{{ book().description || 'No Description' }}</div>
     </div>
   </div>
-  <div class="details">
-    <h3 data-test="title">{{ book.title }}</h3>
-    <h4>by {{ book.author }}</h4>
-    <div class="toolbar">{{ book.description || 'No Description' }}</div>
-  </div>
-</div>
+</mat-card-content>

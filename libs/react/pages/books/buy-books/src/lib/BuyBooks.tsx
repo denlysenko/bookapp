@@ -1,7 +1,7 @@
-import React, { useEffect, useReducer, useRef } from 'react';
+import { useEffect, useReducer } from 'react';
 
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 import { store } from '@bookapp/react/core';
 import { DEFAULT_SORT_VALUE, useBooks } from '@bookapp/react/data-access';
@@ -10,7 +10,7 @@ import { BooksFilter, BooksList, FullPageSpinner } from '@bookapp/react/ui';
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { BooksFilter as IBooksFilter } from '@bookapp/shared/interfaces';
 
-import { useBuyBooksStyles } from './useBuyBooksStyles';
+import { StyledBuyBooks } from './StyledBuyBooks';
 
 const FILTER_KEY = 'BUY_BOOKS';
 
@@ -24,8 +24,6 @@ const initialState: BooksState = {
 };
 
 export const BuyBooks = () => {
-  const classes = useBuyBooksStyles();
-
   const [{ hasMoreItems, skip, filter }, dispatch] = useReducer(
     booksReducer,
     initialState,
@@ -87,7 +85,7 @@ export const BuyBooks = () => {
   return (
     <>
       {loading && <FullPageSpinner />}
-      <div className={classes.root}>
+      <StyledBuyBooks>
         <Toolbar disableGutters={true}>
           <Typography component="span">Browse Books To Buy</Typography>
         </Toolbar>
@@ -97,7 +95,7 @@ export const BuyBooks = () => {
         <div className="view-content">
           <BooksList books={data && data.rows} onLoadMore={onLoadMore} onBookRate={rateBook} />
         </div>
-      </div>
+      </StyledBuyBooks>
     </>
   );
 };

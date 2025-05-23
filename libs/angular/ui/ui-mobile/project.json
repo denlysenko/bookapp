@@ -1,0 +1,12 @@
+{
+  "name": "angular-ui-mobile",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/angular/ui/ui-mobile/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": ["scope:angular", "platform:mobile", "type:shared"]
+}

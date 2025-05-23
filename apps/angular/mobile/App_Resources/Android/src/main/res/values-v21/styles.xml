@@ -5,6 +5,9 @@
     <style name="AppTheme" parent="AppThemeBase">
         <item name="android:datePickerStyle">@style/SpinnerDatePicker</item>
         <item name="android:timePickerStyle">@style/SpinnerTimePicker</item>
+
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <!-- Default style for DatePicker - in spinner mode -->
@@ -18,6 +21,6 @@
     </style>
 
     <style name="NativeScriptToolbarStyle" parent="NativeScriptToolbarStyleBase">
-        <item name="android:elevation">4dp</item>
-    </style>    
+        <item name="android:elevation">0dp</item>
+    </style>
 </resources>

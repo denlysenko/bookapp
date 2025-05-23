@@ -1,7 +1,7 @@
 import { Book } from './book';
 
 export interface Bookmark {
-  _id: any;
+  id: string;
   userId: string;
   type: string;
   bookId: string;

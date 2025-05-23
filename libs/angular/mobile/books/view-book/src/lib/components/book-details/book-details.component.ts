@@ -1,52 +1,50 @@
+/* eslint-disable no-unused-private-class-members */
+import { CurrencyPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   ElementRef,
-  Input,
+  NO_ERRORS_SCHEMA,
   OnDestroy,
-  ViewChild,
+  viewChild,
 } from '@angular/core';
 
 import { BookDetailsBase } from '@bookapp/angular/base';
-import { Book } from '@bookapp/shared/interfaces';
+
+import { NativeScriptCommonModule, NSRouterLink } from '@nativescript/angular';
 
 @Component({
-  moduleId: module.id,
   selector: 'bookapp-book-details',
+  imports: [NativeScriptCommonModule, NSRouterLink, CurrencyPipe],
   templateUrl: './book-details.component.html',
-  styleUrls: ['./book-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class BookDetailsComponent extends BookDetailsBase implements OnDestroy {
-  @Input()
-  set book(value: Book) {
-    if (value) {
-      this._book = value;
-      if (this.ratingElemRef) {
-        this.subscribeToRatingChanges();
-      }
+  readonly ratingElemRef = viewChild<ElementRef>('rating');
+
+  readonly #bookEffect = effect(() => {
+    const book = this.book();
+    const ratingElemRef = this.ratingElemRef();
+
+    if (book && ratingElemRef) {
+      this.#subscribeToRatingChanges();
     }
-  }
-  get book(): Book {
-    return this._book;
-  }
-
-  private _book: Book;
-
-  @ViewChild('rating', { static: true })
-  ratingElemRef: ElementRef;
+  });
 
   ngOnDestroy() {
-    if (this.ratingElemRef) {
-      this.ratingElemRef.nativeElement.off('valueChange');
+    if (this.ratingElemRef()) {
+      this.ratingElemRef().nativeElement.off('valueChange');
     }
   }
 
-  private subscribeToRatingChanges() {
+  #subscribeToRatingChanges() {
     // as books are loaded dynamically and to not emit event each time the book value changed, first off the listener
-    this.ratingElemRef.nativeElement.off('valueChange');
-    this.ratingElemRef.nativeElement.value = this.book.rating;
-    this.ratingElemRef.nativeElement.on('valueChange', (args: any) => {
+    this.ratingElemRef().nativeElement.off('valueChange');
+    this.ratingElemRef().nativeElement.value = this.book().rating;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.ratingElemRef().nativeElement.on('valueChange', (args: any) => {
       const val = args.object.get('value');
       this.rate(val);
     });

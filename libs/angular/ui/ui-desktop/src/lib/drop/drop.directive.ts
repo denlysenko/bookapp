@@ -1,75 +1,74 @@
 import {
   Directive,
   ElementRef,
-  EventEmitter,
-  HostListener,
+  inject,
   NgZone,
   OnDestroy,
   OnInit,
-  Output,
+  output,
   Renderer2,
 } from '@angular/core';
 
 @Directive({
   selector: '[bookappDrop]',
+  host: {
+    '(dragenter)': 'onDragEnter()',
+    '(dragleave)': 'onDragLeave()',
+    '(drop)': 'onDrop($event)',
+  },
 })
 export class DropDirective implements OnInit, OnDestroy {
-  @Output() dropped = new EventEmitter<any>();
+  readonly dropped = output<DragEvent>();
 
-  private highlighted = false;
-  private dragOverHandler: (event: Event) => void;
+  readonly #elemRef = inject(ElementRef);
+  readonly #renderer = inject(Renderer2);
+  readonly #zone = inject(NgZone);
 
-  constructor(
-    private readonly elemRef: ElementRef,
-    private readonly renderer: Renderer2,
-    private readonly zone: NgZone
-  ) {}
+  #highlighted = false;
+  #dragOverHandler: (event: Event) => void;
 
   ngOnInit() {
-    if (!this.dragOverHandler) {
-      this.zone.runOutsideAngular(() => {
-        this.dragOverHandler = (event) => {
+    if (!this.#dragOverHandler) {
+      this.#zone.runOutsideAngular(() => {
+        this.#dragOverHandler = (event) => {
           event.preventDefault();
         };
 
-        this.elemRef.nativeElement.addEventListener('dragover', this.dragOverHandler);
+        this.#elemRef.nativeElement.addEventListener('dragover', this.#dragOverHandler);
       });
     }
   }
 
-  @HostListener('dragenter')
   onDragEnter() {
-    this.toggleHighlight();
+    this.#toggleHighlight();
   }
 
-  @HostListener('dragleave')
   onDragLeave() {
-    this.toggleHighlight();
+    this.#toggleHighlight();
   }
 
-  @HostListener('drop', ['$event'])
-  onDrop(event: any) {
+  onDrop(event: DragEvent) {
     event.preventDefault();
-    this.toggleHighlight();
+    this.#toggleHighlight();
     this.dropped.emit(event);
   }
 
   ngOnDestroy() {
-    if (this.dragOverHandler) {
-      this.zone.runOutsideAngular(() => {
-        this.elemRef.nativeElement.removeEventListener('dragover', this.dragOverHandler);
-        this.dragOverHandler = null;
+    if (this.#dragOverHandler) {
+      this.#zone.runOutsideAngular(() => {
+        this.#elemRef.nativeElement.removeEventListener('dragover', this.#dragOverHandler);
+        this.#dragOverHandler = null;
       });
     }
   }
 
-  private toggleHighlight() {
-    this.highlighted = !this.highlighted;
+  #toggleHighlight() {
+    this.#highlighted = !this.#highlighted;
 
-    if (this.highlighted) {
-      this.renderer.addClass(this.elemRef.nativeElement, 'highlighted');
+    if (this.#highlighted) {
+      this.#renderer.addClass(this.#elemRef.nativeElement, 'highlighted');
     } else {
-      this.renderer.removeClass(this.elemRef.nativeElement, 'highlighted');
+      this.#renderer.removeClass(this.#elemRef.nativeElement, 'highlighted');
     }
   }
 }

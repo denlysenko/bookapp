@@ -1,0 +1,20 @@
+{
+  "name": "angular-desktop-bookmarks",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/angular/desktop/bookmarks/src",
+  "prefix": "bookapp",
+  "tags": ["scope:angular", "type:feature", "platform:desktop"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/angular/desktop/bookmarks/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/angular/desktop/bookmarks"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

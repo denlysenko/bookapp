@@ -1,15 +1,12 @@
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { BookmarksService } from '@bookapp/angular/data-access';
 import { BOOKMARKS } from '@bookapp/shared/enums';
-import { book, bookmark, MockAngularBookmarksService } from '@bookapp/testing';
+import { book, bookmark, MockAngularBookmarksService } from '@bookapp/testing/angular';
 
 import { of } from 'rxjs';
 
-import { BookmarksModule } from '../../bookmarks.module';
 import { BookmarksPageComponent } from './bookmarks-page.component';
 
 const title = 'Favorite Books';
@@ -20,51 +17,50 @@ describe('BookmarksPageComponent', () => {
   let bookmarksService: BookmarksService;
 
   beforeAll(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).IntersectionObserver = jest.fn(() => ({
       observe: () => null,
       disconnect: () => null,
     }));
   });
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, RouterTestingModule, BookmarksModule],
-        providers: [
-          {
-            provide: ActivatedRoute,
-            useValue: {
-              snapshot: {
-                data: {
-                  type: BOOKMARKS.FAVORITES,
-                },
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [BookmarksPageComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              data: {
+                type: BOOKMARKS.FAVORITES,
               },
-              data: of({
-                title,
-              }),
             },
+            data: of({
+              title,
+            }),
           },
-        ],
-      })
-        .overrideComponent(BookmarksPageComponent, {
-          set: {
-            providers: [
-              {
-                provide: BookmarksService,
-                useValue: MockAngularBookmarksService,
-              },
-            ],
-          },
-        })
-        .compileComponents();
+        },
+      ],
     })
-  );
+      .overrideComponent(BookmarksPageComponent, {
+        set: {
+          providers: [
+            {
+              provide: BookmarksService,
+              useValue: MockAngularBookmarksService,
+            },
+          ],
+        },
+      })
+      .compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BookmarksPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    bookmarksService = fixture.debugElement.injector.get(BookmarksService);
+    bookmarksService = fixture.componentRef.injector.get(BookmarksService);
   });
 
   it('should create', () => {
@@ -94,11 +90,10 @@ describe('BookmarksPageComponent', () => {
     });
 
     it('should fetch more bookmarks if there are more items', () => {
-      jest
-        .spyOn(bookmarksService, 'watchBookmarksByType')
-        .mockImplementationOnce(() =>
-          of({ data: { bookmarks: { rows: [bookmark], count: 2 } } } as any)
-        );
+      jest.spyOn(bookmarksService, 'watchBookmarksByType').mockImplementationOnce(() =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        of({ data: { bookmarks: { rows: [bookmark], count: 2 } } } as any)
+      );
 
       fixture = TestBed.createComponent(BookmarksPageComponent);
       component = fixture.componentInstance;
@@ -112,7 +107,7 @@ describe('BookmarksPageComponent', () => {
 
   describe('rate()', () => {
     it('should rate book', fakeAsync(() => {
-      const event = { bookId: book._id, rate: 5 };
+      const event = { bookId: book.id, rate: 5 };
       component.rate(event);
       tick();
       expect(bookmarksService.rateBook).toHaveBeenCalledWith(event);

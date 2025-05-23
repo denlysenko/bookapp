@@ -1,14 +1,9 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogContent,
-  MatDialogModule,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { clickOnBtn } from '@bookapp/testing';
+import { MAT_DIALOG_DATA, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+
+import { clickOnBtn } from '@bookapp/testing/angular';
 
 import { ConfirmDialogComponent } from './confirm-dialog.component';
 
@@ -19,29 +14,25 @@ describe('ConfirmDialogComponent', () => {
   let fixture: ComponentFixture<ConfirmDialogComponent>;
   let dialog: MatDialogRef<ConfirmDialogComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [MatDialogModule],
-        declarations: [ConfirmDialogComponent],
-        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-        providers: [
-          {
-            provide: MatDialogRef,
-            useValue: {
-              close: jest.fn(),
-            },
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ConfirmDialogComponent],
+      providers: [
+        {
+          provide: MatDialogRef,
+          useValue: {
+            close: jest.fn(),
           },
-          {
-            provide: MAT_DIALOG_DATA,
-            useValue: {
-              text,
-            },
+        },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: {
+            text,
           },
-        ],
-      }).compileComponents();
-    })
-  );
+        },
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmDialogComponent);

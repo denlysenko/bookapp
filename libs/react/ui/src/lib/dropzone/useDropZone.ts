@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
 
-type DropCallback = (event: any) => void;
+type DropCallback = (event: DragEvent) => void;
 
 // it would be easier to create DropZone component rather than custom hook
 export function useDropZone(onDrop: DropCallback) {
@@ -18,13 +18,13 @@ export function useDropZone(onDrop: DropCallback) {
     event.preventDefault();
   };
 
-  const handleDrop = (event: any) => {
+  const handleDrop = (event: DragEvent) => {
     event.preventDefault();
     ref.current.classList.remove('highlighted');
     onDrop(event);
   };
 
-  const dropElemRef = useCallback((node) => {
+  const dropElemRef = useCallback((node: HTMLDivElement) => {
     if (ref.current) {
       ref.current.removeEventListener('dragenter', handleDragEnter);
       ref.current.removeEventListener('dragleave', handleDragLeave);
@@ -40,6 +40,7 @@ export function useDropZone(onDrop: DropCallback) {
     }
 
     ref.current = node;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
