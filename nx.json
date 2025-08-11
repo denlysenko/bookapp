@@ -111,7 +111,8 @@
     "sharedGlobals": [
       "{workspaceRoot}/tsconfig.json",
       "{workspaceRoot}/nx.json",
-      "{workspaceRoot}/babel.config.json"
+      "{workspaceRoot}/babel.config.json",
+      "{workspaceRoot}/.github/workflows/ci.yml"
     ],
     "production": [
       "default",
