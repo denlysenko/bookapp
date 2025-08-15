@@ -9,12 +9,18 @@ import { UsersModule } from '@bookapp/api/users';
 
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_FILTER } from '@nestjs/core';
+
+import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
+
+import { SentryLogger } from './sentry-logger.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    SentryModule.forRoot(),
     DatabaseModule,
     GraphqlModule,
     AuthModule,
@@ -23,6 +29,13 @@ import { ConfigModule } from '@nestjs/config';
     BookmarksModule,
     BooksModule,
     CommentsModule,
+  ],
+  providers: [
+    SentryLogger,
+    {
+      provide: APP_FILTER,
+      useClass: SentryGlobalFilter,
+    },
   ],
 })
 export class AppModule {}

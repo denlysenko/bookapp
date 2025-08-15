@@ -1,3 +1,5 @@
+import './instrument';
+
 import { MongooseValidationFilter } from '@bookapp/api/shared';
 
 import { Logger } from '@nestjs/common';
@@ -7,6 +9,7 @@ import { NestFactory } from '@nestjs/core';
 import { Response } from 'express';
 
 import { AppModule } from './app/app.module';
+import { SentryLogger } from './app/sentry-logger.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +17,7 @@ async function bootstrap() {
   const port = configService.get('PORT') ? parseInt(configService.get('PORT'), 10) : 3000;
   const host = (configService.get('HOST') as string) ?? 'localhost';
 
+  app.useLogger(app.get(SentryLogger));
   app.useGlobalFilters(new MongooseValidationFilter());
   app.enableCors({
     origin: ['http://localhost:4200', 'http://localhost:4300'],

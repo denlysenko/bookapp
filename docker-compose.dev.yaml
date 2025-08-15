@@ -22,6 +22,8 @@ services:
       - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
       - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
       - DEFAULT_LIMIT=50
+      - SENTRY_DSN=${SENTRY_DSN}
+      - LOG_LEVEL=error
     depends_on:
       - mongodb
     volumes:
