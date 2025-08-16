@@ -46,7 +46,7 @@ describe('ImageSelector', () => {
       render(<ImageSelector open={true} onClose={onClose} onImageUpload={onImageUpload} />);
 
       fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
-      expect(onClose).toBeCalledTimes(1);
+      expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -75,10 +75,10 @@ describe('ImageSelector', () => {
       mockFetch(HTTP_STATUS.OK, { publicUrl });
 
       await waitFor(() => {
-        expect(onImageUpload).toBeCalledWith(publicUrl);
+        expect(onImageUpload).toHaveBeenCalledWith(publicUrl);
       });
 
-      expect(onClose).toBeCalledTimes(1);
+      expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
 });

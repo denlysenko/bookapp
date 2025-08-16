@@ -75,7 +75,7 @@ describe('Header', () => {
       );
 
       fireEvent.click(screen.getByTestId('toggle-menu'));
-      expect(toggleDrawer).toBeCalledTimes(1);
+      expect(toggleDrawer).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -104,7 +104,7 @@ describe('Header', () => {
       fireEvent.click(screen.getByText(/signout/i));
 
       await waitFor(() => {
-        expect(navigate).toBeCalledTimes(1);
+        expect(navigate).toHaveBeenCalledTimes(1);
       });
     });
   });

@@ -97,7 +97,7 @@ describe('Auth', () => {
       fireEvent.click(screen.getByRole('button', { name: /login/i }));
 
       await waitFor(() => {
-        expect(navigate).toBeCalledTimes(1);
+        expect(navigate).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -139,7 +139,7 @@ describe('Auth', () => {
       fireEvent.click(screen.getByRole('button', { name: /create/i }));
 
       await waitFor(() => {
-        expect(navigate).toBeCalledTimes(1);
+        expect(navigate).toHaveBeenCalledTimes(1);
       });
     });
   });

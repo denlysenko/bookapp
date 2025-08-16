@@ -45,7 +45,7 @@ describe('FileSelector', () => {
       render(<FileSelector open={true} onClose={onClose} onFileUpload={onFileUpload} />);
 
       fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
-      expect(onClose).toBeCalledTimes(1);
+      expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -67,10 +67,10 @@ describe('FileSelector', () => {
       fireEvent.click(screen.getByRole('button', { name: /upload/i }));
 
       await waitFor(() => {
-        expect(onFileUpload).toBeCalledWith(publicUrl);
+        expect(onFileUpload).toHaveBeenCalledWith(publicUrl);
       });
 
-      expect(onClose).toBeCalledTimes(1);
+      expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
 });

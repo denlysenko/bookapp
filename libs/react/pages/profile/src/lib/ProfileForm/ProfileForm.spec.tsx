@@ -105,10 +105,10 @@ describe('ProfileForm', () => {
       fireEvent.click(screen.getByRole('button', { name: /save/i }));
 
       await waitFor(() => {
-        expect(props.onSubmit).toBeCalledTimes(1);
+        expect(props.onSubmit).toHaveBeenCalledTimes(1);
       });
 
-      expect(props.onSubmit).toBeCalledWith({
+      expect(props.onSubmit).toHaveBeenCalledWith({
         email: props.user.email,
         firstName: props.user.firstName,
         lastName: props.user.lastName,
@@ -136,7 +136,7 @@ describe('ProfileForm', () => {
       fireEvent.click(screen.getByRole('button', { name: /save/i }));
 
       await waitFor(() => {
-        expect(props.onSubmit).toBeCalledTimes(0);
+        expect(props.onSubmit).toHaveBeenCalledTimes(0);
       });
     });
   });

@@ -142,10 +142,10 @@ describe('AddBookForm', () => {
       fireEvent.click(screen.getByRole('button', { name: /save/i }));
 
       await waitFor(() => {
-        expect(props.onSubmit).toBeCalledTimes(1);
+        expect(props.onSubmit).toHaveBeenCalledTimes(1);
       });
 
-      expect(props.onSubmit).toBeCalledWith({
+      expect(props.onSubmit).toHaveBeenCalledWith({
         title: props.book.title,
         author: props.book.author,
         description: props.book.description,
@@ -179,7 +179,7 @@ describe('AddBookForm', () => {
       fireEvent.click(screen.getByRole('button', { name: /save/i }));
 
       await waitFor(() => {
-        expect(props.onSubmit).toBeCalledTimes(0);
+        expect(props.onSubmit).toHaveBeenCalledTimes(0);
       });
     });
   });
