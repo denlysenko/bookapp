@@ -1,11 +1,11 @@
-FROM node:24.4.0-bullseye AS build
+FROM node:24.6.0-bullseye AS build
 WORKDIR /app
 COPY package*.json .
 RUN npm install
 COPY . .
 RUN npm run build -- api
 
-FROM node:24.4.0-bullseye-slim AS final
+FROM node:24.6.0-bullseye-slim AS final
 USER node
 WORKDIR /app
 COPY --chown=node:node --from=build /app/dist/apps/api .

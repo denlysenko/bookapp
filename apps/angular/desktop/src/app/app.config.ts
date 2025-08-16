@@ -1,5 +1,10 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  ErrorHandler,
+  isDevMode,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
@@ -19,6 +24,8 @@ import { provideGraphql } from '@bookapp/angular/graphql';
 import { authErrorInterceptor } from '@bookapp/angular/shared';
 import { environment } from '@bookapp/shared/environments';
 
+import * as Sentry from '@sentry/angular';
+
 import { routes } from './app.routes';
 import { FeedbackService } from './services/feedback.service';
 import { PaymentRequestService } from './services/payment-request.service';
@@ -34,6 +41,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authErrorInterceptor])),
     provideRouter(routes),
     provideGraphql(),
+    {
+      provide: ErrorHandler,
+      useFactory: () => (isDevMode() ? new ErrorHandler() : Sentry.createErrorHandler()),
+    },
     {
       provide: WebSocketImpl,
       useValue: null,

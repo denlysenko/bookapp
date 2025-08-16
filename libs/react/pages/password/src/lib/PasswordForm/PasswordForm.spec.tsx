@@ -74,10 +74,10 @@ describe('PasswordForm', () => {
       fireEvent.click(screen.getByRole('button', { name: /save/i }));
 
       await waitFor(() => {
-        expect(onSubmit).toBeCalledTimes(1);
+        expect(onSubmit).toHaveBeenCalledTimes(1);
       });
 
-      expect(onSubmit).toBeCalledWith({
+      expect(onSubmit).toHaveBeenCalledWith({
         oldPassword: password,
         password,
       });

@@ -31,6 +31,8 @@ jobs:
 
       - name: Set NX SHAs
         uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: 'master'
 
       - name: Format check
         run: npx nx format:check
@@ -60,6 +62,8 @@ jobs:
 
       - name: Set NX SHAs
         uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: 'master'
 
       - name: Run tests
         run: npx nx affected --target=test
@@ -86,6 +90,8 @@ jobs:
 
       - name: Set NX SHAs
         uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: 'master'
 
       - name: Build
         run: npx nx affected --target=build
@@ -116,6 +122,8 @@ jobs:
 
       - name: Set NX SHAs
         uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: 'master'
 
       - name: Check if api is affected
         id: check-api-affected

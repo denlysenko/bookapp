@@ -322,10 +322,10 @@ describe('AuthForm', () => {
       fireEvent.click(screen.getByRole('button', { name: /login/i }));
 
       await waitFor(() => {
-        expect(props.onSubmit).toBeCalledTimes(1);
+        expect(props.onSubmit).toHaveBeenCalledTimes(1);
       });
 
-      expect(props.onSubmit).toBeCalledWith(true, {
+      expect(props.onSubmit).toHaveBeenCalledWith(true, {
         email,
         password,
       });
