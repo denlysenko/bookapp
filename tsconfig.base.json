@@ -77,6 +77,7 @@
       "@bookapp/api/files": ["libs/api/files/src/index.ts"],
       "@bookapp/api/graphql": ["libs/api/graphql/src/index.ts"],
       "@bookapp/api/logs": ["libs/api/logs/src/index.ts"],
+      "@bookapp/api/passkeys": ["libs/api/passkeys/src/index.ts"],
       "@bookapp/api/shared": ["libs/api/shared/src/index.ts"],
       "@bookapp/api/users": ["libs/api/users/src/index.ts"],
       "@bookapp/react/core": ["libs/react/core/src/index.ts"],
