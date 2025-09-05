@@ -57,7 +57,7 @@ describe('UsersModule', () => {
       .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.USER))
       .useValue(MockModel)
-      .overrideProvider(getModelToken(ModelNames.AUTH_TOKEN))
+      .overrideProvider(getModelToken(ModelNames.PASSKEY))
       .useValue(MockModel)
       .overrideProvider(UsersService)
       .useValue(MockUsersService)

@@ -14,6 +14,8 @@ export const MockMongooseModel = {
   deleteOne: jest.fn(() => MockMongooseModel),
   deleteMany: jest.fn(() => MockMongooseModel),
   create: jest.fn().mockResolvedValue(true),
+  updateOne: jest.fn(() => MockMongooseModel),
+  populate: jest.fn(() => MockMongooseModel),
 };
 
 export class MockModel {

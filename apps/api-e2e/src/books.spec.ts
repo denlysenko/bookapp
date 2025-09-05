@@ -64,6 +64,8 @@ describe('BooksModule', () => {
       .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.COMMENT))
       .useValue(MockModel)
+      .overrideProvider(getModelToken(ModelNames.PASSKEY))
+      .useValue(MockModel)
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
       .overrideProvider(BooksService)

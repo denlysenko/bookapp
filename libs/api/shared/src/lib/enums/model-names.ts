@@ -5,4 +5,5 @@ export enum ModelNames {
   LOG = 'Log',
   USER = 'User',
   AUTH_TOKEN = 'AuthToken',
+  PASSKEY = 'Passkey',
 }

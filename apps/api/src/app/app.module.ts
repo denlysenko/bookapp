@@ -5,6 +5,7 @@ import { CommentsModule } from '@bookapp/api/comments';
 import { DatabaseModule } from '@bookapp/api/database';
 import { GraphqlModule } from '@bookapp/api/graphql';
 import { LogsModule } from '@bookapp/api/logs';
+import { PasskeysModule } from '@bookapp/api/passkeys';
 import { UsersModule } from '@bookapp/api/users';
 
 import { Module } from '@nestjs/common';
@@ -29,6 +30,7 @@ import { SentryLogger } from './sentry-logger.service';
     BookmarksModule,
     BooksModule,
     CommentsModule,
+    PasskeysModule,
   ],
   providers: [
     SentryLogger,

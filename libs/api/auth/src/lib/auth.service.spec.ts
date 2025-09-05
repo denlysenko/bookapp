@@ -1,11 +1,15 @@
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
+import { PasskeysService } from '@bookapp/api/passkeys';
 import { AUTH_ERRORS } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
 import {
+  authenticationOptions,
   authPayload,
   MockAuthTokensService,
   MockConfigService,
+  MockPasskeysService,
   MockUsersService,
+  passkey,
   refreshToken,
   user,
 } from '@bookapp/testing/api';
@@ -22,6 +26,7 @@ describe('AuthService', () => {
   let authService: AuthService;
   let usersService: UsersService;
   let authTokensService: AuthTokensService;
+  let passkeysService: PasskeysService;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -39,12 +44,17 @@ describe('AuthService', () => {
           provide: AuthTokensService,
           useValue: MockAuthTokensService,
         },
+        {
+          provide: PasskeysService,
+          useValue: MockPasskeysService,
+        },
       ],
     }).compile();
 
     authService = module.get<AuthService>(AuthService);
     usersService = module.get<UsersService>(UsersService);
     authTokensService = module.get<AuthTokensService>(AuthTokensService);
+    passkeysService = module.get<PasskeysService>(PasskeysService);
   });
 
   describe('login()', () => {
@@ -110,6 +120,34 @@ describe('AuthService', () => {
     it('should remove refresh token', async () => {
       await authService.logout(refreshToken);
       expect(authTokensService.removeRefreshToken).toHaveBeenCalledWith(refreshToken);
+    });
+  });
+
+  describe('generateAuthenticationOptions()', () => {
+    it('should return authentication options', async () => {
+      jest
+        .spyOn(passkeysService, 'generateAuthenticationOptions')
+        .mockImplementation(() => Promise.resolve(authenticationOptions));
+
+      expect(await authService.generateAuthenticationOptions()).toEqual(authenticationOptions);
+    });
+  });
+
+  describe('verifyAuthenticationResponse()', () => {
+    it('should return authPayload', async () => {
+      jest
+        .spyOn(passkeysService, 'verifyAuthenticationResponse')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .mockImplementation(() => Promise.resolve({ ...passkey, user } as any));
+
+      expect(
+        await authService.verifyAuthenticationResponse(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          authenticationOptions as any,
+          'challenge',
+          'origin'
+        )
+      ).toEqual(authPayload);
     });
   });
 });

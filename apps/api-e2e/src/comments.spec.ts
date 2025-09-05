@@ -45,6 +45,8 @@ describe('CommentsModule', () => {
       .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.LOG))
       .useValue(MockModel)
+      .overrideProvider(getModelToken(ModelNames.PASSKEY))
+      .useValue(MockModel)
       .overrideProvider(ConfigService)
       .useValue(MockConfigService)
       .overrideProvider(CommentsService)

@@ -6,7 +6,9 @@ import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 
+import MongoStore from 'connect-mongo';
 import { Response } from 'express';
+import session from 'express-session';
 
 import { AppModule } from './app/app.module';
 import { SentryLogger } from './app/sentry-logger.service';
@@ -21,7 +23,26 @@ async function bootstrap() {
   app.useGlobalFilters(new MongooseValidationFilter());
   app.enableCors({
     origin: ['http://localhost:4200', 'http://localhost:4300'],
+    credentials: true,
   });
+
+  app.use(
+    session({
+      secret: configService.get('SESSION_SECRET'),
+      resave: false,
+      saveUninitialized: false,
+      store: MongoStore.create({
+        mongoUrl: configService.get('DB_URI'),
+        ttl: 5 * 60,
+        touchAfter: 24 * 3600,
+      }),
+      cookie: {
+        secure: configService.get('NODE_ENV') === 'production',
+        httpOnly: true,
+        maxAge: 5 * 60 * 1000,
+      },
+    })
+  );
 
   app.use('/ping', (_: unknown, res: Response) => {
     res.send('ok');

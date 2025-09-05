@@ -1,10 +1,45 @@
 type Mutation {
   login(email: String!, password: String!): AuthPayload!
-  signup(user: UserInput!): AuthPayload!
+  signup(user: SignupInput!): AuthPayload!
   logout(refreshToken: String!): Boolean
+  generateAuthenticationOptions: PublicKeyCredentialRequestOptions!
+  verifyAuthenticationResponse(response: AuthenticationResponseInput!): AuthPayload!
 }
 
 type AuthPayload {
   accessToken: String!
   refreshToken: String!
+}
+
+type PublicKeyCredentialRequestOptions {
+  challenge: String!
+  timeout: Int
+  rpId: String
+  allowCredentials: [PublicKeyCredentialDescriptor]
+  userVerification: String
+  extensions: AuthenticationExtensionsClientInputs
+  hints: [String]
+}
+
+input AuthenticationResponseInput {
+  id: String!
+  rawId: String!
+  response: AuthenticatorAssertionResponseInput!
+  authenticatorAttachment: String
+  clientExtensionResults: AuthenticationExtensionsClientOutputsInput
+  type: String!
+}
+
+input AuthenticatorAssertionResponseInput {
+  clientDataJSON: String!
+  authenticatorData: String!
+  signature: String!
+  userHandle: String
+}
+
+input SignupInput {
+  email: String!
+  password: String!
+  firstName: String!
+  lastName: String!
 }

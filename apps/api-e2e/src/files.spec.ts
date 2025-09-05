@@ -43,6 +43,8 @@ describe('FilesModule', () => {
       .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.AUTH_TOKEN))
       .useValue(MockModel)
+      .overrideProvider(getModelToken(ModelNames.PASSKEY))
+      .useValue(MockModel)
       .overrideProvider(FilesService)
       .useValue(MockFilesService)
       .overrideProvider(AuthTokensService)
