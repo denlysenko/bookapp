@@ -40,6 +40,7 @@
       ],
       "@bookapp/angular/desktop/history": ["libs/angular/desktop/history/src/index.ts"],
       "@bookapp/angular/desktop/main-layout": ["libs/angular/desktop/main-layout/src/index.ts"],
+      "@bookapp/angular/desktop/passkeys": ["libs/angular/desktop/passkeys/src/index.ts"],
       "@bookapp/angular/desktop/password": ["libs/angular/desktop/password/src/index.ts"],
       "@bookapp/angular/desktop/profile": ["libs/angular/desktop/profile/src/index.ts"],
       "@bookapp/angular/graphql": ["libs/angular/graphql/src/index.ts"],

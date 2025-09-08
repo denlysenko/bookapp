@@ -100,6 +100,10 @@ export const routes: Routes = [
         path: 'profile',
         loadChildren: () => import('@bookapp/angular/desktop/profile').then((m) => m.routes),
       },
+      {
+        path: 'passkeys',
+        loadChildren: () => import('@bookapp/angular/desktop/passkeys').then((m) => m.routes),
+      },
     ],
   },
 ];

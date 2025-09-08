@@ -11,3 +11,9 @@ export interface Passkey {
   aaguid: string;
   lastUsedAt: number;
 }
+
+export interface PasskeyProvidersMetadata {
+  name: string;
+  icon_light: string;
+  icon_dark: string;
+}

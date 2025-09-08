@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Edit passkey</h2>
+<mat-divider />
+
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>Label</mat-label>
+      <input matInput formControlName="label" />
+      <mat-error>Label is required</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-divider />
+
+<mat-dialog-actions>
+  <button id="cancel-btn" matButton (click)="dialogRef.close(false)">Cancel</button>
+  <button id="save-btn" matButton="filled" (click)="save()">Save</button>
+</mat-dialog-actions>

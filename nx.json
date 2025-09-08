@@ -13,7 +13,8 @@
     },
     "@nx/angular:library": {
       "linter": "none",
-      "unitTestRunner": "jest"
+      "unitTestRunner": "jest",
+      "strict": false
     },
     "@nx/angular:component": {
       "style": "scss",

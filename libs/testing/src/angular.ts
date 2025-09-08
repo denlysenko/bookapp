@@ -1,10 +1,12 @@
 // Angular-specific testing exports (Browser environment)
 export * from './lib/test-data/auth-payload';
+export * from './lib/test-data/authentication-options';
 export * from './lib/test-data/book';
 export * from './lib/test-data/bookmark';
 export * from './lib/test-data/comment';
 export * from './lib/test-data/dataUriImage';
 export * from './lib/test-data/log';
+export * from './lib/test-data/passkey';
 export * from './lib/test-data/user';
 
 export * from './lib/mocks/angular/add-book.service';

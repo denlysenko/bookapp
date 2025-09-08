@@ -25,13 +25,17 @@
 
         @for (item of userMenu; track item.path) {
           <a mat-menu-item [routerLink]="['/', item.path]" routerLinkActive="active">
-            {{ item.label }}
+            <mat-icon>{{ item.icon }}</mat-icon>
+            <span>{{ item.label }}</span>
           </a>
         }
 
         <mat-divider />
 
-        <button mat-menu-item id="logout" type="button" (click)="doLogout()">Signout</button>
+        <button mat-menu-item id="logout" type="button" (click)="doLogout()">
+          <mat-icon>logout</mat-icon>
+          <span>Signout</span>
+        </button>
       </mat-menu>
     </div>
   }

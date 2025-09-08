@@ -1,0 +1,13 @@
+.view-content {
+  max-width: 600px;
+}
+
+.mat-mdc-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mat-mdc-card-actions {
+  padding: 16px;
+}
