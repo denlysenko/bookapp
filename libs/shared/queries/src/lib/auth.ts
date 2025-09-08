@@ -12,8 +12,28 @@ export const LOGIN_MUTATION = gql`
 `;
 
 export const SIGNUP_MUTATION = gql`
-  mutation signup($user: UserInput!) {
+  mutation signup($user: SignupInput!) {
     signup(user: $user) {
+      accessToken
+      refreshToken
+    }
+  }
+`;
+
+export const GENERATE_AUTH_OPTIONS_MUTATION = gql`
+  mutation generateAuthenticationOptions {
+    generateAuthenticationOptions {
+      challenge
+      timeout
+      rpId
+      userVerification
+    }
+  }
+`;
+
+export const VERIFY_AUTHENTICATION_RESPONSE_MUTATION = gql`
+  mutation verifyAuthenticationResponse($response: AuthenticationResponseInput!) {
+    verifyAuthenticationResponse(response: $response) {
       accessToken
       refreshToken
     }

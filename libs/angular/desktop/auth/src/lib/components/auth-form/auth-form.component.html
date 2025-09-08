@@ -108,6 +108,7 @@
           {{ isLoggingIn() ? "Don't have an account?" : 'Already have an account?' }}
           <button
             matButton
+            class="button"
             type="button"
             (click)="toggleAuthMode()"
             [disabled]="loading()"
@@ -116,10 +117,41 @@
             {{ isLoggingIn() ? 'Create one' : 'Back to Login' }}
           </button>
         </span>
-        <button matButton="filled" data-test="submit" [disabled]="loading()">
-          {{ isLoggingIn() ? 'Login' : 'Create' }}
-        </button>
+
+        @if (isLoggingIn()) {
+          <div class="button-group">
+            <button
+              matButton="filled"
+              class="button-group-button"
+              [disabled]="loading()"
+              data-test="submit"
+            >
+              Login
+            </button>
+
+            <button
+              matButton="filled"
+              class="button-group-menu"
+              type="button"
+              [disabled]="loading()"
+              [matMenuTriggerFor]="loginMenu"
+              data-test="login-menu"
+            >
+              <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+          </div>
+        } @else {
+          <button matButton="filled" class="button" data-test="submit" [disabled]="loading()">
+            Create
+          </button>
+        }
       </mat-card-actions>
     </form>
   </mat-card>
 </div>
+
+<mat-menu #loginMenu="matMenu">
+  <button mat-menu-item (click)="loginWithPasskey.emit()" data-test="login-passkey">
+    Login with Passkey
+  </button>
+</mat-menu>

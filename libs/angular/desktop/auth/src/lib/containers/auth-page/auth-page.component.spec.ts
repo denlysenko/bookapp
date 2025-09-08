@@ -1,14 +1,15 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { FeedbackPlatformService, RouterExtensions } from '@bookapp/angular/core';
+import { FeedbackPlatformService, RouterExtensions, WebauthnService } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
 import {
+  authenticationOptions,
   authPayload,
   MockFeedbackPlatformService,
   MockRouterExtensions,
 } from '@bookapp/testing/angular';
 
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { AuthPageComponent } from './auth-page.component';
 
@@ -20,6 +21,8 @@ describe('AuthPageComponent', () => {
   let fixture: ComponentFixture<AuthPageComponent>;
   let authService: AuthService;
   let router: RouterExtensions;
+  let webauthnService: WebauthnService;
+  let feedbackService: FeedbackPlatformService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -30,6 +33,12 @@ describe('AuthPageComponent', () => {
           useValue: {
             login: jest.fn().mockImplementation(() => of({ data: authPayload })),
             signup: jest.fn().mockImplementation(() => of({ data: authPayload })),
+            startPasskeyAuthentication: jest
+              .fn()
+              .mockImplementation(() => of(authenticationOptions)),
+            verifyPasskeyAuthentication: jest
+              .fn()
+              .mockImplementation(() => of({ data: authPayload })),
           },
         },
         {
@@ -40,11 +49,19 @@ describe('AuthPageComponent', () => {
           provide: FeedbackPlatformService,
           useValue: MockFeedbackPlatformService,
         },
+        {
+          provide: WebauthnService,
+          useValue: {
+            getCredentials: jest.fn().mockResolvedValue({ id: 'test-credential-id', response: {} }),
+          },
+        },
       ],
     }).compileComponents();
 
     authService = TestBed.inject(AuthService);
     router = TestBed.inject(RouterExtensions);
+    webauthnService = TestBed.inject(WebauthnService);
+    feedbackService = TestBed.inject(FeedbackPlatformService);
   });
 
   beforeEach(() => {
@@ -93,6 +110,42 @@ describe('AuthPageComponent', () => {
       tick();
 
       expect(component.error()).toEqual(error);
+    }));
+  });
+
+  describe('loginWithPasskey()', () => {
+    it('should start passkey authentication flow and call all services', fakeAsync(() => {
+      component.loginWithPasskey();
+      tick();
+
+      expect(authService.startPasskeyAuthentication).toHaveBeenCalled();
+      expect(webauthnService.getCredentials).toHaveBeenCalledWith(authenticationOptions);
+      expect(authService.verifyPasskeyAuthentication).toHaveBeenCalledWith({
+        id: 'test-credential-id',
+        response: {},
+      });
+    }));
+
+    it('should handle errors and show feedback', fakeAsync(() => {
+      const error = new Error('Authentication failed');
+      jest
+        .spyOn(authService, 'startPasskeyAuthentication')
+        .mockReturnValue(throwError(() => error));
+
+      component.loginWithPasskey();
+      tick();
+
+      expect(feedbackService.error).toHaveBeenCalledWith('Error authenticating passkey');
+    }));
+
+    it('should handle webauthn service errors', fakeAsync(() => {
+      const error = new Error('WebAuthn failed');
+      jest.spyOn(webauthnService, 'getCredentials').mockRejectedValue(error);
+
+      component.loginWithPasskey();
+      tick();
+
+      expect(feedbackService.error).toHaveBeenCalledWith('Error authenticating passkey');
     }));
   });
 });

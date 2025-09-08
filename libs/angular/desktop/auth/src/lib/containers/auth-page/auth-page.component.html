@@ -1,1 +1,6 @@
-<bookapp-auth-form [loading]="loading()" [error]="error()" (formSubmitted)="submit($event)" />
+<bookapp-auth-form
+  [loading]="loading()"
+  [error]="error()"
+  (formSubmitted)="submit($event)"
+  (loginWithPasskey)="loginWithPasskey()"
+/>
