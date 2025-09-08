@@ -61,6 +61,7 @@ export function provideGraphql() {
           window && window.Cypress
             ? `${environment.endpointUrl}?${operationName}`
             : environment.endpointUrl,
+        withCredentials: true,
       });
 
       const ws = new GraphQLWsLink(

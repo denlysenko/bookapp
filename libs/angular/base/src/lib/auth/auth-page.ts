@@ -7,8 +7,8 @@ import { ApiError, SignupCredentials } from '@bookapp/shared/interfaces';
 import { finalize } from 'rxjs/operators';
 
 export abstract class AuthPageBase {
-  readonly #authService = inject(AuthService);
   readonly #routerExtensions = inject(RouterExtensions);
+  protected readonly authService = inject(AuthService);
 
   readonly loading = signal(false);
   readonly error = signal<ApiError>(null);
@@ -21,31 +21,7 @@ export abstract class AuthPageBase {
     }
   }
 
-  #login(email: string, password: string) {
-    this.loading.set(true);
-    this.#authService
-      .login(email, password)
-      .pipe(
-        finalize(() => {
-          this.loading.set(false);
-        })
-      )
-      .subscribe(this.#onNext.bind(this));
-  }
-
-  #signup(credentials: SignupCredentials) {
-    this.loading.set(true);
-    this.#authService
-      .signup(credentials)
-      .pipe(
-        finalize(() => {
-          this.loading.set(false);
-        })
-      )
-      .subscribe(this.#onNext.bind(this));
-  }
-
-  #onNext({ data, errors }) {
+  protected onNext({ data, errors }) {
     if (data) {
       this.#routerExtensions.navigate([''], {
         // for nativescript
@@ -61,5 +37,29 @@ export abstract class AuthPageBase {
     if (errors) {
       this.error.set(errors[errors.length - 1]);
     }
+  }
+
+  #login(email: string, password: string) {
+    this.loading.set(true);
+    this.authService
+      .login(email, password)
+      .pipe(
+        finalize(() => {
+          this.loading.set(false);
+        })
+      )
+      .subscribe(this.onNext.bind(this));
+  }
+
+  #signup(credentials: SignupCredentials) {
+    this.loading.set(true);
+    this.authService
+      .signup(credentials)
+      .pipe(
+        finalize(() => {
+          this.loading.set(false);
+        })
+      )
+      .subscribe(this.onNext.bind(this));
   }
 }

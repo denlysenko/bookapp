@@ -13,12 +13,16 @@ import {
 } from '@bookapp/angular/core';
 import { AUTH_TOKEN } from '@bookapp/shared/constants';
 import {
+  GENERATE_AUTH_OPTIONS_MUTATION,
   LOGIN_MUTATION,
   LOGOUT_MUTATION,
   ME_QUERY,
   SIGNUP_MUTATION,
+  VERIFY_AUTHENTICATION_RESPONSE_MUTATION,
 } from '@bookapp/shared/queries';
 import {
+  authenticationOptions,
+  authenticationResponse,
   authPayload,
   MockRouterExtensions,
   MockStoragePlatformService,
@@ -279,6 +283,65 @@ describe('AuthService', () => {
       controller.verify();
 
       expect(router.navigate).toHaveBeenCalled();
+    });
+  });
+
+  describe('startPasskeyAuthentication()', () => {
+    it('should startPasskeyAuthentication', () => {
+      service.startPasskeyAuthentication().subscribe((generateAuthenticationOptions) => {
+        expect(generateAuthenticationOptions).toEqual(authenticationOptions);
+      });
+
+      const op = controller.expectOne(GENERATE_AUTH_OPTIONS_MUTATION);
+
+      op.flush({
+        data: {
+          generateAuthenticationOptions: authenticationOptions,
+        },
+      });
+
+      controller.verify();
+    });
+  });
+
+  describe('verifyPasskeyAuthentication()', () => {
+    it('should verifyPasskeyAuthentication', (done) => {
+      service
+        .verifyPasskeyAuthentication(authenticationResponse)
+        .subscribe(({ data: { verifyAuthenticationResponse } }) => {
+          expect(verifyAuthenticationResponse).toEqual(authPayload);
+          done();
+        });
+
+      const op = controller.expectOne(VERIFY_AUTHENTICATION_RESPONSE_MUTATION);
+
+      expect(op.operation.variables.response).toEqual(authenticationResponse);
+
+      op.flush({
+        data: {
+          verifyAuthenticationResponse: authPayload,
+        },
+      });
+
+      controller.verify();
+    });
+
+    it('should save tokens to storages', () => {
+      service.verifyPasskeyAuthentication(authenticationResponse).subscribe();
+
+      const op = controller.expectOne(VERIFY_AUTHENTICATION_RESPONSE_MUTATION);
+
+      expect(storageService.setItem).toHaveBeenCalledWith(AUTH_TOKEN, authPayload.refreshToken);
+
+      expect(storeService.set).toHaveBeenCalledWith(AUTH_TOKEN, authPayload.accessToken);
+
+      op.flush({
+        data: {
+          verifyAuthenticationResponse: authPayload,
+        },
+      });
+
+      controller.verify();
     });
   });
 });

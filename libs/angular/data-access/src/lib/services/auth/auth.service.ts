@@ -10,14 +10,17 @@ import {
 import { AUTH_TOKEN, REFRESH_TOKEN_HEADER } from '@bookapp/shared/constants';
 import { AuthPayload, SignupCredentials, User } from '@bookapp/shared/interfaces';
 import {
+  GENERATE_AUTH_OPTIONS_MUTATION,
   LOGIN_MUTATION,
   LOGOUT_MUTATION,
   ME_QUERY,
   SIGNUP_MUTATION,
+  VERIFY_AUTHENTICATION_RESPONSE_MUTATION,
 } from '@bookapp/shared/queries';
 
+import { type AuthenticationResponseJSON } from '@simplewebauthn/browser';
 import { Apollo } from 'apollo-angular';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -41,6 +44,31 @@ export class AuthService {
         tap(({ data }) => {
           if (data) {
             const { accessToken, refreshToken } = data.login;
+            this.#storagePlatformService.setItem(AUTH_TOKEN, refreshToken);
+            this.#storeService.set(AUTH_TOKEN, accessToken);
+          }
+        })
+      );
+  }
+
+  startPasskeyAuthentication() {
+    return this.#apollo
+      .mutate<{ generateAuthenticationOptions: PublicKeyCredentialRequestOptionsJSON }>({
+        mutation: GENERATE_AUTH_OPTIONS_MUTATION,
+      })
+      .pipe(map(({ data }) => data.generateAuthenticationOptions));
+  }
+
+  verifyPasskeyAuthentication(response: AuthenticationResponseJSON) {
+    return this.#apollo
+      .mutate<{ verifyAuthenticationResponse: AuthPayload }>({
+        mutation: VERIFY_AUTHENTICATION_RESPONSE_MUTATION,
+        variables: { response },
+      })
+      .pipe(
+        tap(({ data }) => {
+          if (data) {
+            const { accessToken, refreshToken } = data.verifyAuthenticationResponse;
             this.#storagePlatformService.setItem(AUTH_TOKEN, refreshToken);
             this.#storeService.set(AUTH_TOKEN, accessToken);
           }

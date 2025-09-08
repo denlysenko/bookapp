@@ -5,6 +5,7 @@ export * from './lib/services/books/best-books.service';
 export * from './lib/services/books/book.service';
 export * from './lib/services/books/books.service';
 export * from './lib/services/logs/logs.service';
+export * from './lib/services/passkeys/passkeys.service';
 export * from './lib/services/password/password.service';
 export * from './lib/services/profile/profile.service';
 
