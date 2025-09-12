@@ -50,7 +50,6 @@ export class PasskeysService {
         }
 
         this.#passkeysQueryRef.updateQuery((prevData) => {
-          console.log(prevData);
           return {
             passkeys: {
               count: prevData.passkeys.count + 1,

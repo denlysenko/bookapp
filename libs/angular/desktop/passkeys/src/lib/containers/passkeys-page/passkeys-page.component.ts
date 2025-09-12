@@ -50,7 +50,7 @@ export class PasskeysPageComponent {
           this.loading.set(false);
 
           if (data) {
-            this.#feedbackService.success('Passkey added successfully');
+            this.#feedbackService.success('Passkey created');
           }
 
           if (errors) {

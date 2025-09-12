@@ -178,7 +178,7 @@ describe('PasskeysPageComponent', () => {
       expect(passkeysService.startRegistration).toHaveBeenCalled();
       expect(webauthnService.createCredentials).toHaveBeenCalledWith(authenticationOptions);
       expect(passkeysService.verifyRegistration).toHaveBeenCalledWith(mockCredentials);
-      expect(feedbackService.success).toHaveBeenCalledWith('Passkey added successfully');
+      expect(feedbackService.success).toHaveBeenCalledWith('Passkey created');
     });
 
     it('should handle registration start error', async () => {

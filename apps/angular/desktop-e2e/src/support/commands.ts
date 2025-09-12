@@ -7,6 +7,8 @@ declare namespace Cypress {
     searchBooks(query: string): Chainable;
     filterBooks(filter: 'all' | 'recent' | 'popular'): Chainable;
     rateBook(bookIndex: number, rate: number): Chainable;
+    addVirtualAuthenticator(): Chainable;
+    simulateSuccessfulPasskeyInput(authenticatorId: string): Chainable;
   }
 }
 
@@ -38,4 +40,57 @@ Cypress.Commands.add('rateBook', (bookIndex, rate) => {
         cy.wrap($stars[rate - 1]).click();
       });
   });
+});
+
+Cypress.Commands.add('addVirtualAuthenticator', () => {
+  return cy.wrap(
+    Cypress.automation('remote:debugger:protocol', {
+      command: 'WebAuthn.disable',
+      params: {},
+    })
+      .then(() => {
+        return Cypress.automation('remote:debugger:protocol', {
+          command: 'WebAuthn.enable',
+          params: {},
+        });
+      })
+      .then(() => {
+        return Cypress.automation('remote:debugger:protocol', {
+          command: 'WebAuthn.addVirtualAuthenticator',
+          params: {
+            options: {
+              protocol: 'ctap2',
+              transport: 'internal',
+              hasResidentKey: true,
+              hasUserVerification: true,
+              isUserVerified: true,
+              automaticPresenceSimulation: true,
+            },
+          },
+        });
+      })
+      .then((result) => {
+        return result.authenticatorId;
+      })
+  );
+});
+
+Cypress.Commands.add('simulateSuccessfulPasskeyInput', (authenticatorId) => {
+  cy.wrap(
+    Cypress.automation('remote:debugger:protocol', {
+      command: 'WebAuthn.setUserVerified',
+      params: {
+        authenticatorId,
+        isUserVerified: true,
+      },
+    }).then(() => {
+      return Cypress.automation('remote:debugger:protocol', {
+        command: 'WebAuthn.setAutomaticPresenceSimulation',
+        params: {
+          authenticatorId,
+          enabled: true,
+        },
+      });
+    })
+  );
 });

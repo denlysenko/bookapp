@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { AuthPageBase } from '@bookapp/angular/base';
 import { FeedbackPlatformService, WebauthnService } from '@bookapp/angular/core';
 
-import { switchMap } from 'rxjs';
+import { from, switchMap } from 'rxjs';
 
 import { AuthFormComponent } from '../../components/auth-form/auth-form.component';
 
@@ -20,7 +20,7 @@ export class AuthPageComponent extends AuthPageBase {
     this.authService
       .startPasskeyAuthentication()
       .pipe(
-        switchMap((options) => this.#webauthnService.getCredentials(options)),
+        switchMap((options) => from(this.#webauthnService.getCredentials(options))),
         switchMap((credentials) => this.authService.verifyPasskeyAuthentication(credentials))
       )
       .subscribe({
