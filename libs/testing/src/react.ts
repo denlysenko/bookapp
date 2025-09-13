@@ -1,4 +1,6 @@
 export * from './lib/test-data/auth-payload';
+export * from './lib/test-data/authentication-options';
+export * from './lib/test-data/authentication-response';
 export * from './lib/test-data/book';
 export * from './lib/test-data/bookmark';
 export * from './lib/test-data/comment';

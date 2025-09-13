@@ -54,7 +54,7 @@ export const StyledAuthForm = styled(Box)(() => ({
       flexDirection: 'column',
     },
 
-    '& button': {
+    '& .button': {
       minWidth: '150px',
       textTransform: 'uppercase',
 
@@ -62,6 +62,10 @@ export const StyledAuthForm = styled(Box)(() => ({
         width: '100%',
         margin: '8px',
       },
+    },
+    '& .MuiButtonGroup-root .MuiButtonGroup-firstButton': {
+      width: '100%',
+      borderColor: '#76777d',
     },
   },
 }));

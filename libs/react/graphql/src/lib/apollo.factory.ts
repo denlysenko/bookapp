@@ -45,6 +45,7 @@ export function createApollo(showFeedback: (msg: string) => void) {
       (window as any).Cypress
         ? `${environment.endpointUrl}?${operationName}`
         : environment.endpointUrl,
+    credentials: 'include',
   });
 
   const ws = new GraphQLWsLink(
