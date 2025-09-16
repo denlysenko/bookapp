@@ -279,6 +279,7 @@ export const AuthForm = ({ loading, onSubmit, error, onLoginWithPasskey }: AuthF
                                   onLoginWithPasskey();
                                   setLoginMenuOpen(false);
                                 }}
+                                data-testid="login-passkey"
                               >
                                 Login with Passkey
                               </MenuItem>

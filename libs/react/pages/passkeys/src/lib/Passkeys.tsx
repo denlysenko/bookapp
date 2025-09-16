@@ -44,7 +44,7 @@ export function Passkeys() {
 
     try {
       await addPasskey();
-      showFeedback('Passkey added');
+      showFeedback('Passkey created');
     } catch (errors) {
       showFeedback(errors[errors.length - 1].message);
     } finally {

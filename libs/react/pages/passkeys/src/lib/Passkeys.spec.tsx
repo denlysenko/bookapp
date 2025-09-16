@@ -292,7 +292,7 @@ describe('Passkeys', () => {
 
       fireEvent.click(screen.getByRole('button', { name: /add/i }));
 
-      expect(await screen.findByText('Passkey added')).toBeInTheDocument();
+      expect(await screen.findByText('Passkey created')).toBeInTheDocument();
     });
 
     it('should show error when registration options generation fails', async () => {
