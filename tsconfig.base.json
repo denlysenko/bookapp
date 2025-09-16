@@ -97,6 +97,7 @@
       "@bookapp/react/pages/books/view-book": ["libs/react/pages/books/view-book/src/index.ts"],
       "@bookapp/react/pages/history": ["libs/react/pages/history/src/index.ts"],
       "@bookapp/react/pages/main": ["libs/react/pages/main/src/index.ts"],
+      "@bookapp/react/pages/passkeys": ["libs/react/pages/passkeys/src/index.ts"],
       "@bookapp/react/pages/password": ["libs/react/pages/password/src/index.ts"],
       "@bookapp/react/pages/profile": ["libs/react/pages/profile/src/index.ts"],
       "@bookapp/react/state": ["libs/react/state/src/index.ts"],
