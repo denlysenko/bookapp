@@ -8,7 +8,8 @@
     "test": {
       "executor": "@nx/jest:jest",
       "options": {
-        "jestConfig": "libs/angular/shared/jest.config.ts"
+        "jestConfig": "libs/angular/shared/jest.config.ts",
+        "tsConfig": "libs/angular/shared/tsconfig.spec.json"
       },
       "outputs": ["{workspaceRoot}/coverage/libs/angular/shared"]
     },

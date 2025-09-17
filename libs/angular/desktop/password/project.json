@@ -9,7 +9,8 @@
     "test": {
       "executor": "@nx/jest:jest",
       "options": {
-        "jestConfig": "libs/angular/desktop/password/jest.config.ts"
+        "jestConfig": "libs/angular/desktop/password/jest.config.ts",
+        "tsConfig": "libs/angular/desktop/password/tsconfig.spec.json"
       },
       "outputs": ["{workspaceRoot}/coverage/libs/angular/desktop/password"]
     },

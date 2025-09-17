@@ -115,7 +115,8 @@
     "test": {
       "executor": "@nx/jest:jest",
       "options": {
-        "jestConfig": "apps/angular/desktop/jest.config.ts"
+        "jestConfig": "apps/angular/desktop/jest.config.ts",
+        "tsConfig": "apps/angular/desktop/tsconfig.spec.json"
       },
       "outputs": ["{workspaceRoot}/coverage/apps/angular/desktop"]
     }
