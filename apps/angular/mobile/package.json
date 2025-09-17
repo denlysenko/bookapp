@@ -9,7 +9,7 @@
     "@nativescript/core": "file:../../../node_modules/@nativescript/core",
     "@nativescript/iqkeyboardmanager": "^2.1.2",
     "@nstudio/nativescript-cardview": "2.0.2",
-    "@nstudio/nativescript-loading-indicator": "^4.3.5",
+    "@nstudio/nativescript-loading-indicator": "^5.0.0",
     "@triniwiz/nativescript-star-ratings": "2.0.3",
     "@valor/nativescript-websockets": "^2.0.2",
     "nativescript-app-shortcuts": "^3.0.0",
@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@nativescript/android": "8.9.1",
-    "@nativescript/ios": "8.9.2",
+    "@nativescript/ios": "8.9.4",
     "@nativescript/tailwind": "file:../../../node_modules/@nativescript/tailwind"
   },
   "main": "./src/main.ts"

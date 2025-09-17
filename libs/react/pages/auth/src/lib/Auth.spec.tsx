@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import { MockedProvider } from '@apollo/client/testing';
+import { startAuthentication } from '@simplewebauthn/browser';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { FeedbackProvider } from '@bookapp/react/ui';
@@ -15,13 +16,10 @@ import { authenticationOptions, authenticationResponse, authPayload } from '@boo
 import Auth from './Auth';
 
 jest.mock('react-router-dom');
-jest.mock('@simplewebauthn/browser', () => {
-  const authenticationResponse = require('@bookapp/testing/react').authenticationResponse;
-
-  return {
-    startAuthentication: jest.fn().mockResolvedValue(authenticationResponse),
-  };
-});
+jest.mock('@simplewebauthn/browser', () => ({
+  ...jest.requireActual('@simplewebauthn/browser'),
+  startAuthentication: jest.fn(),
+}));
 
 const firstName = 'First';
 const lastName = 'Last';
@@ -108,6 +106,7 @@ describe('Auth', () => {
 
     beforeEach(() => {
       (useNavigate as jest.MockedFunction<typeof useNavigate>).mockReturnValue(navigate);
+      (startAuthentication as jest.Mock).mockResolvedValue(authenticationResponse);
     });
 
     it('should login', async () => {

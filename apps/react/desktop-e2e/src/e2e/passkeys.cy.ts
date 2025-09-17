@@ -20,7 +20,7 @@ describe('Passkeys', () => {
         'generateRegistrationOptions'
       );
       cy.intercept('POST', '/graphql?verifyRegistrationResponse', (request) => {
-        request.headers['origin'] = 'http://localhost:4301';
+        request.headers['origin'] = 'http://localhost:4300';
       }).as('verifyRegistrationResponse');
       cy.get('#user-menu').click();
       cy.contains('Passkeys').click();
@@ -69,7 +69,7 @@ describe('Passkeys', () => {
         'generateAuthenticationOptions'
       );
       cy.intercept('POST', '/graphql?verifyAuthenticationResponse', (request) => {
-        request.headers['origin'] = 'http://localhost:4301';
+        request.headers['origin'] = 'http://localhost:4300';
       }).as('verifyAuthenticationResponse');
     });
 
