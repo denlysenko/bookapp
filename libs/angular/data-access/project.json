@@ -9,7 +9,8 @@
     "test": {
       "executor": "@nx/jest:jest",
       "options": {
-        "jestConfig": "libs/angular/data-access/jest.config.ts"
+        "jestConfig": "libs/angular/data-access/jest.config.ts",
+        "tsConfig": "libs/angular/data-access/tsconfig.spec.json"
       },
       "outputs": ["{workspaceRoot}/coverage/libs/angular/data-access"]
     },

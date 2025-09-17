@@ -184,4 +184,21 @@ describe('AuthFormComponent', () => {
       });
     });
   });
+
+  describe('Login with Passkey', () => {
+    beforeEach(() => {
+      jest.spyOn(component.loginWithPasskey, 'emit');
+    });
+
+    it('should emit loginWithPasskey when clicking login with passkey menu item', () => {
+      const loginMenuButton = fixture.debugElement.query(By.css('[data-test="login-menu"]'));
+      loginMenuButton.nativeElement.click();
+      fixture.detectChanges();
+      const passkeyMenuItem = fixture.debugElement.query(By.css('[data-test="login-passkey"]'));
+      expect(passkeyMenuItem).toBeTruthy();
+      passkeyMenuItem.nativeElement.click();
+      fixture.detectChanges();
+      expect(component.loginWithPasskey.emit).toHaveBeenCalled();
+    });
+  });
 });

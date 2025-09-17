@@ -9,7 +9,8 @@
     "test": {
       "executor": "@nx/jest:jest",
       "options": {
-        "jestConfig": "libs/angular/desktop/books/browse-books/jest.config.ts"
+        "jestConfig": "libs/angular/desktop/books/browse-books/jest.config.ts",
+        "tsConfig": "libs/angular/desktop/books/browse-books/tsconfig.spec.json"
       },
       "outputs": ["{workspaceRoot}/coverage/libs/angular/desktop/books/browse-books"]
     },

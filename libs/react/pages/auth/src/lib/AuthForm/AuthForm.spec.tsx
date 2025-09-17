@@ -9,6 +9,7 @@ const props = {
   loading: false,
   error: null,
   onSubmit: jest.fn(),
+  onLoginWithPasskey: jest.fn(),
 };
 
 const email = 'test@test.com';
@@ -338,6 +339,19 @@ describe('AuthForm', () => {
         </FeedbackProvider>
       );
       expect(screen.getByRole('button', { name: /login/i })).toBeDisabled();
+    });
+
+    it('should call onLoginWithPasskey prop', async () => {
+      render(
+        <FeedbackProvider>
+          <AuthForm {...props} />
+        </FeedbackProvider>
+      );
+
+      fireEvent.click(screen.getByTestId('login-menu'));
+      fireEvent.click(screen.getByText('Login with Passkey'));
+
+      expect(props.onLoginWithPasskey).toHaveBeenCalledTimes(1);
     });
   });
 });

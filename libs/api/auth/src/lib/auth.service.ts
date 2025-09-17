@@ -1,9 +1,12 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
+import { PasskeysService } from '@bookapp/api/passkeys';
 import { AUTH_ERRORS } from '@bookapp/api/shared';
 import { UserDto, UsersService } from '@bookapp/api/users';
-import { AuthPayload } from '@bookapp/shared/interfaces';
+import type { AuthPayload } from '@bookapp/shared/interfaces';
+
+import type { AuthenticationResponseJSON } from '@simplewebauthn/server';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +14,8 @@ export class AuthService {
 
   constructor(
     private readonly authTokensService: AuthTokensService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private readonly passkeysService: PasskeysService
   ) {}
 
   async login(email: string, password: string): Promise<AuthPayload> {
@@ -49,5 +53,26 @@ export class AuthService {
     this.logger.log('User logged out');
 
     return true;
+  }
+
+  generateAuthenticationOptions() {
+    return this.passkeysService.generateAuthenticationOptions();
+  }
+
+  async verifyAuthenticationResponse(
+    response: AuthenticationResponseJSON,
+    expectedChallenge: string,
+    expectedOrigin: string
+  ): Promise<AuthPayload> {
+    const user = await this.passkeysService.verifyAuthenticationResponse(
+      response,
+      expectedChallenge,
+      expectedOrigin
+    );
+
+    return {
+      accessToken: this.authTokensService.createAccessToken(user.id),
+      refreshToken: await this.authTokensService.createRefreshToken(user.id),
+    };
   }
 }

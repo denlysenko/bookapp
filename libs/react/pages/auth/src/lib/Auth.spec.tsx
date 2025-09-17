@@ -1,15 +1,25 @@
 import { useNavigate } from 'react-router-dom';
 
 import { MockedProvider } from '@apollo/client/testing';
+import { startAuthentication } from '@simplewebauthn/browser';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { FeedbackProvider } from '@bookapp/react/ui';
-import { LOGIN_MUTATION, SIGNUP_MUTATION } from '@bookapp/shared/queries';
-import { authPayload } from '@bookapp/testing/react';
+import {
+  GENERATE_AUTH_OPTIONS_MUTATION,
+  LOGIN_MUTATION,
+  SIGNUP_MUTATION,
+  VERIFY_AUTHENTICATION_RESPONSE_MUTATION,
+} from '@bookapp/shared/queries';
+import { authenticationOptions, authenticationResponse, authPayload } from '@bookapp/testing/react';
 
 import Auth from './Auth';
 
 jest.mock('react-router-dom');
+jest.mock('@simplewebauthn/browser', () => ({
+  ...jest.requireActual('@simplewebauthn/browser'),
+  startAuthentication: jest.fn(),
+}));
 
 const firstName = 'First';
 const lastName = 'Last';
@@ -50,6 +60,31 @@ const signupSuccess = {
   },
 };
 
+const authOptions = {
+  request: {
+    query: GENERATE_AUTH_OPTIONS_MUTATION,
+  },
+  result: {
+    data: {
+      generateAuthenticationOptions: authenticationOptions,
+    },
+  },
+};
+
+const verifyAuthResponse = {
+  request: {
+    query: VERIFY_AUTHENTICATION_RESPONSE_MUTATION,
+    variables: {
+      response: authenticationResponse,
+    },
+  },
+  result: {
+    data: {
+      verifyAuthenticationResponse: authPayload,
+    },
+  },
+};
+
 describe('Auth', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -71,6 +106,7 @@ describe('Auth', () => {
 
     beforeEach(() => {
       (useNavigate as jest.MockedFunction<typeof useNavigate>).mockReturnValue(navigate);
+      (startAuthentication as jest.Mock).mockResolvedValue(authenticationResponse);
     });
 
     it('should login', async () => {
@@ -95,6 +131,23 @@ describe('Auth', () => {
       });
 
       fireEvent.click(screen.getByRole('button', { name: /login/i }));
+
+      await waitFor(() => {
+        expect(navigate).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    it('should login with passkey', async () => {
+      render(
+        <FeedbackProvider>
+          <MockedProvider mocks={[authOptions, verifyAuthResponse]}>
+            <Auth />
+          </MockedProvider>
+        </FeedbackProvider>
+      );
+
+      fireEvent.click(screen.getByTestId('login-menu'));
+      fireEvent.click(screen.getByText('Login with Passkey'));
 
       await waitFor(() => {
         expect(navigate).toHaveBeenCalledTimes(1);

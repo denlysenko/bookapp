@@ -76,7 +76,7 @@ export const Header = ({ toggleDrawer }: HeaderProps) => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              {userMenu.map((item) => (
+              {[...userMenu, { label: 'Passkeys', path: 'passkeys' }].map((item) => (
                 <NavLink key={item.path} to={item.path} className="link">
                   <MenuItem onClick={handleClose}>{item.label}</MenuItem>
                 </NavLink>

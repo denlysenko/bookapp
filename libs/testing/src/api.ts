@@ -1,9 +1,13 @@
 export * from './lib/test-data/auth-payload';
+export * from './lib/test-data/authentication-options';
+export * from './lib/test-data/authentication-response';
 export * from './lib/test-data/book';
 export * from './lib/test-data/bookmark';
 export * from './lib/test-data/comment';
 export * from './lib/test-data/dataUriImage';
 export * from './lib/test-data/log';
+export * from './lib/test-data/passkey';
+export * from './lib/test-data/registration-response';
 export * from './lib/test-data/user';
 
 export * from './lib/mocks/api/auth-tokens.service';
@@ -13,4 +17,5 @@ export * from './lib/mocks/api/config.service';
 export * from './lib/mocks/api/connection';
 export * from './lib/mocks/api/logs.service';
 export * from './lib/mocks/api/model';
+export * from './lib/mocks/api/passkeys.service';
 export * from './lib/mocks/api/users.service';

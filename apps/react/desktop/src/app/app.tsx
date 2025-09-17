@@ -22,6 +22,12 @@ const Password = lazy(() =>
   }))
 );
 
+const Passkeys = lazy(() =>
+  import('@bookapp/react/pages/passkeys').then(({ Passkeys }) => ({
+    default: Passkeys,
+  }))
+);
+
 const Profile = lazy(() =>
   import('@bookapp/react/pages/profile').then(({ Profile }) => ({
     default: Profile,
@@ -104,6 +110,7 @@ const App = () => {
               >
                 <Route path="" element={<Navigate to="/books/browse" />} />
                 <Route path="password" element={<Password />} />
+                <Route path="passkeys" element={<Passkeys />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="history" element={<History />} />
                 <Route

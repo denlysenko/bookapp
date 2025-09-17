@@ -9,7 +9,8 @@
     "test": {
       "executor": "@nx/jest:jest",
       "options": {
-        "jestConfig": "libs/angular/desktop/books/add-book/jest.config.ts"
+        "jestConfig": "libs/angular/desktop/books/add-book/jest.config.ts",
+        "tsConfig": "libs/angular/desktop/books/add-book/tsconfig.spec.json"
       },
       "outputs": ["{workspaceRoot}/coverage/libs/angular/desktop/books/add-book"]
     },

@@ -28,6 +28,9 @@
         "development": {
           "sourceMap": true
         },
+        "docker": {
+          "sourceMap": true
+        },
         "production": {}
       },
       "outputs": ["{options.outputPath}"],
@@ -36,7 +39,8 @@
     "serve": {
       "executor": "@nx/js:node",
       "options": {
-        "buildTarget": "api:build"
+        "buildTarget": "api:build",
+        "inspect": true
       },
       "configurations": {
         "development": {
@@ -49,7 +53,8 @@
           "buildTarget": "api:build:development"
         },
         "docker": {
-          "buildTarget": "api:build:development"
+          "buildTarget": "api:build:development",
+          "host": "0.0.0.0"
         }
       },
       "defaultConfiguration": "development"

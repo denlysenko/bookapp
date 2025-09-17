@@ -49,6 +49,8 @@ describe('LogsModule', () => {
       .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.USER))
       .useValue(MockModel)
+      .overrideProvider(getModelToken(ModelNames.PASSKEY))
+      .useValue(MockModel)
       .overrideProvider(LogsService)
       .useValue(MockLogsService)
       .compile();

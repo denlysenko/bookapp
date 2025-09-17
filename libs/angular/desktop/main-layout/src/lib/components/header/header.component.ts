@@ -33,7 +33,15 @@ export class HeaderComponent {
   readonly logout = output<void>();
 
   readonly title = 'Book App';
-  readonly userMenu = userMenu;
+  // TODO: move passkey to constants in case they will be available in the mobile app
+  readonly userMenu = [
+    ...userMenu,
+    {
+      label: 'Passkeys',
+      path: 'passkeys',
+      icon: 'key',
+    },
+  ];
 
   doToggleSidenav() {
     this.toggleSidenav.emit();

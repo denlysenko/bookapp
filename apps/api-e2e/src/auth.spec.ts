@@ -1,14 +1,18 @@
 import { AuthModule } from '@bookapp/api/auth';
 import { AuthTokensService } from '@bookapp/api/auth-tokens';
 import { GraphqlModule } from '@bookapp/api/graphql';
+import { PasskeysService } from '@bookapp/api/passkeys';
 import { AUTH_ERRORS, ModelNames, MongooseValidationFilter } from '@bookapp/api/shared';
 import { USER_VALIDATION_ERRORS, UsersService } from '@bookapp/api/users';
 import {
+  authenticationOptions,
+  authenticationResponse,
   authPayload,
   MockAuthTokensService,
   MockConfigService,
   mockConnection,
   MockModel,
+  MockPasskeysService,
   MockUsersService,
 } from '@bookapp/testing/api';
 
@@ -36,6 +40,7 @@ validationError.errors = {
 describe('AuthModule', () => {
   let app: INestApplication;
   let usersService: UsersService;
+  let passkeysService: PasskeysService;
 
   beforeAll(async () => {
     const moduleBuilder = Test.createTestingModule({
@@ -56,17 +61,28 @@ describe('AuthModule', () => {
       .useValue(MockModel)
       .overrideProvider(getModelToken(ModelNames.AUTH_TOKEN))
       .useValue(MockModel)
+      .overrideProvider(getModelToken(ModelNames.PASSKEY))
+      .useValue(MockModel)
       .overrideProvider(UsersService)
       .useValue(MockUsersService)
+      .overrideProvider(PasskeysService)
+      .useValue(MockPasskeysService)
       .overrideProvider(AuthTokensService)
       .useValue(MockAuthTokensService);
 
     const module = await moduleBuilder.compile();
 
     usersService = module.get<UsersService>(UsersService);
+    passkeysService = module.get<PasskeysService>(PasskeysService);
 
     app = module.createNestApplication();
     app.useGlobalFilters(new MongooseValidationFilter());
+    app.use((req, res, next) => {
+      req.session = {
+        passkeyAuthenticationOptions: authenticationOptions,
+      };
+      next();
+    });
     await app.init();
   });
 
@@ -198,6 +214,67 @@ describe('AuthModule', () => {
             logout: true,
           },
         });
+    });
+  });
+
+  describe('generateAuthenticationOptions()', () => {
+    it('should generate authentication options', async () => {
+      await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
+            generateAuthenticationOptions {
+              challenge
+            }
+          }`,
+        })
+        .expect({
+          data: {
+            generateAuthenticationOptions: {
+              challenge: authenticationOptions.challenge,
+            },
+          },
+        });
+
+      expect(passkeysService.generateAuthenticationOptions).toHaveBeenCalled();
+    });
+  });
+
+  describe('verifyAuthenticationResponse()', () => {
+    it('should verify authentication response and return auth payload', async () => {
+      await request(app.getHttpServer())
+        .post('/graphql')
+        .send({
+          query: `mutation {
+            verifyAuthenticationResponse(response: {
+              id: "${authenticationResponse.id}",
+              rawId: "${authenticationResponse.rawId}",
+              response: {
+                authenticatorData: "${authenticationResponse.response.authenticatorData}",
+                clientDataJSON: "${authenticationResponse.response.clientDataJSON}",
+                signature: "${authenticationResponse.response.signature}",
+                userHandle: "${authenticationResponse.response.userHandle}",
+              },
+              clientExtensionResults: {},
+              authenticatorAttachment: "${authenticationResponse.authenticatorAttachment}",
+              type: "${authenticationResponse.type}"
+            }) {
+              accessToken
+              refreshToken
+            }
+          }`,
+        })
+        .expect({
+          data: {
+            verifyAuthenticationResponse: authPayload,
+          },
+        });
+
+      expect(passkeysService.verifyAuthenticationResponse).toHaveBeenCalledWith(
+        authenticationResponse,
+        authenticationOptions.challenge,
+        undefined
+      );
     });
   });
 

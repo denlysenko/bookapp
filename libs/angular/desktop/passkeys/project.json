@@ -1,0 +1,21 @@
+{
+  "name": "angular-desktop-passkeys",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/angular/desktop/passkeys/src",
+  "prefix": "bookapp",
+  "projectType": "library",
+  "tags": ["scope:angular", "type:feature", "platform:desktop"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/angular/desktop/passkeys/jest.config.ts",
+        "tsConfig": "libs/angular/desktop/passkeys/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

@@ -52,13 +52,36 @@
       }
     }
 
-    button {
+    .button,
+    .button-group {
       min-width: 150px;
       margin: 0 0 0 8px;
 
       @media (max-width: 495px) {
         width: 100%;
         margin: 16px 0 0;
+      }
+    }
+
+    .button-group {
+      display: inline-flex;
+
+      &-button {
+        flex: 1;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: 1px solid var(--mat-sys-outline);
+      }
+
+      &-menu {
+        padding: 0 12px;
+        min-width: auto;
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+
+        > .mat-icon {
+          margin: 0;
+        }
       }
     }
   }

@@ -1,0 +1,41 @@
+<div class="view-content">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Passkeys</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (!isSupported) {
+        <p>Your browser does not support passkeys.</p>
+      } @else {
+        @let passkeys = passkeys$ | async;
+        @let passkeyProvidersMetadata = passkeyProvidersMetadata$ | async;
+
+        @for (passkey of passkeys?.rows; track passkey.id) {
+          <bookapp-passkey
+            [passkey]="passkey"
+            [passkeyProvidersMetadata]="passkeyProvidersMetadata"
+            [loading]="loading()"
+            (editPasskey)="editPasskey($event)"
+            (deletePasskey)="deletePasskey($event)"
+          />
+        }
+      }
+    </mat-card-content>
+
+    <mat-card-actions>
+      @if (isSupported) {
+        <button
+          type="button"
+          matButton="filled"
+          class="accent"
+          [disabled]="loading()"
+          (click)="addPasskey()"
+          data-test="save"
+        >
+          Add
+        </button>
+      }
+    </mat-card-actions>
+  </mat-card>
+</div>

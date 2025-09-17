@@ -9,7 +9,8 @@
     "test": {
       "executor": "@nx/jest:jest",
       "options": {
-        "jestConfig": "libs/angular/desktop/auth/jest.config.ts"
+        "jestConfig": "libs/angular/desktop/auth/jest.config.ts",
+        "tsConfig": "libs/angular/desktop/auth/tsconfig.spec.json"
       },
       "outputs": ["{workspaceRoot}/coverage/libs/angular/desktop/auth"]
     },

@@ -9,7 +9,8 @@
     "test": {
       "executor": "@nx/jest:jest",
       "options": {
-        "jestConfig": "libs/angular/desktop/profile/jest.config.ts"
+        "jestConfig": "libs/angular/desktop/profile/jest.config.ts",
+        "tsConfig": "libs/angular/desktop/profile/tsconfig.spec.json"
       },
       "outputs": ["{workspaceRoot}/coverage/libs/angular/desktop/profile"]
     },

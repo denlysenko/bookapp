@@ -1,0 +1,128 @@
+type Query {
+  passkeys(skip: Int, first: Int, orderBy: PasskeyOrderByInput): PasskeysResponse!
+}
+
+type Mutation {
+  generateRegistrationOptions: PublicKeyCredentialCreationOptions!
+  verifyRegistrationResponse(response: RegistrationResponseInput!): Passkey!
+  updatePasskey(id: ID!, label: String): Passkey!
+  deletePasskey(id: ID!): Boolean!
+}
+
+type PasskeysResponse {
+  count: Int
+  rows: [Passkey]!
+}
+
+type Passkey {
+  id: ID
+  label: String
+  publicKey: String
+  userId: ID
+  credentialId: String
+  counter: Int
+  deviceType: String
+  backedUp: Boolean
+  transports: [String]
+  aaguid: String
+  lastUsedAt: String
+}
+
+type PublicKeyCredentialCreationOptions {
+  attestation: String
+  authenticatorSelection: AuthenticatorSelectionCriteria
+  challenge: String
+  excludeCredentials: [PublicKeyCredentialDescriptor]
+  extensions: AuthenticationExtensionsClientInputs
+  hints: [String]
+  pubKeyCredParams: [PublicKeyCredentialParameters]
+  rp: PublicKeyCredentialRpEntity
+  timeout: Int
+  user: PublicKeyCredentialUserEntity
+}
+
+type AuthenticatorSelectionCriteria {
+  authenticatorAttachment: String
+  requireResidentKey: Boolean
+  residentKey: String
+  userVerification: String
+}
+
+type PublicKeyCredentialDescriptor {
+  id: String!
+  transports: [String]
+  type: String!
+}
+
+type AuthenticationExtensionsClientInputs {
+  appid: String
+  credProps: Boolean
+  hmacCreateSecret: Boolean
+  largeBlob: LargeBlobInput
+  uvm: Boolean
+}
+
+type LargeBlobInput {
+  support: String
+  read: Boolean
+  write: String
+}
+
+type PublicKeyCredentialParameters {
+  alg: Int
+  type: String
+}
+
+type PublicKeyCredentialRpEntity {
+  id: String
+  name: String
+}
+
+type PublicKeyCredentialUserEntity {
+  displayName: String
+  id: String
+  name: String
+}
+
+input RegistrationResponseInput {
+  id: String
+  rawId: String
+  response: AuthenticatorAttestationResponseInput
+  authenticatorAttachment: String
+  clientExtensionResults: AuthenticationExtensionsClientOutputsInput
+  type: String
+}
+
+input AuthenticatorAttestationResponseInput {
+  clientDataJSON: String
+  attestationObject: String
+  authenticatorData: String
+  transports: [String]
+  publicKeyAlgorithm: Int
+  publicKey: String
+}
+
+input AuthenticationExtensionsClientOutputsInput {
+  appid: Boolean
+  credProps: CredentialPropertiesOutputInput
+  hmacCreateSecret: Boolean
+  largeBlob: LargeBlobOutputInput
+  uvm: [[Int]]
+}
+
+input LargeBlobOutputInput {
+  supported: Boolean
+  blob: String
+  written: Boolean
+}
+
+input CredentialPropertiesOutputInput {
+  rk: Boolean
+}
+
+enum PasskeyOrderByInput {
+  createdAt_asc
+  createdAt_desc
+  lastUsedAt_asc
+  lastUsedAt_desc
+}

@@ -9,7 +9,8 @@
     "test": {
       "executor": "@nx/jest:jest",
       "options": {
-        "jestConfig": "libs/angular/desktop/main-layout/jest.config.ts"
+        "jestConfig": "libs/angular/desktop/main-layout/jest.config.ts",
+        "tsConfig": "libs/angular/desktop/main-layout/tsconfig.spec.json"
       },
       "outputs": ["{workspaceRoot}/coverage/libs/angular/desktop/main-layout"]
     },

@@ -1,0 +1,44 @@
+@let providerMetadata = passkeyProvidersMetadata()[passkey().aaguid];
+
+<div class="passkey-icon">
+  @if (providerMetadata?.icon_light) {
+    <img [src]="providerMetadata.icon_light" [alt]="providerMetadata.name" />
+  }
+</div>
+
+<div class="passkey-info">
+  <p class="header">{{ passkey().label }}</p>
+
+  @if (providerMetadata?.name) {
+    <p class="cell">{{ providerMetadata.name }}</p>
+  }
+</div>
+
+<div class="passkey-info">
+  <p class="header">Last Used</p>
+  <p class="cell">{{ passkey().lastUsedAt | date: 'dd.MM.yyyy HH:mm:ss' }}</p>
+</div>
+
+<div class="passkey-actions">
+  <button
+    type="button"
+    matIconButton
+    matTooltip="Edit Passkey"
+    [disabled]="loading()"
+    (click)="editPasskey.emit(passkey())"
+    data-test="edit"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
+
+  <button
+    type="button"
+    matIconButton
+    matTooltip="Delete Passkey"
+    [disabled]="loading()"
+    (click)="deletePasskey.emit(passkey())"
+    data-test="delete"
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
