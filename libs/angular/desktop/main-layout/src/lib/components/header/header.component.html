@@ -9,6 +9,59 @@
 
   @if (user(); as user) {
     <div class="user-menu">
+      <button
+        matIconButton
+        class="theme-switcher"
+        matTooltip="Switch Theme"
+        [matMenuTriggerFor]="themes"
+      >
+        @switch (themeMode()) {
+          @case ('auto') {
+            <mat-icon>brightness_medium</mat-icon>
+          }
+
+          @case ('light') {
+            <mat-icon>light_mode</mat-icon>
+          }
+
+          @case ('dark') {
+            <mat-icon>dark_mode</mat-icon>
+          }
+        }
+      </button>
+
+      <mat-menu #themes="matMenu">
+        <button
+          mat-menu-item
+          [class.active]="themeMode() === 'auto'"
+          (click)="toggleMode.emit('auto')"
+          data-testid="system-theme"
+        >
+          <mat-icon>brightness_medium</mat-icon>
+          <span>System</span>
+        </button>
+
+        <button
+          mat-menu-item
+          [class.active]="themeMode() === 'light'"
+          (click)="toggleMode.emit('light')"
+          data-testid="light-theme"
+        >
+          <mat-icon>light_mode</mat-icon>
+          <span>Light</span>
+        </button>
+
+        <button
+          mat-menu-item
+          [class.active]="themeMode() === 'dark'"
+          (click)="toggleMode.emit('dark')"
+          data-testid="dark-theme"
+        >
+          <mat-icon>dark_mode</mat-icon>
+          <span>Dark</span>
+        </button>
+      </mat-menu>
+
       <button matButton id="user-menu-toggler" [matMenuTriggerFor]="menu">
         <img
           class="avatar"

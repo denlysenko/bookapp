@@ -34,7 +34,12 @@
   display: flex;
   flex: 1;
   justify-content: flex-end;
+  align-items: center;
   height: 100%;
+
+  .theme-switcher {
+    height: 40px;
+  }
 
   button {
     height: 100%;

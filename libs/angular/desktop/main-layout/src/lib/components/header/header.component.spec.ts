@@ -63,4 +63,34 @@ describe('HeaderComponent', () => {
       expect(component.logout.emit).toHaveBeenCalled();
     });
   });
+
+  describe('toggle mode', () => {
+    beforeEach(() => {
+      const button: HTMLButtonElement = fixture.debugElement.query(
+        By.css('.theme-switcher')
+      ).nativeElement;
+
+      jest.spyOn(component.toggleMode, 'emit');
+
+      button.click();
+    });
+
+    it('should emit toggleMode event with system theme', () => {
+      const systemButton = fixture.debugElement.query(By.css('[data-testid="system-theme"]'));
+      systemButton.nativeElement.click();
+      expect(component.toggleMode.emit).toHaveBeenCalledWith('auto');
+    });
+
+    it('should emit toggleMode event with light theme', () => {
+      const lightButton = fixture.debugElement.query(By.css('[data-testid="light-theme"]'));
+      lightButton.nativeElement.click();
+      expect(component.toggleMode.emit).toHaveBeenCalledWith('light');
+    });
+
+    it('should emit toggleMode event with dark theme', () => {
+      const darkButton = fixture.debugElement.query(By.css('[data-testid="dark-theme"]'));
+      darkButton.nativeElement.click();
+      expect(component.toggleMode.emit).toHaveBeenCalledWith('dark');
+    });
+  });
 });
