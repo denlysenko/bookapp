@@ -3,8 +3,10 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  effect,
   ElementRef,
   inject,
+  Injector,
   NO_ERRORS_SCHEMA,
   OnInit,
   signal,
@@ -13,6 +15,7 @@ import {
 import { NavigationEnd, Router } from '@angular/router';
 
 import { MainLayoutBase } from '@bookapp/angular/base';
+import { ThemePlatformService } from '@bookapp/angular/core';
 import { LogsService } from '@bookapp/angular/data-access';
 
 import { Drawer } from '@nativescript-community/ui-drawer';
@@ -50,6 +53,8 @@ export class MainLayoutComponent extends MainLayoutBase implements OnInit, After
 
   readonly #router = inject(Router);
   readonly #page = inject(Page);
+  readonly #themeService = inject(ThemePlatformService);
+  readonly #injector = inject(Injector);
   #drawer: Drawer;
 
   readonly isUserMenuOpen = signal(false);
@@ -63,7 +68,12 @@ export class MainLayoutComponent extends MainLayoutBase implements OnInit, After
     });
 
     if (isAndroid) {
-      this.#setNavigationBarColor('#EEEEEE');
+      effect(
+        () => {
+          this.#setNavigationBarColor(this.#themeService.dark() ? '#121414' : '#EEEEEE');
+        },
+        { injector: this.#injector }
+      );
     }
   }
 

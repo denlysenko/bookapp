@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Dark theme colors for night mode -->
     <color name="ns_primary">#2f364a</color>
     <color name="ns_primaryDark">#2f364a</color>
     <color name="ns_accent">#f16441</color>
     <color name="ns_blue">#15a4fa</color>
+    <color name="ns_pageBackground">#121414</color>
 </resources>

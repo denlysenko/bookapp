@@ -1,18 +1,21 @@
 @let _log = log();
 
 @if (_log) {
-  <CardView margin="5" elevation="4" shadowOffsetHeight="1">
-    <StackLayout class="p-4 bg-white rounded-lg">
-      <Label class="mb-2.5 text-xs" [text]="_log.createdAt | date: 'dd.MM.yyyy HH:mm:ss'"></Label>
-      <Label class="mb-2.5" [text]="actions[_log.action]"></Label>
+  <CardView margin="5" elevation="4" shadowOffsetHeight="1" class="bg-card">
+    <StackLayout class="p-4 rounded-lg">
+      <Label
+        class="mb-2.5 text-xs text-on-surface"
+        [text]="_log.createdAt | date: 'dd.MM.yyyy HH:mm:ss'"
+      ></Label>
+      <Label class="mb-2.5 text-on-surface" [text]="actions[_log.action]"></Label>
       <StackLayout
         nsRouterLink="{{
           _log.book.paid ? `/books/buy/${_log.book.url}` : `/books/browse/${_log.book.url}`
         }}"
         [queryParams]="{ bookId: _log.book.id }"
       >
-        <Label class="text-base capitalize mb-1.5" [text]="_log.book.title"></Label>
-        <Label class="text-xs" [text]="`by ${_log.book.author}`"></Label>
+        <Label class="text-base text-on-surface capitalize mb-1.5" [text]="_log.book.title"></Label>
+        <Label class="text-xs text-on-surface" [text]="`by ${_log.book.author}`"></Label>
       </StackLayout>
     </StackLayout>
   </CardView>

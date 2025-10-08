@@ -1,7 +1,7 @@
 <GridLayout class="bg-surface">
-  <CardView margin="10" elevation="4" shadowOffsetHeight="1">
+  <CardView margin="10" elevation="4" shadowOffsetHeight="1" class="bg-card">
     <FlexboxLayout flexDirection="column" height="100%">
-      <GridLayout class="p-4 bg-white rounded-lg" flexGrow="1">
+      <GridLayout class="p-4 rounded-lg" flexGrow="1">
         <ScrollView>
           <StackLayout>
             <FlexboxLayout flexDirection="column" justifyContenet="center" alignItems="center">
@@ -12,13 +12,13 @@
               @if (_user) {
                 <AbsoluteLayout>
                   <Image
-                    class="w-20 h-20 rounded-full bg-white"
+                    class="w-20 h-20 rounded-full bg-card"
                     [src]="_user.avatar ? _user.avatar : 'res://noavatar'"
                     left="0"
                     top="0"
                   ></Image>
                   <GridLayout
-                    class="w-9 h-9 border border-deep-blue-900 rounded-full"
+                    class="w-9 h-9 border border-deep-blue-900 dark:border-deep-blue-100 rounded-full"
                     rows="*"
                     columns="*"
                     left="50"
@@ -26,7 +26,7 @@
                     (tap)="changeAvatar()"
                   >
                     <Label
-                      class="mdi text-xl text-deep-blue-900 text-center"
+                      class="mdi text-xl text-deep-blue-900 dark:text-deep-blue-100 text-center"
                       text="add_a_photo"
                       style.verticalAlignment="center"
                       style.textAlignment="center"

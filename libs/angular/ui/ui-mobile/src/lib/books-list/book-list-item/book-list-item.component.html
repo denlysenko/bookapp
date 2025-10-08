@@ -1,9 +1,9 @@
 @let _book = book();
 
 @if (_book) {
-  <CardView margin="5" elevation="4" shadowOffsetHeight="1">
+  <CardView margin="5" elevation="4" shadowOffsetHeight="1" class="bg-card">
     <FlexboxLayout
-      class="h-full rounded-lg p-2.5 bg-white"
+      class="h-full rounded-lg p-2.5"
       flexDirection="column"
       justifyContent="flex-start"
       alignItems="center"
@@ -21,28 +21,46 @@
         nsRouterLink="{{ _book.paid ? `/books/buy/${_book.url}` : `/books/browse/${_book.url}` }}"
         [queryParams]="{ bookId: _book.id }"
       >
-        <Label class="capitalize mb-1" textWrap="true" [text]="_book.title"></Label>
-        <Label class="mb-2 text-xs" [text]="`by ${_book.author}`" textWrap="true"></Label>
+        <Label class="capitalize mb-1 text-on-surface" textWrap="true" [text]="_book.title"></Label>
+        <Label
+          class="mb-2 text-xs text-on-surface"
+          [text]="`by ${_book.author}`"
+          textWrap="true"
+        ></Label>
 
         @if (_book.paid) {
           <Label
-            class="mb-2 text-sm"
+            class="mb-2 text-sm text-on-surface"
             [text]="_book.price | currency: 'USD' : 'symbol-narrow'"
           ></Label>
         }
       </StackLayout>
 
-      <StarRating
-        #rating
-        emptyBorderColor="#ffab00"
-        filledBorderColor="#ffab00"
-        filledColor="#ffab00"
-        android:emptyColor="#eeeeee"
-        android:scaleX=".5"
-        android:scaleY=".5"
-        android:style="width: 240"
-        ios:style="background: #ffffff"
-      ></StarRating>
+      @if (dark()) {
+        <StarRating
+          #rating
+          emptyBorderColor="#ffab00"
+          filledBorderColor="#ffab00"
+          filledColor="#ffab00"
+          android:emptyColor="#e2e2e2"
+          android:scaleX=".5"
+          android:scaleY=".5"
+          android:style="width: 240"
+          ios:style="background: #1e2020"
+        ></StarRating>
+      } @else {
+        <StarRating
+          #rating
+          emptyBorderColor="#ffab00"
+          filledBorderColor="#ffab00"
+          filledColor="#ffab00"
+          android:emptyColor="#eeeeee"
+          android:scaleX=".5"
+          android:scaleY=".5"
+          android:style="width: 240"
+          ios:style="background: #ffffff"
+        ></StarRating>
+      }
     </FlexboxLayout>
   </CardView>
 }

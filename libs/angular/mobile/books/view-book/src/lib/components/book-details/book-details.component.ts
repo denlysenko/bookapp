@@ -5,12 +5,14 @@ import {
   Component,
   effect,
   ElementRef,
+  inject,
   NO_ERRORS_SCHEMA,
   OnDestroy,
   viewChild,
 } from '@angular/core';
 
 import { BookDetailsBase } from '@bookapp/angular/base';
+import { ThemePlatformService } from '@bookapp/angular/core';
 
 import { NativeScriptCommonModule, NSRouterLink } from '@nativescript/angular';
 
@@ -24,6 +26,8 @@ import { NativeScriptCommonModule, NSRouterLink } from '@nativescript/angular';
 export class BookDetailsComponent extends BookDetailsBase implements OnDestroy {
   readonly ratingElemRef = viewChild<ElementRef>('rating');
 
+  readonly #themeService = inject(ThemePlatformService);
+
   readonly #bookEffect = effect(() => {
     const book = this.book();
     const ratingElemRef = this.ratingElemRef();
@@ -32,6 +36,8 @@ export class BookDetailsComponent extends BookDetailsBase implements OnDestroy {
       this.#subscribeToRatingChanges();
     }
   });
+
+  readonly dark = this.#themeService.dark;
 
   ngOnDestroy() {
     if (this.ratingElemRef()) {
