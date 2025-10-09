@@ -29,6 +29,10 @@ export const StyledHeader = styled(AppBar)(({ theme }) => ({
     textTransform: 'capitalize',
   },
 
+  '& .theme-switcher': {
+    height: '40px',
+  },
+
   '& .menu': {
     zIndex: `${theme.zIndex.modal + 1} !important`,
   },
@@ -57,6 +61,7 @@ export const StyledHeader = styled(AppBar)(({ theme }) => ({
     display: 'flex',
     flex: 1,
     justifyContent: 'flex-end',
+    alignItems: 'center',
     height: '100%',
   },
 }));

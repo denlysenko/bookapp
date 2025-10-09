@@ -1,5 +1,5 @@
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 
 export const StyledBookDetails = styled(Box)(() => ({
   display: 'flex',
@@ -69,8 +69,6 @@ export const StyledBookDetails = styled(Box)(() => ({
   },
 
   '& .toolbar': {
-    padding: '16px',
-    backgroundColor: '#eef1f7',
     fontSize: '14px',
   },
 }));

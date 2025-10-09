@@ -10,7 +10,6 @@ export const StyledMain = styled(Box)(() => ({
     flexGrow: 1,
     height: 0,
     marginLeft: 250,
-    backgroundColor: '#fafafa',
 
     '@media (max-width: 599px)': {
       marginLeft: 0,
