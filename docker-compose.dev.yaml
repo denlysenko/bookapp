@@ -35,7 +35,7 @@ services:
     command: npm start -- api -c docker
 
   mongodb:
-    image: mongo:8.0.9-noble
+    image: mongo:8.0.15-noble
     env_file: .env
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
