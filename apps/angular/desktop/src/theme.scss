@@ -3,12 +3,12 @@
 @use 'theme-colors' as my-theme;
 
 html {
+  color-scheme: light;
   @include mat.theme(
     (
       color: (
         primary: my-theme.$primary-palette,
         tertiary: my-theme.$tertiary-palette,
-        theme-type: light,
       ),
       typography: Roboto,
       density: 0,
@@ -175,4 +175,53 @@ html {
       container-background-color: map.get(my-theme.$primary-palette, neutral, 100),
     )
   );
+
+  body.dark {
+    color-scheme: dark;
+
+    @include mat.card-overrides(
+      (
+        elevated-container-color: map.get(my-theme.$primary-palette, neutral, 12),
+      )
+    );
+
+    @include mat.button-overrides(
+      (
+        text-label-text-color: map.get(my-theme.$primary-palette, 80),
+      )
+    );
+
+    @include mat.form-field-overrides(
+      (
+        outlined-focus-label-text-color: map.get(my-theme.$primary-palette, neutral-variant, 90),
+        outlined-caret-color: map.get(my-theme.$primary-palette, neutral-variant, 80),
+      )
+    );
+
+    @include mat.menu-overrides(
+      (
+        container-color: map.get(my-theme.$primary-palette, neutral, 12),
+      )
+    );
+
+    .page-toolbar {
+      @include mat.toolbar-overrides(
+        (
+          container-background-color: map.get(my-theme.$primary-palette, 15),
+        )
+      );
+    }
+
+    @include mat.table-overrides(
+      (
+        background-color: map.get(my-theme.$primary-palette, neutral, 12),
+      )
+    );
+
+    @include mat.paginator-overrides(
+      (
+        container-background-color: map.get(my-theme.$primary-palette, neutral, 12),
+      )
+    );
+  }
 }

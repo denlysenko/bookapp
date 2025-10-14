@@ -5,7 +5,9 @@
     <bookapp-header
       [isMobile]="mobileQuery.matches"
       [user]="user"
+      [themeMode]="themeService.mode()"
       (toggleSidenav)="snav.toggle()"
+      (toggleMode)="themeService.toggleTheme($event)"
       (logout)="logout()"
     />
 

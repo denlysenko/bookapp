@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
+import { useColorScheme } from '@mui/material/styles';
 
 import { useAuth, useMe } from '@bookapp/react/data-access';
 import { userMenu } from '@bookapp/shared/constants';
@@ -21,18 +22,28 @@ export interface HeaderProps {
 export const Header = ({ toggleDrawer }: HeaderProps) => {
   const { me } = useMe();
   const { logout } = useAuth();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { mode, setMode } = useColorScheme();
+  const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [themeMenuAnchorEl, setThemeMenuAnchorEl] = useState<null | HTMLElement>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const openUserMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setUserMenuAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const closeUserMenu = () => {
+    setUserMenuAnchorEl(null);
+  };
+
+  const openThemeMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setThemeMenuAnchorEl(event.currentTarget);
+  };
+
+  const closeThemeMenu = () => {
+    setThemeMenuAnchorEl(null);
   };
 
   const handleLogoutClick = () => {
-    handleClose();
+    closeUserMenu();
     logout();
   };
 
@@ -53,10 +64,55 @@ export const Header = ({ toggleDrawer }: HeaderProps) => {
         </Link>
         {me && (
           <div className="user-menu">
+            <IconButton id="theme-switcher" className="theme-switcher" onClick={openThemeMenu}>
+              <Icon>
+                {mode === 'system'
+                  ? 'brightness_medium'
+                  : mode === 'light'
+                    ? 'light_mode'
+                    : 'dark_mode'}
+              </Icon>
+            </IconButton>
+            <Menu
+              className="menu"
+              anchorEl={themeMenuAnchorEl}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              open={Boolean(themeMenuAnchorEl)}
+              onClose={closeThemeMenu}
+            >
+              <MenuItem
+                onClick={() => {
+                  setMode('system');
+                  closeThemeMenu();
+                }}
+              >
+                System
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  setMode('light');
+                  closeThemeMenu();
+                }}
+              >
+                Light
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  setMode('dark');
+                  closeThemeMenu();
+                }}
+              >
+                Dark
+              </MenuItem>
+            </Menu>
+
             <Button
               id="user-menu"
               className="user-menu-toggler"
-              onClick={handleClick}
+              onClick={openUserMenu}
               endIcon={<Icon>expand_more</Icon>}
             >
               <img
@@ -68,17 +124,17 @@ export const Header = ({ toggleDrawer }: HeaderProps) => {
             </Button>
             <Menu
               className="menu"
-              anchorEl={anchorEl}
+              anchorEl={userMenuAnchorEl}
               anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'left',
               }}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
+              open={Boolean(userMenuAnchorEl)}
+              onClose={closeUserMenu}
             >
               {[...userMenu, { label: 'Passkeys', path: 'passkeys' }].map((item) => (
                 <NavLink key={item.path} to={item.path} className="link">
-                  <MenuItem onClick={handleClose}>{item.label}</MenuItem>
+                  <MenuItem onClick={closeUserMenu}>{item.label}</MenuItem>
                 </NavLink>
               ))}
               <Divider />

@@ -1,9 +1,9 @@
 @let _book = book();
 
 <GridLayout class="bg-surface">
-  <CardView margin="10" elevation="4" shadowOffsetHeight="1">
+  <CardView margin="10" elevation="4" shadowOffsetHeight="1" class="bg-card">
     <FlexboxLayout flexDirection="column" height="100%">
-      <GridLayout class="p-4 bg-white rounded-lg" flexGrow="1">
+      <GridLayout class="p-4 rounded-lg" flexGrow="1">
         <ScrollView>
           <StackLayout>
             <GridLayout columns="*, *">
@@ -13,19 +13,35 @@
                   [src]="_book.coverUrl ? _book.coverUrl : 'res://nocover'"
                 ></Image>
 
-                <StarRating
-                  #rating
-                  emptyBorderColor="#ffab00"
-                  filledBorderColor="#ffab00"
-                  filledColor="#ffab00"
-                  android:emptyColor="#eeeeee"
-                  android:scaleX=".5"
-                  android:scaleY=".5"
-                  ios:style="background: #ffffff"
-                  android:style="width: 240"
-                  horizontalAlignment="center"
-                  verticalAlignment="center"
-                ></StarRating>
+                @if (dark()) {
+                  <StarRating
+                    #rating
+                    emptyBorderColor="#ffab00"
+                    filledBorderColor="#ffab00"
+                    filledColor="#ffab00"
+                    android:emptyColor="#e2e2e2"
+                    android:scaleX=".5"
+                    android:scaleY=".5"
+                    ios:style="background: #ffffff"
+                    android:style="width: 240"
+                    horizontalAlignment="center"
+                    verticalAlignment="center"
+                  ></StarRating>
+                } @else {
+                  <StarRating
+                    #rating
+                    emptyBorderColor="#ffab00"
+                    filledBorderColor="#ffab00"
+                    filledColor="#ffab00"
+                    android:emptyColor="#eeeeee"
+                    android:scaleX=".5"
+                    android:scaleY=".5"
+                    ios:style="background: #ffffff"
+                    android:style="width: 240"
+                    horizontalAlignment="center"
+                    verticalAlignment="center"
+                  ></StarRating>
+                }
 
                 <FlexboxLayout class="my-2.5" justifyContent="center">
                   @if (!_book.paid) {
@@ -95,12 +111,20 @@
               </StackLayout>
 
               <StackLayout col="1" horizontalAlignment="left" class="ml-4">
-                <Label class="text-2xl mb-2.5" [text]="_book.title" textWrap="true"></Label>
-                <Label class="text-lg mb-3" [text]="`by ${_book.author}`" textWrap="true"></Label>
+                <Label
+                  class="text-2xl text-on-surface mb-2.5"
+                  [text]="_book.title"
+                  textWrap="true"
+                ></Label>
+                <Label
+                  class="text-lg text-on-surface mb-3"
+                  [text]="`by ${_book.author}`"
+                  textWrap="true"
+                ></Label>
 
                 @if (_book.paid) {
                   <Label
-                    class="text-sm mb-3"
+                    class="text-sm text-on-surface mb-3"
                     [text]="_book.price | currency: 'USD' : 'symbol-narrow'"
                   ></Label>
                 }
@@ -113,7 +137,11 @@
             </GridLayout>
 
             <StackLayout class="my-3">
-              <Label [text]="_book.description ?? 'No Description'" textWrap="true"></Label>
+              <Label
+                [text]="_book.description ?? 'No Description'"
+                textWrap="true"
+                class="text-on-surface"
+              ></Label>
             </StackLayout>
           </StackLayout>
         </ScrollView>

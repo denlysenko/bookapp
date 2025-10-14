@@ -2,7 +2,9 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {
   ApplicationConfig,
   ErrorHandler,
+  inject,
   isDevMode,
+  provideAppInitializer,
   provideZoneChangeDetection,
 } from '@angular/core';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
@@ -16,6 +18,7 @@ import {
   FeedbackPlatformService,
   PaymentRequestPlatformService,
   StoragePlatformService,
+  ThemePlatformService,
   UploadPlatformService,
   WebSocketImpl,
   WINDOW,
@@ -30,6 +33,7 @@ import { routes } from './app.routes';
 import { FeedbackService } from './services/feedback.service';
 import { PaymentRequestService } from './services/payment-request.service';
 import { StorageService } from './services/storage.service';
+import { ThemeService } from './services/theme.service';
 import { UploadService } from './services/upload.service';
 
 // TODO: ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
@@ -41,6 +45,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authErrorInterceptor])),
     provideRouter(routes),
     provideGraphql(),
+    provideAppInitializer(() => {
+      const themeService = inject(ThemePlatformService);
+      themeService.initialize();
+    }),
     {
       provide: ErrorHandler,
       useFactory: () => (isDevMode() ? new ErrorHandler() : Sentry.createErrorHandler()),
@@ -72,6 +80,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: PaymentRequestPlatformService,
       useClass: PaymentRequestService,
+    },
+    {
+      provide: ThemePlatformService,
+      useClass: ThemeService,
     },
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,

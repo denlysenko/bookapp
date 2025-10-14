@@ -14,7 +14,6 @@ export const StyledBookComments = styled(Box)(() => ({
     maxHeight: '300px',
     height: 'auto',
     overflow: 'auto',
-    backgroundColor: '#eef1f7',
   },
 
   '& .author': {
@@ -24,7 +23,7 @@ export const StyledBookComments = styled(Box)(() => ({
   '& .metadata': {
     display: 'inline-block',
     marginLeft: '0.5em',
-    color: 'rgba(0, 0, 0, 0.4)',
+    color: 'light-dark(rgba(0, 0, 0, 0.4), rgb(226, 226, 226))',
     fontSize: '0.875em',
   },
 
@@ -32,7 +31,7 @@ export const StyledBookComments = styled(Box)(() => ({
     margin: '0.25em 0 0.5em',
     fontSize: '14px',
     wordWrap: 'break-word',
-    color: 'rgba(0, 0, 0, 0.87)',
+    color: 'light-dark(rgba(0, 0, 0, 0.4), rgb(226, 226, 226))',
     lineHeight: 1.3,
   },
 

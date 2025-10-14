@@ -8,11 +8,12 @@ import {
 } from '@angular/core';
 
 import { BaseComponent } from '@bookapp/angular/base';
+import { ThemePlatformService } from '@bookapp/angular/core';
 import { BooksService } from '@bookapp/angular/data-access';
 import { Book } from '@bookapp/shared/interfaces';
 
 import { ModalDialogParams, NativeScriptCommonModule } from '@nativescript/angular';
-import { isIOS, ObservableArray, SearchBar } from '@nativescript/core';
+import { Color, isIOS, ObservableArray, SearchBar } from '@nativescript/core';
 
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
@@ -32,6 +33,7 @@ declare const UIColor: any;
 export class BookSearchComponent extends BaseComponent implements OnInit {
   readonly #params = inject(ModalDialogParams);
   readonly #booksService = inject(BooksService);
+  readonly #themeService = inject(ThemePlatformService);
 
   readonly #searchText$ = new Subject<string>();
 
@@ -56,6 +58,8 @@ export class BookSearchComponent extends BaseComponent implements OnInit {
 
   onSearchLoaded(args: { object: SearchBar }) {
     const sb = args.object;
+
+    sb.textFieldHintColor = new Color(this.#themeService.dark() ? '#e5e5e5' : '#737373');
 
     if (isIOS) {
       sb.ios.backgroundColor = UIColor.whiteColor;

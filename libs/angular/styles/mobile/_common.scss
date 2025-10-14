@@ -1,11 +1,6 @@
 @use './form';
 
 Page {
-  /**
-    * should be set to your app's common/overall background-color
-    * will help prevent white flashes when changing routes
-    * sample app uses a white background so just using $white here
-    **/
   background-color: var(--color-surface);
 }
 
@@ -17,13 +12,14 @@ Page {
   height: 5;
   background: #19202e;
   border-top-width: 1;
-  border-top-color: rgba(0, 0, 0, 0.3);
+  border-top-color: var(--color-neutral-950);
   border-bottom-width: 1;
-  border-bottom-color: rgba(0, 0, 0, 0.3);
+  border-bottom-color: var(--color-neutral-950);
 }
 
 TabView {
-  tab-text-color: var(--color-deep-blue-900);
+  tab-background-color: var(--color-deep-blue-900);
+  tab-text-color: var(--color-dark-primary-text);
   selected-tab-text-color: var(--color-orange-500);
   android-selected-tab-text-color: var(--color-orange-500);
 }

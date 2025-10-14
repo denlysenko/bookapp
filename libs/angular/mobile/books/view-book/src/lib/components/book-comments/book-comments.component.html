@@ -1,11 +1,11 @@
 @let _comments = comments();
 
 <GridLayout class="bg-surface">
-  <CardView margin="10" elevation="4" shadowOffsetHeight="1">
+  <CardView margin="10" elevation="4" shadowOffsetHeight="1" class="bg-card">
     <FlexboxLayout flexDirection="column" height="100%">
-      <GridLayout class="p-4 bg-white rounded-lg" flexGrow="1" rows="*, auto">
+      <GridLayout class="p-4 rounded-lg" flexGrow="1" rows="*, auto">
         @if (!_comments.length) {
-          <Label row="0" text="No comments yet" height="100%"></Label>
+          <Label row="0" text="No comments yet" height="100%" class="text-on-surface"></Label>
         } @else {
           <ListView
             #listView
@@ -18,16 +18,16 @@
               <StackLayout class="py-2 px-4">
                 <StackLayout orientation="horizontal">
                   <Label
-                    class="text-base font-semibold"
+                    class="text-base font-semibold text-on-surface"
                     [text]="comment.author.displayName"
                   ></Label>
                   <Label
-                    class="ml-2 text-sm text-neutral-500"
+                    class="ml-2 text-sm text-neutral-500 dark:text-neutral-200"
                     [text]="comment.createdAt | date"
                   ></Label>
                 </StackLayout>
 
-                <Label [text]="comment.text" textWrap="true"></Label>
+                <Label [text]="comment.text" textWrap="true" class="text-on-surface"></Label>
               </StackLayout>
             </ng-template>
           </ListView>
@@ -39,7 +39,7 @@
             col="0"
             [(ngModel)]="text"
             hint="Write a short comment"
-            class="text-base border rounded border-neutral-500 focus:border-light-blue focus:border-2 placeholder:text-neutral-500 px-2 py-3"
+            class="text-base border-2 rounded border-neutral-500 dark:border-neutral-200 focus:border-light-blue placeholder:text-neutral-500 dark:placeholder:text-neutral-200 px-2 py-3"
           ></TextView>
 
           <Button

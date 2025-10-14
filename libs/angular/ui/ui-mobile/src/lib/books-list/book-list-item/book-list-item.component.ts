@@ -6,12 +6,14 @@ import {
   computed,
   effect,
   ElementRef,
+  inject,
   input,
   NO_ERRORS_SCHEMA,
   OnDestroy,
   output,
   viewChild,
 } from '@angular/core';
+import { ThemePlatformService } from '@bookapp/angular/core';
 
 import { Book } from '@bookapp/shared/interfaces';
 
@@ -31,6 +33,8 @@ export class BookListItemComponent implements OnDestroy {
 
   readonly rate = output<{ bookId: string; rate: number }>();
 
+  readonly #themeService = inject(ThemePlatformService);
+
   readonly #bookEffect = effect(() => {
     const book = this.book();
     const ratingElemRef = this.ratingElemRef();
@@ -47,6 +51,8 @@ export class BookListItemComponent implements OnDestroy {
 
     return this.book().paid ? 405 : 365;
   });
+
+  readonly dark = this.#themeService.dark;
 
   ngOnDestroy() {
     if (this.ratingElemRef()) {

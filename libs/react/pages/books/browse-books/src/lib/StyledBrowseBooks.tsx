@@ -9,9 +9,9 @@ export const StyledBrowseBooks = styled(Box)(() => ({
   },
 
   '& .MuiToolbar-root': {
-    background: '#eef1f7',
+    background: 'light-dark(#eef1f7, #1e2538)',
     padding: '0 16px',
-    color: 'rgba(0,0,0,.87)',
+    color: 'light-dark(rgba(0,0,0,.87), rgb(226,226,226))',
 
     '& .MuiTypography-body1': {
       fontSize: 20,

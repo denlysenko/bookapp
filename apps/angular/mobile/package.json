@@ -3,6 +3,7 @@
   "description": "BookApp NativeScript Application",
   "dependencies": {
     "@bookapp/angular-styles": "file:../../../libs/angular/styles",
+    "@nativescript-community/css-theme": "^1.2.14",
     "@nativescript-community/ui-drawer": "file:../../../node_modules/@nativescript-community/ui-drawer",
     "@nativescript/background-http": "^6.0.2",
     "@nativescript/camera": "file:../../../node_modules/@nativescript/camera",
@@ -19,7 +20,7 @@
     "nativescript-webview-interface": "file:../../../node_modules/nativescript-webview-interface"
   },
   "devDependencies": {
-    "@nativescript/android": "8.9.1",
+    "@nativescript/android": "8.9.2",
     "@nativescript/ios": "8.9.4",
     "@nativescript/tailwind": "file:../../../node_modules/@nativescript/tailwind"
   },

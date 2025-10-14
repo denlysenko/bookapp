@@ -9,7 +9,11 @@ import {
 } from '@angular/core';
 
 import { ViewBookPageBase } from '@bookapp/angular/base';
-import { LoaderPlatformService, RouterExtensions } from '@bookapp/angular/core';
+import {
+  LoaderPlatformService,
+  RouterExtensions,
+  ThemePlatformService,
+} from '@bookapp/angular/core';
 import { BookmarksService, BookService } from '@bookapp/angular/data-access';
 
 import { NativeScriptCommonModule } from '@nativescript/angular';
@@ -32,6 +36,7 @@ declare const android: any;
 export class ViewBookPageComponent extends ViewBookPageBase implements OnInit, OnDestroy {
   readonly #routerExtensions = inject(RouterExtensions);
   readonly #loaderService = inject(LoaderPlatformService);
+  readonly #themeService = inject(ThemePlatformService);
 
   ngOnInit() {
     this.loading$
@@ -45,7 +50,7 @@ export class ViewBookPageComponent extends ViewBookPageBase implements OnInit, O
 
   ngOnDestroy(): void {
     if (isAndroid) {
-      this.#setNavigationBarColor('#EEEEEE');
+      this.#setNavigationBarColor(this.#themeService.dark() ? '#121414' : '#EEEEEE');
     }
   }
 

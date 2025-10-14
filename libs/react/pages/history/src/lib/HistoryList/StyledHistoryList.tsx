@@ -8,7 +8,6 @@ export const StyledHistoryList = styled(Table)(({ theme }) => ({
 
   '& .MuiTableCell-head': {
     fontSize: '12px',
-    color: 'rgba(0, 0, 0, 0.54)',
   },
 
   '& .MuiTableCell-sizeSmall': {

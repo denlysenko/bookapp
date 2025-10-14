@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import { useBestBooks } from '@bookapp/react/data-access';
 import { BooksList, FullPageSpinner } from '@bookapp/react/ui';
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
-import { ApiResponse, Book } from '@bookapp/shared/interfaces';
 
 import { StyledBestBooks } from './StyledBestBooks';
 
@@ -15,12 +14,19 @@ export function BestBooks() {
   const skip = useRef(0);
   const { books, loading, loadMore, rateBook } = useBestBooks();
 
-  const toBooks = (data: ApiResponse<Book>): Book[] => {
-    const { rows, count } = data;
-    hasMoreItems.current = rows.length < count;
+  const transformedBooks = useMemo(() => {
+    if (!books) {
+      return [];
+    }
 
-    return rows;
-  };
+    return books.rows;
+  }, [books]);
+
+  useEffect(() => {
+    if (books) {
+      hasMoreItems.current = books.rows.length < books.count;
+    }
+  }, [books]);
 
   const onLoadMore = () => {
     if (!hasMoreItems.current || loading) {
@@ -39,11 +45,7 @@ export function BestBooks() {
           <Typography component="span">List Of The Best</Typography>
         </Toolbar>
         <div className="view-content">
-          <BooksList
-            books={books && toBooks(books)}
-            onLoadMore={onLoadMore}
-            onBookRate={rateBook}
-          />
+          <BooksList books={transformedBooks} onLoadMore={onLoadMore} onBookRate={rateBook} />
         </div>
       </StyledBestBooks>
     </>

@@ -15,14 +15,14 @@ export const StyledBooksFilter = styled(Box)(({ theme }) => ({
   },
 
   '& .MuiToggleButtonGroup-root': {
-    background: '#ffffff',
+    background: 'light-dark(#ffffff, #1e2538)',
   },
 
   '& .MuiToggleButton-root': {
     fontSize: 12,
     fontWeight: 'normal',
     textTransform: 'inherit',
-    color: 'rgba(0,0,0,.87)',
+    color: 'light-dark(rgba(0,0,0,.87), rgb(226,226,226))',
 
     '&.Mui-selected': {
       background: '#cee5ff',

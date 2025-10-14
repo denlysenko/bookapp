@@ -3,6 +3,7 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-d
 
 import { ApolloProvider } from '@apollo/client';
 
+import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 
 import { useRefreshToken } from '@bookapp/react/core';
@@ -89,6 +90,7 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Suspense fallback={<FullPageSpinner />}>
           <Router>
             <Routes>

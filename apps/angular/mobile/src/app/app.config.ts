@@ -1,5 +1,10 @@
 import { withInterceptors } from '@angular/common/http';
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  inject,
+  provideAppInitializer,
+} from '@angular/core';
 
 import {
   Environment,
@@ -7,6 +12,7 @@ import {
   LoaderPlatformService,
   RouterExtensions,
   StoragePlatformService,
+  ThemePlatformService,
   UploadPlatformService,
   WebSocketImpl,
   WINDOW,
@@ -28,6 +34,7 @@ import { routes } from './app.routes';
 import { FeedbackService } from './services/feedback.service';
 import { LoaderService } from './services/loader.service';
 import { StorageService } from './services/storage.service';
+import { ThemeService } from './services/theme.service';
 import { UploadService } from './services/upload.service';
 
 export const appConfig: ApplicationConfig = {
@@ -42,6 +49,10 @@ export const appConfig: ApplicationConfig = {
     provideNativeScriptRouter(routes),
     provideNativeScriptNgZone(),
     provideGraphql(),
+    provideAppInitializer(() => {
+      const themeService = inject(ThemePlatformService);
+      themeService.initialize();
+    }),
     {
       provide: WebSocketImpl,
       useValue: WebSocket,
@@ -73,6 +84,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: LoaderPlatformService,
       useClass: LoaderService,
+    },
+    {
+      provide: ThemePlatformService,
+      useClass: ThemeService,
     },
   ],
 };

@@ -6,5 +6,6 @@ export * from './lib/services/payment-request-platform.service';
 export * from './lib/services/router-extensions.service';
 export * from './lib/services/storage-platform.service';
 export * from './lib/services/store.service';
+export * from './lib/services/theme-platform.service';
 export * from './lib/services/upload-platform.service';
 export * from './lib/services/webauthn.service';

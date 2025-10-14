@@ -6,7 +6,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { ThemeMode } from '@bookapp/angular/core';
 import { userMenu } from '@bookapp/shared/constants';
 import { User } from '@bookapp/shared/interfaces';
 
@@ -18,6 +20,7 @@ import { User } from '@bookapp/shared/interfaces';
     MatIconModule,
     MatMenuModule,
     MatDividerModule,
+    MatTooltipModule,
     RouterLink,
     RouterLinkActive,
   ],
@@ -28,8 +31,10 @@ import { User } from '@bookapp/shared/interfaces';
 export class HeaderComponent {
   readonly isMobile = input(false);
   readonly user = input<User>();
+  readonly themeMode = input<ThemeMode>();
 
   readonly toggleSidenav = output<void>();
+  readonly toggleMode = output<ThemeMode>();
   readonly logout = output<void>();
 
   readonly title = 'Book App';

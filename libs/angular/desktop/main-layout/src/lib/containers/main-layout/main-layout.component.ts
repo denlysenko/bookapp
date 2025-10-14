@@ -14,6 +14,7 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 
 import { MainLayoutBase } from '@bookapp/angular/base';
+import { ThemePlatformService } from '@bookapp/angular/core';
 
 import { filter, takeUntil } from 'rxjs/operators';
 
@@ -41,6 +42,7 @@ export class MainLayoutComponent extends MainLayoutBase implements OnInit, OnDes
   readonly #media: MediaMatcher = inject(MediaMatcher);
   readonly #router = inject(Router);
 
+  readonly themeService = inject(ThemePlatformService);
   readonly mobileQuery = this.#media.matchMedia('(max-width: 600px)');
 
   readonly #mobileQueryListener = () => this.#cdr.detectChanges();
