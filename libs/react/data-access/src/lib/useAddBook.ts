@@ -6,27 +6,18 @@ import {
   CREATE_BOOK_MUTATION,
   UPDATE_BOOK_MUTATION,
 } from '@bookapp/shared/queries';
+
 import { isNil } from 'lodash';
-import { useEffect, useState } from 'react';
 
 export function useAddBook() {
-  const [bookForEdit, setBookForEdit] = useState<Book | null>(null);
   const [executeCreateMutation] = useMutation<{ createBook: Book }>(CREATE_BOOK_MUTATION);
   const [executeUpdateMutation] = useMutation<{ updateBook: Book }>(UPDATE_BOOK_MUTATION);
   const [executeBookQuery, { data: bookForEditData, loading }] = useLazyQuery<{ book: Book }>(
     BOOK_FOR_EDIT_QUERY
   );
 
-  useEffect(() => {
-    if (!isNil(bookForEditData)) {
-      setBookForEdit(bookForEditData.book);
-    }
-  }, [bookForEditData]);
-
   const fetchBookForEdit = (slug?: string) => {
-    if (isNil(slug)) {
-      setBookForEdit(null);
-    } else {
+    if (!isNil(slug)) {
       executeBookQuery({ variables: { slug } });
     }
   };
@@ -68,7 +59,7 @@ export function useAddBook() {
     createBook,
     updateBook,
     fetchBookForEdit,
-    bookForEdit,
+    bookForEdit: bookForEditData?.book ?? null,
     fetchingBook: loading,
   };
 }

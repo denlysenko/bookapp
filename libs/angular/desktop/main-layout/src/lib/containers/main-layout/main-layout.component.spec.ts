@@ -9,6 +9,8 @@ import {
   user,
 } from '@bookapp/testing/angular';
 
+import { signal } from '@angular/core';
+import { ThemePlatformService } from '@bookapp/angular/core';
 import { MainLayoutComponent } from './main-layout.component';
 
 describe('MainLayoutComponent', () => {
@@ -28,6 +30,12 @@ describe('MainLayoutComponent', () => {
         {
           provide: LogsService,
           useValue: MockAngularLogsService,
+        },
+        {
+          provide: ThemePlatformService,
+          useValue: {
+            mode: signal('light'),
+          },
         },
       ],
     }).compileComponents();

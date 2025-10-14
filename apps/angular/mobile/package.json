@@ -20,7 +20,7 @@
     "nativescript-webview-interface": "file:../../../node_modules/nativescript-webview-interface"
   },
   "devDependencies": {
-    "@nativescript/android": "8.9.1",
+    "@nativescript/android": "8.9.2",
     "@nativescript/ios": "8.9.4",
     "@nativescript/tailwind": "file:../../../node_modules/@nativescript/tailwind"
   },

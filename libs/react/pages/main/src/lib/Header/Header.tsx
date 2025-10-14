@@ -66,9 +66,9 @@ export const Header = ({ toggleDrawer }: HeaderProps) => {
           <div className="user-menu">
             <IconButton id="theme-switcher" className="theme-switcher" onClick={openThemeMenu}>
               <Icon>
-                {mode == 'system'
+                {mode === 'system'
                   ? 'brightness_medium'
-                  : mode == 'light'
+                  : mode === 'light'
                     ? 'light_mode'
                     : 'dark_mode'}
               </Icon>

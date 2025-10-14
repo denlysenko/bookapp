@@ -18,7 +18,9 @@ export const Main = () => {
 
   useEffect(() => {
     if (!matches) {
-      setDrawerOpen(false);
+      requestAnimationFrame(() => {
+        setDrawerOpen(false);
+      });
     }
   }, [location, matches]);
 

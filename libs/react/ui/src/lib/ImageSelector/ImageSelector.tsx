@@ -1,4 +1,4 @@
-import { ChangeEvent, SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, SyntheticEvent, useCallback, useRef, useState } from 'react';
 
 import ReactCrop, { Crop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -30,8 +30,14 @@ export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorPro
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
   const [imgSrc, setImgSrc] = useState<string>();
-  const [crop, setCrop] = useState<Crop>();
-  const [completedCrop, setCompletedCrop] = useState(null);
+  const [crop, setCrop] = useState<Crop>({ unit: '%', width: 100, height: 100, x: 0, y: 0 });
+  const [completedCrop, setCompletedCrop] = useState({
+    unit: '%',
+    width: 100,
+    height: 100,
+    x: 0,
+    y: 0,
+  });
   const [error, setError] = useState(null);
   const { dropElemRef } = useDropZone(onFileDrop);
   const { progress, uploadFile } = useUpload();
@@ -99,11 +105,6 @@ export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorPro
       setError(message);
     }
   };
-
-  useEffect(() => {
-    setCrop({ unit: '%', width: 100, height: 100, x: 0, y: 0 });
-    setCompletedCrop({ unit: '%', width: 100, height: 100, x: 0, y: 0 });
-  }, [ready]);
 
   return (
     <StyledDialog open={open} onClose={handleClose}>

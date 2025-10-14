@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -15,16 +15,16 @@ import { StyledHistory } from './StyledHistory';
 const FILTER_KEY = 'HISTORY';
 
 export function History() {
-  const filter = useRef<LogsFilter>(store.get(FILTER_KEY));
-  const { loading, refetch, logs } = useHistory(filter.current);
+  const [filter, setFilter] = useState<LogsFilter>(() => store.get(FILTER_KEY));
+  const { loading, refetch, logs } = useHistory(filter);
 
   useEffect(() => {
-    store.set(FILTER_KEY, filter.current);
-  }, []);
+    store.set(FILTER_KEY, filter);
+  }, [filter]);
 
   const getSorting = (): Sorting => {
-    if (filter.current && filter.current.orderBy) {
-      const [active, direction] = filter.current.orderBy.split('_');
+    if (filter && filter.orderBy) {
+      const [active, direction] = filter.orderBy.split('_');
 
       return {
         active,
@@ -39,10 +39,10 @@ export function History() {
   };
 
   const getPagination = (): Pagination => {
-    if (filter.current) {
+    if (filter) {
       return {
-        skip: filter.current.skip || 0,
-        first: filter.current.first || DEFAULT_LIMIT,
+        skip: filter.skip || 0,
+        first: filter.first || DEFAULT_LIMIT,
       };
     }
 
@@ -54,14 +54,14 @@ export function History() {
 
   const sort = ({ active, direction }) => {
     const orderBy = `${active}_${direction}` as LogsFilter['orderBy'];
-    filter.current = { ...filter.current, orderBy };
+    setFilter({ ...filter, orderBy });
     refetch({ orderBy });
   };
 
   const paginate = ({ pageIndex, pageSize }) => {
     const skip = pageIndex * pageSize;
     const first = pageSize;
-    filter.current = { ...filter.current, skip, first };
+    setFilter({ ...filter, skip, first });
     refetch({ skip, first });
   };
 

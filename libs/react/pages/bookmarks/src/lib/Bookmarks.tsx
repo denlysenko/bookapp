@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -7,7 +7,6 @@ import { useBookmarksByType } from '@bookapp/react/data-access';
 import { BooksList, FullPageSpinner } from '@bookapp/react/ui';
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { BOOKMARKS } from '@bookapp/shared/enums';
-import { ApiResponse, Book, Bookmark } from '@bookapp/shared/interfaces';
 
 import { StyledBookmarks } from './StyledBookmarks';
 
@@ -22,12 +21,20 @@ export function Bookmarks({ title, type }: BookmarksProps) {
 
   const { bookmarks, loading, loadMore, rateBook } = useBookmarksByType(type);
 
-  const toBooks = (data: ApiResponse<Bookmark>): Book[] => {
-    const { rows, count } = data;
-    hasMoreItems.current = rows.length < count;
+  const books = useMemo(() => {
+    if (!bookmarks) {
+      return [];
+    }
 
-    return rows.map((bookmark) => bookmark.book);
-  };
+    return bookmarks.rows.map((bookmark) => bookmark.book);
+  }, [bookmarks]);
+
+  useEffect(() => {
+    if (bookmarks) {
+      const { rows, count } = bookmarks;
+      hasMoreItems.current = rows.length < count;
+    }
+  }, [bookmarks]);
 
   const onLoadMore = () => {
     if (!hasMoreItems.current || loading) {
@@ -46,11 +53,7 @@ export function Bookmarks({ title, type }: BookmarksProps) {
           <Typography component="span">{title}</Typography>
         </Toolbar>
         <div className="view-content">
-          <BooksList
-            books={bookmarks && toBooks(bookmarks)}
-            onLoadMore={onLoadMore}
-            onBookRate={rateBook}
-          />
+          <BooksList books={books} onLoadMore={onLoadMore} onBookRate={rateBook} />
         </div>
       </StyledBookmarks>
     </>
