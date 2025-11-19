@@ -117,7 +117,7 @@
     "@nativescript/nx": "^21.0.0",
     "@nativescript/tailwind": "^4.0.5",
     "@nativescript/types": "^8.9.1",
-    "@nativescript/webpack": "^5.0.24",
+    "@nativescript/webpack": "^5.0.25",
     "@nestjs/schematics": "11.0.9",
     "@nestjs/testing": "11.1.6",
     "@ngtools/webpack": "^20.3.5",
