@@ -65,7 +65,7 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "11.1.6",
     "@sentry/angular": "^10.19.0",
-    "@sentry/nestjs": "^10.19.0",
+    "@sentry/nestjs": "^10.27.0",
     "@sentry/react": "^10.19.0",
     "@simplewebauthn/browser": "^13.2.2",
     "@simplewebauthn/server": "^13.2.2",
