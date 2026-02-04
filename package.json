@@ -47,7 +47,7 @@
     "@angular/router": "20.3.4",
     "@angular/service-worker": "20.3.4",
     "@apollo/client": "^3.13.9",
-    "@apollo/server": "^4.12.2",
+    "@apollo/server": "^4.13.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@google-cloud/storage": "^7.17.2",
