@@ -63,7 +63,7 @@
     "@nestjs/graphql": "^13.2.0",
     "@nestjs/mongoose": "^11.0.3",
     "@nestjs/passport": "^11.0.5",
-    "@nestjs/platform-express": "11.1.6",
+    "@nestjs/platform-express": "11.1.15",
     "@sentry/angular": "^10.19.0",
     "@sentry/nestjs": "^10.27.0",
     "@sentry/react": "^10.19.0",
