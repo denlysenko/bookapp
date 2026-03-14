@@ -7,12 +7,16 @@ import { environment } from '@bookapp/shared/environments';
 export function useUpload() {
   const [progress, setProgress] = useState(0);
 
-  const uploadFile = (file: File | Blob, name = 'file'): Promise<string> => {
+  const uploadFile = (file: File | Blob, name = 'file', folder?: string): Promise<string> => {
     return new Promise((resolve, reject) => {
       const formData = new FormData();
       const xhr = new XMLHttpRequest();
 
       formData.append(name, file);
+
+      if (folder) {
+        formData.append('folder', folder);
+      }
 
       if (xhr.upload) {
         xhr.upload.addEventListener(
