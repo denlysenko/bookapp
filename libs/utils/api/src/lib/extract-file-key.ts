@@ -9,5 +9,5 @@ export function extractFileKey(fileUrl: string): string {
     key = key.slice(0, idx);
   }
 
-  return key;
+  return decodeURIComponent(key);
 }

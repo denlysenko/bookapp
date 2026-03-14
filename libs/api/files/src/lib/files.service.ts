@@ -37,7 +37,7 @@ export class FilesService {
 
       blobStream.on('finish', () => {
         const publicUrl = format(
-          `https://firebasestorage.googleapis.com/v0/b/${this.bucket.name}/o/${blob.name}?alt=media`
+          `https://firebasestorage.googleapis.com/v0/b/${this.bucket.name}/o/${encodeURIComponent(blob.name)}?alt=media`
         );
         this.logger.log(`File uploaded to bucket: ${publicUrl}`);
         resolve({ publicUrl });

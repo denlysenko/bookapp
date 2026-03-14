@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  Body,
   Controller,
   Delete,
   HttpCode,
@@ -16,6 +17,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import * as multer from 'multer';
 import { randomUUID } from 'node:crypto';
 import { extname } from 'node:path';
+
+import { UPLOAD_FOLDERS } from '@bookapp/shared/constants';
 
 import { FILE_ERRORS } from './constants';
 import { FilesService } from './files.service';
@@ -41,12 +44,17 @@ export class FilesController {
   @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(FileInterceptor('file', options))
   @HttpCode(HttpStatus.OK)
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+  async uploadFile(@UploadedFile() file: Express.Multer.File, @Body('folder') folder?: string) {
     if (!file) {
       throw new BadRequestException(FILE_ERRORS.INVALID_MIMETYPE_ERR);
     }
 
-    const filename = `${randomUUID()}${extname(file.originalname)}`;
+    if (folder !== undefined && !(Object.values(UPLOAD_FOLDERS) as string[]).includes(folder)) {
+      throw new BadRequestException(FILE_ERRORS.INVALID_FOLDER_ERR);
+    }
+
+    const uuid = `${randomUUID()}${extname(file.originalname)}`;
+    const filename = folder ? `${folder}/${uuid}` : uuid;
     return this.filesService.uploadToBucket(file, filename);
   }
 
