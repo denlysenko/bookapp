@@ -14,6 +14,7 @@ import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angu
 
 import { BaseForm } from '@bookapp/angular/base';
 import { UploadPlatformService } from '@bookapp/angular/core';
+import { UPLOAD_FOLDERS } from '@bookapp/shared/constants';
 import { ApiError, ProfileForm, User } from '@bookapp/shared/interfaces';
 
 import { NativeScriptCommonModule, NativeScriptFormsModule } from '@nativescript/angular';
@@ -140,7 +141,7 @@ export class ProfileFormComponent extends BaseForm<Form> {
     if (localPath) {
       this.uploading.set(true);
       this.#uploadService
-        .upload(localPath)
+        .upload(localPath, 'file', UPLOAD_FOLDERS.AVATARS)
         .pipe(map((res) => JSON.parse(res)))
         .subscribe({
           next: ({ publicUrl }) => {

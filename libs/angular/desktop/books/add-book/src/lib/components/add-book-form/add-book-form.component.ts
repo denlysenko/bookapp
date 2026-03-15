@@ -28,6 +28,7 @@ import { MatInputModule } from '@angular/material/input';
 import { BaseForm } from '@bookapp/angular/base';
 import { UploadPlatformService } from '@bookapp/angular/core';
 import { FileSelectorComponent, ImageSelectorComponent } from '@bookapp/angular/ui-desktop';
+import { UPLOAD_FOLDERS } from '@bookapp/shared/constants';
 import { ApiError, Book, BookFormModel } from '@bookapp/shared/interfaces';
 import { extractFileKey } from '@bookapp/utils/api';
 
@@ -140,7 +141,7 @@ export class AddBookFormComponent extends BaseForm<Form> implements OnInit {
   showCoverSelector() {
     const dialogRef = this.#dialog.open(ImageSelectorComponent, {
       width: '300px',
-      data: { maintainAspectRatio: false },
+      data: { maintainAspectRatio: false, folder: UPLOAD_FOLDERS.COVERS },
     });
 
     dialogRef.afterClosed().subscribe((coverUrl) => {
@@ -154,6 +155,7 @@ export class AddBookFormComponent extends BaseForm<Form> implements OnInit {
   showFileSelector() {
     const dialogRef = this.#dialog.open(FileSelectorComponent, {
       width: '300px',
+      data: { folder: UPLOAD_FOLDERS.BOOKS },
     });
 
     dialogRef.afterClosed().subscribe((epubUrl) => {

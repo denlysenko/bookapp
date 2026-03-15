@@ -10,6 +10,7 @@ export abstract class FileSelectorBase {
   protected readonly uploadService = inject(UploadPlatformService);
   protected readonly error = signal<string>(undefined);
   protected readonly file = signal<File | null>(null);
+  protected abstract readonly folder?: string;
 
   readonly loading = signal(false);
 
@@ -26,7 +27,7 @@ export abstract class FileSelectorBase {
   upload(file: File | Blob): Observable<UploadResponse> {
     this.loading.set(true);
 
-    return this.uploadService.upload(file).pipe(
+    return this.uploadService.upload(file, 'file', this.folder).pipe(
       tap(() => {
         this.loading.set(false);
       }),

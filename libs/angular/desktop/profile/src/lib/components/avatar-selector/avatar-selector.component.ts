@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 
 import { ImageSelectorComponent } from '@bookapp/angular/ui-desktop';
+import { UPLOAD_FOLDERS } from '@bookapp/shared/constants';
 import { ProfileForm, User } from '@bookapp/shared/interfaces';
 
 @Component({
@@ -24,6 +25,7 @@ export class AvatarSelectorComponent {
   showSelector() {
     const dialogRef = this.#dialog.open(ImageSelectorComponent, {
       width: '300px',
+      data: { folder: UPLOAD_FOLDERS.AVATARS },
     });
 
     dialogRef.afterClosed().subscribe((avatar) => {
