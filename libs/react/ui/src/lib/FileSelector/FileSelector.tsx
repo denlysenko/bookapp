@@ -65,7 +65,7 @@ export const FileSelector = ({ open, onClose, onFileUpload, folder }: FileSelect
 
     try {
       dispatch({ type: FileSelectorActionTypes.START_LOADING });
-      const response = await uploadFile(file, folder);
+      const response = await uploadFile(file, 'file', folder);
       const { publicUrl } = JSON.parse(response);
       dispatch({ type: FileSelectorActionTypes.STOP_LOADING });
       onFileUpload(publicUrl);

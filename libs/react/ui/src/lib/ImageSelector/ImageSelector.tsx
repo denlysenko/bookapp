@@ -94,7 +94,7 @@ export const ImageSelector = ({ open, onClose, onImageUpload, folder }: ImageSel
 
     try {
       setLoading(true);
-      const response = await uploadFile(img, folder);
+      const response = await uploadFile(img, 'file', folder);
       const { publicUrl } = JSON.parse(response);
       setLoading(false);
       onImageUpload(publicUrl);
