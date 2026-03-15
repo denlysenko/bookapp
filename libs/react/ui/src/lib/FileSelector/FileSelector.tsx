@@ -22,9 +22,10 @@ export interface FileSelectorProps {
   open: boolean;
   onFileUpload: (publicUrl: string) => void;
   onClose: () => void;
+  folder?: string;
 }
 
-export const FileSelector = ({ open, onClose, onFileUpload }: FileSelectorProps) => {
+export const FileSelector = ({ open, onClose, onFileUpload, folder }: FileSelectorProps) => {
   const [{ loading, file, error }, dispatch] = useReducer(
     fileSelectorReducer,
     initialFileSelectorState
@@ -64,7 +65,7 @@ export const FileSelector = ({ open, onClose, onFileUpload }: FileSelectorProps)
 
     try {
       dispatch({ type: FileSelectorActionTypes.START_LOADING });
-      const response = await uploadFile(file);
+      const response = await uploadFile(file, folder);
       const { publicUrl } = JSON.parse(response);
       dispatch({ type: FileSelectorActionTypes.STOP_LOADING });
       onFileUpload(publicUrl);

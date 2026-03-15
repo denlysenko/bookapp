@@ -23,9 +23,10 @@ type ImageSelectorProps = {
   open: boolean;
   onImageUpload: (publicUrl: string) => void;
   onClose: () => void;
+  folder?: string;
 };
 
-export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorProps) => {
+export const ImageSelector = ({ open, onClose, onImageUpload, folder }: ImageSelectorProps) => {
   const imgRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
@@ -93,7 +94,7 @@ export const ImageSelector = ({ open, onClose, onImageUpload }: ImageSelectorPro
 
     try {
       setLoading(true);
-      const response = await uploadFile(img);
+      const response = await uploadFile(img, folder);
       const { publicUrl } = JSON.parse(response);
       setLoading(false);
       onImageUpload(publicUrl);

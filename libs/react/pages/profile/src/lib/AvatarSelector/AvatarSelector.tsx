@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 
 import { ImageSelector, useImageSelector } from '@bookapp/react/ui';
+import { UPLOAD_FOLDERS } from '@bookapp/shared/constants';
 import { User } from '@bookapp/shared/interfaces';
 
 import { StyledAvatarSelector } from './StyledAvatarSelector';
@@ -41,6 +42,7 @@ export const AvatarSelector = ({ user, onSave }: AvatarSelectorProps) => {
         open={isImageSelectorOpened}
         onImageUpload={onAvatarUpload}
         onClose={hideImageSelector}
+        folder={UPLOAD_FOLDERS.AVATARS}
       />
     </StyledAvatarSelector>
   );
