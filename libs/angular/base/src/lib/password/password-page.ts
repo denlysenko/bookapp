@@ -1,5 +1,7 @@
 import { inject, signal } from '@angular/core';
 
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { PasswordService } from '@bookapp/angular/data-access';
 import { ApiError } from '@bookapp/shared/interfaces';
@@ -27,13 +29,13 @@ export abstract class PasswordPageBase extends BaseComponent {
           this.loading.set(false);
         })
       )
-      .subscribe(({ data, errors }) => {
+      .subscribe(({ data, error }) => {
         if (data && data.changePassword) {
           this.#feedbackService.success(PASSWORD_CHANGE_SUCCESS);
         }
 
-        if (errors) {
-          this.error.set(errors[errors.length - 1]);
+        if (CombinedGraphQLErrors.is(error)) {
+          this.error.set(error.errors[0] as ApiError);
         }
       });
   }

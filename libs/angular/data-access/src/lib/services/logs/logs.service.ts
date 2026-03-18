@@ -41,7 +41,6 @@ export class LogsService {
           orderBy: logsFilter.orderBy || DEFAULT_ORDER_BY,
         },
         fetchPolicy: 'network-only',
-        notifyOnNetworkStatusChange: true,
       });
     }
 
@@ -52,12 +51,16 @@ export class LogsService {
     return this.#lastLogsQueryRef?.subscribeToMore<{ logCreated: Log }>({
       document: LOG_CREATED_SUBSCRIPTION,
       variables: { userId },
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev;
+      updateQuery: (_, { complete, subscriptionData, previousData }) => {
+        if (!complete) {
+          return undefined;
         }
 
-        const newLogs = [subscriptionData.data.logCreated, ...prev.logs.rows];
+        if (!subscriptionData.data) {
+          return previousData;
+        }
+
+        const newLogs = [subscriptionData.data.logCreated, ...previousData.logs.rows];
 
         if (newLogs.length > 3) {
           newLogs.pop();
@@ -66,7 +69,7 @@ export class LogsService {
         return {
           logs: {
             rows: newLogs,
-            count: prev.logs.count,
+            count: previousData.logs.count,
             __typename: 'LogsResponse',
           },
         };

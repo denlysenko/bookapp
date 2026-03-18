@@ -1,7 +1,7 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { MockedProvider } from '@apollo/client/testing';
+import { MockedProvider } from '@apollo/client/testing/react';
 
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { BOOKMARKS } from '@bookapp/shared/enums';

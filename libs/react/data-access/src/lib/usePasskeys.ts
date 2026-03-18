@@ -1,3 +1,6 @@
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+import { useMutation, useQuery } from '@apollo/client/react';
+
 import { ApiResponse, Passkey } from '@bookapp/shared/interfaces';
 import {
   DELETE_PASSKEY_MUTATION,
@@ -7,7 +10,6 @@ import {
   VERIFY_REGISTRATION_RESPONSE_MUTATION,
 } from '@bookapp/shared/queries';
 
-import { useMutation, useQuery } from '@apollo/client';
 import {
   browserSupportsWebAuthn,
   PublicKeyCredentialCreationOptionsJSON as CreationOptionsJSON,
@@ -19,7 +21,6 @@ export function usePasskeys() {
     GET_PASSKEYS_QUERY,
     {
       fetchPolicy: 'network-only',
-      notifyOnNetworkStatusChange: true,
     }
   );
 
@@ -40,92 +41,112 @@ export function usePasskeys() {
   }>(VERIFY_REGISTRATION_RESPONSE_MUTATION);
 
   const updatePasskey = async (id: string, label: string) => {
-    try {
-      const { data, errors } = await executeUpdatePasskeyMutation({
-        variables: { id, label },
+    const { data, error } = await executeUpdatePasskeyMutation({
+      variables: { id, label },
+    });
+
+    if (data) {
+      updateQuery((_, { complete, previousData }) => {
+        if (!complete) {
+          return undefined;
+        }
+
+        return {
+          passkeys: {
+            count: previousData.passkeys.count,
+            rows: previousData.passkeys.rows.map((passkey) =>
+              passkey.id === id ? { ...data.updatePasskey, __typename: 'Passkey' } : passkey
+            ),
+            __typename: 'PasskeysResponse',
+          },
+        };
       });
+    }
 
-      if (errors) {
-        return Promise.reject(errors);
+    if (error) {
+      if (CombinedGraphQLErrors.is(error)) {
+        return Promise.reject(error.errors);
       }
 
-      if (data) {
-        updateQuery((prevData) => {
-          return {
-            passkeys: {
-              count: prevData.passkeys.count,
-              rows: prevData.passkeys.rows.map((passkey) =>
-                passkey.id === id ? { ...data.updatePasskey, __typename: 'Passkey' } : passkey
-              ),
-              __typename: 'PasskeysResponse',
-            },
-          };
-        });
-      }
-    } catch (err) {
-      Promise.reject(err);
+      return Promise.reject(error);
     }
   };
 
   const deletePasskey = async (id: string) => {
-    try {
-      const { data, errors } = await executeDeletePasskeyMutation({
-        variables: { id },
+    const { data, error } = await executeDeletePasskeyMutation({
+      variables: { id },
+    });
+
+    if (data) {
+      updateQuery((_, { complete, previousData }) => {
+        if (!complete) {
+          return undefined;
+        }
+
+        return {
+          passkeys: {
+            count: previousData.passkeys.count - 1,
+            rows: previousData.passkeys.rows.filter((passkey) => passkey.id !== id),
+            __typename: 'PasskeysResponse',
+          },
+        };
       });
+    }
 
-      if (errors) {
-        return Promise.reject(errors);
+    if (error) {
+      if (CombinedGraphQLErrors.is(error)) {
+        return Promise.reject(error.errors);
       }
 
-      if (data) {
-        updateQuery((prevData) => {
-          return {
-            passkeys: {
-              count: prevData.passkeys.count,
-              rows: prevData.passkeys.rows.filter((passkey) => passkey.id !== id),
-              __typename: 'PasskeysResponse',
-            },
-          };
-        });
-      }
-    } catch (err) {
-      Promise.reject(err);
+      return Promise.reject(error);
     }
   };
 
   const addPasskey = async () => {
-    try {
-      const result = await executeGenerateRegistrationOptionsMutation();
+    const result = await executeGenerateRegistrationOptionsMutation();
 
-      if (result.errors) {
-        return Promise.reject(result.errors);
+    if (result.error) {
+      if (CombinedGraphQLErrors.is(result.error)) {
+        return Promise.reject(result.error.errors);
       }
 
-      if (result.data) {
+      return Promise.reject(result.error);
+    }
+
+    if (result.data) {
+      try {
         const optionsJSON = result.data.generateRegistrationOptions as CreationOptionsJSON;
         const response = await startRegistration({ optionsJSON });
-        const { data, errors } = await executeVerifyRegistrationResponseMutation({
+        const { data, error } = await executeVerifyRegistrationResponseMutation({
           variables: { response },
         });
 
-        if (errors) {
-          return Promise.reject(errors);
-        }
-
         if (data) {
-          updateQuery((prevData) => {
+          updateQuery((_, { complete, previousData }) => {
+            if (!complete) {
+              return undefined;
+            }
+
             return {
               passkeys: {
-                count: prevData.passkeys.count + 1,
-                rows: [...prevData.passkeys.rows, data.verifyRegistrationResponse],
+                count: previousData.passkeys.count + 1,
+                rows: [...previousData.passkeys.rows, data.verifyRegistrationResponse],
                 __typename: 'PasskeysResponse',
               },
             };
           });
         }
+
+        if (error) {
+          if (CombinedGraphQLErrors.is(error)) {
+            return Promise.reject(error.errors);
+          }
+
+          return Promise.reject(error);
+        }
+      } catch (err) {
+        return Promise.reject(err);
       }
-    } catch {
-      return Promise.reject([new Error('Error adding passkey')]);
     }
   };
 

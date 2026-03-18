@@ -1,4 +1,4 @@
-import { MockedProvider } from '@apollo/client/testing';
+import { MockedProvider } from '@apollo/client/testing/react';
 import * as simpleWebAuthn from '@simplewebauthn/browser';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
@@ -287,7 +287,7 @@ describe('Passkeys', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /add/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /add/i })).not.toBeDisabled();
       });
 
       fireEvent.click(screen.getByRole('button', { name: /add/i }));
@@ -312,7 +312,7 @@ describe('Passkeys', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /add/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /add/i })).not.toBeDisabled();
       });
 
       fireEvent.click(screen.getByRole('button', { name: /add/i }));
@@ -341,7 +341,7 @@ describe('Passkeys', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /add/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /add/i })).not.toBeDisabled();
       });
 
       fireEvent.click(screen.getByRole('button', { name: /add/i }));
@@ -362,7 +362,7 @@ describe('Passkeys', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /add/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /add/i })).not.toBeDisabled();
       });
 
       fireEvent.click(screen.getByRole('button', { name: /add/i }));

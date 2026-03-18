@@ -154,6 +154,7 @@ describe('BuyBooksPageComponent', () => {
     it('should fetchMore books', () => {
       jest.spyOn(booksService, 'watchBooks').mockImplementationOnce(() =>
         of({
+          dataState: 'complete',
           data: { books: { rows: [book], count: 3 } },
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any)

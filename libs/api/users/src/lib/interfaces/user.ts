@@ -1,7 +1,7 @@
 import { User } from '@bookapp/shared/interfaces';
 import { Document, Types } from 'mongoose';
 
-export interface UserModel extends Omit<User, 'id'>, Document<Types.ObjectId> {
+export interface UserModel extends User, Document<Types.ObjectId> {
   password: string;
   salt: string;
   resetPasswordToken?: string;

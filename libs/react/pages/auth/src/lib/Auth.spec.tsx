@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { MockedProvider } from '@apollo/client/testing';
+import { MockedProvider } from '@apollo/client/testing/react';
 import { startAuthentication } from '@simplewebauthn/browser';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 

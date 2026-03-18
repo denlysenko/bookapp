@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+import { useMutation, useQuery } from '@apollo/client/react';
 
 import {
   AddCommentResponse,
@@ -14,24 +15,27 @@ export function useBook(slug: string) {
       slug,
     },
     fetchPolicy: 'network-only',
-    notifyOnNetworkStatusChange: true,
   });
 
   const [executeAddCommentMutation] = useMutation<AddCommentResponse>(ADD_COMMENT_MUTATION);
   const [executeRateBookMutation] = useMutation<RateBookResponse>(RATE_BOOK_MUTATION);
 
   const addComment = async (bookId: string, text: string) => {
-    const { data, errors } = await executeAddCommentMutation({
+    const { data, error } = await executeAddCommentMutation({
       variables: {
         bookId,
         text,
       },
       update: (_, { data: { addComment } }) => {
-        updateQuery((prevData) => {
+        updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
           return {
             book: {
-              ...prevData.book,
-              comments: [...prevData.book.comments, addComment],
+              ...previousData.book,
+              comments: [...previousData.book.comments, addComment],
             },
           };
         });
@@ -42,22 +46,30 @@ export function useBook(slug: string) {
       return true;
     }
 
-    if (errors) {
-      return Promise.reject(errors);
+    if (error) {
+      if (CombinedGraphQLErrors.is(error)) {
+        return Promise.reject(error.errors);
+      }
+
+      return Promise.reject(error);
     }
   };
 
   const rateBook = async ({ bookId, rate }: RateBookEvent) => {
-    const { data, errors } = await executeRateBookMutation({
+    const { data, error } = await executeRateBookMutation({
       variables: {
         bookId,
         rate,
       },
       update: (_, { data: { rateBook } }) => {
-        updateQuery((prevData) => {
+        updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
           return {
             book: {
-              ...prevData.book,
+              ...previousData.book,
               rating: rateBook.rating,
               total_rates: rateBook.total_rates,
               total_rating: rateBook.total_rating,
@@ -71,8 +83,12 @@ export function useBook(slug: string) {
       return true;
     }
 
-    if (errors) {
-      return Promise.reject(errors);
+    if (error) {
+      if (CombinedGraphQLErrors.is(error)) {
+        return Promise.reject(error.errors);
+      }
+
+      return Promise.reject(error);
     }
   };
 

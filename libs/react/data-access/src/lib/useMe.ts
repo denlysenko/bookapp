@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 
 import { User } from '@bookapp/shared/interfaces';
 import { ME_QUERY } from '@bookapp/shared/queries';

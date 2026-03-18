@@ -195,7 +195,7 @@ describe('AuthService', () => {
           },
           {
             provide: APOLLO_TESTING_CACHE,
-            useValue: new InMemoryCache({ addTypename: true }),
+            useValue: new InMemoryCache(),
           },
           {
             provide: Environment,

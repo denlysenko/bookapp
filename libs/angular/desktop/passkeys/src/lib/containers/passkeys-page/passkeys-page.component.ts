@@ -5,11 +5,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+
 import { FeedbackPlatformService, WebauthnService } from '@bookapp/angular/core';
 import { PasskeysService } from '@bookapp/angular/data-access';
 import { ConfirmDialogComponent } from '@bookapp/angular/ui-desktop';
 import { Passkey, PasskeyProvidersMetadata } from '@bookapp/shared/interfaces';
 
+import { onlyCompleteData } from 'apollo-angular';
 import { catchError, from, map, of, switchMap, tap } from 'rxjs';
 
 import { EditPasskeyComponent } from '../../components/edit-passkey/edit-passkey.component';
@@ -31,7 +34,10 @@ export class PasskeysPageComponent {
   readonly loading = signal(false);
   readonly isSupported = this.#webauthnService.isSupported;
 
-  readonly passkeys$ = this.#passkeysService.watchPasskeys().pipe(map(({ data }) => data.passkeys));
+  readonly passkeys$ = this.#passkeysService.watchPasskeys().pipe(
+    onlyCompleteData(),
+    map(({ data }) => data.passkeys)
+  );
   readonly passkeyProvidersMetadata$ = this.#httpClient
     .get<Record<string, PasskeyProvidersMetadata>>('/assets/aaguids.json')
     .pipe(catchError(() => of(null)));
@@ -46,15 +52,15 @@ export class PasskeysPageComponent {
         switchMap((credentials) => this.#passkeysService.verifyRegistration(credentials))
       )
       .subscribe({
-        next: ({ data, errors }) => {
+        next: ({ data, error }) => {
           this.loading.set(false);
 
           if (data) {
             this.#feedbackService.success('Passkey created');
           }
 
-          if (errors) {
-            this.#feedbackService.error(errors[errors.length - 1].message);
+          if (CombinedGraphQLErrors.is(error)) {
+            this.#feedbackService.error(error.errors[error.errors.length - 1].message);
           }
         },
         error: () => {
@@ -80,15 +86,15 @@ export class PasskeysPageComponent {
             this.loading.set(true);
 
             return this.#passkeysService.deletePasskey(passkey.id).pipe(
-              tap(({ data, errors }) => {
+              tap(({ data, error }) => {
                 this.loading.set(false);
 
                 if (data) {
                   this.#feedbackService.success('Passkey deleted');
                 }
 
-                if (errors) {
-                  this.#feedbackService.error(errors[errors.length - 1].message);
+                if (CombinedGraphQLErrors.is(error)) {
+                  this.#feedbackService.error(error.errors[error.errors.length - 1].message);
                 }
               })
             );
@@ -116,15 +122,15 @@ export class PasskeysPageComponent {
             this.loading.set(true);
 
             return this.#passkeysService.updatePasskey(passkey.id, result.label).pipe(
-              tap(({ data, errors }) => {
+              tap(({ data, error }) => {
                 this.loading.set(false);
 
                 if (data) {
                   this.#feedbackService.success('Passkey updated');
                 }
 
-                if (errors) {
-                  this.#feedbackService.error(errors[errors.length - 1].message);
+                if (CombinedGraphQLErrors.is(error)) {
+                  this.#feedbackService.error(error.errors[error.errors.length - 1].message);
                 }
               })
             );

@@ -42,7 +42,6 @@ export class BookmarksService {
             first: DEFAULT_LIMIT,
           },
           fetchPolicy: 'network-only',
-          notifyOnNetworkStatusChange: true,
         }
       );
     }
@@ -55,7 +54,7 @@ export class BookmarksService {
       variables: {
         skip,
       },
-      updateQuery: (previousResult: { bookmarks: ApiResponse<Bookmark> }, { fetchMoreResult }) => {
+      updateQuery: (previousResult, { fetchMoreResult }) => {
         if (!fetchMoreResult) {
           return previousResult;
         }
@@ -147,15 +146,19 @@ export class BookmarksService {
           return;
         }
 
-        this.#bookmarksByTypeQueryRef.updateQuery((prevData) => {
-          const index = prevData.bookmarks.rows.findIndex(({ book }) => book.id === bookId);
+        this.#bookmarksByTypeQueryRef.updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
+          const index = previousData.bookmarks.rows.findIndex(({ book }) => book.id === bookId);
 
           if (index === -1) {
-            return prevData;
+            return previousData;
           }
 
           const updatedBook = {
-            ...prevData.bookmarks.rows[index].book,
+            ...previousData.bookmarks.rows[index].book,
             rating: rateBook.rating,
             total_rates: rateBook.total_rates,
             total_rating: rateBook.total_rating,
@@ -163,11 +166,11 @@ export class BookmarksService {
 
           return {
             bookmarks: {
-              ...prevData.bookmarks,
+              ...previousData.bookmarks,
               rows: [
-                ...prevData.bookmarks.rows.slice(0, index),
-                { ...prevData.bookmarks.rows[index], book: updatedBook },
-                ...prevData.bookmarks.rows.slice(index + 1),
+                ...previousData.bookmarks.rows.slice(0, index),
+                { ...previousData.bookmarks.rows[index], book: updatedBook },
+                ...previousData.bookmarks.rows.slice(index + 1),
               ],
             },
           };

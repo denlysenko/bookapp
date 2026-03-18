@@ -24,9 +24,9 @@ export class AuthPageComponent extends AuthPageBase {
         switchMap((credentials) => this.authService.verifyPasskeyAuthentication(credentials))
       )
       .subscribe({
-        next: ({ data, errors }) => {
+        next: ({ data, error }) => {
           this.loading.set(false);
-          this.onNext({ data, errors });
+          this.onNext({ data, error });
         },
         error: () => {
           this.loading.set(false);

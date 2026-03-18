@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injector } from '@angular/core';
 
-import { ApolloLink, ErrorPolicy, InMemoryCache, ServerError, split } from '@apollo/client/core';
-import { onError } from '@apollo/client/link/error';
+import { ApolloLink, ErrorPolicy, InMemoryCache, Observable } from '@apollo/client/core';
+import { CombinedGraphQLErrors, ServerError } from '@apollo/client/errors';
+import { ErrorLink } from '@apollo/client/link/error';
 import { RetryLink } from '@apollo/client/link/retry';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
@@ -21,7 +22,6 @@ import { AuthPayload } from '@bookapp/shared/interfaces';
 
 import { provideApollo } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
-import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import { createClient } from 'graphql-ws';
 import { jwtDecode } from 'jwt-decode';
 import { firstValueFrom } from 'rxjs';
@@ -82,7 +82,7 @@ export function provideGraphql() {
         return forward(operation);
       });
 
-      const link = split(
+      const link = ApolloLink.split(
         ({ query }) => {
           const { kind, operation }: Definition = getMainDefinition(query);
           return kind === 'OperationDefinition' && operation === 'subscription';
@@ -91,24 +91,21 @@ export function provideGraphql() {
         auth.concat(http)
       );
 
-      const errorLink = onError(({ networkError, graphQLErrors }) => {
-        const serverError = networkError as ServerError;
-        // const feedbackService = injector.get(FeedbackPlatformService);
-
-        if (serverError) {
+      const errorLink = new ErrorLink(({ error }) => {
+        if (ServerError.is(error)) {
           let msg = '';
 
-          switch ((serverError as ServerError).statusCode) {
+          switch (error.statusCode) {
             case HTTP_STATUS.NO_CONNECTION:
               msg = 'No connection. Please, try again later.';
               break;
             case HTTP_STATUS.SERVICE_UNAVAILABLE:
             case HTTP_STATUS.GATEWAY_TIMEOUT:
-              msg = `${serverError.response.statusText}. Retrying...`;
+              msg = `${error.bodyText}. Retrying...`;
               break;
             case HTTP_STATUS.INTERNAL_SERVER_ERROR:
             case HTTP_STATUS.BAD_GATEWAY:
-              msg = `${serverError.response.statusText}.`;
+              msg = `${error.bodyText}.`;
               break;
           }
 
@@ -117,9 +114,9 @@ export function provideGraphql() {
           }
         }
 
-        if (graphQLErrors) {
-          const [error] = graphQLErrors;
-          const errorCode = (error.extensions as { code: string })?.code;
+        if (CombinedGraphQLErrors.is(error)) {
+          const [gqlError] = error.errors;
+          const errorCode = (gqlError.extensions as { code: string })?.code;
 
           if (errorCode === 'UNAUTHENTICATED') {
             const authService = injector.get(AuthService);
@@ -145,44 +142,48 @@ export function provideGraphql() {
         attempts: {
           max: 5,
           retryIf: (error) =>
-            error.status === HTTP_STATUS.SERVICE_UNAVAILABLE ||
-            error.status === HTTP_STATUS.GATEWAY_TIMEOUT,
+            ServerError.is(error) &&
+            (error.statusCode === HTTP_STATUS.SERVICE_UNAVAILABLE ||
+              error.statusCode === HTTP_STATUS.GATEWAY_TIMEOUT),
         },
       });
 
-      const refreshTokenLink = new TokenRefreshLink({
-        accessTokenField: 'accessToken',
-        isTokenValidOrUndefined: async () => {
-          const token = storeService.get(AUTH_TOKEN);
+      const isTokenValid = (): boolean => {
+        const token = storeService.get(AUTH_TOKEN);
 
-          if (!token) {
-            return true;
-          }
+        if (!token) {
+          return true;
+        }
 
-          try {
-            const { exp } = jwtDecode<{ exp: number }>(token);
-            return Date.now() < exp * 1000;
-          } catch {
-            return false;
-          }
-        },
-        fetchAccessToken: () => {
-          return firstValueFrom(
-            httpClient.post<Response>(environment.refreshTokenUrl, null, {
+        try {
+          const { exp } = jwtDecode<{ exp: number }>(token);
+          return Date.now() < exp * 1000;
+        } catch {
+          return false;
+        }
+      };
+
+      const refreshTokenLink = new ApolloLink((operation, forward) => {
+        if (isTokenValid()) {
+          return forward(operation);
+        }
+
+        return new Observable((observer) => {
+          firstValueFrom(
+            httpClient.post<AuthPayload>(environment.refreshTokenUrl, null, {
               headers: new HttpHeaders().set(
                 REFRESH_TOKEN_HEADER,
                 storageService.getItem(AUTH_TOKEN)
               ),
             })
-          );
-        },
-        handleResponse: () => (response: AuthPayload) => {
-          storageService.setItem(AUTH_TOKEN, response.refreshToken);
-          return response;
-        },
-        handleFetch: (accessToken) => {
-          storeService.set(AUTH_TOKEN, accessToken);
-        },
+          )
+            .then((response) => {
+              storageService.setItem(AUTH_TOKEN, response.refreshToken);
+              storeService.set(AUTH_TOKEN, response.accessToken);
+              forward(operation).subscribe(observer);
+            })
+            .catch(observer.error.bind(observer));
+        });
       });
 
       return {

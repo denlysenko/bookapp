@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+import { useMutation, useQuery } from '@apollo/client/react';
 
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { ApiResponse, Book, RateBookEvent, RateBookResponse } from '@bookapp/shared/interfaces';
@@ -13,28 +14,31 @@ export function useBestBooks() {
         first: DEFAULT_LIMIT,
       },
       fetchPolicy: 'network-only',
-      notifyOnNetworkStatusChange: true,
     }
   );
 
   const [executeRateBookMutation] = useMutation<RateBookResponse>(RATE_BOOK_MUTATION);
 
   const rateBook = async ({ bookId, rate }: RateBookEvent) => {
-    const { data, errors } = await executeRateBookMutation({
+    const { data, error } = await executeRateBookMutation({
       variables: {
         bookId,
         rate,
       },
       update: (_, { data: { rateBook } }) => {
-        updateQuery((prevData) => {
-          const index = prevData.bestBooks.rows.findIndex((book) => book.id === bookId);
+        updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
+          const index = previousData.bestBooks.rows.findIndex((book) => book.id === bookId);
 
           if (index === -1) {
-            return prevData;
+            return previousData;
           }
 
           const updatedBook = {
-            ...prevData.bestBooks.rows[index],
+            ...previousData.bestBooks.rows[index],
             rating: rateBook.rating,
             total_rates: rateBook.total_rates,
             total_rating: rateBook.total_rating,
@@ -42,11 +46,11 @@ export function useBestBooks() {
 
           return {
             bestBooks: {
-              ...prevData.bestBooks,
+              ...previousData.bestBooks,
               rows: [
-                ...prevData.bestBooks.rows.slice(0, index),
+                ...previousData.bestBooks.rows.slice(0, index),
                 updatedBook,
-                ...prevData.bestBooks.rows.slice(index + 1),
+                ...previousData.bestBooks.rows.slice(index + 1),
               ],
             },
           };
@@ -58,8 +62,12 @@ export function useBestBooks() {
       return true;
     }
 
-    if (errors) {
-      return Promise.reject(errors);
+    if (error) {
+      if (CombinedGraphQLErrors.is(error)) {
+        return Promise.reject(error.errors);
+      }
+
+      return Promise.reject(error);
     }
   };
 

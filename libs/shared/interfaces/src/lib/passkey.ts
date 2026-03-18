@@ -1,7 +1,7 @@
 export interface Passkey {
   id: string;
   label?: string;
-  publicKey: Uint8Array;
+  publicKey: Uint8Array<ArrayBuffer>;
   userId: string;
   credentialId: string;
   counter: number;

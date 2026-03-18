@@ -23,7 +23,6 @@ export class PasskeysService {
     if (!this.#passkeysQueryRef) {
       this.#passkeysQueryRef = this.#apollo.watchQuery<{ passkeys: ApiResponse<Passkey> }>({
         query: GET_PASSKEYS_QUERY,
-        notifyOnNetworkStatusChange: true,
       });
     }
 
@@ -49,12 +48,16 @@ export class PasskeysService {
           return;
         }
 
-        this.#passkeysQueryRef.updateQuery((prevData) => {
+        this.#passkeysQueryRef.updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
           return {
             passkeys: {
-              count: prevData.passkeys.count + 1,
+              count: previousData.passkeys.count + 1,
               rows: [
-                ...prevData.passkeys.rows,
+                ...previousData.passkeys.rows,
                 { ...data.verifyRegistration, __typename: 'Passkey' },
               ],
               __typename: 'PasskeysResponse',
@@ -74,11 +77,15 @@ export class PasskeysService {
           return;
         }
 
-        this.#passkeysQueryRef.updateQuery((prevData) => {
+        this.#passkeysQueryRef.updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
           return {
             passkeys: {
-              count: prevData.passkeys.count,
-              rows: prevData.passkeys.rows.map((passkey) =>
+              count: previousData.passkeys.count,
+              rows: previousData.passkeys.rows.map((passkey) =>
                 passkey.id === id ? { ...data.editPasskey, __typename: 'Passkey' } : passkey
               ),
               __typename: 'PasskeysResponse',
@@ -98,11 +105,15 @@ export class PasskeysService {
           return;
         }
 
-        this.#passkeysQueryRef.updateQuery((prevData) => {
+        this.#passkeysQueryRef.updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
           return {
             passkeys: {
-              count: prevData.passkeys.count - 1,
-              rows: prevData.passkeys.rows.filter((passkey) => passkey.id !== id),
+              count: previousData.passkeys.count - 1,
+              rows: previousData.passkeys.rows.filter((passkey) => passkey.id !== id),
               __typename: 'PasskeysResponse',
             },
           };

@@ -29,7 +29,6 @@ export class BookService {
           slug,
         },
         fetchPolicy: 'network-only',
-        notifyOnNetworkStatusChange: true,
       });
     }
 
@@ -66,10 +65,14 @@ export class BookService {
           return;
         }
 
-        this.#bookQueryRef.updateQuery((prevData) => {
+        this.#bookQueryRef.updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
           return {
             book: {
-              ...prevData.book,
+              ...previousData.book,
               rating: rateBook.rating,
               total_rates: rateBook.total_rates,
               total_rating: rateBook.total_rating,
@@ -92,11 +95,15 @@ export class BookService {
           return;
         }
 
-        this.#bookQueryRef.updateQuery((prevData) => {
+        this.#bookQueryRef.updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
           return {
             book: {
-              ...prevData.book,
-              comments: [...prevData.book.comments, addComment],
+              ...previousData.book,
+              comments: [...previousData.book.comments, addComment],
             },
           };
         });

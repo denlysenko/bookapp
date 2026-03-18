@@ -1,4 +1,5 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+import { useLazyQuery, useMutation } from '@apollo/client/react';
 
 import { Book, BookFormModel } from '@bookapp/shared/interfaces';
 import {
@@ -23,7 +24,7 @@ export function useAddBook() {
   };
 
   const createBook = async (book: BookFormModel) => {
-    const { data, errors } = await executeCreateMutation({
+    const { data, error } = await executeCreateMutation({
       variables: {
         book,
       },
@@ -33,13 +34,17 @@ export function useAddBook() {
       return true;
     }
 
-    if (errors) {
-      return Promise.reject(errors);
+    if (error) {
+      if (CombinedGraphQLErrors.is(error)) {
+        return Promise.reject(error.errors);
+      }
+
+      return Promise.reject(error);
     }
   };
 
   const updateBook = async (id: string, book: Partial<BookFormModel>) => {
-    const { data, errors } = await executeUpdateMutation({
+    const { data, error } = await executeUpdateMutation({
       variables: {
         id,
         book,
@@ -50,8 +55,12 @@ export function useAddBook() {
       return true;
     }
 
-    if (errors) {
-      return Promise.reject(errors);
+    if (error) {
+      if (CombinedGraphQLErrors.is(error)) {
+        return Promise.reject(error.errors);
+      }
+
+      return Promise.reject(error);
     }
   };
 

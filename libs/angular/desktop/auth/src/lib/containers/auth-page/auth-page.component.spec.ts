@@ -1,5 +1,7 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+
 import { FeedbackPlatformService, RouterExtensions, WebauthnService } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
 import {
@@ -101,7 +103,11 @@ describe('AuthPageComponent', () => {
     it('should propagate error', fakeAsync(() => {
       const error = { message: 'Error' };
 
-      jest.spyOn(authService, 'login').mockImplementationOnce(() => of({ errors: [error] }));
+      jest
+        .spyOn(authService, 'login')
+        .mockImplementationOnce(() =>
+          of({ data: null, error: new CombinedGraphQLErrors({ errors: [error] }) })
+        );
 
       component.submit({
         isLoggingIn: true,

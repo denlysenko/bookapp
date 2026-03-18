@@ -6,12 +6,9 @@ import { ConfigService } from '@nestjs/config';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 
 import { sign, verify } from 'jsonwebtoken';
-import { Connection, Document, Model, Types } from 'mongoose';
+import { Connection, Model } from 'mongoose';
 
 import { AuthTokenModel } from './interfaces/auth-token';
-
-// do not import from @bookapp/users to avoid circular dependency
-interface UserModel extends Omit<User, 'id'>, Document<Types.ObjectId> {}
 
 @Injectable()
 export class AuthTokensService {
@@ -70,7 +67,7 @@ export class AuthTokensService {
     const { id } = payload;
 
     // use Connection instead of UsersService to avoid circular dependency
-    const userModel: Model<UserModel> = this.connection.model(ModelNames.USER);
+    const userModel = this.connection.model<User>(ModelNames.USER);
     const user = await userModel.findById(id).exec();
 
     if (!user) {

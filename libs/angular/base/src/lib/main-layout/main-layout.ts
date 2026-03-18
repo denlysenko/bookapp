@@ -2,6 +2,7 @@ import { Directive, inject, OnDestroy } from '@angular/core';
 
 import { AuthService, LogsService } from '@bookapp/angular/data-access';
 
+import { onlyCompleteData } from 'apollo-angular';
 import { map, tap } from 'rxjs/operators';
 
 import { BaseComponent } from '../core/base-component';
@@ -12,6 +13,7 @@ export abstract class MainLayoutBase extends BaseComponent implements OnDestroy 
   readonly #logsService = inject(LogsService);
 
   readonly user$ = this.#authService.watchMe().pipe(
+    onlyCompleteData(),
     map(({ data }) => data.me),
     tap((user) => {
       if (!this.#unsubscribeFromNewLogs) {
@@ -20,7 +22,10 @@ export abstract class MainLayoutBase extends BaseComponent implements OnDestroy 
     })
   );
 
-  readonly logs$ = this.#logsService.watchLastLogs().pipe(map(({ data }) => data.logs.rows));
+  readonly logs$ = this.#logsService.watchLastLogs().pipe(
+    onlyCompleteData(),
+    map(({ data }) => data.logs.rows)
+  );
 
   #unsubscribeFromNewLogs: () => void | null = null;
 

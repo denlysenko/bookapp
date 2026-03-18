@@ -10,14 +10,16 @@ export class BooksDataLoader implements IDataLoader<string, Book> {
   constructor(private readonly dataLoader: DataLoader<string, Book>) {}
 
   static async create(connection: Connection) {
-    const bookModel = connection.model(ModelNames.BOOK);
+    const bookModel = connection.model<Book>(ModelNames.BOOK);
 
     const dataloader = new DataLoader(
       async (bookIds: string[]) => {
         const books = await bookModel.find({ _id: { $in: bookIds } }).exec();
-        const data = {};
+
+        const data: Record<string, Book> = {};
+
         books.forEach((book) => {
-          data[book._id] = book;
+          data[book.id] = book;
         });
 
         return bookIds.map((id) => data[id]);

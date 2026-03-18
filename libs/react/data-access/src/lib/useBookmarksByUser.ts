@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+import { useMutation, useQuery } from '@apollo/client/react';
 
 import { Bookmark, BookmarkEvent } from '@bookapp/shared/interfaces';
 import {
@@ -25,15 +26,19 @@ export function useBookmarksByUser(bookId: string) {
   );
 
   const addToBookmarks = async ({ type, bookId }: BookmarkEvent) => {
-    const { data, errors } = await executeAddToBookmarksMutation({
+    const { data, error } = await executeAddToBookmarksMutation({
       variables: {
         type,
         bookId,
       },
       update: (_, { data: { addToBookmarks } }) => {
-        updateQuery((prevData) => {
+        updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
           return {
-            userBookmarksByBook: [...prevData.userBookmarksByBook, addToBookmarks],
+            userBookmarksByBook: [...previousData.userBookmarksByBook, addToBookmarks],
           };
         });
       },
@@ -43,21 +48,29 @@ export function useBookmarksByUser(bookId: string) {
       return true;
     }
 
-    if (errors) {
-      return Promise.reject(errors);
+    if (error) {
+      if (CombinedGraphQLErrors.is(error)) {
+        return Promise.reject(error.errors);
+      }
+
+      return Promise.reject(error);
     }
   };
 
   const removeFromBookmarks = async ({ type, bookId }: BookmarkEvent) => {
-    const { data, errors } = await executeRemoveFromBookmarksMutation({
+    const { data, error } = await executeRemoveFromBookmarksMutation({
       variables: {
         type,
         bookId,
       },
       update: (_, { data: { removeFromBookmarks } }) => {
-        updateQuery((prevData) => {
+        updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
           return {
-            userBookmarksByBook: prevData.userBookmarksByBook.filter(
+            userBookmarksByBook: previousData.userBookmarksByBook.filter(
               (bookmark) => bookmark.type !== removeFromBookmarks.type
             ),
           };
@@ -69,8 +82,12 @@ export function useBookmarksByUser(bookId: string) {
       return true;
     }
 
-    if (errors) {
-      return Promise.reject(errors);
+    if (error) {
+      if (CombinedGraphQLErrors.is(error)) {
+        return Promise.reject(error.errors);
+      }
+
+      return Promise.reject(error);
     }
   };
 

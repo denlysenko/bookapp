@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+import { useMutation, useQuery } from '@apollo/client/react';
 
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { BOOKMARKS } from '@bookapp/shared/enums';
@@ -15,28 +16,31 @@ export function useBookmarksByType(type: BOOKMARKS) {
         first: DEFAULT_LIMIT,
       },
       fetchPolicy: 'network-only',
-      notifyOnNetworkStatusChange: true,
     }
   );
 
   const [executeRateBookMutation] = useMutation<RateBookResponse>(RATE_BOOK_MUTATION);
 
   const rateBook = async ({ bookId, rate }: RateBookEvent) => {
-    const { data, errors } = await executeRateBookMutation({
+    const { data, error } = await executeRateBookMutation({
       variables: {
         bookId,
         rate,
       },
       update: (_, { data: { rateBook } }) => {
-        updateQuery((prevData) => {
-          const index = prevData.bookmarks.rows.findIndex(({ book }) => book.id === bookId);
+        updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
+          const index = previousData.bookmarks.rows.findIndex(({ book }) => book.id === bookId);
 
           if (index === -1) {
-            return prevData;
+            return previousData;
           }
 
           const updatedBook = {
-            ...prevData.bookmarks.rows[index].book,
+            ...previousData.bookmarks.rows[index].book,
             rating: rateBook.rating,
             total_rates: rateBook.total_rates,
             total_rating: rateBook.total_rating,
@@ -44,11 +48,11 @@ export function useBookmarksByType(type: BOOKMARKS) {
 
           return {
             bookmarks: {
-              ...prevData.bookmarks,
+              ...previousData.bookmarks,
               rows: [
-                ...prevData.bookmarks.rows.slice(0, index),
-                { ...prevData.bookmarks.rows[index], book: updatedBook },
-                ...prevData.bookmarks.rows.slice(index + 1),
+                ...previousData.bookmarks.rows.slice(0, index),
+                { ...previousData.bookmarks.rows[index], book: updatedBook },
+                ...previousData.bookmarks.rows.slice(index + 1),
               ],
             },
           };
@@ -60,8 +64,12 @@ export function useBookmarksByType(type: BOOKMARKS) {
       return true;
     }
 
-    if (errors) {
-      return Promise.reject(errors);
+    if (error) {
+      if (CombinedGraphQLErrors.is(error)) {
+        return Promise.reject(error.errors);
+      }
+
+      return Promise.reject(error);
     }
   };
 

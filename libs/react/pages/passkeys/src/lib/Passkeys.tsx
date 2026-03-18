@@ -46,7 +46,11 @@ export function Passkeys() {
       await addPasskey();
       showFeedback('Passkey created');
     } catch (errors) {
-      showFeedback(errors[errors.length - 1].message);
+      if (Array.isArray(errors)) {
+        showFeedback(errors[errors.length - 1].message);
+      } else {
+        showFeedback('Error adding passkey');
+      }
     } finally {
       setAdding(false);
     }

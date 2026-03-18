@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "strict": false,
-    "types": []
+    "types": [],
+    "module": "preserve",
+    "moduleResolution": "bundler"
   },
   "files": [],
   "include": [],
