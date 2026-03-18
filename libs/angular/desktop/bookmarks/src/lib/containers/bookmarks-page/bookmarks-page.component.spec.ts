@@ -92,7 +92,7 @@ describe('BookmarksPageComponent', () => {
     it('should fetch more bookmarks if there are more items', () => {
       jest.spyOn(bookmarksService, 'watchBookmarksByType').mockImplementationOnce(() =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        of({ data: { bookmarks: { rows: [bookmark], count: 2 } } } as any)
+        of({ dataState: 'complete', data: { bookmarks: { rows: [bookmark], count: 2 } } } as any)
       );
 
       fixture = TestBed.createComponent(BookmarksPageComponent);

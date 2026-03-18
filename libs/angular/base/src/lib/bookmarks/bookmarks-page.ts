@@ -5,8 +5,9 @@ import { BookmarksService } from '@bookapp/angular/data-access';
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { Book, RateBookEvent } from '@bookapp/shared/interfaces';
 
+import { onlyCompleteData } from 'apollo-angular';
 import { Observable } from 'rxjs';
-import { filter, map, shareReplay, startWith, tap } from 'rxjs/operators';
+import { map, shareReplay, startWith, tap } from 'rxjs/operators';
 
 import { BaseComponent } from '../core/base-component';
 
@@ -22,7 +23,7 @@ export abstract class BookmarksPageBase extends BaseComponent {
     .pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   readonly books$: Observable<Book[]> = this.source$.pipe(
-    filter(({ data }) => !!data.bookmarks),
+    onlyCompleteData(),
     tap(({ data }) => {
       const { rows, count } = data.bookmarks;
       this.hasMoreItems.set(rows.length < count);

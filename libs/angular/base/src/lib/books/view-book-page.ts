@@ -6,7 +6,7 @@ import { Book, BookmarkEvent, RateBookEvent } from '@bookapp/shared/interfaces';
 
 import { onlyCompleteData } from 'apollo-angular';
 import { Observable } from 'rxjs';
-import { filter, finalize, map, shareReplay, startWith } from 'rxjs/operators';
+import { finalize, map, shareReplay, startWith } from 'rxjs/operators';
 
 import { BaseComponent } from '../core/base-component';
 
@@ -32,7 +32,7 @@ export abstract class ViewBookPageBase extends BaseComponent {
   readonly bookmarks$: Observable<string[]> = this.#bookmarksService
     .watchBookmarksByBook(this.#activatedRoute.snapshot.queryParamMap.get('bookId'))
     .pipe(
-      filter(({ data }) => !!data.userBookmarksByBook),
+      onlyCompleteData(),
       map(({ data }) => data.userBookmarksByBook),
       map((bookmarks) => bookmarks.map((bookmark) => bookmark.type))
     );

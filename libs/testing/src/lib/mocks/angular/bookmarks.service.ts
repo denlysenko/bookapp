@@ -7,11 +7,13 @@ import { bookmark } from '../../test-data/bookmark';
 export const MockAngularBookmarksService = {
   watchBookmarksByBook: jest.fn().mockImplementation(() =>
     of({
+      dataState: 'complete',
       data: { userBookmarksByBook: [{ type: BOOKMARKS.FAVORITES }] },
     })
   ),
   watchBookmarksByType: jest.fn().mockImplementation(() =>
     of({
+      dataState: 'complete',
       data: {
         bookmarks: {
           rows: [bookmark],
