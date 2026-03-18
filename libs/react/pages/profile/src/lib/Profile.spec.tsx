@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { InMemoryCache } from '@apollo/client/core';
-import { MockedProvider } from '@apollo/client/testing';
+import { MockedProvider } from '@apollo/client/testing/react';
 
 import { FeedbackProvider } from '@bookapp/react/ui';
 import { ME_QUERY, UPDATE_USER_MUTATION } from '@bookapp/shared/queries';

@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { PasswordService } from '@bookapp/angular/data-access';
 import { MockFeedbackPlatformService } from '@bookapp/testing/angular';
@@ -59,7 +61,9 @@ describe('PasswordPageComponent', () => {
 
       jest
         .spyOn(passwordService, 'changePassword')
-        .mockImplementationOnce(() => of({ errors: [error] }));
+        .mockImplementationOnce(() =>
+          of({ data: null, error: new CombinedGraphQLErrors({ errors: [error] }) })
+        );
 
       component.changePassword({
         oldPassword,

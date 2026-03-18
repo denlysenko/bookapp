@@ -5,8 +5,5 @@ setupZoneTestEnv({
   errorOnUnknownProperties: true,
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(window as any).URL = {
-  createObjectURL: () => 'url',
-  revokeObjectURL: () => null,
-};
+URL.createObjectURL = () => 'url';
+URL.revokeObjectURL = () => null;

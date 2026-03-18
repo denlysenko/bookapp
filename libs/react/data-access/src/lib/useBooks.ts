@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+import { useMutation, useQuery } from '@apollo/client/react';
 
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import {
@@ -31,7 +32,6 @@ export function useBooks(
         orderBy,
       },
       fetchPolicy: 'network-only',
-      notifyOnNetworkStatusChange: true,
     }
   );
 
@@ -58,22 +58,26 @@ export function useBooks(
     });
   };
 
-  const rateBook = ({ bookId, rate }: RateBookEvent) => {
-    executeMutation({
+  const rateBook = async ({ bookId, rate }: RateBookEvent) => {
+    const { data, error } = await executeMutation({
       variables: {
         bookId,
         rate,
       },
       update: (_, { data: { rateBook } }) => {
-        updateQuery((prevData) => {
-          const index = prevData.books.rows.findIndex(({ id }) => id === bookId);
+        updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
+          const index = previousData.books.rows.findIndex(({ id }) => id === bookId);
 
           if (index === -1) {
-            return prevData;
+            return previousData;
           }
 
           const updatedBook = {
-            ...prevData.books.rows[index],
+            ...previousData.books.rows[index],
             rating: rateBook.rating,
             total_rates: rateBook.total_rates,
             total_rating: rateBook.total_rating,
@@ -81,17 +85,29 @@ export function useBooks(
 
           return {
             books: {
-              ...prevData.books,
+              ...previousData.books,
               rows: [
-                ...prevData.books.rows.slice(0, index),
+                ...previousData.books.rows.slice(0, index),
                 updatedBook,
-                ...prevData.books.rows.slice(index + 1),
+                ...previousData.books.rows.slice(index + 1),
               ],
             },
           };
         });
       },
     });
+
+    if (data) {
+      return true;
+    }
+
+    if (error) {
+      if (CombinedGraphQLErrors.is(error)) {
+        return Promise.reject(error.errors);
+      }
+
+      return Promise.reject(error);
+    }
   };
 
   return {

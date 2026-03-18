@@ -2,9 +2,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
-    "module": "commonjs",
+    "module": "preserve",
     "types": ["jest", "node"],
-    "target": "ES2022"
+    "target": "ES2022",
+    "moduleResolution": "bundler",
+    "isolatedModules": true
   },
   "files": [],
   "include": ["jest.config.ts", "**/*.spec.ts", "**/*.test.ts", "**/*.d.ts"]

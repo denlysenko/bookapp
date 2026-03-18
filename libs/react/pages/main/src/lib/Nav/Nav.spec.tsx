@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { InMemoryCache } from '@apollo/client/core';
-import { MockedProvider } from '@apollo/client/testing';
+import { MockedProvider } from '@apollo/client/testing/react';
 
 import { LAST_LOGS_QUERY, LOG_CREATED_SUBSCRIPTION, ME_QUERY } from '@bookapp/shared/queries';
 import { userWithTypename } from '@bookapp/testing/react';

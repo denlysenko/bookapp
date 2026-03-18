@@ -13,7 +13,7 @@ import { has, isEmpty, omit } from 'lodash-es';
 import * as Yup from 'yup';
 
 import { FileSelector, ImageSelector, useFileSelector, useImageSelector } from '@bookapp/react/ui';
-import { ERRORS } from '@bookapp/shared/constants';
+import { ERRORS, UPLOAD_FOLDERS } from '@bookapp/shared/constants';
 import { Book, BookFormModel } from '@bookapp/shared/interfaces';
 import { getFormikError, handleValidationError } from '@bookapp/utils/react';
 
@@ -171,6 +171,7 @@ export const AddBookForm = ({ book, loading, error, onSubmit }: AddBookFormProps
           open={isImageSelectorOpened}
           onImageUpload={onCoverUpload}
           onClose={hideImageSelector}
+          folder={UPLOAD_FOLDERS.COVERS}
         />
       </div>
       <form id="bookForm" className="form" noValidate={true} onSubmit={formik.handleSubmit}>
@@ -223,6 +224,7 @@ export const AddBookForm = ({ book, loading, error, onSubmit }: AddBookFormProps
             open={isFileSelectorOpened}
             onFileUpload={onEpubUpload}
             onClose={hideFileSelector}
+            folder={UPLOAD_FOLDERS.BOOKS}
           />
           {formik.values.epubUrl && (
             <a href={formik.values.epubUrl} target="_blank" data-testid="download" rel="noreferrer">

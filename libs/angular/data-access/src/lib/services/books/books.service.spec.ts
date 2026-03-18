@@ -30,7 +30,7 @@ describe('BooksService', () => {
         BooksService,
         {
           provide: APOLLO_TESTING_CACHE,
-          useValue: new InMemoryCache({ addTypename: true }),
+          useValue: new InMemoryCache(),
         },
       ],
     });
@@ -264,7 +264,9 @@ describe('BooksService', () => {
       let rows: Book[];
 
       service.watchBooks(false).subscribe(({ data }) => {
-        rows = data.books.rows;
+        if (data) {
+          rows = data.books.rows as Book[];
+        }
       });
 
       controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY)).flush({
@@ -310,8 +312,8 @@ describe('BooksService', () => {
       let rows: Book[];
 
       service.watchBooks(false).subscribe(({ data }) => {
-        if (data.books) {
-          rows = data.books.rows;
+        if (data?.books) {
+          rows = data.books.rows as Book[];
         }
       });
 
@@ -353,7 +355,9 @@ describe('BooksService', () => {
       let rows: Book[];
 
       service.watchBooks(false).subscribe(({ data }) => {
-        rows = data.books.rows;
+        if (data) {
+          rows = data.books.rows as Book[];
+        }
       });
 
       controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY)).flush({
@@ -394,7 +398,9 @@ describe('BooksService', () => {
       let rows: Book[];
 
       service.watchBooks(false).subscribe(({ data }) => {
-        rows = data.books.rows;
+        if (data) {
+          rows = data.books.rows as Book[];
+        }
       });
 
       controller.expectOne(addTypenameToDocument(FREE_BOOKS_QUERY)).flush({

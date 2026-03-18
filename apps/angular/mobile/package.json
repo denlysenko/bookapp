@@ -12,7 +12,7 @@
     "@nstudio/nativescript-cardview": "2.0.2",
     "@nstudio/nativescript-loading-indicator": "^5.0.0",
     "@triniwiz/nativescript-star-ratings": "2.0.3",
-    "@valor/nativescript-websockets": "^2.0.2",
+    "@valor/nativescript-websockets": "^2.0.3",
     "nativescript-app-shortcuts": "^3.0.0",
     "nativescript-feedback": "^2.0.0",
     "nativescript-imagecropper": "file:../../../node_modules/nativescript-imagecropper",
@@ -20,8 +20,8 @@
     "nativescript-webview-interface": "file:../../../node_modules/nativescript-webview-interface"
   },
   "devDependencies": {
-    "@nativescript/android": "8.9.2",
-    "@nativescript/ios": "8.9.4",
+    "@nativescript/android": "9.0.2",
+    "@nativescript/ios": "9.0.3",
     "@nativescript/tailwind": "file:../../../node_modules/@nativescript/tailwind"
   },
   "main": "./src/main.ts"

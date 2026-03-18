@@ -63,7 +63,7 @@ describe('BestBooksPageComponent', () => {
     it('should loadMore books', () => {
       jest.spyOn(booksService, 'watchBooks').mockImplementationOnce(() =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        of({ data: { bestBooks: { rows: [book], count: 2 } } } as any)
+        of({ dataState: 'complete', data: { bestBooks: { rows: [book], count: 2 } } } as any)
       );
 
       fixture = TestBed.createComponent(BestBooksPageComponent);

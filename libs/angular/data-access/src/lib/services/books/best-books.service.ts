@@ -21,7 +21,6 @@ export class BestBooksService {
           first,
         },
         fetchPolicy: 'network-only',
-        notifyOnNetworkStatusChange: true,
       });
     }
 
@@ -63,27 +62,31 @@ export class BestBooksService {
           return;
         }
 
-        this.#bestBooksQueryRef.updateQuery((prevData) => {
-          const index = prevData.bestBooks.rows.findIndex(({ id }) => id === bookId);
+        this.#bestBooksQueryRef.updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
+          const index = previousData.bestBooks.rows.findIndex(({ id }) => id === bookId);
 
           if (index === -1) {
-            return prevData;
+            return previousData;
           }
 
           if (rateBook.rating < 5) {
-            const rows = [...prevData.bestBooks.rows];
+            const rows = [...previousData.bestBooks.rows];
             rows.splice(index, 1);
 
             return {
               bestBooks: {
                 rows,
-                count: prevData.bestBooks.count - 1,
+                count: previousData.bestBooks.count - 1,
               },
             };
           }
 
           const updatedBook = {
-            ...prevData.bestBooks.rows[index],
+            ...previousData.bestBooks.rows[index],
             rating: rateBook.rating,
             total_rates: rateBook.total_rates,
             total_rating: rateBook.total_rating,
@@ -91,11 +94,11 @@ export class BestBooksService {
 
           return {
             bestBooks: {
-              ...prevData.bestBooks,
+              ...previousData.bestBooks,
               rows: [
-                ...prevData.bestBooks.rows.slice(0, index),
+                ...previousData.bestBooks.rows.slice(0, index),
                 updatedBook,
-                ...prevData.bestBooks.rows.slice(index + 1),
+                ...previousData.bestBooks.rows.slice(index + 1),
               ],
             },
           };

@@ -1,4 +1,5 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+import { useLazyQuery, useMutation } from '@apollo/client/react';
 
 import { storage, store } from '@bookapp/react/core';
 import { AUTH_TOKEN } from '@bookapp/shared/constants';
@@ -33,7 +34,7 @@ export function useAuth() {
   const navigate = useNavigate();
 
   const login = async (email: string, password: string) => {
-    const { data, errors } = await executeLoginMutation({
+    const { data, error } = await executeLoginMutation({
       variables: {
         email,
         password,
@@ -48,8 +49,12 @@ export function useAuth() {
       return true;
     }
 
-    if (errors) {
-      return Promise.reject(errors);
+    if (error) {
+      if (CombinedGraphQLErrors.is(error)) {
+        return Promise.reject(error.errors);
+      }
+
+      return Promise.reject(error);
     }
   };
 
@@ -62,7 +67,7 @@ export function useAuth() {
           optionsJSON: result.data.generateAuthenticationOptions as RequestOptionsJSON,
         });
 
-        const { data, errors } = await executeVerifyAuthenticationResponseMutation({
+        const { data, error } = await executeVerifyAuthenticationResponseMutation({
           variables: { response },
         });
 
@@ -74,21 +79,29 @@ export function useAuth() {
           return true;
         }
 
-        if (errors) {
-          return Promise.reject(errors);
+        if (error) {
+          if (CombinedGraphQLErrors.is(error)) {
+            return Promise.reject(error.errors);
+          }
+
+          return Promise.reject(error);
         }
       } catch (err) {
         return Promise.reject(err);
       }
     }
 
-    if (result.errors) {
-      return Promise.reject(result.errors);
+    if (result.error) {
+      if (CombinedGraphQLErrors.is(result.error)) {
+        return Promise.reject(result.error.errors);
+      }
+
+      return Promise.reject(result.error);
     }
   };
 
   const signup = async (user: SignupCredentials) => {
-    const { data, errors } = await executeSignupMutation({
+    const { data, error } = await executeSignupMutation({
       variables: {
         user,
       },
@@ -102,8 +115,12 @@ export function useAuth() {
       return true;
     }
 
-    if (errors) {
-      return Promise.reject(errors);
+    if (error) {
+      if (CombinedGraphQLErrors.is(error)) {
+        return Promise.reject(error.errors);
+      }
+
+      return Promise.reject(error);
     }
   };
 

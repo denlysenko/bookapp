@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 
 import { MatDialog } from '@angular/material/dialog';
 
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+
 import { FeedbackPlatformService, UploadPlatformService } from '@bookapp/angular/core';
 import { AddBookService } from '@bookapp/angular/data-access';
 import {
@@ -93,7 +95,11 @@ describe('AddBookPageComponent', () => {
 
     it('should propagate error', async () => {
       const error = { message: 'Error message' };
-      jest.spyOn(addBookService, 'create').mockImplementationOnce(() => of({ errors: [error] }));
+      jest
+        .spyOn(addBookService, 'create')
+        .mockImplementationOnce(() =>
+          of({ data: null, error: new CombinedGraphQLErrors({ errors: [error] }) })
+        );
 
       component.save(formValue);
       await fixture.whenStable();

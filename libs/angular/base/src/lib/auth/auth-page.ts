@@ -1,5 +1,7 @@
 import { inject, signal } from '@angular/core';
 
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+
 import { RouterExtensions } from '@bookapp/angular/core';
 import { AuthService } from '@bookapp/angular/data-access';
 import { ApiError, SignupCredentials } from '@bookapp/shared/interfaces';
@@ -21,7 +23,7 @@ export abstract class AuthPageBase {
     }
   }
 
-  protected onNext({ data, errors }) {
+  protected onNext({ data, error }) {
     if (data) {
       this.#routerExtensions.navigate([''], {
         // for nativescript
@@ -34,8 +36,8 @@ export abstract class AuthPageBase {
       });
     }
 
-    if (errors) {
-      this.error.set(errors[errors.length - 1]);
+    if (CombinedGraphQLErrors.is(error)) {
+      this.error.set(error.errors[0] as ApiError);
     }
   }
 

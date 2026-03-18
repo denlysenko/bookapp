@@ -28,7 +28,7 @@ describe('BookService', () => {
         BookService,
         {
           provide: APOLLO_TESTING_CACHE,
-          useValue: new InMemoryCache({ addTypename: true }),
+          useValue: new InMemoryCache(),
         },
       ],
     });
@@ -88,7 +88,9 @@ describe('BookService', () => {
       let foundBook: Book;
 
       service.watchBook(book.slug).subscribe(({ data }) => {
-        foundBook = data.book;
+        if (data) {
+          foundBook = data.book as Book;
+        }
       });
 
       controller.expectOne(addTypenameToDocument(BOOK_QUERY)).flush({
@@ -121,6 +123,7 @@ describe('BookService', () => {
 
   describe('addComment()', () => {
     const comment = {
+      id: 'comment-1',
       author: { displayName: user.displayName, __typename: 'User' },
       text: 'New comment',
       createdAt: 1563132857195,
@@ -131,7 +134,9 @@ describe('BookService', () => {
       let foundBook: Book;
 
       service.watchBook(book.slug).subscribe(({ data }) => {
-        foundBook = data.book;
+        if (data) {
+          foundBook = data.book as Book;
+        }
       });
 
       controller.expectOne(addTypenameToDocument(BOOK_QUERY)).flush({

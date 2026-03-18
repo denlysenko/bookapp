@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+
 import { FeedbackPlatformService, WebauthnService } from '@bookapp/angular/core';
 import { PasskeysService } from '@bookapp/angular/data-access';
 import { PasskeyProvidersMetadata } from '@bookapp/shared/interfaces';
@@ -78,7 +80,9 @@ describe('PasskeysPageComponent', () => {
         {
           provide: PasskeysService,
           useValue: {
-            watchPasskeys: jest.fn().mockReturnValue(of({ data: { passkeys: mockPasskeys } })),
+            watchPasskeys: jest
+              .fn()
+              .mockReturnValue(of({ dataState: 'complete', data: { passkeys: mockPasskeys } })),
             startRegistration: jest.fn().mockReturnValue(of(authenticationOptions)),
             verifyRegistration: jest
               .fn()
@@ -206,7 +210,10 @@ describe('PasskeysPageComponent', () => {
     it('should handle API errors in response', async () => {
       const errorMessage = 'API validation error';
       (passkeysService.verifyRegistration as jest.Mock).mockReturnValue(
-        of({ errors: [{ message: errorMessage }] })
+        of({
+          data: null,
+          error: new CombinedGraphQLErrors({ errors: [{ message: errorMessage }] }),
+        })
       );
 
       clickOnBtn(fixture, '[data-test="save"]');
@@ -250,7 +257,10 @@ describe('PasskeysPageComponent', () => {
 
     it('should handle delete errors', async () => {
       (passkeysService.deletePasskey as jest.Mock).mockReturnValue(
-        of({ errors: [{ message: 'Delete failed' }] })
+        of({
+          data: null,
+          error: new CombinedGraphQLErrors({ errors: [{ message: 'Delete failed' }] }),
+        })
       );
 
       const deleteButton = fixture.nativeElement.querySelector('[data-test="delete"]');
@@ -315,7 +325,10 @@ describe('PasskeysPageComponent', () => {
     it('should handle update errors', async () => {
       const newLabel = 'Updated Label';
       (passkeysService.updatePasskey as jest.Mock).mockReturnValue(
-        of({ errors: [{ message: 'Update failed' }] })
+        of({
+          data: null,
+          error: new CombinedGraphQLErrors({ errors: [{ message: 'Update failed' }] }),
+        })
       );
 
       const editButton = fixture.nativeElement.querySelector('[data-test="edit"]');

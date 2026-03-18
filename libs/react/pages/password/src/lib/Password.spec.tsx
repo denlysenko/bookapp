@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import { MockedProvider } from '@apollo/client/testing';
+import { MockedProvider } from '@apollo/client/testing/react';
 
 import { FeedbackProvider } from '@bookapp/react/ui';
 import { CHANGE_PASSWORD_MUTATION } from '@bookapp/shared/queries';

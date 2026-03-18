@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useNavigate } from 'react-router-dom';
 
-import { MockedProvider } from '@apollo/client/testing';
+import { MockedProvider } from '@apollo/client/testing/react';
 
 import { storage, store } from '@bookapp/react/core';
 import { LOGOUT_MUTATION, ME_QUERY } from '@bookapp/shared/queries';

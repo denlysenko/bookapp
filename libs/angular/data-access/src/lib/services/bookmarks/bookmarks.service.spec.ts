@@ -35,7 +35,7 @@ describe('BookmarksService', () => {
         BookmarksService,
         {
           provide: APOLLO_TESTING_CACHE,
-          useValue: new InMemoryCache({ addTypename: true }),
+          useValue: new InMemoryCache(),
         },
       ],
     });
@@ -106,7 +106,9 @@ describe('BookmarksService', () => {
       let rows: Bookmark[];
 
       service.watchBookmarksByType(BOOKMARKS.FAVORITES).subscribe(({ data }) => {
-        rows = data.bookmarks.rows;
+        if (data) {
+          rows = data.bookmarks.rows as Bookmark[];
+        }
       });
 
       controller.expectOne(addTypenameToDocument(BOOKMARKS_QUERY)).flush({
@@ -147,7 +149,9 @@ describe('BookmarksService', () => {
       let rows: { type: string }[];
 
       service.watchBookmarksByBook(book.id).subscribe(({ data }) => {
-        rows = data.userBookmarksByBook;
+        if (data) {
+          rows = data.userBookmarksByBook as { type: string }[];
+        }
       });
 
       controller.expectOne(addTypenameToDocument(BOOKMARKS_BY_USER_AND_BOOK_QUERY)).flush({
@@ -188,7 +192,9 @@ describe('BookmarksService', () => {
 
     it('should remove bookmark from cache', fakeAsync(() => {
       service.watchBookmarksByBook(book.id).subscribe(({ data }) => {
-        rows = data.userBookmarksByBook;
+        if (data) {
+          rows = data.userBookmarksByBook as { type: string }[];
+        }
       });
 
       controller.expectOne(addTypenameToDocument(BOOKMARKS_BY_USER_AND_BOOK_QUERY)).flush({
@@ -220,7 +226,9 @@ describe('BookmarksService', () => {
       let rows: Bookmark[];
 
       service.watchBookmarksByType(BOOKMARKS.FAVORITES).subscribe(({ data }) => {
-        rows = data.bookmarks.rows;
+        if (data) {
+          rows = data.bookmarks.rows as Bookmark[];
+        }
       });
 
       controller.expectOne(addTypenameToDocument(BOOKMARKS_QUERY)).flush({
@@ -269,7 +277,9 @@ describe('BookmarksService', () => {
       let rows: Bookmark[];
 
       service.watchBookmarksByType(BOOKMARKS.FAVORITES).subscribe(({ data }) => {
-        rows = data.bookmarks.rows;
+        if (data) {
+          rows = data.bookmarks.rows as Bookmark[];
+        }
       });
 
       controller.expectOne(addTypenameToDocument(BOOKMARKS_QUERY)).flush({

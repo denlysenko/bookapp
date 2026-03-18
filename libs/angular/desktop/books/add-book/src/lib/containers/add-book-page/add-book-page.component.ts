@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { AddBookService } from '@bookapp/angular/data-access';
 import { ConfirmDialogComponent } from '@bookapp/angular/ui-desktop';
@@ -78,13 +80,13 @@ export class AddBookPageComponent {
           this.loading.set(false);
         })
       )
-      .subscribe(({ data, errors }) => {
+      .subscribe(({ data, error }) => {
         if (data) {
           this.#feedbackService.success(BOOK_CREATED);
         }
 
-        if (errors) {
-          this.error.set(errors[errors.length - 1]);
+        if (CombinedGraphQLErrors.is(error)) {
+          this.error.set(error.errors[0] as ApiError);
         }
       });
   }
@@ -98,13 +100,13 @@ export class AddBookPageComponent {
           this.loading.set(false);
         })
       )
-      .subscribe(({ data, errors }) => {
+      .subscribe(({ data, error }) => {
         if (data) {
           this.#feedbackService.success(BOOK_UPDATED);
         }
 
-        if (errors) {
-          this.error.set(errors[errors.length - 1]);
+        if (CombinedGraphQLErrors.is(error)) {
+          this.error.set(error.errors[0] as ApiError);
         }
       });
   }

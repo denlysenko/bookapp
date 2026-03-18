@@ -27,7 +27,7 @@ export class UploadService implements UploadPlatformService {
     return this.#progress.asObservable();
   }
 
-  upload(fileUrl: string, name = 'file'): Observable<string> {
+  upload(fileUrl: string, name = 'file', folder?: string): Observable<string> {
     return new Observable((observer) => {
       const token = this.#storeService.get(AUTH_TOKEN);
 
@@ -40,7 +40,13 @@ export class UploadService implements UploadPlatformService {
         description: 'uploading',
       };
 
-      const params = [{ name, filename: fileUrl, mimeType: 'image/png' }];
+      const params: { name: string; filename?: string; value?: string; mimeType?: string }[] = [
+        { name, filename: fileUrl, mimeType: 'image/png' },
+      ];
+
+      if (folder) {
+        params.push({ name: 'folder', value: folder });
+      }
 
       const task = s.multipartUpload(params, request);
 

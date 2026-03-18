@@ -4,6 +4,7 @@ import { FILE_ERRORS, FilesModule, FilesService } from '@bookapp/api/files';
 import { ModelNames } from '@bookapp/api/shared';
 import { UsersService } from '@bookapp/api/users';
 import { MockAuthTokensService, MockConfigService, MockModel, user } from '@bookapp/testing/api';
+import { UPLOAD_FOLDERS } from '@bookapp/shared/constants';
 
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -98,6 +99,33 @@ describe('FilesModule', () => {
           statusCode: HttpStatus.BAD_REQUEST,
           error: 'Bad Request',
           message: FILE_ERRORS.INVALID_MIMETYPE_ERR,
+        });
+    });
+
+    it('should upload file with valid folder param', async () => {
+      await request(app.getHttpServer())
+        .post('/files')
+        .set('Authorization', `Bearer ${authToken}`)
+        .attach('file', `${filesPath}/JPEG.jpg`)
+        .field('folder', UPLOAD_FOLDERS.COVERS)
+        .expect(HttpStatus.OK)
+        .expect({ publicUrl });
+
+      const [, filename] = MockFilesService.uploadToBucket.mock.lastCall;
+      expect(filename).toMatch(new RegExp(`^${UPLOAD_FOLDERS.COVERS}/`));
+    });
+
+    it('should return BAD_REQUEST for invalid folder param', async () => {
+      return request(app.getHttpServer())
+        .post('/files')
+        .set('Authorization', `Bearer ${authToken}`)
+        .attach('file', `${filesPath}/JPEG.jpg`)
+        .field('folder', 'invalid-folder')
+        .expect(HttpStatus.BAD_REQUEST)
+        .expect({
+          statusCode: HttpStatus.BAD_REQUEST,
+          error: 'Bad Request',
+          message: FILE_ERRORS.INVALID_FOLDER_ERR,
         });
     });
 

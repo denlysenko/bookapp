@@ -1,5 +1,7 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+
 import { FeedbackPlatformService } from '@bookapp/angular/core';
 import { AuthService, ProfileService } from '@bookapp/angular/data-access';
 import {
@@ -63,7 +65,11 @@ describe('ProfilePageComponent', () => {
     it('should propagate error', fakeAsync(() => {
       const error = { message: 'Error' };
 
-      jest.spyOn(profileService, 'update').mockImplementationOnce(() => of({ errors: [error] }));
+      jest
+        .spyOn(profileService, 'update')
+        .mockImplementationOnce(() =>
+          of({ data: null, error: new CombinedGraphQLErrors({ errors: [error] }) })
+        );
 
       component.updateProfile({ id: user.id, user: { firstName } });
       tick();

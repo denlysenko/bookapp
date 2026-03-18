@@ -46,7 +46,6 @@ export class BooksService {
           orderBy,
         },
         fetchPolicy: 'network-only',
-        notifyOnNetworkStatusChange: true,
       });
     }
 
@@ -111,15 +110,19 @@ export class BooksService {
           return;
         }
 
-        this.#booksQueryRef.updateQuery((prevData) => {
-          const index = prevData.books.rows.findIndex(({ id }) => id === bookId);
+        this.#booksQueryRef.updateQuery((_, { complete, previousData }) => {
+          if (!complete) {
+            return undefined;
+          }
+
+          const index = previousData.books.rows.findIndex(({ id }) => id === bookId);
 
           if (index === -1) {
-            return prevData;
+            return previousData;
           }
 
           const updatedBook = {
-            ...prevData.books.rows[index],
+            ...previousData.books.rows[index],
             rating: rateBook.rating,
             total_rates: rateBook.total_rates,
             total_rating: rateBook.total_rating,
@@ -127,11 +130,11 @@ export class BooksService {
 
           return {
             books: {
-              ...prevData.books,
+              ...previousData.books,
               rows: [
-                ...prevData.books.rows.slice(0, index),
+                ...previousData.books.rows.slice(0, index),
                 updatedBook,
-                ...prevData.books.rows.slice(index + 1),
+                ...previousData.books.rows.slice(index + 1),
               ],
             },
           };

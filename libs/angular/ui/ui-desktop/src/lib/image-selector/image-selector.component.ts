@@ -15,6 +15,7 @@ import { DropDirective } from '../drop/drop.directive';
 
 interface ImageSelectorData {
   readonly maintainAspectRatio?: boolean;
+  readonly folder?: string;
 }
 
 @Component({
@@ -37,6 +38,7 @@ export class ImageSelectorComponent extends FileSelectorBase implements OnInit {
   readonly #data = inject<ImageSelectorData>(MAT_DIALOG_DATA);
 
   readonly progress$ = this.uploadService.progress$;
+  readonly folder = this.#data?.folder;
 
   maintainAspectRatio = true;
 

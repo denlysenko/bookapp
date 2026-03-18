@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client/react';
 
 import { Book, Reading, User } from '@bookapp/shared/interfaces';
 import { BOOK_QUERY, ME_QUERY, UPDATE_USER_MUTATION } from '@bookapp/shared/queries';

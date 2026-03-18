@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Link, MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { InMemoryCache } from '@apollo/client/core';
-import { MockedProvider } from '@apollo/client/testing';
+import { MockedProvider } from '@apollo/client/testing/react';
 
 import { store } from '@bookapp/react/core';
 import { ME_QUERY } from '@bookapp/shared/queries';

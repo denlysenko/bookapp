@@ -18,12 +18,16 @@ export class UploadService implements UploadPlatformService {
     return this.#progress.asObservable();
   }
 
-  upload(file: File | Blob, name = 'file'): Observable<string> {
+  upload(file: File | Blob, name = 'file', folder?: string): Observable<string> {
     return new Observable((observer) => {
       const formData = new FormData();
       const xhr = new XMLHttpRequest();
 
       formData.append(name, file);
+
+      if (folder) {
+        formData.append('folder', folder);
+      }
 
       if (xhr.upload) {
         xhr.upload.addEventListener(

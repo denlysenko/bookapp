@@ -1,12 +1,6 @@
-import {
-  ApolloClient,
-  ApolloLink,
-  DefaultOptions,
-  HttpLink,
-  InMemoryCache,
-  split,
-} from '@apollo/client/core';
-import { onError } from '@apollo/client/link/error';
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, Observable } from '@apollo/client/core';
+import { CombinedGraphQLErrors, ServerError } from '@apollo/client/errors';
+import { ErrorLink } from '@apollo/client/link/error';
 import { RetryLink } from '@apollo/client/link/retry';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
@@ -16,7 +10,6 @@ import { AUTH_TOKEN, HTTP_STATUS, REFRESH_TOKEN_HEADER } from '@bookapp/shared/c
 import { environment } from '@bookapp/shared/environments';
 import { AuthPayload } from '@bookapp/shared/interfaces';
 
-import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import { createClient } from 'graphql-ws';
 import { jwtDecode } from 'jwt-decode';
 import { of } from 'rxjs';
@@ -26,7 +19,7 @@ interface Definition {
   operation?: string;
 }
 
-const defaultOptions: DefaultOptions = {
+const defaultOptions: ApolloClient.DefaultOptions = {
   watchQuery: {
     errorPolicy: 'all',
   },
@@ -68,7 +61,7 @@ export function createApollo(showFeedback: (msg: string) => void) {
     return forward(operation);
   });
 
-  const link = split(
+  const link = ApolloLink.split(
     ({ query }) => {
       const { kind, operation }: Definition = getMainDefinition(query);
       return kind === 'OperationDefinition' && operation === 'subscription';
@@ -77,21 +70,21 @@ export function createApollo(showFeedback: (msg: string) => void) {
     auth.concat(http)
   );
 
-  const errorLink = onError(({ networkError, graphQLErrors }) => {
-    if (networkError) {
+  const errorLink = new ErrorLink(({ error }) => {
+    if (ServerError.is(error)) {
       let msg: string;
 
-      switch (networkError['status']) {
+      switch (error.statusCode) {
         case HTTP_STATUS.NO_CONNECTION:
           msg = 'No connection. Please, try again later.';
           break;
         case HTTP_STATUS.SERVICE_UNAVAILABLE:
         case HTTP_STATUS.GATEWAY_TIMEOUT:
-          msg = `${networkError['statusText']}. Retrying...`;
+          msg = `${error.bodyText}. Retrying...`;
           break;
         case HTTP_STATUS.INTERNAL_SERVER_ERROR:
         case HTTP_STATUS.BAD_GATEWAY:
-          msg = `${networkError['statusText']}.`;
+          msg = `${error.bodyText}.`;
           break;
       }
 
@@ -100,9 +93,9 @@ export function createApollo(showFeedback: (msg: string) => void) {
       }
     }
 
-    if (graphQLErrors) {
-      const [error] = graphQLErrors;
-      const errorCode = (error.extensions as { code: string })?.code;
+    if (CombinedGraphQLErrors.is(error)) {
+      const [gqlError] = error.errors;
+      const errorCode = (gqlError.extensions as { code: string })?.code;
 
       if (errorCode === 'UNAUTHENTICATED') {
         // TODO: replace with actual implementation
@@ -132,42 +125,47 @@ export function createApollo(showFeedback: (msg: string) => void) {
     attempts: {
       max: 5,
       retryIf: (error) =>
-        error.status === HTTP_STATUS.SERVICE_UNAVAILABLE ||
-        error.status === HTTP_STATUS.GATEWAY_TIMEOUT,
+        ServerError.is(error) &&
+        (error.statusCode === HTTP_STATUS.SERVICE_UNAVAILABLE ||
+          error.statusCode === HTTP_STATUS.GATEWAY_TIMEOUT),
     },
   });
 
-  const refreshTokenLink = new TokenRefreshLink({
-    accessTokenField: 'accessToken',
-    isTokenValidOrUndefined: async () => {
-      const token = store.get(AUTH_TOKEN);
+  const isTokenValid = (): boolean => {
+    const token = store.get(AUTH_TOKEN);
 
-      if (!token) {
-        return true;
-      }
+    if (!token) {
+      return true;
+    }
 
-      try {
-        const { exp } = jwtDecode<{ exp: number }>(token);
-        return Date.now() < exp * 1000;
-      } catch {
-        return false;
-      }
-    },
-    fetchAccessToken: () => {
-      return fetch(environment.refreshTokenUrl, {
+    try {
+      const { exp } = jwtDecode<{ exp: number }>(token);
+      return Date.now() < exp * 1000;
+    } catch {
+      return false;
+    }
+  };
+
+  const refreshTokenLink = new ApolloLink((operation, forward) => {
+    if (isTokenValid()) {
+      return forward(operation);
+    }
+
+    return new Observable((observer) => {
+      fetch(environment.refreshTokenUrl, {
         method: 'POST',
         headers: {
           [REFRESH_TOKEN_HEADER]: storage.getItem(AUTH_TOKEN),
         },
-      });
-    },
-    handleResponse: () => (response: AuthPayload) => {
-      storage.setItem(AUTH_TOKEN, response.refreshToken);
-      return response;
-    },
-    handleFetch: (accessToken) => {
-      store.set(AUTH_TOKEN, accessToken);
-    },
+      })
+        .then((res) => res.json() as Promise<AuthPayload>)
+        .then((response) => {
+          storage.setItem(AUTH_TOKEN, response.refreshToken);
+          store.set(AUTH_TOKEN, response.accessToken);
+          forward(operation).subscribe(observer);
+        })
+        .catch(observer.error.bind(observer));
+    });
   });
 
   return new ApolloClient({

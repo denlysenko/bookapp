@@ -2,7 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
@@ -26,8 +26,10 @@ import { DropDirective } from '../drop/drop.directive';
 })
 export class FileSelectorComponent extends FileSelectorBase {
   readonly #dialogRef = inject(MatDialogRef<FileSelectorComponent>);
+  readonly #data = inject<{ folder?: string }>(MAT_DIALOG_DATA, { optional: true });
 
   readonly progress$ = this.uploadService.progress$;
+  readonly folder = this.#data?.folder;
 
   save() {
     const file = this.file();

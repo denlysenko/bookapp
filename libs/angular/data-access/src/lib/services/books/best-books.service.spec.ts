@@ -28,7 +28,7 @@ describe('BestBooksService', () => {
         BestBooksService,
         {
           provide: APOLLO_TESTING_CACHE,
-          useValue: new InMemoryCache({ addTypename: true }),
+          useValue: new InMemoryCache(),
         },
       ],
     });
@@ -75,7 +75,9 @@ describe('BestBooksService', () => {
       let rows: Book[];
 
       service.watchBooks().subscribe(({ data }) => {
-        rows = data.bestBooks.rows;
+        if (data) {
+          rows = data.bestBooks.rows as Book[];
+        }
       });
 
       controller.expectOne(addTypenameToDocument(BEST_BOOKS_QUERY)).flush({
@@ -116,7 +118,9 @@ describe('BestBooksService', () => {
       let rows: Book[];
 
       service.watchBooks().subscribe(({ data }) => {
-        rows = data.bestBooks.rows;
+        if (data) {
+          rows = data.bestBooks.rows as Book[];
+        }
       });
 
       controller.expectOne(addTypenameToDocument(BEST_BOOKS_QUERY)).flush({
@@ -157,7 +161,9 @@ describe('BestBooksService', () => {
       let rows: Book[];
 
       service.watchBooks().subscribe(({ data }) => {
-        rows = data.bestBooks.rows;
+        if (data) {
+          rows = data.bestBooks.rows as Book[];
+        }
       });
 
       controller.expectOne(addTypenameToDocument(BEST_BOOKS_QUERY)).flush({
@@ -193,7 +199,9 @@ describe('BestBooksService', () => {
       let rows: Book[];
 
       service.watchBooks().subscribe(({ data }) => {
-        rows = data.bestBooks.rows;
+        if (data) {
+          rows = data.bestBooks.rows as Book[];
+        }
       });
 
       controller.expectOne(addTypenameToDocument(BEST_BOOKS_QUERY)).flush({

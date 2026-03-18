@@ -6,8 +6,9 @@ import { LogsService } from '@bookapp/angular/data-access';
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { Log, LogsFilter, Sorting } from '@bookapp/shared/interfaces';
 
+import { onlyCompleteData } from 'apollo-angular';
 import { Observable } from 'rxjs';
-import { filter, map, shareReplay, startWith, take, tap } from 'rxjs/operators';
+import { map, shareReplay, startWith, take, tap } from 'rxjs/operators';
 
 import { BaseComponent } from '../core/base-component';
 
@@ -61,7 +62,7 @@ export abstract class HistoryPageBase extends BaseComponent {
     .pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   readonly logs$: Observable<Log[]> = this.source$.pipe(
-    filter(({ data }) => !!data.logs),
+    onlyCompleteData(),
     tap(({ data }) => {
       const { rows, count } = data.logs;
       this.hasMoreItems.set(rows.length !== count);
@@ -70,7 +71,7 @@ export abstract class HistoryPageBase extends BaseComponent {
   );
 
   readonly count$: Observable<number> = this.source$.pipe(
-    filter(({ data }) => !!data.logs),
+    onlyCompleteData(),
     map(({ data }) => data.logs.count)
   );
 

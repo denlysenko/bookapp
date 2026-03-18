@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 
 import { DEFAULT_LIMIT } from '@bookapp/shared/constants';
 import { ApiResponse, Log, LogsFilter } from '@bookapp/shared/interfaces';
@@ -14,7 +14,6 @@ export function useHistory(logsFilter: LogsFilter = {}) {
       orderBy: logsFilter.orderBy || DEFAULT_ORDER_BY,
     },
     fetchPolicy: 'network-only',
-    notifyOnNetworkStatusChange: true,
   });
 
   return {
