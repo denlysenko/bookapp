@@ -47,7 +47,7 @@
     "@angular/router": "21.2.4",
     "@angular/service-worker": "21.2.4",
     "@apollo/client": "4.1.6",
-    "@apollo/server": "5.4.0",
+    "@apollo/server": "5.5.0",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
     "@google-cloud/storage": "^7.19.0",
