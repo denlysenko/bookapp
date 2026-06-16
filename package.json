@@ -95,7 +95,7 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-image-crop": "11.0.10",
-    "react-router-dom": "7.13.1",
+    "react-router-dom": "7.18.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "7.8.2",
     "yup": "1.7.1",
