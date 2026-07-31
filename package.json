@@ -102,7 +102,7 @@
     "zone.js": "0.16.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "21.2.2",
+    "@angular-devkit/build-angular": "22.1.2",
     "@angular-devkit/core": "21.2.2",
     "@angular-devkit/schematics": "21.2.2",
     "@angular/cli": "21.2.2",
@@ -122,7 +122,7 @@
     "@nestjs/schematics": "11.0.9",
     "@nestjs/testing": "11.1.17",
     "@ngtools/webpack": "^21.2.2",
-    "@nx/angular": "22.6.0",
+    "@nx/angular": "23.1.1",
     "@nx/cypress": "22.6.0",
     "@nx/eslint": "22.6.0",
     "@nx/eslint-plugin": "22.6.0",
