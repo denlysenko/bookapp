@@ -168,7 +168,7 @@
     "jest-preset-angular": "16.1.1",
     "jest-util": "30.3.0",
     "mongo-seeding-cli": "^4.0.2",
-    "nx": "22.6.0",
+    "nx": "22.7.7",
     "prettier": "3.8.1",
     "supertest": "^7.2.2",
     "tailwindcss": "^4.2.2",
